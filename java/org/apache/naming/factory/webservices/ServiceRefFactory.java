@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -65,15 +63,13 @@ public class ServiceRefFactory implements ObjectFactory {
      */
     @Override
     public Object getObjectInstance(Object obj, Name name, Context nameCtx,
-            Hashtable<?,?> environment)
-    throws Exception {
+            Hashtable<?, ?> environment) throws Exception {
 
         if (obj instanceof ServiceRef) {
             Reference ref = (Reference) obj;
 
             // ClassLoader
-            ClassLoader tcl =
-                Thread.currentThread().getContextClassLoader();
+            ClassLoader tcl = Thread.currentThread().getContextClassLoader();
             if (tcl == null)
                 tcl = this.getClass().getClassLoader();
             ServiceFactory factory = ServiceFactory.newInstance();
@@ -92,7 +88,7 @@ public class ServiceRefFactory implements ObjectFactory {
                 wsdlRefAddr = (String) tmp.getContent();
 
             // PortComponent
-            Hashtable<String,QName> portComponentRef = new Hashtable<>();
+            Hashtable<String, QName> portComponentRef = new Hashtable<>();
 
             // Create QName object
             QName serviceQname = null;
@@ -113,19 +109,19 @@ public class ServiceRefFactory implements ObjectFactory {
             // Create service object
             if (serviceInterface == null) {
                 if (serviceQname == null) {
-                    throw new NamingException
-                    ("Could not create service-ref instance");
+                    throw new NamingException(
+                            "Could not create service-ref instance");
                 }
                 try {
                     if (wsdlRefAddr == null) {
-                        service = factory.createService( serviceQname );
+                        service = factory.createService(serviceQname);
                     } else {
-                        service = factory.createService( new URL(wsdlRefAddr),
-                                serviceQname );
+                        service = factory.createService(new URL(wsdlRefAddr),
+                                serviceQname);
                     }
                 } catch (Exception e) {
-                    NamingException ex = new NamingException
-                    ("Could not create service");
+                    NamingException ex = new NamingException(
+                            "Could not create service");
                     ex.initCause(e);
                     throw ex;
                 }
@@ -133,38 +129,37 @@ public class ServiceRefFactory implements ObjectFactory {
                 // Loading service Interface
                 try {
                     serviceInterfaceClass = tcl.loadClass(serviceInterface);
-                } catch(ClassNotFoundException e) {
-                    NamingException ex = new NamingException
-                    ("Could not load service Interface");
+                } catch (ClassNotFoundException e) {
+                    NamingException ex = new NamingException(
+                            "Could not load service Interface");
                     ex.initCause(e);
                     throw ex;
                 }
                 if (serviceInterfaceClass == null) {
-                    throw new NamingException
-                    ("Could not load service Interface");
+                    throw new NamingException(
+                            "Could not load service Interface");
                 }
                 try {
                     if (wsdlRefAddr == null) {
-                        if (!Service.class.isAssignableFrom(serviceInterfaceClass)) {
-                            throw new NamingException
-                            ("service Interface should extend javax.xml.rpc.Service");
+                        if (!Service.class.isAssignableFrom(
+                                serviceInterfaceClass)) {
+                            throw new NamingException(
+                                    "service Interface should extend javax.xml.rpc.Service");
                         }
-                        service = factory.loadService( serviceInterfaceClass );
+                        service = factory.loadService(serviceInterfaceClass);
                     } else {
-                        service = factory.loadService( new URL(wsdlRefAddr),
-                                serviceInterfaceClass,
-                                new Properties() );
+                        service = factory.loadService(new URL(wsdlRefAddr),
+                                serviceInterfaceClass, new Properties());
                     }
                 } catch (Exception e) {
-                    NamingException ex = new NamingException
-                    ("Could not create service");
+                    NamingException ex = new NamingException(
+                            "Could not create service");
                     ex.initCause(e);
                     throw ex;
                 }
             }
             if (service == null) {
-                throw new NamingException
-                ("Cannot create service object");
+                throw new NamingException("Cannot create service object");
             }
             serviceQname = service.getServiceName();
             serviceInterfaceClass = service.getClass();
@@ -173,20 +168,26 @@ public class ServiceRefFactory implements ObjectFactory {
                     WSDLFactory wsdlfactory = WSDLFactory.newInstance();
                     WSDLReader reader = wsdlfactory.newWSDLReader();
                     reader.setFeature("javax.wsdl.importDocuments", true);
-                    Definition def = reader.readWSDL((new URL(wsdlRefAddr)).toExternalForm());
+                    Definition def = reader.readWSDL((new URL(wsdlRefAddr))
+                            .toExternalForm());
 
-                    javax.wsdl.Service wsdlservice = def.getService(serviceQname);
+                    javax.wsdl.Service wsdlservice = def.getService(
+                            serviceQname);
                     @SuppressWarnings("unchecked")
-                    Map<String,?> ports = wsdlservice.getPorts();
-                    Method m = serviceInterfaceClass.getMethod("setEndpointAddress",
-                            new Class[] { java.lang.String.class,
-                            java.lang.String.class });
-                    for (Iterator<String> i = ports.keySet().iterator(); i.hasNext();) {
+                    Map<String, ?> ports = wsdlservice.getPorts();
+                    Method m = serviceInterfaceClass.getMethod(
+                            "setEndpointAddress", new Class[] {
+                                    java.lang.String.class,
+                                    java.lang.String.class });
+                    for (Iterator<String> i = ports.keySet().iterator(); i
+                            .hasNext();) {
                         String portName = i.next();
                         Port port = wsdlservice.getPort(portName);
                         String endpoint = getSOAPLocation(port);
-                        m.invoke(service, new Object[] {port.getName(), endpoint });
-                        portComponentRef.put(endpoint, new QName(port.getName()));
+                        m.invoke(service, new Object[] { port.getName(),
+                                endpoint });
+                        portComponentRef.put(endpoint, new QName(port
+                                .getName()));
                     }
                 } catch (Exception e) {
                     if (e instanceof InvocationTargetException) {
@@ -198,8 +199,8 @@ public class ServiceRefFactory implements ObjectFactory {
                             throw (VirtualMachineError) cause;
                         }
                     }
-                    NamingException ex = new NamingException
-                    ("Error while reading Wsdl File");
+                    NamingException ex = new NamingException(
+                            "Error while reading Wsdl File");
                     ex.initCause(e);
                     throw ex;
                 }
@@ -209,11 +210,13 @@ public class ServiceRefFactory implements ObjectFactory {
 
             // Use port-component-ref
             for (int i = 0; i < ref.size(); i++)
-                if (ServiceRef.SERVICEENDPOINTINTERFACE.equals(ref.get(i).getType())) {
+                if (ServiceRef.SERVICEENDPOINTINTERFACE.equals(ref.get(i)
+                        .getType())) {
                     String serviceendpoint = "";
                     String portlink = "";
                     serviceendpoint = (String) ref.get(i).getContent();
-                    if (ServiceRef.PORTCOMPONENTLINK.equals(ref.get(i + 1).getType())) {
+                    if (ServiceRef.PORTCOMPONENTLINK.equals(ref.get(i + 1)
+                            .getType())) {
                         i++;
                         portlink = (String) ref.get(i).getContent();
                     }
@@ -224,7 +227,8 @@ public class ServiceRefFactory implements ObjectFactory {
 
             // Instantiate service with proxy class
             Class<?>[] interfaces = null;
-            Class<?>[] serviceInterfaces = serviceInterfaceClass.getInterfaces();
+            Class<?>[] serviceInterfaces = serviceInterfaceClass
+                    .getInterfaces();
 
             interfaces = new Class[serviceInterfaces.length + 1];
             for (int i = 0; i < serviceInterfaces.length; i++) {
@@ -236,7 +240,8 @@ public class ServiceRefFactory implements ObjectFactory {
             try {
                 proxyInstance = Proxy.newProxyInstance(tcl, interfaces, proxy);
             } catch (IllegalArgumentException e) {
-                proxyInstance = Proxy.newProxyInstance(tcl, serviceInterfaces, proxy);
+                proxyInstance = Proxy.newProxyInstance(tcl, serviceInterfaces,
+                        proxy);
             }
 
             // Use handler
@@ -256,40 +261,48 @@ public class ServiceRefFactory implements ObjectFactory {
                     Class<?> handlerClass = null;
                     try {
                         handlerClass = tcl.loadClass((String) tmp.getContent());
-                    } catch(ClassNotFoundException e) {
+                    } catch (ClassNotFoundException e) {
                         break;
                     }
 
                     // Load all datas relative to the handler : SOAPHeaders, config init element,
                     // portNames to be set on
                     ArrayList<QName> headers = new ArrayList<>();
-                    Hashtable<String,String> config = new Hashtable<>();
+                    Hashtable<String, String> config = new Hashtable<>();
                     ArrayList<String> portNames = new ArrayList<>();
                     for (int i = 0; i < handlerRef.size(); i++)
-                        if (HandlerRef.HANDLER_LOCALPART.equals(handlerRef.get(i).getType())) {
+                        if (HandlerRef.HANDLER_LOCALPART.equals(handlerRef.get(
+                                i).getType())) {
                             String localpart = "";
                             String namespace = "";
                             localpart = (String) handlerRef.get(i).getContent();
-                            if (HandlerRef.HANDLER_NAMESPACE.equals(handlerRef.get(i + 1).getType())) {
+                            if (HandlerRef.HANDLER_NAMESPACE.equals(handlerRef
+                                    .get(i + 1).getType())) {
                                 i++;
-                                namespace = (String) handlerRef.get(i).getContent();
+                                namespace = (String) handlerRef.get(i)
+                                        .getContent();
                             }
                             QName header = new QName(namespace, localpart);
                             headers.add(header);
-                        } else if (HandlerRef.HANDLER_PARAMNAME.equals(handlerRef.get(i).getType())) {
+                        } else if (HandlerRef.HANDLER_PARAMNAME.equals(
+                                handlerRef.get(i).getType())) {
                             String paramName = "";
                             String paramValue = "";
                             paramName = (String) handlerRef.get(i).getContent();
-                            if (HandlerRef.HANDLER_PARAMVALUE.equals(handlerRef.get(i + 1).getType())) {
+                            if (HandlerRef.HANDLER_PARAMVALUE.equals(handlerRef
+                                    .get(i + 1).getType())) {
                                 i++;
-                                paramValue = (String) handlerRef.get(i).getContent();
+                                paramValue = (String) handlerRef.get(i)
+                                        .getContent();
                             }
                             config.put(paramName, paramValue);
-                        } else if (HandlerRef.HANDLER_SOAPROLE.equals(handlerRef.get(i).getType())) {
+                        } else if (HandlerRef.HANDLER_SOAPROLE.equals(handlerRef
+                                .get(i).getType())) {
                             String soaprole = "";
                             soaprole = (String) handlerRef.get(i).getContent();
                             soaproles.add(soaprole);
-                        } else if (HandlerRef.HANDLER_PORTNAME.equals(handlerRef.get(i).getType())) {
+                        } else if (HandlerRef.HANDLER_PORTNAME.equals(handlerRef
+                                .get(i).getType())) {
                             String portName = "";
                             portName = (String) handlerRef.get(i).getContent();
                             portNames.add(portName);
@@ -297,17 +310,18 @@ public class ServiceRefFactory implements ObjectFactory {
 
                     // Set the handlers informations
                     handlerInfo.setHandlerClass(handlerClass);
-                    handlerInfo.setHeaders(headers.toArray(new QName[headers.size()]));
+                    handlerInfo.setHeaders(headers.toArray(new QName[headers
+                            .size()]));
                     handlerInfo.setHandlerConfig(config);
 
                     if (!portNames.isEmpty()) {
                         Iterator<String> iter = portNames.iterator();
                         while (iter.hasNext())
-                            initHandlerChain(new QName(iter.next()), handlerRegistry,
-                                    handlerInfo, soaproles);
+                            initHandlerChain(new QName(iter.next()),
+                                    handlerRegistry, handlerInfo, soaproles);
                     } else {
                         Enumeration<QName> e = portComponentRef.elements();
-                        while(e.hasMoreElements())
+                        while (e.hasMoreElements())
                             initHandlerChain(e.nextElement(), handlerRegistry,
                                     handlerInfo, soaproles);
                     }
@@ -330,8 +344,8 @@ public class ServiceRefFactory implements ObjectFactory {
         String endpoint = null;
         @SuppressWarnings("unchecked")
         List<ExtensibilityElement> extensions = port.getExtensibilityElements();
-        for (Iterator<ExtensibilityElement> i = extensions.iterator();
-                i.hasNext();) {
+        for (Iterator<ExtensibilityElement> i = extensions.iterator(); i
+                .hasNext();) {
             ExtensibilityElement ext = i.next();
             if (ext instanceof SOAPAddress) {
                 SOAPAddress addr = (SOAPAddress) ext;
@@ -341,10 +355,11 @@ public class ServiceRefFactory implements ObjectFactory {
         return endpoint;
     }
 
-
-    private void initHandlerChain(QName portName, HandlerRegistry handlerRegistry,
-            HandlerInfo handlerInfo, ArrayList<String> soaprolesToAdd) {
-        HandlerChain handlerChain = (HandlerChain) handlerRegistry.getHandlerChain(portName);
+    private void initHandlerChain(QName portName,
+            HandlerRegistry handlerRegistry, HandlerInfo handlerInfo,
+            ArrayList<String> soaprolesToAdd) {
+        HandlerChain handlerChain = (HandlerChain) handlerRegistry
+                .getHandlerChain(portName);
         @SuppressWarnings("unchecked")
         Iterator<Handler> iter = handlerChain.iterator();
         while (iter.hasNext()) {
@@ -352,15 +367,15 @@ public class ServiceRefFactory implements ObjectFactory {
             handler.init(handlerInfo);
         }
         String[] soaprolesRegistered = handlerChain.getRoles();
-        String [] soaproles = new String[soaprolesRegistered.length + soaprolesToAdd.size()];
+        String[] soaproles = new String[soaprolesRegistered.length
+                + soaprolesToAdd.size()];
         int i;
-        for (i = 0;i < soaprolesRegistered.length; i++)
+        for (i = 0; i < soaprolesRegistered.length; i++)
             soaproles[i] = soaprolesRegistered[i];
         for (int j = 0; j < soaprolesToAdd.size(); j++)
-            soaproles[i+j] = soaprolesToAdd.get(j);
+            soaproles[i + j] = soaprolesToAdd.get(j);
         handlerChain.setRoles(soaproles);
         handlerRegistry.setHandlerChain(portName, handlerChain);
     }
-
 
 }

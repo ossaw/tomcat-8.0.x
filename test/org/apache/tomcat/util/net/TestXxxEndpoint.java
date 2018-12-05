@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -58,8 +56,7 @@ public class TestXxxEndpoint extends TomcatBaseTest {
         }
     }
 
-    private long createAprSocket(int port, long pool)
-                 throws Exception {
+    private long createAprSocket(int port, long pool) throws Exception {
         /**
          * Server socket "pointer".
          */
@@ -72,16 +69,14 @@ public class TestXxxEndpoint extends TomcatBaseTest {
         if (Library.APR_HAVE_IPV6) {
             if (!OS.IS_BSD && !OS.IS_WIN32 && !OS.IS_WIN64)
                 family = Socket.APR_UNSPEC;
-         }
+        }
 
         long inetAddress = 0;
         try {
-            inetAddress = Address.info(address, family,
-                                       port, 0, pool);
+            inetAddress = Address.info(address, family, port, 0, pool);
             // Create the APR server socket
             serverSock = Socket.create(Address.getInfo(inetAddress).family,
-                                       Socket.SOCK_STREAM,
-                                       Socket.APR_PROTO_TCP, pool);
+                    Socket.SOCK_STREAM, Socket.APR_PROTO_TCP, pool);
         } catch (Exception ex) {
             log.error("Could not create socket for address '" + address + "'");
             return 0;
@@ -129,7 +124,8 @@ public class TestXxxEndpoint extends TomcatBaseTest {
         ServerSocket s = null;
         long pool = 0;
         long nativeSocket = 0;
-        boolean isApr = tomcat.getConnector().getProtocolHandlerClassName().contains("Apr");
+        boolean isApr = tomcat.getConnector().getProtocolHandlerClassName()
+                .contains("Apr");
         try {
             // This should throw an Exception
             if (isApr) {
@@ -138,8 +134,8 @@ public class TestXxxEndpoint extends TomcatBaseTest {
                 nativeSocket = createAprSocket(port, pool);
                 assertTrue(nativeSocket != 0);
             } else {
-                s = new ServerSocket(port, 100,
-                        InetAddress.getByName("localhost"));
+                s = new ServerSocket(port, 100, InetAddress.getByName(
+                        "localhost"));
             }
         } catch (Exception e1) {
             e = e1;
@@ -150,7 +146,8 @@ public class TestXxxEndpoint extends TomcatBaseTest {
                 } else if (s != null) {
                     s.close();
                 }
-            } catch (Exception e2) { /* Ignore */ }
+            } catch (Exception e2) {
+                /* Ignore */ }
         }
         if (e != null) {
             log.info("Exception was", e);
@@ -168,7 +165,6 @@ public class TestXxxEndpoint extends TomcatBaseTest {
         File appDir = new File(getBuildDirectory(), "webapps/examples");
         tomcat.addWebapp(null, "/examples", appDir.getAbsolutePath());
 
-
         tomcat.start();
         int port = getPort();
 
@@ -177,7 +173,8 @@ public class TestXxxEndpoint extends TomcatBaseTest {
         ServerSocket s = null;
         long pool = 0;
         long nativeSocket = 0;
-        boolean isApr = tomcat.getConnector().getProtocolHandlerClassName().contains("Apr");
+        boolean isApr = tomcat.getConnector().getProtocolHandlerClassName()
+                .contains("Apr");
         try {
             // This should not throw an Exception
             if (isApr) {
@@ -186,8 +183,8 @@ public class TestXxxEndpoint extends TomcatBaseTest {
                 nativeSocket = createAprSocket(port, pool);
                 assertTrue(nativeSocket != 0);
             } else {
-                s = new ServerSocket(port, 100,
-                        InetAddress.getByName("localhost"));
+                s = new ServerSocket(port, 100, InetAddress.getByName(
+                        "localhost"));
             }
         } catch (Exception e1) {
             e = e1;
@@ -198,7 +195,8 @@ public class TestXxxEndpoint extends TomcatBaseTest {
                 } else if (s != null) {
                     s.close();
                 }
-            } catch (Exception e2) { /* Ignore */ }
+            } catch (Exception e2) {
+                /* Ignore */ }
         }
         assertNull(e);
         tomcat.getConnector().start();

@@ -1,20 +1,17 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 
 package org.apache.juli;
 
@@ -41,52 +38,55 @@ import java.util.logging.LogRecord;
  * Implementation of <b>Handler</b> that appends log messages to a file
  * named {prefix}{date}{suffix} in a configured directory.
  *
- * <p>The following configuration properties are available:</p>
+ * <p>
+ * The following configuration properties are available:
+ * </p>
  *
  * <ul>
- *   <li><code>directory</code> - The directory where to create the log file.
- *    If the path is not absolute, it is relative to the current working
- *    directory of the application. The Apache Tomcat configuration files usually
- *    specify an absolute path for this property,
- *    <code>${catalina.base}/logs</code>
- *    Default value: <code>logs</code></li>
- *   <li><code>rotatable</code> - If <code>true</code>, the log file will be
- *    rotated on the first write past midnight and the filename will be
- *    <code>{prefix}{date}{suffix}</code>, where date is yyyy-MM-dd. If <code>false</code>,
- *    the file will not be rotated and the filename will be <code>{prefix}{suffix}</code>.
- *    Default value: <code>true</code></li>
- *   <li><code>prefix</code> - The leading part of the log file name.
- *    Default value: <code>juli.</code></li>
- *   <li><code>suffix</code> - The trailing part of the log file name. Default value: <code>.log</code></li>
- *   <li><code>bufferSize</code> - Configures buffering. The value of <code>0</code>
- *    uses system default buffering (typically an 8K buffer will be used). A
- *    value of <code>&lt;0</code> forces a writer flush upon each log write. A
- *    value <code>&gt;0</code> uses a BufferedOutputStream with the defined
- *    value but note that the system default buffering will also be
- *    applied. Default value: <code>-1</code></li>
- *   <li><code>encoding</code> - Character set used by the log file. Default value:
- *    empty string, which means to use the system default character set.</li>
- *   <li><code>level</code> - The level threshold for this Handler. See the
- *    <code>java.util.logging.Level</code> class for the possible levels.
- *    Default value: <code>ALL</code></li>
- *   <li><code>filter</code> - The <code>java.util.logging.Filter</code>
- *    implementation class name for this Handler. Default value: unset</li>
- *   <li><code>formatter</code> - The <code>java.util.logging.Formatter</code>
- *    implementation class name for this Handler. Default value:
- *    <code>java.util.logging.SimpleFormatter</code></li>
+ * <li><code>directory</code> - The directory where to create the log file.
+ * If the path is not absolute, it is relative to the current working
+ * directory of the application. The Apache Tomcat configuration files usually
+ * specify an absolute path for this property,
+ * <code>${catalina.base}/logs</code>
+ * Default value: <code>logs</code></li>
+ * <li><code>rotatable</code> - If <code>true</code>, the log file will be
+ * rotated on the first write past midnight and the filename will be
+ * <code>{prefix}{date}{suffix}</code>, where date is yyyy-MM-dd. If
+ * <code>false</code>,
+ * the file will not be rotated and the filename will be
+ * <code>{prefix}{suffix}</code>.
+ * Default value: <code>true</code></li>
+ * <li><code>prefix</code> - The leading part of the log file name.
+ * Default value: <code>juli.</code></li>
+ * <li><code>suffix</code> - The trailing part of the log file name. Default
+ * value: <code>.log</code></li>
+ * <li><code>bufferSize</code> - Configures buffering. The value of
+ * <code>0</code>
+ * uses system default buffering (typically an 8K buffer will be used). A
+ * value of <code>&lt;0</code> forces a writer flush upon each log write. A
+ * value <code>&gt;0</code> uses a BufferedOutputStream with the defined
+ * value but note that the system default buffering will also be
+ * applied. Default value: <code>-1</code></li>
+ * <li><code>encoding</code> - Character set used by the log file. Default
+ * value:
+ * empty string, which means to use the system default character set.</li>
+ * <li><code>level</code> - The level threshold for this Handler. See the
+ * <code>java.util.logging.Level</code> class for the possible levels.
+ * Default value: <code>ALL</code></li>
+ * <li><code>filter</code> - The <code>java.util.logging.Filter</code>
+ * implementation class name for this Handler. Default value: unset</li>
+ * <li><code>formatter</code> - The <code>java.util.logging.Formatter</code>
+ * implementation class name for this Handler. Default value:
+ * <code>java.util.logging.SimpleFormatter</code></li>
  * </ul>
  */
-public class FileHandler
-    extends Handler {
-
+public class FileHandler extends Handler {
 
     // ------------------------------------------------------------ Constructor
-
 
     public FileHandler() {
         this(null, null, null);
     }
-
 
     public FileHandler(String directory, String prefix, String suffix) {
         this.directory = directory;
@@ -96,9 +96,7 @@ public class FileHandler
         openWriter();
     }
 
-
     // ----------------------------------------------------- Instance Variables
-
 
     /**
      * The as-of date for the currently open log file, or a zero-length
@@ -106,56 +104,47 @@ public class FileHandler
      */
     private volatile String date = "";
 
-
     /**
      * The directory in which log files are created.
      */
     private String directory = null;
-
 
     /**
      * The prefix that is added to log file filenames.
      */
     private String prefix = null;
 
-
     /**
      * The suffix that is added to log file filenames.
      */
     private String suffix = null;
-
 
     /**
      * Determines whether the logfile is rotatable
      */
     private boolean rotatable = true;
 
-
     /**
      * The PrintWriter to which we are currently logging, if any.
      */
     private volatile PrintWriter writer = null;
-
 
     /**
      * Lock used to control access to the writer.
      */
     protected final ReadWriteLock writerLock = new ReentrantReadWriteLock();
 
-
     /**
      * Log buffer size.
      */
     private int bufferSize = -1;
 
-
     // --------------------------------------------------------- Public Methods
-
 
     /**
      * Format and publish a <tt>LogRecord</tt>.
      *
-     * @param  record  description of the log event
+     * @param record description of the log event
      */
     @Override
     public void publish(LogRecord record) {
@@ -200,13 +189,16 @@ public class FileHandler
             }
 
             try {
-                if (writer!=null) {
+                if (writer != null) {
                     writer.write(result);
                     if (bufferSize < 0) {
                         writer.flush();
                     }
                 } else {
-                    reportError("FileHandler is closed or not yet initialized, unable to log ["+result+"]", null, ErrorManager.WRITE_FAILURE);
+                    reportError(
+                            "FileHandler is closed or not yet initialized, unable to log ["
+                                    + result + "]", null,
+                            ErrorManager.WRITE_FAILURE);
                 }
             } catch (Exception e) {
                 reportError(null, e, ErrorManager.WRITE_FAILURE);
@@ -217,9 +209,7 @@ public class FileHandler
         }
     }
 
-
     // -------------------------------------------------------- Private Methods
-
 
     /**
      * Close the currently open log file (if any).
@@ -247,7 +237,6 @@ public class FileHandler
         }
     }
 
-
     /**
      * Flush the writer.
      */
@@ -267,7 +256,6 @@ public class FileHandler
 
     }
 
-
     /**
      * Configure from <code>LogManager</code> properties.
      */
@@ -282,14 +270,16 @@ public class FileHandler
         ClassLoader cl = Thread.currentThread().getContextClassLoader();
 
         // Retrieve configuration of logging file name
-        rotatable = Boolean.parseBoolean(getProperty(className + ".rotatable", "true"));
+        rotatable = Boolean.parseBoolean(getProperty(className + ".rotatable",
+                "true"));
         if (directory == null)
             directory = getProperty(className + ".directory", "logs");
         if (prefix == null)
             prefix = getProperty(className + ".prefix", "juli.");
         if (suffix == null)
             suffix = getProperty(className + ".suffix", ".log");
-        String sBufferSize = getProperty(className + ".bufferSize", String.valueOf(bufferSize));
+        String sBufferSize = getProperty(className + ".bufferSize", String
+                .valueOf(bufferSize));
         try {
             bufferSize = Integer.parseInt(sBufferSize);
         } catch (NumberFormatException ignore) {
@@ -306,7 +296,8 @@ public class FileHandler
         }
 
         // Get logging level for the handler
-        setLevel(Level.parse(getProperty(className + ".level", "" + Level.ALL)));
+        setLevel(Level.parse(getProperty(className + ".level", ""
+                + Level.ALL)));
 
         // Get filter configuration
         String filterName = getProperty(className + ".filter", null);
@@ -322,7 +313,8 @@ public class FileHandler
         String formatterName = getProperty(className + ".formatter", null);
         if (formatterName != null) {
             try {
-                setFormatter((Formatter) cl.loadClass(formatterName).newInstance());
+                setFormatter((Formatter) cl.loadClass(formatterName)
+                        .newInstance());
             } catch (Exception e) {
                 // Ignore and fallback to defaults
                 setFormatter(new OneLineFormatter());
@@ -336,7 +328,6 @@ public class FileHandler
 
     }
 
-
     private String getProperty(String name, String defaultValue) {
         String value = LogManager.getLogManager().getProperty(name);
         if (value == null) {
@@ -346,7 +337,6 @@ public class FileHandler
         }
         return value;
     }
-
 
     /**
      * Open the new log file for the date specified by <code>date</code>.
@@ -371,8 +361,9 @@ public class FileHandler
         FileOutputStream fos = null;
         OutputStream os = null;
         try {
-            File pathname = new File(dir.getAbsoluteFile(), prefix
-                    + (rotatable ? date : "") + suffix);
+            File pathname = new File(dir.getAbsoluteFile(), prefix + (rotatable
+                    ? date
+                    : "") + suffix);
             File parent = pathname.getParentFile();
             if (!parent.mkdirs() && !parent.isDirectory()) {
                 reportError("Unable to create [" + parent + "]", null,
@@ -382,10 +373,11 @@ public class FileHandler
             }
             String encoding = getEncoding();
             fos = new FileOutputStream(pathname, true);
-            os = bufferSize>0?new BufferedOutputStream(fos,bufferSize):fos;
-            writer = new PrintWriter(
-                    (encoding != null) ? new OutputStreamWriter(os, encoding)
-                                       : new OutputStreamWriter(os), false);
+            os = bufferSize > 0 ? new BufferedOutputStream(fos, bufferSize)
+                    : fos;
+            writer = new PrintWriter((encoding != null)
+                    ? new OutputStreamWriter(os, encoding)
+                    : new OutputStreamWriter(os), false);
             writer.write(getFormatter().getHead(this));
         } catch (Exception e) {
             reportError(null, e, ErrorManager.OPEN_FAILURE);

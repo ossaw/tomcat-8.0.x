@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -26,10 +24,11 @@ import java.util.Locale;
 import org.apache.catalina.Session;
 import org.apache.catalina.manager.util.SessionUtils;
 
-
 /**
  * Helper JavaBean for JSPs, because JSTL 1.1/EL 2.0 is too dumb to
- * to what I need (call methods with parameters), or I am too dumb to use it correctly. :)
+ * to what I need (call methods with parameters), or I am too dumb to use it
+ * correctly. :)
+ * 
  * @author C&eacute;drik LIME
  */
 public class JspHelper {
@@ -55,6 +54,7 @@ public class JspHelper {
     public static String guessDisplayLocaleFromSession(Session in_session) {
         return localeToString(SessionUtils.guessLocaleFromSession(in_session));
     }
+
     private static String localeToString(Locale locale) {
         if (locale != null) {
             return escapeXml(locale.toString());//locale.getDisplayName();
@@ -65,6 +65,7 @@ public class JspHelper {
 
     /**
      * Try to get user name from the session, if possible.
+     * 
      * @param in_session
      * @return String
      */
@@ -72,7 +73,6 @@ public class JspHelper {
         Object user = SessionUtils.guessUserFromSession(in_session);
         return escapeXml(user);
     }
-
 
     public static String getDisplayCreationTimeForSession(Session in_session) {
         try {
@@ -87,7 +87,8 @@ public class JspHelper {
         }
     }
 
-    public static String getDisplayLastAccessedTimeForSession(Session in_session) {
+    public static String getDisplayLastAccessedTimeForSession(
+            Session in_session) {
         try {
             if (in_session.getLastAccessedTime() == 0) {
                 return "";
@@ -109,7 +110,8 @@ public class JspHelper {
             //ignore: invalidated session
             return "";
         }
-        return secondsToTimeString(SessionUtils.getUsedTimeForSession(in_session)/1000);
+        return secondsToTimeString(SessionUtils.getUsedTimeForSession(
+                in_session) / 1000);
     }
 
     public static String getDisplayTTLForSession(Session in_session) {
@@ -121,7 +123,8 @@ public class JspHelper {
             //ignore: invalidated session
             return "";
         }
-        return secondsToTimeString(SessionUtils.getTTLForSession(in_session)/1000);
+        return secondsToTimeString(SessionUtils.getTTLForSession(in_session)
+                / 1000);
     }
 
     public static String getDisplayInactiveTimeForSession(Session in_session) {
@@ -133,7 +136,8 @@ public class JspHelper {
             //ignore: invalidated session
             return "";
         }
-        return secondsToTimeString(SessionUtils.getInactiveTimeForSession(in_session)/1000);
+        return secondsToTimeString(SessionUtils.getInactiveTimeForSession(
+                in_session) / 1000);
     }
 
     public static String secondsToTimeString(long in_seconds) {
@@ -165,14 +169,14 @@ public class JspHelper {
         return buff.toString();
     }
 
-
     /*
-     * Following copied from org.apache.taglibs.standard.tag.common.core.Util v1.1.2
+     * Following copied from org.apache.taglibs.standard.tag.common.core.Util
+     * v1.1.2
      */
 
     private static final int HIGHEST_SPECIAL = '>';
-    private static final char[][] specialCharactersRepresentation =
-            new char[HIGHEST_SPECIAL + 1][];
+    private static final char[][] specialCharactersRepresentation = new char[HIGHEST_SPECIAL
+            + 1][];
     static {
         specialCharactersRepresentation['&'] = "&amp;".toCharArray();
         specialCharactersRepresentation['<'] = "&lt;".toCharArray();
@@ -195,11 +199,11 @@ public class JspHelper {
      * Performs the following substring replacements
      * (to facilitate output to XML/HTML pages):
      *
-     *    &amp; -&gt; &amp;amp;
-     *    &lt; -&gt; &amp;lt;
-     *    &gt; -&gt; &amp;gt;
-     *    " -&gt; &amp;#034;
-     *    ' -&gt; &amp;#039;
+     * &amp; -&gt; &amp;amp;
+     * &lt; -&gt; &amp;lt;
+     * &gt; -&gt; &amp;gt;
+     * " -&gt; &amp;#034;
+     * ' -&gt; &amp;#039;
      *
      * See also OutSupport.writeEscapedXml().
      */
@@ -224,7 +228,7 @@ public class JspHelper {
                     }
                     // add unescaped portion
                     if (start < i) {
-                        escapedBuffer.append(arrayBuffer,start,i-start);
+                        escapedBuffer.append(arrayBuffer, start, i - start);
                     }
                     start = i + 1;
                     // add escaped xml
@@ -238,7 +242,7 @@ public class JspHelper {
         }
         // add rest of unescaped portion
         if (start < length) {
-            escapedBuffer.append(arrayBuffer,start,length-start);
+            escapedBuffer.append(arrayBuffer, start, length - start);
         }
         return escapedBuffer.toString();
     }

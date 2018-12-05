@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -34,8 +32,9 @@ public abstract class AbstractArchiveResource extends AbstractResource {
     private boolean readCerts = false;
     private Certificate[] certificates;
 
-    protected AbstractArchiveResource(AbstractArchiveResourceSet archiveResourceSet,
-            String webAppPath, String baseUrl, JarEntry jarEntry, String codeBaseUrl) {
+    protected AbstractArchiveResource(
+            AbstractArchiveResourceSet archiveResourceSet, String webAppPath,
+            String baseUrl, JarEntry jarEntry, String codeBaseUrl) {
         super(archiveResourceSet.getRoot(), webAppPath);
         this.archiveResourceSet = archiveResourceSet;
         this.baseUrl = baseUrl;
@@ -47,8 +46,8 @@ public abstract class AbstractArchiveResource extends AbstractResource {
             resourceName = resourceName.substring(0, resourceName.length() - 1);
         }
         String internalPath = archiveResourceSet.getInternalPath();
-        if (internalPath.length() > 0 && resourceName.equals(
-                internalPath.subSequence(1, internalPath.length()))) {
+        if (internalPath.length() > 0 && resourceName.equals(internalPath
+                .subSequence(1, internalPath.length()))) {
             name = "";
         } else {
             int index = resourceName.lastIndexOf('/');
@@ -150,7 +149,8 @@ public abstract class AbstractArchiveResource extends AbstractResource {
             return new URL(codeBaseUrl);
         } catch (MalformedURLException e) {
             if (getLog().isDebugEnabled()) {
-                getLog().debug(sm.getString("fileResource.getUrlFail", codeBaseUrl), e);
+                getLog().debug(sm.getString("fileResource.getUrlFail",
+                        codeBaseUrl), e);
             }
             return null;
         }
@@ -163,8 +163,8 @@ public abstract class AbstractArchiveResource extends AbstractResource {
         if (len > Integer.MAX_VALUE) {
             // Can't create an array that big
             throw new ArrayIndexOutOfBoundsException(sm.getString(
-                    "abstractResource.getContentTooLarge", getWebappPath(),
-                    Long.valueOf(len)));
+                    "abstractResource.getContentTooLarge", getWebappPath(), Long
+                            .valueOf(len)));
         }
 
         int size = (int) len;
@@ -198,7 +198,6 @@ public abstract class AbstractArchiveResource extends AbstractResource {
         return result;
     }
 
-
     @Override
     public Certificate[] getCertificates() {
         if (!readCerts) {
@@ -231,60 +230,50 @@ public abstract class AbstractArchiveResource extends AbstractResource {
         private final JarEntry jarEntry;
         private final InputStream is;
 
-
         public JarInputStreamWrapper(JarEntry jarEntry, InputStream is) {
             this.jarEntry = jarEntry;
             this.is = is;
         }
-
 
         @Override
         public int read() throws IOException {
             return is.read();
         }
 
-
         @Override
         public int read(byte[] b) throws IOException {
             return is.read(b);
         }
-
 
         @Override
         public int read(byte[] b, int off, int len) throws IOException {
             return is.read(b, off, len);
         }
 
-
         @Override
         public long skip(long n) throws IOException {
             return is.skip(n);
         }
-
 
         @Override
         public int available() throws IOException {
             return is.available();
         }
 
-
         @Override
         public void close() throws IOException {
             archiveResourceSet.closeJarFile();
         }
-
 
         @Override
         public synchronized void mark(int readlimit) {
             is.mark(readlimit);
         }
 
-
         @Override
         public synchronized void reset() throws IOException {
             is.reset();
         }
-
 
         @Override
         public boolean markSupported() {

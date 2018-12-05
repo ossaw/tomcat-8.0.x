@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -68,22 +66,20 @@ class Parser implements TagConstants {
 
     // Virtual body content types, to make parsing a little easier.
     // These are not accessible from outside the parser.
-    private static final String JAVAX_BODY_CONTENT_PARAM =
-        "JAVAX_BODY_CONTENT_PARAM";
+    private static final String JAVAX_BODY_CONTENT_PARAM = "JAVAX_BODY_CONTENT_PARAM";
 
-    private static final String JAVAX_BODY_CONTENT_PLUGIN =
-        "JAVAX_BODY_CONTENT_PLUGIN";
+    private static final String JAVAX_BODY_CONTENT_PLUGIN = "JAVAX_BODY_CONTENT_PLUGIN";
 
-    private static final String JAVAX_BODY_CONTENT_TEMPLATE_TEXT =
-        "JAVAX_BODY_CONTENT_TEMPLATE_TEXT";
+    private static final String JAVAX_BODY_CONTENT_TEMPLATE_TEXT = "JAVAX_BODY_CONTENT_TEMPLATE_TEXT";
 
-    /* System property that controls if the strict white space rules are
+    /*
+     * System property that controls if the strict white space rules are
      * applied.
      */
-    private static final boolean STRICT_WHITESPACE = Boolean.parseBoolean(
-            System.getProperty(
-                    "org.apache.jasper.compiler.Parser.STRICT_WHITESPACE",
+    private static final boolean STRICT_WHITESPACE = Boolean.parseBoolean(System
+            .getProperty("org.apache.jasper.compiler.Parser.STRICT_WHITESPACE",
                     "true"));
+
     /**
      * The constructor
      */
@@ -105,17 +101,18 @@ class Parser implements TagConstants {
      * The main entry for Parser
      *
      * @param pc
-     *            The ParseController, use for getting other objects in compiler
-     *            and for parsing included pages
+     *               The ParseController, use for getting other objects in
+     *               compiler
+     *               and for parsing included pages
      * @param reader
-     *            To read the page
+     *               To read the page
      * @param parent
-     *            The parent node to this page, null for top level page
+     *               The parent node to this page, null for top level page
      * @return list of nodes representing the parsed page
      */
     public static Node.Nodes parse(ParserController pc, JspReader reader,
-            Node parent, boolean isTagFile, boolean directivesOnly,
-            Jar jar, String pageEnc, String jspConfigPageEnc,
+            Node parent, boolean isTagFile, boolean directivesOnly, Jar jar,
+            String pageEnc, String jspConfigPageEnc,
             boolean isDefaultPageEncoding, boolean isBomPresent)
             throws JasperException {
 
@@ -153,6 +150,7 @@ class Parser implements TagConstants {
     Attributes parseAttributes() throws JasperException {
         return parseAttributes(false);
     }
+
     Attributes parseAttributes(boolean pageDirective) throws JasperException {
         UniqueAttributesImpl attrs = new UniqueAttributesImpl(pageDirective);
 
@@ -209,8 +207,8 @@ class Parser implements TagConstants {
             String prefix = qName.substring(0, index);
             uri = pageInfo.getURI(prefix);
             if (uri == null) {
-                err.jspError(reader.mark(),
-                        "jsp.error.attribute.invalidPrefix", prefix);
+                err.jspError(reader.mark(), "jsp.error.attribute.invalidPrefix",
+                        prefix);
             }
             localName = qName.substring(index + 1);
         }
@@ -263,12 +261,14 @@ class Parser implements TagConstants {
      * RTAttributeValueDouble ::= ((QuotedChar - '"')* - ((QuotedChar-'"')'%>"')
      * ('%>"' | TRANSLATION_ERROR)
      */
-    private String parseAttributeValue(String qName, String watch, boolean ignoreEL) throws JasperException {
+    private String parseAttributeValue(String qName, String watch,
+            boolean ignoreEL) throws JasperException {
         boolean quoteAttributeEL = ctxt.getOptions().getQuoteAttributeEL();
         Mark start = reader.mark();
         // In terms of finding the end of the value, quoting EL is equivalent to
         // ignoring it.
-        Mark stop = reader.skipUntilIgnoreEsc(watch, ignoreEL || quoteAttributeEL);
+        Mark stop = reader.skipUntilIgnoreEsc(watch, ignoreEL
+                || quoteAttributeEL);
         if (stop == null) {
             err.jspError(start, "jsp.error.attribute.unterminated", qName);
         }
@@ -279,13 +279,12 @@ class Parser implements TagConstants {
 
             // If watch is longer than 1 character this is a scripting
             // expression and EL is always ignored
-            boolean isElIgnored =
-                pageInfo.isELIgnored() || watch.length() > 1;
+            boolean isElIgnored = pageInfo.isELIgnored() || watch.length() > 1;
 
             ret = AttributeParser.getUnquoted(reader.getText(start, stop),
-                    quote, isElIgnored,
-                    pageInfo.isDeferredSyntaxAllowedAsLiteral(),
-                    ctxt.getOptions().getStrictQuoteEscaping(),
+                    quote, isElIgnored, pageInfo
+                            .isDeferredSyntaxAllowedAsLiteral(), ctxt
+                                    .getOptions().getStrictQuoteEscaping(),
                     quoteAttributeEL);
         } catch (IllegalArgumentException iae) {
             err.jspError(start, iae.getMessage());
@@ -304,8 +303,8 @@ class Parser implements TagConstants {
         int i = 0;
         while (i < size) {
             char ch = tx.charAt(i);
-            if (i + 2 < size && ch == '%' && tx.charAt(i + 1) == '\\'
-                    && tx.charAt(i + 2) == '>') {
+            if (i + 2 < size && ch == '%' && tx.charAt(i + 1) == '\\' && tx
+                    .charAt(i + 2) == '>') {
                 cw.write('%');
                 cw.write('>');
                 i += 3;
@@ -372,7 +371,8 @@ class Parser implements TagConstants {
      * Add a list of files. This is used for implementing include-prelude and
      * include-coda of jsp-config element in web.xml
      */
-    private void addInclude(Node parent, Collection<String> files) throws JasperException {
+    private void addInclude(Node parent, Collection<String> files)
+            throws JasperException {
         if (files != null) {
             Iterator<String> iter = files.iterator();
             while (iter.hasNext()) {
@@ -401,8 +401,8 @@ class Parser implements TagConstants {
             Mark prevMark = pageInfo.getNonCustomTagPrefix(prefix);
             if (prevMark != null) {
                 err.jspError(reader.mark(), "jsp.error.prefix.use_before_dcl",
-                        prefix, prevMark.getFile(), ""
-                                + prevMark.getLineNumber());
+                        prefix, prevMark.getFile(), "" + prevMark
+                                .getLineNumber());
             }
             if (uri != null) {
                 String uriPrev = pageInfo.getURI(prefix);
@@ -413,11 +413,12 @@ class Parser implements TagConstants {
                 if (pageInfo.getTaglib(uri) == null) {
                     TagLibraryInfoImpl impl = null;
                     if (ctxt.getOptions().isCaching()) {
-                        impl = (TagLibraryInfoImpl) ctxt.getOptions()
-                                .getCache().get(uri);
+                        impl = (TagLibraryInfoImpl) ctxt.getOptions().getCache()
+                                .get(uri);
                     }
                     if (impl == null) {
-                        TldResourcePath tldResourcePath = ctxt.getTldResourcePath(uri);
+                        TldResourcePath tldResourcePath = ctxt
+                                .getTldResourcePath(uri);
                         impl = new TagLibraryInfoImpl(ctxt, parserController,
                                 pageInfo, prefix, uri, tldResourcePath, err);
                         if (ctxt.getOptions().isCaching()) {
@@ -450,7 +451,6 @@ class Parser implements TagConstants {
      * Parses a directive with the following syntax: Directive ::= S? ( 'page'
      * PageDirective | 'include' IncludeDirective | 'taglib' TagLibDirective) S?
      * '%>'
-     *
      * TagDirective ::= S? ('tag' PageDirective | 'include' IncludeDirective |
      * 'taglib' TagLibDirective) | 'attribute AttributeDirective | 'variable
      * VariableDirective S? '%>'
@@ -510,11 +510,9 @@ class Parser implements TagConstants {
 
     /*
      * Parses a directive with the following syntax:
-     *
      * XMLJSPDirectiveBody ::= S? ( ( 'page' PageDirectiveAttrList S? ( '/>' | (
      * '>' S? ETag ) ) | ( 'include' IncludeDirectiveAttrList S? ( '/>' | ( '>'
      * S? ETag ) ) | <TRANSLATION_ERROR>
-     *
      * XMLTagDefDirectiveBody ::= ( ( 'tag' TagDirectiveAttrList S? ( '/>' | (
      * '>' S? ETag ) ) | ( 'include' IncludeDirectiveAttrList S? ( '/>' | ( '>'
      * S? ETag ) ) | ( 'attribute' AttributeDirectiveAttrList S? ( '/>' | ( '>'
@@ -622,8 +620,8 @@ class Parser implements TagConstants {
         }
 
         @SuppressWarnings("unused")
-        Node unused =
-                new Node.Comment(reader.getText(start, stop), start, parent);
+        Node unused = new Node.Comment(reader.getText(start, stop), start,
+                parent);
     }
 
     /*
@@ -637,8 +635,8 @@ class Parser implements TagConstants {
         }
 
         @SuppressWarnings("unused")
-        Node unused = new Node.Declaration(
-                parseScriptText(reader.getText(start, stop)), start, parent);
+        Node unused = new Node.Declaration(parseScriptText(reader.getText(start,
+                stop)), start, parent);
     }
 
     /*
@@ -698,8 +696,8 @@ class Parser implements TagConstants {
         }
 
         @SuppressWarnings("unused")
-        Node unused = new Node.Expression(
-                parseScriptText(reader.getText(start, stop)), start, parent);
+        Node unused = new Node.Expression(parseScriptText(reader.getText(start,
+                stop)), start, parent);
     }
 
     /*
@@ -746,7 +744,7 @@ class Parser implements TagConstants {
     }
 
     /*
-     * ELExpressionBody. Starts with "#{" or "${".  Ends with "}".
+     * ELExpressionBody. Starts with "#{" or "${". Ends with "}".
      * See JspReader.skipELExpression().
      */
     private void parseELExpression(Node parent, char type)
@@ -773,8 +771,8 @@ class Parser implements TagConstants {
         }
 
         @SuppressWarnings("unused")
-        Node unused = new Node.Scriptlet(
-                parseScriptText(reader.getText(start, stop)), start, parent);
+        Node unused = new Node.Scriptlet(parseScriptText(reader.getText(start,
+                stop)), start, parent);
     }
 
     /*
@@ -840,13 +838,11 @@ class Parser implements TagConstants {
 
     /*
      * For Include: StdActionContent ::= Attributes ParamBody
-     *
-     * ParamBody ::= EmptyBody | ( '>' S? ( '<jsp:attribute' NamedAttributes )? '<jsp:body'
+     * ParamBody ::= EmptyBody | ( '>' S? ( '<jsp:attribute' NamedAttributes )?
+     * '<jsp:body'
      * (JspBodyParam | <TRANSLATION_ERROR> ) S? ETag ) | ( '>' S? Param* ETag )
-     *
      * EmptyBody ::= '/>' | ( '>' ETag ) | ( '>' S? '<jsp:attribute'
      * NamedAttributes ETag )
-     *
      * JspBodyParam ::= S? '>' Param* '</jsp:body>'
      */
     private void parseInclude(Node parent) throws JasperException {
@@ -927,13 +923,15 @@ class Parser implements TagConstants {
      * EmptyBody ::= '/>' | ( '>' ETag ) | ( '>' S? '<jsp:attribute'
      * NamedAttributes ETag )
      */
-    private void parseEmptyBody(Node parent, String tag) throws JasperException {
+    private void parseEmptyBody(Node parent, String tag)
+            throws JasperException {
         if (reader.matches("/>")) {
             // Done
         } else if (reader.matches(">")) {
             if (reader.matchesETag(tag)) {
                 // Done
-            } else if (reader.matchesOptionalSpacesFollowedBy("<jsp:attribute")) {
+            } else if (reader.matchesOptionalSpacesFollowedBy(
+                    "<jsp:attribute")) {
                 // Parse the one or more named attribute nodes
                 parseNamedAttributes(parent);
                 if (!reader.matchesETag(tag)) {
@@ -967,23 +965,16 @@ class Parser implements TagConstants {
      * since the syntax is identical (the only thing that differs substantially
      * is how to process the body, and thus we accept the body type as a
      * parameter).
-     *
      * OptionalBody ::= EmptyBody | ActionBody
-     *
      * ScriptlessOptionalBody ::= EmptyBody | ScriptlessActionBody
-     *
      * TagDependentOptionalBody ::= EmptyBody | TagDependentActionBody
-     *
      * EmptyBody ::= '/>' | ( '>' ETag ) | ( '>' S? '<jsp:attribute'
      * NamedAttributes ETag )
-     *
      * ActionBody ::= JspAttributeAndBody | ( '>' Body ETag )
-     *
-     * ScriptlessActionBody ::= JspAttributeAndBody | ( '>' ScriptlessBody ETag )
-     *
+     * ScriptlessActionBody ::= JspAttributeAndBody | ( '>' ScriptlessBody ETag
+     * )
      * TagDependentActionBody ::= JspAttributeAndBody | ( '>' TagDependentBody
      * ETag )
-     *
      */
     private void parseOptionalBody(Node parent, String tag, String bodyType)
             throws JasperException {
@@ -1011,7 +1002,8 @@ class Parser implements TagConstants {
      * Attempts to parse 'JspAttributeAndBody' production. Returns true if it
      * matched, or false if not. Assumes EmptyBody is okay as well.
      *
-     * JspAttributeAndBody ::= ( '>' # S? ( '<jsp:attribute' NamedAttributes )? '<jsp:body' (
+     * JspAttributeAndBody ::= ( '>' # S? ( '<jsp:attribute' NamedAttributes )?
+     * '<jsp:body' (
      * JspBodyBody | <TRANSLATION_ERROR> ) S? ETag )
      */
     private boolean parseJspAttributeAndBody(Node parent, String tag,
@@ -1054,11 +1046,13 @@ class Parser implements TagConstants {
      */
     private void parseJspParams(Node parent) throws JasperException {
         Node jspParamsNode = new Node.ParamsAction(start, parent);
-        parseOptionalBody(jspParamsNode, "jsp:params", JAVAX_BODY_CONTENT_PARAM);
+        parseOptionalBody(jspParamsNode, "jsp:params",
+                JAVAX_BODY_CONTENT_PARAM);
     }
 
     /*
-     * Fallback ::= '/>' | ( `>' S? `<jsp:body>' ( ( S? ( Char* - ( Char* `</jsp:body>' ) ) `</jsp:body>'
+     * Fallback ::= '/>' | ( `>' S? `<jsp:body>' ( ( S? ( Char* - ( Char*
+     * `</jsp:body>' ) ) `</jsp:body>'
      * S? ) | <TRANSLATION_ERROR> ) `</jsp:fallback>' ) | ( '>' ( Char* - (
      * Char* '</jsp:fallback>' ) ) '</jsp:fallback>' )
      */
@@ -1070,14 +1064,12 @@ class Parser implements TagConstants {
 
     /*
      * For Plugin: StdActionContent ::= Attributes PluginBody
-     *
-     * PluginBody ::= EmptyBody | ( '>' S? ( '<jsp:attribute' NamedAttributes )? '<jsp:body' (
+     * PluginBody ::= EmptyBody | ( '>' S? ( '<jsp:attribute' NamedAttributes )?
+     * '<jsp:body' (
      * JspBodyPluginTags | <TRANSLATION_ERROR> ) S? ETag ) | ( '>' S? PluginTags
      * ETag )
-     *
      * EmptyBody ::= '/>' | ( '>' ETag ) | ( '>' S? '<jsp:attribute'
      * NamedAttributes ETag )
-     *
      */
     private void parsePlugin(Node parent) throws JasperException {
         Attributes attrs = parseAttributes();
@@ -1108,7 +1100,8 @@ class Parser implements TagConstants {
 
     /*
      * StandardAction ::= 'include' StdActionContent | 'forward'
-     * StdActionContent | 'invoke' StdActionContent | 'doBody' StdActionContent |
+     * StdActionContent | 'invoke' StdActionContent | 'doBody' StdActionContent
+     * |
      * 'getProperty' StdActionContent | 'setProperty' StdActionContent |
      * 'useBean' StdActionContent | 'plugin' StdActionContent | 'element'
      * StdActionContent
@@ -1161,24 +1154,15 @@ class Parser implements TagConstants {
 
     /*
      * # '<' CustomAction CustomActionBody
-     *
      * CustomAction ::= TagPrefix ':' CustomActionName
-     *
      * TagPrefix ::= Name
-     *
      * CustomActionName ::= Name
-     *
      * CustomActionBody ::= ( Attributes CustomActionEnd ) | <TRANSLATION_ERROR>
-     *
      * Attributes ::= ( S Attribute )* S?
-     *
      * CustomActionEnd ::= CustomActionTagDependent | CustomActionJSPContent |
      * CustomActionScriptlessContent
-     *
      * CustomActionTagDependent ::= TagDependentOptionalBody
-     *
      * CustomActionJSPContent ::= OptionalBody
-     *
      * CustomActionScriptlessContent ::= ScriptlessOptionalBody
      */
     @SuppressWarnings("null") // tagFileInfo can't be null after initial test
@@ -1284,12 +1268,12 @@ class Parser implements TagConstants {
     }
 
     /*
-     * Parse for a template text string until '<' or "${" or "#{" is encountered,
+     * Parse for a template text string until '<' or "${" or "#{" is
+     * encountered,
      * recognizing escape sequences "<\%", "\$", and "\#".
-     *
      * Note: JSP uses '\$' as an escape for '$' and '\#' for '#' whereas EL uses
-     *       '\${' for '${' and '\#{' for '#{'. We are processing JSP template
-     *       test here so the JSP escapes apply.
+     * '\${' for '${' and '\#{' for '#{'. We are processing JSP template
+     * test here so the JSP escapes apply.
      */
     private void parseTemplateText(Node parent) {
 
@@ -1322,8 +1306,9 @@ class Parser implements TagConstants {
                 } else {
                     ttext.write(ch);
                 }
-            } else if ((ch == '$' || ch == '#' && !pageInfo.isDeferredSyntaxAllowedAsLiteral()) &&
-                    !pageInfo.isELIgnored()) {
+            } else if ((ch == '$' || ch == '#' && !pageInfo
+                    .isDeferredSyntaxAllowedAsLiteral()) && !pageInfo
+                            .isELIgnored()) {
                 if (reader.peekChar(0) == '{') {
                     reader.pushChar();
                     break;
@@ -1369,7 +1354,7 @@ class Parser implements TagConstants {
                     ttext.write(text, 0, text.length());
                 } else if (ch == '\\') {
                     int next = reader.peekChar(0);
-                    if (next == '$' || next =='#') {
+                    if (next == '$' || next == '#') {
                         ttext.write(reader.nextChar());
                     } else {
                         ttext.write('\\');
@@ -1381,8 +1366,8 @@ class Parser implements TagConstants {
 
                         // Create a template text node
                         @SuppressWarnings("unused")
-                        Node unused = new Node.TemplateText(
-                                ttext.toString(), start, parent);
+                        Node unused = new Node.TemplateText(ttext.toString(),
+                                start, parent);
 
                         // Mark and parse the EL expression and create its node:
                         parseELExpression(parent, (char) ch);
@@ -1399,8 +1384,8 @@ class Parser implements TagConstants {
             }
 
             @SuppressWarnings("unused")
-            Node unused =
-                    new Node.TemplateText(ttext.toString(), start, parent);
+            Node unused = new Node.TemplateText(ttext.toString(), start,
+                    parent);
 
             if (!reader.hasMoreInput()) {
                 err.jspError(start, "jsp.error.unterminated",
@@ -1412,10 +1397,12 @@ class Parser implements TagConstants {
     }
 
     /*
-     * AllBody ::= ( '<%--' JSPCommentBody ) | ( '<%@' DirectiveBody ) | ( '<jsp:directive.'
+     * AllBody ::= ( '<%--' JSPCommentBody ) | ( '<%@' DirectiveBody ) | (
+     * '<jsp:directive.'
      * XMLDirectiveBody ) | ( '<%!' DeclarationBody ) | ( '<jsp:declaration'
      * XMLDeclarationBody ) | ( '<%=' ExpressionBody ) | ( '<jsp:expression'
-     * XMLExpressionBody ) | ( '${' ELExpressionBody ) | ( '<%' ScriptletBody ) | ( '<jsp:scriptlet'
+     * XMLExpressionBody ) | ( '${' ELExpressionBody ) | ( '<%' ScriptletBody )
+     * | ( '<jsp:scriptlet'
      * XMLScriptletBody ) | ( '<jsp:text' XMLTemplateText ) | ( '<jsp:'
      * StandardAction ) | ( '<' CustomAction CustomActionBody ) | TemplateText
      */
@@ -1451,9 +1438,8 @@ class Parser implements TagConstants {
             parseXMLTemplateText(parent);
         } else if (!pageInfo.isELIgnored() && reader.matches("${")) {
             parseELExpression(parent, '$');
-        } else if (!pageInfo.isELIgnored()
-                && !pageInfo.isDeferredSyntaxAllowedAsLiteral()
-                && reader.matches("#{")) {
+        } else if (!pageInfo.isELIgnored() && !pageInfo
+                .isDeferredSyntaxAllowedAsLiteral() && reader.matches("#{")) {
             parseELExpression(parent, '#');
         } else if (reader.matches("<jsp:")) {
             parseStandardAction(parent);
@@ -1464,9 +1450,11 @@ class Parser implements TagConstants {
     }
 
     /*
-     * ScriptlessBody ::= ( '<%--' JSPCommentBody ) | ( '<%@' DirectiveBody ) | ( '<jsp:directive.'
+     * ScriptlessBody ::= ( '<%--' JSPCommentBody ) | ( '<%@' DirectiveBody ) |
+     * ( '<jsp:directive.'
      * XMLDirectiveBody ) | ( '<%!' <TRANSLATION_ERROR> ) | ( '<jsp:declaration'
-     * <TRANSLATION_ERROR> ) | ( '<%=' <TRANSLATION_ERROR> ) | ( '<jsp:expression'
+     * <TRANSLATION_ERROR> ) | ( '<%=' <TRANSLATION_ERROR> ) | (
+     * '<jsp:expression'
      * <TRANSLATION_ERROR> ) | ( '<%' <TRANSLATION_ERROR> ) | ( '<jsp:scriptlet'
      * <TRANSLATION_ERROR> ) | ( '<jsp:text' XMLTemplateText ) | ( '${'
      * ELExpressionBody ) | ( '<jsp:' StandardAction ) | ( '<' CustomAction
@@ -1500,9 +1488,8 @@ class Parser implements TagConstants {
             parseXMLTemplateText(parent);
         } else if (!pageInfo.isELIgnored() && reader.matches("${")) {
             parseELExpression(parent, '$');
-        } else if (!pageInfo.isELIgnored()
-                && !pageInfo.isDeferredSyntaxAllowedAsLiteral()
-                && reader.matches("#{")) {
+        } else if (!pageInfo.isELIgnored() && !pageInfo
+                .isDeferredSyntaxAllowedAsLiteral() && reader.matches("#{")) {
             parseELExpression(parent, '#');
         } else if (reader.matches("<jsp:")) {
             parseStandardAction(parent);
@@ -1515,9 +1502,11 @@ class Parser implements TagConstants {
     }
 
     /*
-     * TemplateTextBody ::= ( '<%--' JSPCommentBody ) | ( '<%@' DirectiveBody ) | ( '<jsp:directive.'
+     * TemplateTextBody ::= ( '<%--' JSPCommentBody ) | ( '<%@' DirectiveBody )
+     * | ( '<jsp:directive.'
      * XMLDirectiveBody ) | ( '<%!' <TRANSLATION_ERROR> ) | ( '<jsp:declaration'
-     * <TRANSLATION_ERROR> ) | ( '<%=' <TRANSLATION_ERROR> ) | ( '<jsp:expression'
+     * <TRANSLATION_ERROR> ) | ( '<%=' <TRANSLATION_ERROR> ) | (
+     * '<jsp:expression'
      * <TRANSLATION_ERROR> ) | ( '<%' <TRANSLATION_ERROR> ) | ( '<jsp:scriptlet'
      * <TRANSLATION_ERROR> ) | ( '<jsp:text' <TRANSLATION_ERROR> ) | ( '${'
      * <TRANSLATION_ERROR> ) | ( '<jsp:' <TRANSLATION_ERROR> ) | TemplateText
@@ -1554,9 +1543,8 @@ class Parser implements TagConstants {
         } else if (!pageInfo.isELIgnored() && reader.matches("${")) {
             err.jspError(reader.mark(), "jsp.error.not.in.template",
                     "Expression language");
-        } else if (!pageInfo.isELIgnored()
-                && !pageInfo.isDeferredSyntaxAllowedAsLiteral()
-                && reader.matches("#{")) {
+        } else if (!pageInfo.isELIgnored() && !pageInfo
+                .isDeferredSyntaxAllowedAsLiteral() && reader.matches("#{")) {
             err.jspError(reader.mark(), "jsp.error.not.in.template",
                     "Expression language");
         } else if (reader.matches("<jsp:")) {
@@ -1671,8 +1659,8 @@ class Parser implements TagConstants {
 
                 if (bodyType.equalsIgnoreCase(TagInfo.BODY_CONTENT_JSP)) {
                     parseElements(parent);
-                } else if (bodyType
-                        .equalsIgnoreCase(TagInfo.BODY_CONTENT_SCRIPTLESS)) {
+                } else if (bodyType.equalsIgnoreCase(
+                        TagInfo.BODY_CONTENT_SCRIPTLESS)) {
                     parseElementsScriptless(parent);
                 } else if (bodyType == JAVAX_BODY_CONTENT_PARAM) {
                     // (note the == since we won't recognize JAVAX_*

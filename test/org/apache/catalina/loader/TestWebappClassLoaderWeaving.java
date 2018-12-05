@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -49,14 +47,16 @@ public class TestWebappClassLoaderWeaving extends TomcatBaseTest {
     @BeforeClass
     public static void setUpClass() throws Exception {
 
-        WEBAPP_DOC_BASE = System.getProperty("java.io.tmpdir") + "/TestWebappClassLoaderWeaving";
-        File classes = new File(WEBAPP_DOC_BASE + "/WEB-INF/classes/" + PACKAGE_PREFIX);
+        WEBAPP_DOC_BASE = System.getProperty("java.io.tmpdir")
+                + "/TestWebappClassLoaderWeaving";
+        File classes = new File(WEBAPP_DOC_BASE + "/WEB-INF/classes/"
+                + PACKAGE_PREFIX);
         classes.mkdirs();
 
-        copyResource(PACKAGE_PREFIX + "/TesterNeverWeavedClass.class",
-                new File(classes, "TesterNeverWeavedClass.class"));
-        copyResource(PACKAGE_PREFIX + "/TesterUnweavedClass.class",
-                new File(classes, "TesterUnweavedClass.class"));
+        copyResource(PACKAGE_PREFIX + "/TesterNeverWeavedClass.class", new File(
+                classes, "TesterNeverWeavedClass.class"));
+        copyResource(PACKAGE_PREFIX + "/TesterUnweavedClass.class", new File(
+                classes, "TesterUnweavedClass.class"));
 
     }
 
@@ -83,7 +83,8 @@ public class TestWebappClassLoaderWeaving extends TomcatBaseTest {
 
         ClassLoader loader = this.context.getLoader().getClassLoader();
         assertNotNull("The class loader should not be null.", loader);
-        assertSame("The class loader is not correct.", WebappClassLoader.class, loader.getClass());
+        assertSame("The class loader is not correct.", WebappClassLoader.class,
+                loader.getClass());
 
         this.loader = (WebappClassLoader) loader;
 
@@ -108,11 +109,14 @@ public class TestWebappClassLoaderWeaving extends TomcatBaseTest {
     @Test
     public void testNoWeaving() throws Exception {
 
-        String result = invokeDoMethodOnClass(this.loader, "TesterNeverWeavedClass");
-        assertEquals("The first result is not correct.", "This will never be weaved.", result);
+        String result = invokeDoMethodOnClass(this.loader,
+                "TesterNeverWeavedClass");
+        assertEquals("The first result is not correct.",
+                "This will never be weaved.", result);
 
         result = invokeDoMethodOnClass(this.loader, "TesterUnweavedClass");
-        assertEquals("The second result is not correct.", "Hello, Unweaved World!", result);
+        assertEquals("The second result is not correct.",
+                "Hello, Unweaved World!", result);
 
     }
 
@@ -127,161 +131,211 @@ public class TestWebappClassLoaderWeaving extends TomcatBaseTest {
         }
 
         // class loading should still work, no weaving
-        String result = invokeDoMethodOnClass(this.loader, "TesterNeverWeavedClass");
-        assertEquals("The first result is not correct.", "This will never be weaved.", result);
+        String result = invokeDoMethodOnClass(this.loader,
+                "TesterNeverWeavedClass");
+        assertEquals("The first result is not correct.",
+                "This will never be weaved.", result);
 
         result = invokeDoMethodOnClass(this.loader, "TesterUnweavedClass");
-        assertEquals("The second result is not correct.", "Hello, Unweaved World!", result);
+        assertEquals("The second result is not correct.",
+                "Hello, Unweaved World!", result);
 
     }
 
     @Test
     public void testAddedTransformerInstrumentsClass1() throws Exception {
 
-        this.loader.addTransformer(new ReplacementTransformer(WEAVED_REPLACEMENT_1));
+        this.loader.addTransformer(new ReplacementTransformer(
+                WEAVED_REPLACEMENT_1));
 
-        String result = invokeDoMethodOnClass(this.loader, "TesterNeverWeavedClass");
-        assertEquals("The first result is not correct.", "This will never be weaved.", result);
+        String result = invokeDoMethodOnClass(this.loader,
+                "TesterNeverWeavedClass");
+        assertEquals("The first result is not correct.",
+                "This will never be weaved.", result);
 
         result = invokeDoMethodOnClass(this.loader, "TesterUnweavedClass");
-        assertEquals("The second result is not correct.", "Hello, Weaver #1!", result);
+        assertEquals("The second result is not correct.", "Hello, Weaver #1!",
+                result);
 
     }
 
     @Test
     public void testAddedTransformerInstrumentsClass2() throws Exception {
 
-        this.loader.addTransformer(new ReplacementTransformer(WEAVED_REPLACEMENT_2));
+        this.loader.addTransformer(new ReplacementTransformer(
+                WEAVED_REPLACEMENT_2));
 
-        String result = invokeDoMethodOnClass(this.loader, "TesterNeverWeavedClass");
-        assertEquals("The first result is not correct.", "This will never be weaved.", result);
+        String result = invokeDoMethodOnClass(this.loader,
+                "TesterNeverWeavedClass");
+        assertEquals("The first result is not correct.",
+                "This will never be weaved.", result);
 
         result = invokeDoMethodOnClass(this.loader, "TesterUnweavedClass");
-        assertEquals("The second result is not correct.", "Hello, Weaver #2!", result);
+        assertEquals("The second result is not correct.", "Hello, Weaver #2!",
+                result);
 
     }
 
     @Test
     public void testTransformersExecuteInOrderAdded1() throws Exception {
 
-        this.loader.addTransformer(new ReplacementTransformer(WEAVED_REPLACEMENT_1));
-        this.loader.addTransformer(new ReplacementTransformer(WEAVED_REPLACEMENT_2));
+        this.loader.addTransformer(new ReplacementTransformer(
+                WEAVED_REPLACEMENT_1));
+        this.loader.addTransformer(new ReplacementTransformer(
+                WEAVED_REPLACEMENT_2));
 
-        String result = invokeDoMethodOnClass(this.loader, "TesterNeverWeavedClass");
-        assertEquals("The first result is not correct.", "This will never be weaved.", result);
+        String result = invokeDoMethodOnClass(this.loader,
+                "TesterNeverWeavedClass");
+        assertEquals("The first result is not correct.",
+                "This will never be weaved.", result);
 
         result = invokeDoMethodOnClass(this.loader, "TesterUnweavedClass");
-        assertEquals("The second result is not correct.", "Hello, Weaver #2!", result);
+        assertEquals("The second result is not correct.", "Hello, Weaver #2!",
+                result);
 
     }
 
     @Test
     public void testTransformersExecuteInOrderAdded2() throws Exception {
 
-        this.loader.addTransformer(new ReplacementTransformer(WEAVED_REPLACEMENT_2));
-        this.loader.addTransformer(new ReplacementTransformer(WEAVED_REPLACEMENT_1));
+        this.loader.addTransformer(new ReplacementTransformer(
+                WEAVED_REPLACEMENT_2));
+        this.loader.addTransformer(new ReplacementTransformer(
+                WEAVED_REPLACEMENT_1));
 
-        String result = invokeDoMethodOnClass(this.loader, "TesterNeverWeavedClass");
-        assertEquals("The first result is not correct.", "This will never be weaved.", result);
+        String result = invokeDoMethodOnClass(this.loader,
+                "TesterNeverWeavedClass");
+        assertEquals("The first result is not correct.",
+                "This will never be weaved.", result);
 
         result = invokeDoMethodOnClass(this.loader, "TesterUnweavedClass");
-        assertEquals("The second result is not correct.", "Hello, Weaver #1!", result);
+        assertEquals("The second result is not correct.", "Hello, Weaver #1!",
+                result);
 
     }
 
     @Test
     public void testRemovedTransformerNoLongerInstruments1() throws Exception {
 
-        ReplacementTransformer removed = new ReplacementTransformer(WEAVED_REPLACEMENT_1);
+        ReplacementTransformer removed = new ReplacementTransformer(
+                WEAVED_REPLACEMENT_1);
         this.loader.addTransformer(removed);
         this.loader.removeTransformer(removed);
 
-        String result = invokeDoMethodOnClass(this.loader, "TesterNeverWeavedClass");
-        assertEquals("The first result is not correct.", "This will never be weaved.", result);
+        String result = invokeDoMethodOnClass(this.loader,
+                "TesterNeverWeavedClass");
+        assertEquals("The first result is not correct.",
+                "This will never be weaved.", result);
 
         result = invokeDoMethodOnClass(this.loader, "TesterUnweavedClass");
-        assertEquals("The second result is not correct.", "Hello, Unweaved World!", result);
+        assertEquals("The second result is not correct.",
+                "Hello, Unweaved World!", result);
 
     }
 
     @Test
     public void testRemovedTransformerNoLongerInstruments2() throws Exception {
 
-        this.loader.addTransformer(new ReplacementTransformer(WEAVED_REPLACEMENT_1));
+        this.loader.addTransformer(new ReplacementTransformer(
+                WEAVED_REPLACEMENT_1));
 
-        ReplacementTransformer removed = new ReplacementTransformer(WEAVED_REPLACEMENT_2);
+        ReplacementTransformer removed = new ReplacementTransformer(
+                WEAVED_REPLACEMENT_2);
         this.loader.addTransformer(removed);
         this.loader.removeTransformer(removed);
 
-        String result = invokeDoMethodOnClass(this.loader, "TesterNeverWeavedClass");
-        assertEquals("The first result is not correct.", "This will never be weaved.", result);
+        String result = invokeDoMethodOnClass(this.loader,
+                "TesterNeverWeavedClass");
+        assertEquals("The first result is not correct.",
+                "This will never be weaved.", result);
 
         result = invokeDoMethodOnClass(this.loader, "TesterUnweavedClass");
-        assertEquals("The second result is not correct.", "Hello, Weaver #1!", result);
+        assertEquals("The second result is not correct.", "Hello, Weaver #1!",
+                result);
 
     }
 
     @Test
     public void testRemovedTransformerNoLongerInstruments3() throws Exception {
 
-        this.loader.addTransformer(new ReplacementTransformer(WEAVED_REPLACEMENT_2));
+        this.loader.addTransformer(new ReplacementTransformer(
+                WEAVED_REPLACEMENT_2));
 
-        ReplacementTransformer removed = new ReplacementTransformer(WEAVED_REPLACEMENT_1);
+        ReplacementTransformer removed = new ReplacementTransformer(
+                WEAVED_REPLACEMENT_1);
         this.loader.addTransformer(removed);
         this.loader.removeTransformer(removed);
 
-        String result = invokeDoMethodOnClass(this.loader, "TesterNeverWeavedClass");
-        assertEquals("The first result is not correct.", "This will never be weaved.", result);
+        String result = invokeDoMethodOnClass(this.loader,
+                "TesterNeverWeavedClass");
+        assertEquals("The first result is not correct.",
+                "This will never be weaved.", result);
 
         result = invokeDoMethodOnClass(this.loader, "TesterUnweavedClass");
-        assertEquals("The second result is not correct.", "Hello, Weaver #2!", result);
+        assertEquals("The second result is not correct.", "Hello, Weaver #2!",
+                result);
 
     }
 
     @SuppressWarnings("deprecation")
     @Test
-    public void testCopiedClassLoaderExcludesResourcesAndTransformers() throws Exception {
+    public void testCopiedClassLoaderExcludesResourcesAndTransformers()
+            throws Exception {
 
-        this.loader.addTransformer(new ReplacementTransformer(WEAVED_REPLACEMENT_1));
-        this.loader.addTransformer(new ReplacementTransformer(WEAVED_REPLACEMENT_2));
+        this.loader.addTransformer(new ReplacementTransformer(
+                WEAVED_REPLACEMENT_1));
+        this.loader.addTransformer(new ReplacementTransformer(
+                WEAVED_REPLACEMENT_2));
 
-        String result = invokeDoMethodOnClass(this.loader, "TesterNeverWeavedClass");
-        assertEquals("The first result is not correct.", "This will never be weaved.", result);
+        String result = invokeDoMethodOnClass(this.loader,
+                "TesterNeverWeavedClass");
+        assertEquals("The first result is not correct.",
+                "This will never be weaved.", result);
 
         result = invokeDoMethodOnClass(this.loader, "TesterUnweavedClass");
-        assertEquals("The second result is not correct.", "Hello, Weaver #2!", result);
+        assertEquals("The second result is not correct.", "Hello, Weaver #2!",
+                result);
 
         WebappClassLoader copiedLoader = this.loader.copyWithoutTransformers();
 
         result = invokeDoMethodOnClass(copiedLoader, "TesterNeverWeavedClass");
-        assertEquals("The third result is not correct.", "This will never be weaved.", result);
+        assertEquals("The third result is not correct.",
+                "This will never be weaved.", result);
 
         result = invokeDoMethodOnClass(copiedLoader, "TesterUnweavedClass");
-        assertEquals("The fourth result is not correct.", "Hello, Unweaved World!", result);
+        assertEquals("The fourth result is not correct.",
+                "Hello, Unweaved World!", result);
 
-        assertEquals("getClearReferencesHttpClientKeepAliveThread did not match.",
-                Boolean.valueOf(this.loader.getClearReferencesHttpClientKeepAliveThread()),
-                Boolean.valueOf(copiedLoader.getClearReferencesHttpClientKeepAliveThread()));
+        assertEquals(
+                "getClearReferencesHttpClientKeepAliveThread did not match.",
+                Boolean.valueOf(this.loader
+                        .getClearReferencesHttpClientKeepAliveThread()), Boolean
+                                .valueOf(copiedLoader
+                                        .getClearReferencesHttpClientKeepAliveThread()));
         assertEquals("getClearReferencesLogFactoryRelease did not match.",
-                Boolean.valueOf(this.loader.getClearReferencesLogFactoryRelease()),
-                Boolean.valueOf(copiedLoader.getClearReferencesLogFactoryRelease()));
-        assertEquals("getClearReferencesStatic did not match.",
-                Boolean.valueOf(this.loader.getClearReferencesStatic()),
-                Boolean.valueOf(copiedLoader.getClearReferencesStatic()));
-        assertEquals("getClearReferencesStopThreads did not match.",
-                Boolean.valueOf(this.loader.getClearReferencesStopThreads()),
-                Boolean.valueOf(copiedLoader.getClearReferencesStopThreads()));
+                Boolean.valueOf(this.loader
+                        .getClearReferencesLogFactoryRelease()), Boolean
+                                .valueOf(copiedLoader
+                                        .getClearReferencesLogFactoryRelease()));
+        assertEquals("getClearReferencesStatic did not match.", Boolean.valueOf(
+                this.loader.getClearReferencesStatic()), Boolean.valueOf(
+                        copiedLoader.getClearReferencesStatic()));
+        assertEquals("getClearReferencesStopThreads did not match.", Boolean
+                .valueOf(this.loader.getClearReferencesStopThreads()), Boolean
+                        .valueOf(copiedLoader.getClearReferencesStopThreads()));
         assertEquals("getClearReferencesStopTimerThreads did not match.",
-                Boolean.valueOf(this.loader.getClearReferencesStopTimerThreads()),
-                Boolean.valueOf(copiedLoader.getClearReferencesStopTimerThreads()));
-        assertEquals("getContextName did not match.", this.loader.getContextName(),
-                copiedLoader.getContextName());
-        assertEquals("getDelegate did not match.",
-                Boolean.valueOf(this.loader.getDelegate()),
-                Boolean.valueOf(copiedLoader.getDelegate()));
+                Boolean.valueOf(this.loader
+                        .getClearReferencesStopTimerThreads()), Boolean.valueOf(
+                                copiedLoader
+                                        .getClearReferencesStopTimerThreads()));
+        assertEquals("getContextName did not match.", this.loader
+                .getContextName(), copiedLoader.getContextName());
+        assertEquals("getDelegate did not match.", Boolean.valueOf(this.loader
+                .getDelegate()), Boolean.valueOf(copiedLoader.getDelegate()));
         assertEquals("getURLs did not match.", this.loader.getURLs().length,
                 copiedLoader.getURLs().length);
-        assertSame("getParent did not match.", this.loader.getParent(), copiedLoader.getParent());
+        assertSame("getParent did not match.", this.loader.getParent(),
+                copiedLoader.getParent());
 
     }
 
@@ -289,7 +343,8 @@ public class TestWebappClassLoaderWeaving extends TomcatBaseTest {
         ClassLoader cl = TestWebappClassLoaderWeaving.class.getClassLoader();
         try (InputStream is = cl.getResourceAsStream(name)) {
             if (is == null) {
-                throw new IOException("Resource " + name + " not found on classpath.");
+                throw new IOException("Resource " + name
+                        + " not found on classpath.");
             }
 
             try (FileOutputStream os = new FileOutputStream(file)) {
@@ -300,10 +355,11 @@ public class TestWebappClassLoaderWeaving extends TomcatBaseTest {
         }
     }
 
-    private static String invokeDoMethodOnClass(WebappClassLoader loader, String className)
-            throws Exception {
+    private static String invokeDoMethodOnClass(WebappClassLoader loader,
+            String className) throws Exception {
 
-        Class<?> c = loader.findClass("org.apache.catalina.loader." + className);
+        Class<?> c = loader.findClass("org.apache.catalina.loader."
+                + className);
         assertNotNull("The loaded class should not be null.", c);
 
         Method m = c.getMethod("doMethod");
@@ -313,9 +369,11 @@ public class TestWebappClassLoaderWeaving extends TomcatBaseTest {
 
     }
 
-    private static class ReplacementTransformer implements ClassFileTransformer {
+    private static class ReplacementTransformer implements
+            ClassFileTransformer {
 
-        private static final String CLASS_TO_WEAVE = PACKAGE_PREFIX + "/TesterUnweavedClass";
+        private static final String CLASS_TO_WEAVE = PACKAGE_PREFIX
+                + "/TesterUnweavedClass";
 
         private final byte[] replacement;
 
@@ -324,8 +382,8 @@ public class TestWebappClassLoaderWeaving extends TomcatBaseTest {
         }
 
         @Override
-        public byte[] transform(ClassLoader loader, String className, Class<?> x,
-                                ProtectionDomain y, byte[] b) {
+        public byte[] transform(ClassLoader loader, String className,
+                Class<?> x, ProtectionDomain y, byte[] b) {
 
             if (CLASS_TO_WEAVE.equals(className)) {
                 return this.replacement;
@@ -338,54 +396,66 @@ public class TestWebappClassLoaderWeaving extends TomcatBaseTest {
     }
 
     /**
-     * Compiled version of org.apache.catalina.loader.TesterUnweavedClass, except that
-     * the doMethod method returns "Hello, Weaver #1!". Compiled with Oracle Java 1.6.0_51.
+     * Compiled version of org.apache.catalina.loader.TesterUnweavedClass,
+     * except that
+     * the doMethod method returns "Hello, Weaver #1!". Compiled with Oracle
+     * Java 1.6.0_51.
      */
-    private static final byte[] WEAVED_REPLACEMENT_1 = new byte[] {
-            -54, -2, -70, -66, 0, 0, 0, 50, 0, 17, 10, 0, 4, 0, 13, 8, 0, 14, 7, 0, 15, 7, 0, 16, 1,
-            0, 6, 60, 105, 110, 105, 116, 62, 1, 0, 3, 40, 41, 86, 1, 0, 4, 67, 111, 100, 101, 1, 0,
-            15, 76, 105, 110, 101, 78, 117, 109, 98, 101, 114, 84, 97, 98, 108, 101, 1, 0, 8, 100,
-            111, 77, 101, 116, 104, 111, 100, 1, 0, 20, 40, 41, 76, 106, 97, 118, 97, 47, 108, 97,
-            110, 103, 47, 83, 116, 114, 105, 110, 103, 59, 1, 0, 10, 83, 111, 117, 114, 99, 101, 70,
-            105, 108, 101, 1, 0, 24, 84, 101, 115, 116, 101, 114, 85, 110, 119, 101, 97, 118, 101,
-            100, 67, 108, 97, 115, 115, 46, 106, 97, 118, 97, 12, 0, 5, 0, 6, 1, 0, 17, 72, 101,
-            108, 108, 111, 44, 32, 87, 101, 97, 118, 101, 114, 32, 35, 49, 33, 1, 0, 46, 111, 114,
-            103, 47, 97, 112, 97, 99, 104, 101, 47, 99, 97, 116, 97, 108, 105, 110, 97, 47, 108,
-            111, 97, 100, 101, 114, 47, 84, 101, 115, 116, 101, 114, 85, 110, 119, 101, 97, 118,
-            101, 100, 67, 108, 97, 115, 115, 1, 0, 16, 106, 97, 118, 97, 47, 108, 97, 110, 103, 47,
-            79, 98, 106, 101, 99, 116, 0, 33, 0, 3, 0, 4, 0, 0, 0, 0, 0, 2, 0, 1, 0, 5, 0, 6, 0, 1,
-            0, 7, 0, 0, 0, 29, 0, 1, 0, 1, 0, 0, 0, 5, 42, -73, 0, 1, -79, 0, 0, 0, 1, 0, 8, 0, 0,
-            0, 6, 0, 1, 0, 0, 0, 19, 0, 1, 0, 9, 0, 10, 0, 1, 0, 7, 0, 0, 0, 27, 0, 1, 0, 1, 0, 0,
-            0, 3, 18, 2, -80, 0, 0, 0, 1, 0, 8, 0, 0, 0, 6, 0, 1, 0, 0, 0, 22, 0, 1, 0, 11, 0, 0, 0,
-            2, 0, 12
-    };
+    private static final byte[] WEAVED_REPLACEMENT_1 = new byte[] { -54, -2,
+            -70, -66, 0, 0, 0, 50, 0, 17, 10, 0, 4, 0, 13, 8, 0, 14, 7, 0, 15,
+            7, 0, 16, 1, 0, 6, 60, 105, 110, 105, 116, 62, 1, 0, 3, 40, 41, 86,
+            1, 0, 4, 67, 111, 100, 101, 1, 0, 15, 76, 105, 110, 101, 78, 117,
+            109, 98, 101, 114, 84, 97, 98, 108, 101, 1, 0, 8, 100, 111, 77, 101,
+            116, 104, 111, 100, 1, 0, 20, 40, 41, 76, 106, 97, 118, 97, 47, 108,
+            97, 110, 103, 47, 83, 116, 114, 105, 110, 103, 59, 1, 0, 10, 83,
+            111, 117, 114, 99, 101, 70, 105, 108, 101, 1, 0, 24, 84, 101, 115,
+            116, 101, 114, 85, 110, 119, 101, 97, 118, 101, 100, 67, 108, 97,
+            115, 115, 46, 106, 97, 118, 97, 12, 0, 5, 0, 6, 1, 0, 17, 72, 101,
+            108, 108, 111, 44, 32, 87, 101, 97, 118, 101, 114, 32, 35, 49, 33,
+            1, 0, 46, 111, 114, 103, 47, 97, 112, 97, 99, 104, 101, 47, 99, 97,
+            116, 97, 108, 105, 110, 97, 47, 108, 111, 97, 100, 101, 114, 47, 84,
+            101, 115, 116, 101, 114, 85, 110, 119, 101, 97, 118, 101, 100, 67,
+            108, 97, 115, 115, 1, 0, 16, 106, 97, 118, 97, 47, 108, 97, 110,
+            103, 47, 79, 98, 106, 101, 99, 116, 0, 33, 0, 3, 0, 4, 0, 0, 0, 0,
+            0, 2, 0, 1, 0, 5, 0, 6, 0, 1, 0, 7, 0, 0, 0, 29, 0, 1, 0, 1, 0, 0,
+            0, 5, 42, -73, 0, 1, -79, 0, 0, 0, 1, 0, 8, 0, 0, 0, 6, 0, 1, 0, 0,
+            0, 19, 0, 1, 0, 9, 0, 10, 0, 1, 0, 7, 0, 0, 0, 27, 0, 1, 0, 1, 0, 0,
+            0, 3, 18, 2, -80, 0, 0, 0, 1, 0, 8, 0, 0, 0, 6, 0, 1, 0, 0, 0, 22,
+            0, 1, 0, 11, 0, 0, 0, 2, 0, 12 };
 
     /**
-     * Compiled version of org.apache.catalina.loader.TesterUnweavedClass, except that
-     * the doMethod method returns "Hello, Weaver #2!". Compiled with Oracle Java 1.6.0_51.
+     * Compiled version of org.apache.catalina.loader.TesterUnweavedClass,
+     * except that
+     * the doMethod method returns "Hello, Weaver #2!". Compiled with Oracle
+     * Java 1.6.0_51.
      */
-    private static final byte[] WEAVED_REPLACEMENT_2 = new byte[] {
-            -54, -2, -70, -66, 0, 0, 0, 50, 0, 17, 10, 0, 4, 0, 13, 8, 0, 14, 7, 0, 15, 7, 0, 16, 1,
-            0, 6, 60, 105, 110, 105, 116, 62, 1, 0, 3, 40, 41, 86, 1, 0, 4, 67, 111, 100, 101, 1, 0,
-            15, 76, 105, 110, 101, 78, 117, 109, 98, 101, 114, 84, 97, 98, 108, 101, 1, 0, 8, 100,
-            111, 77, 101, 116, 104, 111, 100, 1, 0, 20, 40, 41, 76, 106, 97, 118, 97, 47, 108, 97,
-            110, 103, 47, 83, 116, 114, 105, 110, 103, 59, 1, 0, 10, 83, 111, 117, 114, 99, 101, 70,
-            105, 108, 101, 1, 0, 24, 84, 101, 115, 116, 101, 114, 85, 110, 119, 101, 97, 118, 101,
-            100, 67, 108, 97, 115, 115, 46, 106, 97, 118, 97, 12, 0, 5, 0, 6, 1, 0, 17, 72, 101,
-            108, 108, 111, 44, 32, 87, 101, 97, 118, 101, 114, 32, 35, 50, 33, 1, 0, 46, 111, 114,
-            103, 47, 97, 112, 97, 99, 104, 101, 47, 99, 97, 116, 97, 108, 105, 110, 97, 47, 108,
-            111, 97, 100, 101, 114, 47, 84, 101, 115, 116, 101, 114, 85, 110, 119, 101, 97, 118,
-            101, 100, 67, 108, 97, 115, 115, 1, 0, 16, 106, 97, 118, 97, 47, 108, 97, 110, 103, 47,
-            79, 98, 106, 101, 99, 116, 0, 33, 0, 3, 0, 4, 0, 0, 0, 0, 0, 2, 0, 1, 0, 5, 0, 6, 0, 1,
-            0, 7, 0, 0, 0, 29, 0, 1, 0, 1, 0, 0, 0, 5, 42, -73, 0, 1, -79, 0, 0, 0, 1, 0, 8, 0, 0,
-            0, 6, 0, 1, 0, 0, 0, 19, 0, 1, 0, 9, 0, 10, 0, 1, 0, 7, 0, 0, 0, 27, 0, 1, 0, 1, 0, 0,
-            0, 3, 18, 2, -80, 0, 0, 0, 1, 0, 8, 0, 0, 0, 6, 0, 1, 0, 0, 0, 22, 0, 1, 0, 11, 0, 0, 0,
-            2, 0, 12
-    };
+    private static final byte[] WEAVED_REPLACEMENT_2 = new byte[] { -54, -2,
+            -70, -66, 0, 0, 0, 50, 0, 17, 10, 0, 4, 0, 13, 8, 0, 14, 7, 0, 15,
+            7, 0, 16, 1, 0, 6, 60, 105, 110, 105, 116, 62, 1, 0, 3, 40, 41, 86,
+            1, 0, 4, 67, 111, 100, 101, 1, 0, 15, 76, 105, 110, 101, 78, 117,
+            109, 98, 101, 114, 84, 97, 98, 108, 101, 1, 0, 8, 100, 111, 77, 101,
+            116, 104, 111, 100, 1, 0, 20, 40, 41, 76, 106, 97, 118, 97, 47, 108,
+            97, 110, 103, 47, 83, 116, 114, 105, 110, 103, 59, 1, 0, 10, 83,
+            111, 117, 114, 99, 101, 70, 105, 108, 101, 1, 0, 24, 84, 101, 115,
+            116, 101, 114, 85, 110, 119, 101, 97, 118, 101, 100, 67, 108, 97,
+            115, 115, 46, 106, 97, 118, 97, 12, 0, 5, 0, 6, 1, 0, 17, 72, 101,
+            108, 108, 111, 44, 32, 87, 101, 97, 118, 101, 114, 32, 35, 50, 33,
+            1, 0, 46, 111, 114, 103, 47, 97, 112, 97, 99, 104, 101, 47, 99, 97,
+            116, 97, 108, 105, 110, 97, 47, 108, 111, 97, 100, 101, 114, 47, 84,
+            101, 115, 116, 101, 114, 85, 110, 119, 101, 97, 118, 101, 100, 67,
+            108, 97, 115, 115, 1, 0, 16, 106, 97, 118, 97, 47, 108, 97, 110,
+            103, 47, 79, 98, 106, 101, 99, 116, 0, 33, 0, 3, 0, 4, 0, 0, 0, 0,
+            0, 2, 0, 1, 0, 5, 0, 6, 0, 1, 0, 7, 0, 0, 0, 29, 0, 1, 0, 1, 0, 0,
+            0, 5, 42, -73, 0, 1, -79, 0, 0, 0, 1, 0, 8, 0, 0, 0, 6, 0, 1, 0, 0,
+            0, 19, 0, 1, 0, 9, 0, 10, 0, 1, 0, 7, 0, 0, 0, 27, 0, 1, 0, 1, 0, 0,
+            0, 3, 18, 2, -80, 0, 0, 0, 1, 0, 8, 0, 0, 0, 6, 0, 1, 0, 0, 0, 22,
+            0, 1, 0, 11, 0, 0, 0, 2, 0, 12 };
 
     /*
-     * The WEAVED_REPLACEMENT_1 and WEAVED_REPLACEMENT_2 field contents are generated using the
-     * following code. To regenerate them, alter the TesterUnweavedClass code as desired, recompile,
+     * The WEAVED_REPLACEMENT_1 and WEAVED_REPLACEMENT_2 field contents are
+     * generated using the
+     * following code. To regenerate them, alter the TesterUnweavedClass code as
+     * desired, recompile,
      * and run this main method.
      */
     public static void main(String... arguments) throws Exception {
@@ -396,9 +466,10 @@ public class TestWebappClassLoaderWeaving extends TomcatBaseTest {
             StringBuilder builder = new StringBuilder();
             builder.append("            ");
 
-            System.out.println("    private static final byte[] WEAVED_REPLACEMENT_1 = new byte[] {");
+            System.out.println(
+                    "    private static final byte[] WEAVED_REPLACEMENT_1 = new byte[] {");
             for (int i = 0, b = input.read(); b >= 0; i++, b = input.read()) {
-                String value = "" + ((byte)b);
+                String value = "" + ((byte) b);
                 if (builder.length() + value.length() > 97) {
                     builder.append(",");
                     System.out.println(builder.toString());

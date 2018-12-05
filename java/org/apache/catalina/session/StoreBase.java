@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -50,18 +48,19 @@ public abstract class StoreBase extends LifecycleBase implements Store {
     /**
      * The property change support for this component.
      */
-    protected final PropertyChangeSupport support = new PropertyChangeSupport(this);
+    protected final PropertyChangeSupport support = new PropertyChangeSupport(
+            this);
 
     /**
      * The string manager for this package.
      */
-    protected static final StringManager sm = StringManager.getManager(StoreBase.class);
+    protected static final StringManager sm = StringManager.getManager(
+            StoreBase.class);
 
     /**
      * The Manager with which this Store is associated.
      */
     protected Manager manager;
-
 
     // ------------------------------------------------------------- Properties
 
@@ -71,7 +70,6 @@ public abstract class StoreBase extends LifecycleBase implements Store {
     public String getStoreName() {
         return storeName;
     }
-
 
     /**
      * Set the Manager with which this Store is associated.
@@ -92,7 +90,6 @@ public abstract class StoreBase extends LifecycleBase implements Store {
     public Manager getManager() {
         return this.manager;
     }
-
 
     // --------------------------------------------------------- Public Methods
 
@@ -122,7 +119,7 @@ public abstract class StoreBase extends LifecycleBase implements Store {
      *
      * @return list of session keys, that are to be expired
      * @throws IOException
-     *             if an input-/output error occurred
+     *                     if an input-/output error occurred
      */
     public String[] expiredKeys() throws IOException {
         return keys();
@@ -137,7 +134,7 @@ public abstract class StoreBase extends LifecycleBase implements Store {
     public void processExpires() {
         String[] keys = null;
 
-        if(!getState().isAvailable()) {
+        if (!getState().isAvailable()) {
             return;
         }
 
@@ -148,7 +145,9 @@ public abstract class StoreBase extends LifecycleBase implements Store {
             return;
         }
         if (manager.getContext().getLogger().isDebugEnabled()) {
-            manager.getContext().getLogger().debug(getStoreName()+ ": processExpires check number of " + keys.length + " sessions" );
+            manager.getContext().getLogger().debug(getStoreName()
+                    + ": processExpires check number of " + keys.length
+                    + " sessions");
         }
 
         long timeNow = System.currentTimeMillis();
@@ -159,16 +158,20 @@ public abstract class StoreBase extends LifecycleBase implements Store {
                 if (session == null) {
                     continue;
                 }
-                int timeIdle = (int) ((timeNow - session.getThisAccessedTime()) / 1000L);
+                int timeIdle = (int) ((timeNow - session.getThisAccessedTime())
+                        / 1000L);
                 if (timeIdle < session.getMaxInactiveInterval()) {
                     continue;
                 }
                 if (manager.getContext().getLogger().isDebugEnabled()) {
-                    manager.getContext().getLogger().debug(getStoreName()+ ": processExpires expire store session " + keys[i] );
+                    manager.getContext().getLogger().debug(getStoreName()
+                            + ": processExpires expire store session "
+                            + keys[i]);
                 }
                 boolean isLoaded = false;
                 if (manager instanceof PersistentManagerBase) {
-                    isLoaded = ((PersistentManagerBase) manager).isLoaded(keys[i]);
+                    isLoaded = ((PersistentManagerBase) manager).isLoaded(
+                            keys[i]);
                 } else {
                     try {
                         if (manager.findSession(keys[i]) != null) {
@@ -187,16 +190,17 @@ public abstract class StoreBase extends LifecycleBase implements Store {
                 }
                 remove(keys[i]);
             } catch (Exception e) {
-                manager.getContext().getLogger().error("Session: "+keys[i]+"; ", e);
+                manager.getContext().getLogger().error("Session: " + keys[i]
+                        + "; ", e);
                 try {
                     remove(keys[i]);
                 } catch (IOException e2) {
-                    manager.getContext().getLogger().error("Error removing key", e2);
+                    manager.getContext().getLogger().error("Error removing key",
+                            e2);
                 }
             }
         }
     }
-
 
     // --------------------------------------------------------- Protected Methods
 
@@ -213,16 +217,19 @@ public abstract class StoreBase extends LifecycleBase implements Store {
      *
      * @throws IOException if a problem occurs creating the ObjectInputStream
      */
-    protected ObjectInputStream getObjectInputStream(InputStream is) throws IOException {
+    protected ObjectInputStream getObjectInputStream(InputStream is)
+            throws IOException {
         BufferedInputStream bis = new BufferedInputStream(is);
 
         CustomObjectInputStream ois;
-        ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+        ClassLoader classLoader = Thread.currentThread()
+                .getContextClassLoader();
 
         if (manager instanceof ManagerBase) {
             ManagerBase managerBase = (ManagerBase) manager;
-            ois = new CustomObjectInputStream(bis, classLoader, manager.getContext().getLogger(),
-                    managerBase.getSessionAttributeValueClassNamePattern(),
+            ois = new CustomObjectInputStream(bis, classLoader, manager
+                    .getContext().getLogger(), managerBase
+                            .getSessionAttributeValueClassNamePattern(),
                     managerBase.getWarnOnSessionAttributeFilterFailure());
         } else {
             ois = new CustomObjectInputStream(bis, classLoader);
@@ -231,19 +238,18 @@ public abstract class StoreBase extends LifecycleBase implements Store {
         return ois;
     }
 
-
     @Override
     protected void initInternal() {
         // NOOP
     }
-
 
     /**
      * Start this component and implement the requirements
      * of {@link LifecycleBase#startInternal()}.
      *
      * @exception LifecycleException if this component detects a fatal error
-     *  that prevents this component from being used
+     *                               that prevents this component from being
+     *                               used
      */
     @Override
     protected synchronized void startInternal() throws LifecycleException {
@@ -251,13 +257,13 @@ public abstract class StoreBase extends LifecycleBase implements Store {
         setState(LifecycleState.STARTING);
     }
 
-
     /**
      * Stop this component and implement the requirements
      * of {@link LifecycleBase#stopInternal()}.
      *
      * @exception LifecycleException if this component detects a fatal error
-     *  that prevents this component from being used
+     *                               that prevents this component from being
+     *                               used
      */
     @Override
     protected synchronized void stopInternal() throws LifecycleException {
@@ -265,12 +271,10 @@ public abstract class StoreBase extends LifecycleBase implements Store {
         setState(LifecycleState.STOPPING);
     }
 
-
     @Override
     protected void destroyInternal() {
         // NOOP
     }
-
 
     /**
      * @return a String rendering of this object.

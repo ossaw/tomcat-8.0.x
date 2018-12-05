@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -34,7 +32,6 @@ public class TestNamingContext extends TomcatBaseTest {
     private static final String GLOBAL_NAME = "global";
     private static final String LOCAL_NAME = "local";
     private static final String DATA = "Cabbage";
-
 
     @Test
     public void testGlobalNaming() throws Exception {
@@ -75,7 +72,8 @@ public class TestNamingContext extends TomcatBaseTest {
 
         // Try shortcut
         ResourceLinkFactory factory = new ResourceLinkFactory();
-        ResourceLinkRef rlr = new ResourceLinkRef(DATA.getClass().getName(), GLOBAL_NAME, null, null);
+        ResourceLinkRef rlr = new ResourceLinkRef(DATA.getClass().getName(),
+                GLOBAL_NAME, null, null);
         obj = factory.getObjectInstance(rlr, null, null, null);
         Assert.assertEquals(DATA, obj);
 
@@ -90,7 +88,6 @@ public class TestNamingContext extends TomcatBaseTest {
         obj = factory.getObjectInstance(rlr, null, null, null);
         Assert.assertNull(obj);
     }
-
 
     private Object doLookup(Context context, String name) {
         Object result = null;

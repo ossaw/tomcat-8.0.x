@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -15,9 +13,7 @@
  * limitations under the License.
  */
 
-
 package org.apache.tomcat.util.modeler;
-
 
 import java.util.List;
 
@@ -40,26 +36,31 @@ import javax.management.ObjectName;
  */
 public interface RegistryMBean {
 
-    /** Invoke an operation on a set of mbeans.
+    /**
+     * Invoke an operation on a set of mbeans.
      *
-     * @param mbeans List of ObjectNames
-     * @param operation Operation to perform. Typically "init" "start" "stop" or "destroy"
+     * @param mbeans    List of ObjectNames
+     * @param operation Operation to perform. Typically "init" "start" "stop" or
+     *                  "destroy"
      * @param failFirst Behavior in case of exceptions - if false we'll ignore
-     *      errors
+     *                  errors
      * @throws Exception
      */
-    public void invoke( List<ObjectName> mbeans, String operation, boolean failFirst )
-            throws Exception;
+    public void invoke(List<ObjectName> mbeans, String operation,
+            boolean failFirst) throws Exception;
 
-    /** Register a bean by creating a modeler mbean and adding it to the
+    /**
+     * Register a bean by creating a modeler mbean and adding it to the
      * MBeanServer.
      *
      * If metadata is not loaded, we'll look up and read a file named
      * "mbeans-descriptors.ser" or "mbeans-descriptors.xml" in the same package
      * or parent.
      *
-     * If the bean is an instance of DynamicMBean. it's metadata will be converted
-     * to a model mbean and we'll wrap it - so modeler services will be supported
+     * If the bean is an instance of DynamicMBean. it's metadata will be
+     * converted
+     * to a model mbean and we'll wrap it - so modeler services will be
+     * supported
      *
      * If the metadata is still not found, introspection will be used to extract
      * it automatically.
@@ -67,47 +68,51 @@ public interface RegistryMBean {
      * If an mbean is already registered under this name, it'll be first
      * unregistered.
      *
-     * If the component implements MBeanRegistration, the methods will be called.
+     * If the component implements MBeanRegistration, the methods will be
+     * called.
      * If the method has a method "setRegistry" that takes a RegistryMBean as
      * parameter, it'll be called with the current registry.
      *
      *
-     * @param bean Object to be registered
+     * @param bean  Object to be registered
      * @param oname Name used for registration
-     * @param type The type of the mbean, as declared in mbeans-descriptors. If
-     * null, the name of the class will be used. This can be used as a hint or
-     * by subclasses.
+     * @param type  The type of the mbean, as declared in mbeans-descriptors. If
+     *              null, the name of the class will be used. This can be used
+     *              as a hint or
+     *              by subclasses.
      *
      * @since 1.1
      */
     public void registerComponent(Object bean, String oname, String type)
-           throws Exception;
+            throws Exception;
 
-    /** Unregister a component. We'll first check if it is registered,
+    /**
+     * Unregister a component. We'll first check if it is registered,
      * and mask all errors. This is mostly a helper.
      *
      * @param oname
      *
      * @since 1.1
      */
-    public void unregisterComponent( String oname );
+    public void unregisterComponent(String oname);
 
+    /**
+     * Return an int ID for faster access. Will be used for notifications
+     * and for other operations we want to optimize.
+     *
+     * @param domain Namespace
+     * @param name   Type of the notification
+     * @return An unique id for the domain:name combination
+     * @since 1.1
+     */
+    public int getId(String domain, String name);
 
-     /** Return an int ID for faster access. Will be used for notifications
-      * and for other operations we want to optimize.
-      *
-      * @param domain Namespace
-      * @param name  Type of the notification
-      * @return  An unique id for the domain:name combination
-      * @since 1.1
-      */
-    public int getId( String domain, String name);
-
-
-    /** Reset all metadata cached by this registry. Should be called
+    /**
+     * Reset all metadata cached by this registry. Should be called
      * to support reloading. Existing mbeans will not be affected or modified.
      *
      * It will be called automatically if the Registry is unregistered.
+     * 
      * @since 1.1
      */
     public void stop();

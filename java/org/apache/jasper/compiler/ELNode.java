@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -28,7 +26,7 @@ import org.apache.jasper.JasperException;
 /**
  * This class defines internal representation for an EL Expression
  *
- * It currently only defines functions.  It can be expanded to define
+ * It currently only defines functions. It can be expanded to define
  * all the components of an EL expression, if need to.
  *
  * @author Kin-man Chung
@@ -42,7 +40,6 @@ abstract class ELNode {
      * Child classes
      */
 
-
     /**
      * Represents an EL expression: anything in ${ and }.
      */
@@ -53,7 +50,7 @@ abstract class ELNode {
 
         Root(ELNode.Nodes expr, char type) {
             this.expr = expr;
-        this.type = type;
+            this.type = type;
         }
 
         @Override
@@ -189,10 +186,11 @@ abstract class ELNode {
      */
     public static class Nodes {
 
-        /* Name used for creating a map for the functions in this
-           EL expression, for communication to Generator.
+        /*
+         * Name used for creating a map for the functions in this
+         * EL expression, for communication to Generator.
          */
-        private String mapName = null;    // The function map associated this EL
+        private String mapName = null; // The function map associated this EL
         private final List<ELNode> list;
 
         public Nodes() {
@@ -205,6 +203,7 @@ abstract class ELNode {
 
         /**
          * Visit the nodes in the list with the supplied visitor
+         * 
          * @param v The visitor used
          */
         public void visit(Visitor v) throws JasperException {
@@ -272,4 +271,3 @@ abstract class ELNode {
         }
     }
 }
-

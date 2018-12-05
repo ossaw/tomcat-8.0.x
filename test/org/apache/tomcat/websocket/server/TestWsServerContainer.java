@@ -1,18 +1,16 @@
 /*
- *  Licensed to the Apache Software Foundation (ASF) under one or more
- *  contributor license agreements.  See the NOTICE file distributed with
- *  this work for additional information regarding copyright ownership.
- *  The ASF licenses this file to You under the Apache License, Version 2.0
- *  (the "License"); you may not use this file except in compliance with
- *  the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements. See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.apache.tomcat.websocket.server;
 
@@ -42,7 +40,6 @@ import org.apache.tomcat.websocket.TesterMessageCountClient.BasicText;
 import org.apache.tomcat.websocket.WebSocketBaseTest;
 import org.apache.tomcat.websocket.pojo.TesterUtil.SimpleClient;
 
-
 public class TestWsServerContainer extends WebSocketBaseTest {
 
     @Test
@@ -59,7 +56,6 @@ public class TestWsServerContainer extends WebSocketBaseTest {
         Assert.assertEquals(LifecycleState.STARTED, ctx.getState());
     }
 
-
     @Test
     public void testBug58232() throws Exception {
         Tomcat tomcat = getTomcatInstance();
@@ -69,8 +65,8 @@ public class TestWsServerContainer extends WebSocketBaseTest {
         Tomcat.addServlet(ctx, "default", new DefaultServlet());
         ctx.addServletMappingDecoded("/", "default");
 
-        WebSocketContainer wsContainer =
-                ContainerProvider.getWebSocketContainer();
+        WebSocketContainer wsContainer = ContainerProvider
+                .getWebSocketContainer();
 
         tomcat.start();
 
@@ -85,7 +81,8 @@ public class TestWsServerContainer extends WebSocketBaseTest {
             session.addMessageHandler(handler);
             session.getBasicRemote().sendText("echoBasic");
 
-            boolean latchResult = handler.getLatch().await(10, TimeUnit.SECONDS);
+            boolean latchResult = handler.getLatch().await(10,
+                    TimeUnit.SECONDS);
             Assert.assertTrue(latchResult);
 
             Queue<String> messages = handler.getMessages();
@@ -96,15 +93,14 @@ public class TestWsServerContainer extends WebSocketBaseTest {
         }
     }
 
-
     public static class Bug54807Config extends WsContextListener {
 
         @Override
         public void contextInitialized(ServletContextEvent sce) {
             super.contextInitialized(sce);
 
-            ServerContainer sc =
-                    (ServerContainer) sce.getServletContext().getAttribute(
+            ServerContainer sc = (ServerContainer) sce.getServletContext()
+                    .getAttribute(
                             Constants.SERVER_CONTAINER_SERVLET_CONTEXT_ATTRIBUTE);
 
             ServerEndpointConfig sec = ServerEndpointConfig.Builder.create(
@@ -118,11 +114,10 @@ public class TestWsServerContainer extends WebSocketBaseTest {
         }
     }
 
-
     @Test
     public void testSpecExample3() throws Exception {
-        WsServerContainer sc =
-                new WsServerContainer(new TesterServletContext());
+        WsServerContainer sc = new WsServerContainer(
+                new TesterServletContext());
 
         ServerEndpointConfig configA = ServerEndpointConfig.Builder.create(
                 Object.class, "/a/{var}/c").build();
@@ -140,11 +135,10 @@ public class TestWsServerContainer extends WebSocketBaseTest {
         Assert.assertEquals(configC, sc.findMapping("/a/x/y").getConfig());
     }
 
-
     @Test
     public void testSpecExample4() throws Exception {
-        WsServerContainer sc =
-                new WsServerContainer(new TesterServletContext());
+        WsServerContainer sc = new WsServerContainer(
+                new TesterServletContext());
 
         ServerEndpointConfig configA = ServerEndpointConfig.Builder.create(
                 Object.class, "/{var1}/d").build();
@@ -157,11 +151,10 @@ public class TestWsServerContainer extends WebSocketBaseTest {
         Assert.assertEquals(configB, sc.findMapping("/b/d").getConfig());
     }
 
-
     @Test(expected = javax.websocket.DeploymentException.class)
     public void testDuplicatePaths_01() throws Exception {
-        WsServerContainer sc =
-                new WsServerContainer(new TesterServletContext());
+        WsServerContainer sc = new WsServerContainer(
+                new TesterServletContext());
 
         ServerEndpointConfig configA = ServerEndpointConfig.Builder.create(
                 Object.class, "/a/b/c").build();
@@ -171,12 +164,11 @@ public class TestWsServerContainer extends WebSocketBaseTest {
         sc.addEndpoint(configA);
         sc.addEndpoint(configB);
     }
-
 
     @Test(expected = javax.websocket.DeploymentException.class)
     public void testDuplicatePaths_02() throws Exception {
-        WsServerContainer sc =
-                new WsServerContainer(new TesterServletContext());
+        WsServerContainer sc = new WsServerContainer(
+                new TesterServletContext());
 
         ServerEndpointConfig configA = ServerEndpointConfig.Builder.create(
                 Object.class, "/a/b/{var}").build();
@@ -187,11 +179,10 @@ public class TestWsServerContainer extends WebSocketBaseTest {
         sc.addEndpoint(configB);
     }
 
-
     @Test(expected = javax.websocket.DeploymentException.class)
     public void testDuplicatePaths_03() throws Exception {
-        WsServerContainer sc =
-                new WsServerContainer(new TesterServletContext());
+        WsServerContainer sc = new WsServerContainer(
+                new TesterServletContext());
 
         ServerEndpointConfig configA = ServerEndpointConfig.Builder.create(
                 Object.class, "/a/b/{var1}").build();
@@ -202,11 +193,10 @@ public class TestWsServerContainer extends WebSocketBaseTest {
         sc.addEndpoint(configB);
     }
 
-
     @Test
     public void testDuplicatePaths_04() throws Exception {
-        WsServerContainer sc =
-                new WsServerContainer(new TesterServletContext());
+        WsServerContainer sc = new WsServerContainer(
+                new TesterServletContext());
 
         ServerEndpointConfig configA = ServerEndpointConfig.Builder.create(
                 Object.class, "/a/{var1}/{var2}").build();

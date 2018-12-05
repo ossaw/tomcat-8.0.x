@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -16,11 +14,12 @@
  */
 package org.apache.tomcat.util.descriptor.web;
 
-
 /**
- * <p>Representation of a message destination for a web application, as
+ * <p>
+ * Representation of a message destination for a web application, as
  * represented in a <code>&lt;message-destination&gt;</code> element
- * in the deployment descriptor.</p>
+ * in the deployment descriptor.
+ * </p>
  *
  * @author Craig R. McClanahan
  * @since Tomcat 5.0
@@ -30,7 +29,6 @@ public class MessageDestination extends ResourceBase {
     private static final long serialVersionUID = 1L;
 
     // ------------------------------------------------------------- Properties
-
 
     /**
      * The display name of this destination.
@@ -45,7 +43,6 @@ public class MessageDestination extends ResourceBase {
         this.displayName = displayName;
     }
 
-
     /**
      * The large icon of this destination.
      */
@@ -58,7 +55,6 @@ public class MessageDestination extends ResourceBase {
     public void setLargeIcon(String largeIcon) {
         this.largeIcon = largeIcon;
     }
-
 
     /**
      * The small icon of this destination.
@@ -73,9 +69,7 @@ public class MessageDestination extends ResourceBase {
         this.smallIcon = smallIcon;
     }
 
-
     // --------------------------------------------------------- Public Methods
-
 
     /**
      * Return a String representation of this object.
@@ -106,20 +100,18 @@ public class MessageDestination extends ResourceBase {
         return (sb.toString());
     }
 
-
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = super.hashCode();
-        result = prime * result +
-                ((displayName == null) ? 0 : displayName.hashCode());
-        result = prime * result +
-                ((largeIcon == null) ? 0 : largeIcon.hashCode());
-        result = prime * result +
-                ((smallIcon == null) ? 0 : smallIcon.hashCode());
+        result = prime * result + ((displayName == null) ? 0
+                : displayName.hashCode());
+        result = prime * result + ((largeIcon == null) ? 0
+                : largeIcon.hashCode());
+        result = prime * result + ((smallIcon == null) ? 0
+                : smallIcon.hashCode());
         return result;
     }
-
 
     @Override
     public boolean equals(Object obj) {

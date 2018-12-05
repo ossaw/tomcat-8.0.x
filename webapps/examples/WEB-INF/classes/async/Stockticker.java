@@ -1,18 +1,16 @@
 /*
- *  Licensed to the Apache Software Foundation (ASF) under one or more
- *  contributor license agreements.  See the NOTICE file distributed with
- *  this work for additional information regarding copyright ownership.
- *  The ASF licenses this file to You under the Apache License, Version 2.0
- *  (the "License"); you may not use this file except in compliance with
- *  the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements. See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package async;
 
@@ -22,78 +20,79 @@ import java.util.Random;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class Stockticker implements Runnable {
-        public volatile boolean run = true;
-        protected final AtomicInteger counter = new AtomicInteger(0);
-        final ArrayList<TickListener> listeners = new ArrayList<>();
-        protected volatile Thread ticker = null;
-        protected volatile int ticknr = 0;
+    public volatile boolean run = true;
+    protected final AtomicInteger counter = new AtomicInteger(0);
+    final ArrayList<TickListener> listeners = new ArrayList<>();
+    protected volatile Thread ticker = null;
+    protected volatile int ticknr = 0;
 
-        public synchronized void start() {
-            run = true;
-            ticker = new Thread(this);
-            ticker.setName("Ticker Thread");
-            ticker.start();
+    public synchronized void start() {
+        run = true;
+        ticker = new Thread(this);
+        ticker.setName("Ticker Thread");
+        ticker.start();
+    }
+
+    public synchronized void stop() {
+        run = false;
+        try {
+            ticker.join();
+        } catch (InterruptedException x) {
+            Thread.interrupted();
         }
 
-        public synchronized void stop() {
-            run = false;
-            try {
-                ticker.join();
-            }catch (InterruptedException x) {
-                Thread.interrupted();
-            }
+        ticker = null;
+    }
 
-            ticker = null;
+    public void addTickListener(TickListener listener) {
+        if (listeners.add(listener)) {
+            if (counter.incrementAndGet() == 1)
+                start();
         }
 
-        public void addTickListener(TickListener listener) {
-            if (listeners.add(listener)) {
-                if (counter.incrementAndGet()==1) start();
-            }
+    }
 
+    public void removeTickListener(TickListener listener) {
+        if (listeners.remove(listener)) {
+            if (counter.decrementAndGet() == 0)
+                stop();
         }
+    }
 
-        public void removeTickListener(TickListener listener) {
-            if (listeners.remove(listener)) {
-                if (counter.decrementAndGet()==0) stop();
-            }
-        }
+    @Override
+    public void run() {
+        try {
 
-        @Override
-        public void run() {
-            try {
-
-                Stock[] stocks = new Stock[] { new Stock("GOOG", 435.43),
-                        new Stock("YHOO", 27.88), new Stock("ASF", 1015.55), };
-                Random r = new Random(System.currentTimeMillis());
-                while (run) {
-                    for (int j = 0; j < 1; j++) {
-                        int i = r.nextInt() % 3;
-                        if (i < 0)
-                            i = i * (-1);
-                        Stock stock = stocks[i];
-                        double change = r.nextDouble();
-                        boolean plus = r.nextBoolean();
-                        if (plus) {
-                            stock.setValue(stock.getValue() + change);
-                        } else {
-                            stock.setValue(stock.getValue() - change);
-                        }
-                        stock.setCnt(++ticknr);
-                        for (TickListener l : listeners) {
-                            l.tick(stock);
-                        }
-
+            Stock[] stocks = new Stock[] { new Stock("GOOG", 435.43), new Stock(
+                    "YHOO", 27.88), new Stock("ASF", 1015.55), };
+            Random r = new Random(System.currentTimeMillis());
+            while (run) {
+                for (int j = 0; j < 1; j++) {
+                    int i = r.nextInt() % 3;
+                    if (i < 0)
+                        i = i * (-1);
+                    Stock stock = stocks[i];
+                    double change = r.nextDouble();
+                    boolean plus = r.nextBoolean();
+                    if (plus) {
+                        stock.setValue(stock.getValue() + change);
+                    } else {
+                        stock.setValue(stock.getValue() - change);
                     }
-                    Thread.sleep(850);
-                }
-            } catch (InterruptedException ix) {
-                // Ignore
-            } catch (Exception x) {
-                x.printStackTrace();
-            }
-        }
+                    stock.setCnt(++ticknr);
+                    for (TickListener l : listeners) {
+                        l.tick(stock);
+                    }
 
+                }
+                Thread.sleep(850);
+            }
+        } catch (InterruptedException ix) {
+            // Ignore
+        } catch (Exception x) {
+            x.printStackTrace();
+        }
+    }
 
     public static interface TickListener {
         public void tick(Stock stock);

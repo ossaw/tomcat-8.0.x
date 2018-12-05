@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -28,7 +26,6 @@ import javax.el.FunctionMapper;
 
 import org.apache.el.util.ReflectionUtil;
 
-
 /**
  * @author Jacob Hookom [jacob@hookom.net]
  */
@@ -41,9 +38,8 @@ public class FunctionMapperImpl extends FunctionMapper implements
 
     /*
      * (non-Javadoc)
-     *
      * @see javax.el.FunctionMapper#resolveFunction(java.lang.String,
-     *      java.lang.String)
+     * java.lang.String)
      */
     @Override
     public Method resolveFunction(String prefix, String localName) {
@@ -67,7 +63,6 @@ public class FunctionMapperImpl extends FunctionMapper implements
 
     /*
      * (non-Javadoc)
-     *
      * @see java.io.Externalizable#writeExternal(java.io.ObjectOutput)
      */
     @Override
@@ -77,7 +72,6 @@ public class FunctionMapperImpl extends FunctionMapper implements
 
     /*
      * (non-Javadoc)
-     *
      * @see java.io.Externalizable#readExternal(java.io.ObjectInput)
      */
     @SuppressWarnings("unchecked")
@@ -114,7 +108,6 @@ public class FunctionMapperImpl extends FunctionMapper implements
 
         /*
          * (non-Javadoc)
-         *
          * @see java.io.Externalizable#writeExternal(java.io.ObjectOutput)
          */
         @Override
@@ -123,21 +116,17 @@ public class FunctionMapperImpl extends FunctionMapper implements
             out.writeUTF(this.localName);
             // make sure m isn't null
             getMethod();
-            out.writeUTF((this.owner != null) ?
-                     this.owner :
-                     this.m.getDeclaringClass().getName());
-            out.writeUTF((this.name != null) ?
-                     this.name :
-                     this.m.getName());
-            out.writeObject((this.types != null) ?
-                     this.types :
-                     ReflectionUtil.toTypeNameArray(this.m.getParameterTypes()));
+            out.writeUTF((this.owner != null) ? this.owner
+                    : this.m.getDeclaringClass().getName());
+            out.writeUTF((this.name != null) ? this.name : this.m.getName());
+            out.writeObject((this.types != null) ? this.types
+                    : ReflectionUtil.toTypeNameArray(this.m
+                            .getParameterTypes()));
 
         }
 
         /*
          * (non-Javadoc)
-         *
          * @see java.io.Externalizable#readExternal(java.io.ObjectInput)
          */
         @Override
@@ -145,7 +134,8 @@ public class FunctionMapperImpl extends FunctionMapper implements
                 ClassNotFoundException {
 
             this.prefix = in.readUTF();
-            if ("".equals(this.prefix)) this.prefix = null;
+            if ("".equals(this.prefix))
+                this.prefix = null;
             this.localName = in.readUTF();
             this.owner = in.readUTF();
             this.name = in.readUTF();
@@ -165,7 +155,8 @@ public class FunctionMapperImpl extends FunctionMapper implements
             return this.m;
         }
 
-        /* (non-Javadoc)
+        /*
+         * (non-Javadoc)
          * @see java.lang.Object#equals(java.lang.Object)
          */
         @Override
@@ -176,7 +167,8 @@ public class FunctionMapperImpl extends FunctionMapper implements
             return false;
         }
 
-        /* (non-Javadoc)
+        /*
+         * (non-Javadoc)
          * @see java.lang.Object#hashCode()
          */
         @Override

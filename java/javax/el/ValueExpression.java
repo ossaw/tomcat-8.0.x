@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -26,13 +24,17 @@ public abstract class ValueExpression extends Expression {
      * @return The result of evaluating this value expression
      *
      * @throws NullPointerException
-     *              If the supplied context is <code>null</code>
+     *                                   If the supplied context is
+     *                                   <code>null</code>
      * @throws PropertyNotFoundException
-     *              If a property/variable resolution failed because no match
-     *              was found or a match was found but was not readable
+     *                                   If a property/variable resolution
+     *                                   failed because no match
+     *                                   was found or a match was found but was
+     *                                   not readable
      * @throws ELException
-     *              Wraps any exception throw whilst resolving a property or
-     *              variable
+     *                                   Wraps any exception throw whilst
+     *                                   resolving a property or
+     *                                   variable
      */
     public abstract Object getValue(ELContext context);
 
@@ -42,16 +44,20 @@ public abstract class ValueExpression extends Expression {
      *                expression refers
      *
      * @throws NullPointerException
-     *              If the supplied context is <code>null</code>
+     *                                      If the supplied context is
+     *                                      <code>null</code>
      * @throws PropertyNotFoundException
-     *              If a property/variable resolution failed because no match
-     *              was found
+     *                                      If a property/variable resolution
+     *                                      failed because no match
+     *                                      was found
      * @throws PropertyNotWritableException
-     *              If a property/variable resolution failed because a match was
-     *              found but was not writable
+     *                                      If a property/variable resolution
+     *                                      failed because a match was
+     *                                      found but was not writable
      * @throws ELException
-     *              Wraps any exception throw whilst resolving a property or
-     *              variable
+     *                                      Wraps any exception throw whilst
+     *                                      resolving a property or
+     *                                      variable
      */
     public abstract void setValue(ELContext context, Object value);
 
@@ -62,13 +68,17 @@ public abstract class ValueExpression extends Expression {
      *         <code>false</code>
      *
      * @throws NullPointerException
-     *              If the supplied context is <code>null</code>
+     *                                   If the supplied context is
+     *                                   <code>null</code>
      * @throws PropertyNotFoundException
-     *              If a property/variable resolution failed because no match
-     *              was found or a match was found but was not readable
+     *                                   If a property/variable resolution
+     *                                   failed because no match
+     *                                   was found or a match was found but was
+     *                                   not readable
      * @throws ELException
-     *              Wraps any exception throw whilst resolving a property or
-     *              variable
+     *                                   Wraps any exception throw whilst
+     *                                   resolving a property or
+     *                                   variable
      */
     public abstract boolean isReadOnly(ELContext context);
 
@@ -78,13 +88,17 @@ public abstract class ValueExpression extends Expression {
      * @return The type of the result of this value expression
      *
      * @throws NullPointerException
-     *              If the supplied context is <code>null</code>
+     *                                   If the supplied context is
+     *                                   <code>null</code>
      * @throws PropertyNotFoundException
-     *              If a property/variable resolution failed because no match
-     *              was found or a match was found but was not readable
+     *                                   If a property/variable resolution
+     *                                   failed because no match
+     *                                   was found or a match was found but was
+     *                                   not readable
      * @throws ELException
-     *              Wraps any exception throw whilst resolving a property or
-     *              variable
+     *                                   Wraps any exception throw whilst
+     *                                   resolving a property or
+     *                                   variable
      */
     public abstract Class<?> getType(ELContext context);
 

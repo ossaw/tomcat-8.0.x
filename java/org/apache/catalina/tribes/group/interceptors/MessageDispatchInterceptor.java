@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -41,20 +39,21 @@ import org.apache.juli.logging.LogFactory;
  * <code>Channel.SEND_OPTIONS_ASYNCHRONOUS</code> flag to be set, if it is, it
  * will queue the message for delivery and immediately return to the sender.
  */
-public class MessageDispatchInterceptor extends ChannelInterceptorBase implements Runnable {
+public class MessageDispatchInterceptor extends ChannelInterceptorBase
+        implements Runnable {
 
-    private static final Log log = LogFactory.getLog(MessageDispatchInterceptor.class);
-    protected static final StringManager sm =
-            StringManager.getManager(MessageDispatchInterceptor.class.getPackage().getName());
+    private static final Log log = LogFactory.getLog(
+            MessageDispatchInterceptor.class);
+    protected static final StringManager sm = StringManager.getManager(
+            MessageDispatchInterceptor.class.getPackage().getName());
 
-    protected long maxQueueSize = 1024*1024*64; //64MB
+    protected long maxQueueSize = 1024 * 1024 * 64; //64MB
     /**
      * @deprecated Unused. Will be removed in Tomcat 8.5.x.
      */
     @Deprecated
     // Use fully qualified name to avoid deprecation warning on import.
-    protected final org.apache.catalina.tribes.transport.bio.util.FastQueue queue =
-            new org.apache.catalina.tribes.transport.bio.util.FastQueue();
+    protected final org.apache.catalina.tribes.transport.bio.util.FastQueue queue = new org.apache.catalina.tribes.transport.bio.util.FastQueue();
     protected volatile boolean run = false;
     /**
      * @deprecated Unused. Will be removed in Tomcat 8.5.x.
@@ -70,34 +69,35 @@ public class MessageDispatchInterceptor extends ChannelInterceptorBase implement
     protected int maxSpareThreads = 2;
     protected long keepAliveTime = 5000;
 
-
     public MessageDispatchInterceptor() {
         setOptionFlag(Channel.SEND_OPTIONS_ASYNCHRONOUS);
     }
 
-
     @Override
-    public void sendMessage(Member[] destination, ChannelMessage msg, InterceptorPayload payload)
-            throws ChannelException {
-        boolean async = (msg.getOptions() &
-                Channel.SEND_OPTIONS_ASYNCHRONOUS) == Channel.SEND_OPTIONS_ASYNCHRONOUS;
+    public void sendMessage(Member[] destination, ChannelMessage msg,
+            InterceptorPayload payload) throws ChannelException {
+        boolean async = (msg.getOptions()
+                & Channel.SEND_OPTIONS_ASYNCHRONOUS) == Channel.SEND_OPTIONS_ASYNCHRONOUS;
         if (async && run) {
-            if ((getCurrentSize()+msg.getMessage().getLength()) > maxQueueSize) {
+            if ((getCurrentSize() + msg.getMessage()
+                    .getLength()) > maxQueueSize) {
                 if (alwaysSend) {
-                    super.sendMessage(destination,msg,payload);
+                    super.sendMessage(destination, msg, payload);
                     return;
                 } else {
-                    throw new ChannelException(sm.getString("messageDispatchInterceptor.queue.full",
-                            Long.toString(maxQueueSize), Long.toString(getCurrentSize())));
+                    throw new ChannelException(sm.getString(
+                            "messageDispatchInterceptor.queue.full", Long
+                                    .toString(maxQueueSize), Long.toString(
+                                            getCurrentSize())));
                 }
             }
             //add to queue
             if (useDeepClone) {
-                msg = (ChannelMessage)msg.deepclone();
+                msg = (ChannelMessage) msg.deepclone();
             }
             if (!addToQueue(msg, destination, payload)) {
-                throw new ChannelException(
-                        sm.getString("messageDispatchInterceptor.unableAdd.queue"));
+                throw new ChannelException(sm.getString(
+                        "messageDispatchInterceptor.unableAdd.queue"));
             }
             addAndGetCurrentSize(msg.getMessage().getLength());
         } else {
@@ -105,9 +105,8 @@ public class MessageDispatchInterceptor extends ChannelInterceptorBase implement
         }
     }
 
-
-    public boolean addToQueue(final ChannelMessage msg, final Member[] destination,
-            final InterceptorPayload payload) {
+    public boolean addToQueue(final ChannelMessage msg,
+            final Member[] destination, final InterceptorPayload payload) {
         Runnable r = new Runnable() {
             @Override
             public void run() {
@@ -117,7 +116,6 @@ public class MessageDispatchInterceptor extends ChannelInterceptorBase implement
         executor.execute(r);
         return true;
     }
-
 
     /**
      * @deprecated Not used. The thread pool contains its own queue. This will
@@ -130,22 +128,21 @@ public class MessageDispatchInterceptor extends ChannelInterceptorBase implement
         return null;
     }
 
-
     public void startQueue() {
         if (run) {
             return;
         }
         String channelName = "";
         if (getChannel() instanceof GroupChannel
-                && ((GroupChannel)getChannel()).getName() != null) {
-            channelName = "[" + ((GroupChannel)getChannel()).getName() + "]";
+                && ((GroupChannel) getChannel()).getName() != null) {
+            channelName = "[" + ((GroupChannel) getChannel()).getName() + "]";
         }
-        executor = ExecutorFactory.newThreadPool(maxSpareThreads, maxThreads, keepAliveTime,
-                TimeUnit.MILLISECONDS,
-                new TcclThreadFactory("MessageDispatchInterceptor.MessageDispatchThread" + channelName));
+        executor = ExecutorFactory.newThreadPool(maxSpareThreads, maxThreads,
+                keepAliveTime, TimeUnit.MILLISECONDS, new TcclThreadFactory(
+                        "MessageDispatchInterceptor.MessageDispatchThread"
+                                + channelName));
         run = true;
     }
-
 
     public void stopQueue() {
         run = false;
@@ -153,56 +150,47 @@ public class MessageDispatchInterceptor extends ChannelInterceptorBase implement
         setAndGetCurrentSize(0);
     }
 
-
     @Override
     public void setOptionFlag(int flag) {
-        if ( flag != Channel.SEND_OPTIONS_ASYNCHRONOUS ) {
-            log.warn(sm.getString("messageDispatchInterceptor.warning.optionflag"));
+        if (flag != Channel.SEND_OPTIONS_ASYNCHRONOUS) {
+            log.warn(sm.getString(
+                    "messageDispatchInterceptor.warning.optionflag"));
         }
         super.setOptionFlag(flag);
     }
-
 
     public void setMaxQueueSize(long maxQueueSize) {
         this.maxQueueSize = maxQueueSize;
     }
 
-
     public void setUseDeepClone(boolean useDeepClone) {
         this.useDeepClone = useDeepClone;
     }
-
 
     public long getMaxQueueSize() {
         return maxQueueSize;
     }
 
-
     public boolean getUseDeepClone() {
         return useDeepClone;
     }
-
 
     public long getCurrentSize() {
         return currentSize.get();
     }
 
-
     public long addAndGetCurrentSize(long inc) {
         return currentSize.addAndGet(inc);
     }
-
 
     public long setAndGetCurrentSize(long value) {
         currentSize.set(value);
         return value;
     }
 
-
     public long getKeepAliveTime() {
         return keepAliveTime;
     }
-
 
     public int getMaxSpareThreads() {
         return maxSpareThreads;
@@ -212,39 +200,34 @@ public class MessageDispatchInterceptor extends ChannelInterceptorBase implement
         return maxThreads;
     }
 
-
     public void setKeepAliveTime(long keepAliveTime) {
         this.keepAliveTime = keepAliveTime;
     }
-
 
     public void setMaxSpareThreads(int maxSpareThreads) {
         this.maxSpareThreads = maxSpareThreads;
     }
 
-
     public void setMaxThreads(int maxThreads) {
         this.maxThreads = maxThreads;
     }
-
 
     public boolean isAlwaysSend() {
         return alwaysSend;
     }
 
-
     public void setAlwaysSend(boolean alwaysSend) {
         this.alwaysSend = alwaysSend;
     }
 
-
     @Override
     public void start(int svc) throws ChannelException {
         //start the thread
-        if (!run ) {
+        if (!run) {
             synchronized (this) {
                 // only start with the sender
-                if ( !run && ((svc & Channel.SND_TX_SEQ)==Channel.SND_TX_SEQ) ) {
+                if (!run && ((svc
+                        & Channel.SND_TX_SEQ) == Channel.SND_TX_SEQ)) {
                     startQueue();
                 }
             }
@@ -252,13 +235,12 @@ public class MessageDispatchInterceptor extends ChannelInterceptorBase implement
         super.start(svc);
     }
 
-
     @Override
     public void stop(int svc) throws ChannelException {
         //stop the thread
         if (run) {
             synchronized (this) {
-                if ( run && ((svc & Channel.SND_TX_SEQ)==Channel.SND_TX_SEQ)) {
+                if (run && ((svc & Channel.SND_TX_SEQ) == Channel.SND_TX_SEQ)) {
                     stopQueue();
                 }
             }
@@ -266,7 +248,6 @@ public class MessageDispatchInterceptor extends ChannelInterceptorBase implement
 
         super.stop(svc);
     }
-
 
     /**
      * @deprecated Unused. Will be removed in 8.5.x
@@ -277,7 +258,6 @@ public class MessageDispatchInterceptor extends ChannelInterceptorBase implement
         // NO-OP since it is now unused.
     }
 
-
     /**
      * @deprecated Unused. Will be removed in 8.5.x
      */
@@ -287,7 +267,6 @@ public class MessageDispatchInterceptor extends ChannelInterceptorBase implement
         sendAsyncData(link.data(), link.getDestination(), link.getPayload());
         return link.next();
     }
-
 
     protected void sendAsyncData(ChannelMessage msg, Member[] destination,
             InterceptorPayload payload) {
@@ -301,10 +280,12 @@ public class MessageDispatchInterceptor extends ChannelInterceptorBase implement
                 if (handler != null) {
                     handler.handleCompletion(new UniqueId(msg.getUniqueId()));
                 }
-            } catch ( Exception ex ) {
-                log.error(sm.getString("messageDispatchInterceptor.completeMessage.failed"),ex);
+            } catch (Exception ex) {
+                log.error(sm.getString(
+                        "messageDispatchInterceptor.completeMessage.failed"),
+                        ex);
             }
-        } catch ( Exception x ) {
+        } catch (Exception x) {
             ChannelException cx = null;
             if (x instanceof ChannelException) {
                 cx = (ChannelException) x;
@@ -312,14 +293,16 @@ public class MessageDispatchInterceptor extends ChannelInterceptorBase implement
                 cx = new ChannelException(x);
             }
             if (log.isDebugEnabled()) {
-                log.debug(sm.getString("messageDispatchInterceptor.AsyncMessage.failed"),x);
+                log.debug(sm.getString(
+                        "messageDispatchInterceptor.AsyncMessage.failed"), x);
             }
             try {
                 if (handler != null) {
                     handler.handleError(cx, new UniqueId(msg.getUniqueId()));
                 }
-            } catch ( Exception ex ) {
-                log.error(sm.getString("messageDispatchInterceptor.errorMessage.failed"),ex);
+            } catch (Exception ex) {
+                log.error(sm.getString(
+                        "messageDispatchInterceptor.errorMessage.failed"), ex);
             }
         } finally {
             addAndGetCurrentSize(-msg.getMessage().getLength());

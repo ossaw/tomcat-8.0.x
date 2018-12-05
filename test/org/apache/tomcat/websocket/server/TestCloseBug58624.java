@@ -1,18 +1,16 @@
 /*
- *  Licensed to the Apache Software Foundation (ASF) under one or more
- *  contributor license agreements.  See the NOTICE file distributed with
- *  this work for additional information regarding copyright ownership.
- *  The ASF licenses this file to You under the Apache License, Version 2.0
- *  (the "License"); you may not use this file except in compliance with
- *  the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements. See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.apache.tomcat.websocket.server;
 
@@ -52,22 +50,25 @@ public class TestCloseBug58624 extends WebSocketBaseTest {
         Tomcat.addServlet(ctx, "default", new DefaultServlet());
         ctx.addServletMappingDecoded("/", "default");
 
-        WebSocketContainer wsContainer = ContainerProvider.getWebSocketContainer();
+        WebSocketContainer wsContainer = ContainerProvider
+                .getWebSocketContainer();
 
         tomcat.start();
 
         Bug58624ClientEndpoint client = new Bug58624ClientEndpoint();
-        URI uri = new URI("ws://localhost:" + getPort() + Bug58624ServerConfig.PATH);
+        URI uri = new URI("ws://localhost:" + getPort()
+                + Bug58624ServerConfig.PATH);
 
         Session session = wsContainer.connectToServer(client, uri);
 
         // Wait for session to open on the server
         int count = 0;
-        while (count < 50 && Bug58624ServerEndpoint.getOpenSessionCount() == 0) {
+        while (count < 50 && Bug58624ServerEndpoint
+                .getOpenSessionCount() == 0) {
             count++;
             Thread.sleep(100);
         }
-        Assert.assertNotEquals(0,  Bug58624ServerEndpoint.getOpenSessionCount());
+        Assert.assertNotEquals(0, Bug58624ServerEndpoint.getOpenSessionCount());
 
         // Now close the session
         session.close();
@@ -78,10 +79,10 @@ public class TestCloseBug58624 extends WebSocketBaseTest {
             count++;
             Thread.sleep(100);
         }
-        Assert.assertEquals(0,  Bug58624ServerEndpoint.getOpenSessionCount());
+        Assert.assertEquals(0, Bug58624ServerEndpoint.getOpenSessionCount());
 
         // Ensure no errors were reported on the server
-        Assert.assertEquals(0,  Bug58624ServerEndpoint.getErrorCount());
+        Assert.assertEquals(0, Bug58624ServerEndpoint.getErrorCount());
 
         if (client.getError() != null) {
             throw client.getError();
@@ -93,12 +94,10 @@ public class TestCloseBug58624 extends WebSocketBaseTest {
 
         private volatile Throwable t;
 
-
         @OnError
         public void onError(Throwable t) {
             this.t = t;
         }
-
 
         public Throwable getError() {
             return this.t;
@@ -109,13 +108,13 @@ public class TestCloseBug58624 extends WebSocketBaseTest {
 
         public static String PATH = "/bug58624";
 
-
         @Override
         public void contextInitialized(ServletContextEvent sce) {
             super.contextInitialized(sce);
 
-            ServerContainer sc = (ServerContainer) sce.getServletContext().getAttribute(
-                    Constants.SERVER_CONTAINER_SERVLET_CONTEXT_ATTRIBUTE);
+            ServerContainer sc = (ServerContainer) sce.getServletContext()
+                    .getAttribute(
+                            Constants.SERVER_CONTAINER_SERVLET_CONTEXT_ATTRIBUTE);
 
             ServerEndpointConfig sec = ServerEndpointConfig.Builder.create(
                     Bug58624ServerEndpoint.class, PATH).build();
@@ -146,19 +145,17 @@ public class TestCloseBug58624 extends WebSocketBaseTest {
             openSessionCount.incrementAndGet();
         }
 
-
         @OnMessage
-        public void onMessage(@SuppressWarnings("unused") Session session, String message) {
+        public void onMessage(@SuppressWarnings("unused") Session session,
+                String message) {
             System.out.println("Received message " + message);
         }
-
 
         @OnError
         public void onError(Throwable t) {
             errorCount.incrementAndGet();
             t.printStackTrace();
         }
-
 
         @OnClose
         public void onClose(@SuppressWarnings("unused") CloseReason cr) {

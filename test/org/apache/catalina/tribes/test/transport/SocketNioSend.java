@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -44,16 +42,16 @@ public class SocketNioSend {
         data.setOptions(Channel.SEND_OPTIONS_BYTE_MESSAGE);
         data.setAddress(mbr);
         byte[] buf = new byte[8192 * 4];
-        data.setMessage(new XByteBuffer(buf,false));
+        data.setMessage(new XByteBuffer(buf, false));
         buf = XByteBuffer.createDataPackage(data);
         int len = buf.length;
-        BigDecimal total = new BigDecimal((double)0);
-        BigDecimal bytes = new BigDecimal((double)len);
+        BigDecimal total = new BigDecimal((double) 0);
+        BigDecimal bytes = new BigDecimal((double) len);
         NioSender sender = new NioSender();
         sender.setDestination(mbr);
         sender.setDirectBuffer(true);
         sender.setSelector(selector);
-        sender.setTxBufSize(1024*1024);
+        sender.setTxBufSize(1024 * 1024);
         sender.connect();
         sender.setMessage(buf);
         System.out.println("Writing to 9999");
@@ -62,7 +60,7 @@ public class SocketNioSend {
         boolean first = true;
         int count = 0;
         DecimalFormat df = new DecimalFormat("##.00");
-        while (count<100000) {
+        while (count < 100000) {
             if (first) {
                 first = false;
                 start = System.currentTimeMillis();
@@ -91,11 +89,13 @@ public class SocketNioSend {
                         total = total.add(bytes);
                         sender.reset();
                         sender.setMessage(buf);
-                        mb += ( (double) len) / 1024 / 1024;
-                        if ( ( (++count) % 10000) == 0) {
+                        mb += ((double) len) / 1024 / 1024;
+                        if (((++count) % 10000) == 0) {
                             long time = System.currentTimeMillis();
-                            double seconds = ( (double) (time - start)) / 1000;
-                            System.out.println("Throughput " + df.format(mb / seconds) + " MB/seconds, total "+mb+" MB, total "+total+" bytes.");
+                            double seconds = ((double) (time - start)) / 1000;
+                            System.out.println("Throughput " + df.format(mb
+                                    / seconds) + " MB/seconds, total " + mb
+                                    + " MB, total " + total + " bytes.");
                         }
                     }
 

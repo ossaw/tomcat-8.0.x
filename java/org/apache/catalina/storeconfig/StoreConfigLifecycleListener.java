@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -37,15 +35,15 @@ import org.apache.tomcat.util.res.StringManager;
  */
 public class StoreConfigLifecycleListener implements LifecycleListener {
 
-    private static Log log = LogFactory.getLog(StoreConfigLifecycleListener.class);
-    private static StringManager sm =
-            StringManager.getManager(StoreConfigLifecycleListener.class.getName());
+    private static Log log = LogFactory.getLog(
+            StoreConfigLifecycleListener.class);
+    private static StringManager sm = StringManager.getManager(
+            StoreConfigLifecycleListener.class.getName());
 
     /**
      * The configuration information registry for our managed beans.
      */
     protected final Registry registry = MBeanUtils.createRegistry();
-
 
     IStoreConfig storeConfig;
 
@@ -56,8 +54,9 @@ public class StoreConfigLifecycleListener implements LifecycleListener {
 
     /*
      * register StoreRegistry after Start the complete Server
-     *
-     * @see org.apache.catalina.LifecycleListener#lifecycleEvent(org.apache.catalina.LifecycleEvent)
+     * @see
+     * org.apache.catalina.LifecycleListener#lifecycleEvent(org.apache.catalina.
+     * LifecycleEvent)
      */
     @Override
     public void lifecycleEvent(LifecycleEvent event) {
@@ -73,7 +72,7 @@ public class StoreConfigLifecycleListener implements LifecycleListener {
                 oname = null;
             }
         }
-     }
+    }
 
     /**
      * create StoreConfig MBean and load StoreRgistry MBeans name is
@@ -100,7 +99,7 @@ public class StoreConfigLifecycleListener implements LifecycleListener {
         }
         try {
             // Note: Hard-coded domain used since this object is per Server/JVM
-            oname = new ObjectName("Catalina:type=StoreConfig" );
+            oname = new ObjectName("Catalina:type=StoreConfig");
             registry.registerComponent(storeConfig, oname, "StoreConfig");
         } catch (Exception ex) {
             log.error("createMBean register MBean", ex);
@@ -128,7 +127,7 @@ public class StoreConfigLifecycleListener implements LifecycleListener {
 
     /**
      * @param storeConfig
-     *            The storeConfig to set.
+     *                    The storeConfig to set.
      */
     public void setStoreConfig(IStoreConfig storeConfig) {
         this.storeConfig = storeConfig;
@@ -143,7 +142,7 @@ public class StoreConfigLifecycleListener implements LifecycleListener {
 
     /**
      * @param storeConfigClass
-     *            The storeConfigClass to set.
+     *                         The storeConfigClass to set.
      */
     public void setStoreConfigClass(String storeConfigClass) {
         this.storeConfigClass = storeConfigClass;
@@ -158,7 +157,7 @@ public class StoreConfigLifecycleListener implements LifecycleListener {
 
     /**
      * @param storeRegistry
-     *            The storeRegistry to set.
+     *                      The storeRegistry to set.
      */
     public void setStoreRegistry(String storeRegistry) {
         this.storeRegistry = storeRegistry;

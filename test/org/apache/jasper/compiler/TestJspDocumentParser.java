@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -39,8 +37,8 @@ public class TestJspDocumentParser extends TomcatBaseTest {
     public void testBug47977() throws Exception {
         getTomcatInstanceTestWebapp(false, true);
 
-        int rc = getUrl("http://localhost:" + getPort() +
-                "/test/bug47977.jspx", new ByteChunk(), null);
+        int rc = getUrl("http://localhost:" + getPort() + "/test/bug47977.jspx",
+                new ByteChunk(), null);
 
         Assert.assertEquals(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, rc);
     }
@@ -51,7 +49,8 @@ public class TestJspDocumentParser extends TomcatBaseTest {
 
         Exception e = null;
         try {
-            getUrl("http://localhost:" + getPort() + "/test/bug48nnn/bug48827.jspx");
+            getUrl("http://localhost:" + getPort()
+                    + "/test/bug48nnn/bug48827.jspx");
         } catch (IOException ioe) {
             e = ioe;
         }
@@ -65,13 +64,13 @@ public class TestJspDocumentParser extends TomcatBaseTest {
         getTomcatInstanceTestWebapp(false, true);
 
         ByteChunk bc = new ByteChunk();
-        int rc = getUrl("http://localhost:" + getPort() +
-                "/test/bug5nnnn/bug54801a.jspx", bc, null);
+        int rc = getUrl("http://localhost:" + getPort()
+                + "/test/bug5nnnn/bug54801a.jspx", bc, null);
         Assert.assertEquals(HttpServletResponse.SC_OK, rc);
 
         bc.recycle();
-        rc = getUrl("http://localhost:" + getPort() +
-                "/test/bug5nnnn/bug54801b.jspx", bc, null);
+        rc = getUrl("http://localhost:" + getPort()
+                + "/test/bug5nnnn/bug54801b.jspx", bc, null);
         Assert.assertEquals(HttpServletResponse.SC_OK, rc);
     }
 
@@ -80,15 +79,15 @@ public class TestJspDocumentParser extends TomcatBaseTest {
         getTomcatInstanceTestWebapp(false, true);
 
         ByteChunk bc = new ByteChunk();
-        int rc = getUrl("http://localhost:" + getPort() +
-                "/test/bug5nnnn/bug54821a.jspx", bc, null);
+        int rc = getUrl("http://localhost:" + getPort()
+                + "/test/bug5nnnn/bug54821a.jspx", bc, null);
         Assert.assertEquals(HttpServletResponse.SC_OK, rc);
 
         bc.recycle();
-        rc = getUrl("http://localhost:" + getPort() +
-                "/test/bug5nnnn/bug54821b.jspx", bc, null);
+        rc = getUrl("http://localhost:" + getPort()
+                + "/test/bug5nnnn/bug54821b.jspx", bc, null);
         Assert.assertEquals(HttpServletResponse.SC_OK, rc);
-   }
+    }
 
     @Test
     public void testSchemaValidation() throws Exception {
@@ -98,11 +97,13 @@ public class TestJspDocumentParser extends TomcatBaseTest {
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
         dbf.setNamespaceAware(true);
         dbf.setValidating(true);
-        dbf.setFeature("http://apache.org/xml/features/validation/schema", true);
+        dbf.setFeature("http://apache.org/xml/features/validation/schema",
+                true);
         DocumentBuilder db = dbf.newDocumentBuilder();
         db.setErrorHandler(new ErrorHandler() {
             @Override
-            public void warning(SAXParseException exception) throws SAXException {
+            public void warning(SAXParseException exception)
+                    throws SAXException {
                 throw exception;
             }
 
@@ -112,12 +113,15 @@ public class TestJspDocumentParser extends TomcatBaseTest {
             }
 
             @Override
-            public void fatalError(SAXParseException exception) throws SAXException {
+            public void fatalError(SAXParseException exception)
+                    throws SAXException {
                 throw exception;
             }
         });
         Document document = db.parse(path);
-        Assert.assertEquals("urn:valid", document.getDocumentElement().getNamespaceURI());
-        Assert.assertEquals("root", document.getDocumentElement().getLocalName());
-   }
+        Assert.assertEquals("urn:valid", document.getDocumentElement()
+                .getNamespaceURI());
+        Assert.assertEquals("root", document.getDocumentElement()
+                .getLocalName());
+    }
 }

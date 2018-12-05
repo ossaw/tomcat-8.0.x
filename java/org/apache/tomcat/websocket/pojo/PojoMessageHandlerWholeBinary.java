@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -35,11 +33,11 @@ import org.apache.tomcat.util.res.StringManager;
 /**
  * ByteBuffer specific concrete implementation for handling whole messages.
  */
-public class PojoMessageHandlerWholeBinary
-        extends PojoMessageHandlerWholeBase<ByteBuffer> {
+public class PojoMessageHandlerWholeBinary extends
+        PojoMessageHandlerWholeBase<ByteBuffer> {
 
-    private static final StringManager sm =
-            StringManager.getManager(Constants.PACKAGE_NAME);
+    private static final StringManager sm = StringManager.getManager(
+            Constants.PACKAGE_NAME);
 
     private final List<Decoder> decoders = new ArrayList<>();
 
@@ -54,7 +52,8 @@ public class PojoMessageHandlerWholeBinary
                 indexSession, maxMessageSize);
 
         // Update binary text size handled by session
-        if (maxMessageSize > -1 && maxMessageSize > session.getMaxBinaryMessageBufferSize()) {
+        if (maxMessageSize > -1 && maxMessageSize > session
+                .getMaxBinaryMessageBufferSize()) {
             if (maxMessageSize > Integer.MAX_VALUE) {
                 throw new IllegalArgumentException(sm.getString(
                         "pojoMessageHandlerWhole.maxBufferSize"));
@@ -66,14 +65,14 @@ public class PojoMessageHandlerWholeBinary
             if (decoderClazzes != null) {
                 for (Class<? extends Decoder> decoderClazz : decoderClazzes) {
                     if (Binary.class.isAssignableFrom(decoderClazz)) {
-                        Binary<?> decoder =
-                                (Binary<?>) decoderClazz.newInstance();
+                        Binary<?> decoder = (Binary<?>) decoderClazz
+                                .newInstance();
                         decoder.init(config);
                         decoders.add(decoder);
                     } else if (BinaryStream.class.isAssignableFrom(
                             decoderClazz)) {
-                        BinaryStream<?> decoder =
-                                (BinaryStream<?>) decoderClazz.newInstance();
+                        BinaryStream<?> decoder = (BinaryStream<?>) decoderClazz
+                                .newInstance();
                         decoder.init(config);
                         decoders.add(decoder);
                     } else {
@@ -86,7 +85,6 @@ public class PojoMessageHandlerWholeBinary
         }
         this.isForInputStream = isForInputStream;
     }
-
 
     @Override
     protected Object decode(ByteBuffer message) throws DecodeException {
@@ -110,7 +108,6 @@ public class PojoMessageHandlerWholeBinary
         return null;
     }
 
-
     @Override
     protected Object convert(ByteBuffer message) {
         byte[] array = new byte[message.remaining()];
@@ -121,7 +118,6 @@ public class PojoMessageHandlerWholeBinary
             return array;
         }
     }
-
 
     @Override
     protected void onClose() {

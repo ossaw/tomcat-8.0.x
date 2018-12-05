@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -29,12 +27,9 @@ import org.apache.tomcat.util.buf.UDecoder;
  */
 public class LoginConfig implements Serializable {
 
-
     private static final long serialVersionUID = 1L;
 
-
     // ----------------------------------------------------------- Constructors
-
 
     /**
      * Construct a new LoginConfig with default properties.
@@ -45,17 +40,16 @@ public class LoginConfig implements Serializable {
 
     }
 
-
     /**
      * Construct a new LoginConfig with the specified properties.
      *
      * @param authMethod The authentication method
-     * @param realmName The realm name
-     * @param loginPage The login page URI
-     * @param errorPage The error page URI
+     * @param realmName  The realm name
+     * @param loginPage  The login page URI
+     * @param errorPage  The error page URI
      */
-    public LoginConfig(String authMethod, String realmName,
-                       String loginPage, String errorPage) {
+    public LoginConfig(String authMethod, String realmName, String loginPage,
+            String errorPage) {
 
         super();
         setAuthMethod(authMethod);
@@ -65,12 +59,10 @@ public class LoginConfig implements Serializable {
 
     }
 
-
     // ------------------------------------------------------------- Properties
 
-
     /**
-     * The authentication method to use for application login.  Must be
+     * The authentication method to use for application login. Must be
      * BASIC, DIGEST, FORM, or CLIENT-CERT.
      */
     private String authMethod = null;
@@ -82,7 +74,6 @@ public class LoginConfig implements Serializable {
     public void setAuthMethod(String authMethod) {
         this.authMethod = authMethod;
     }
-
 
     /**
      * The context-relative URI of the error page for form login.
@@ -100,7 +91,6 @@ public class LoginConfig implements Serializable {
         this.errorPage = UDecoder.URLDecode(errorPage);
     }
 
-
     /**
      * The context-relative URI of the login page for form login.
      */
@@ -117,7 +107,6 @@ public class LoginConfig implements Serializable {
         this.loginPage = UDecoder.URLDecode(loginPage);
     }
 
-
     /**
      * The realm name used when challenging the user for authentication
      * credentials.
@@ -132,9 +121,7 @@ public class LoginConfig implements Serializable {
         this.realmName = realmName;
     }
 
-
     // --------------------------------------------------------- Public Methods
-
 
     /**
      * Return a String representation of this object.
@@ -162,27 +149,27 @@ public class LoginConfig implements Serializable {
 
     }
 
-
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
      * @see java.lang.Object#hashCode()
      */
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result
-                + ((authMethod == null) ? 0 : authMethod.hashCode());
-        result = prime * result
-                + ((errorPage == null) ? 0 : errorPage.hashCode());
-        result = prime * result
-                + ((loginPage == null) ? 0 : loginPage.hashCode());
-        result = prime * result
-                + ((realmName == null) ? 0 : realmName.hashCode());
+        result = prime * result + ((authMethod == null) ? 0
+                : authMethod.hashCode());
+        result = prime * result + ((errorPage == null) ? 0
+                : errorPage.hashCode());
+        result = prime * result + ((loginPage == null) ? 0
+                : loginPage.hashCode());
+        result = prime * result + ((realmName == null) ? 0
+                : realmName.hashCode());
         return result;
     }
 
-
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
@@ -214,6 +201,5 @@ public class LoginConfig implements Serializable {
             return false;
         return true;
     }
-
 
 }

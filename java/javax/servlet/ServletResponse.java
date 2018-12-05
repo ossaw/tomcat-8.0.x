@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -94,10 +92,11 @@ public interface ServletResponse {
      *
      * @return a {@link ServletOutputStream} for writing binary data
      * @exception IllegalStateException
-     *                if the <code>getWriter</code> method has been called on
-     *                this response
+     *                                  if the <code>getWriter</code> method has
+     *                                  been called on
+     *                                  this response
      * @exception IOException
-     *                if an input or output exception occurred
+     *                                  if an input or output exception occurred
      * @see #getWriter
      */
     public ServletOutputStream getOutputStream() throws IOException;
@@ -118,14 +117,16 @@ public interface ServletResponse {
      *
      * @return a <code>PrintWriter</code> object that can return character data
      *         to the client
-     * @exception java.io.UnsupportedEncodingException
-     *                if the character encoding returned by
-     *                <code>getCharacterEncoding</code> cannot be used
+     * @exception                       java.io.UnsupportedEncodingException
+     *                                  if the character encoding returned by
+     *                                  <code>getCharacterEncoding</code> cannot
+     *                                  be used
      * @exception IllegalStateException
-     *                if the <code>getOutputStream</code> method has already
-     *                been called for this response object
+     *                                  if the <code>getOutputStream</code>
+     *                                  method has already
+     *                                  been called for this response object
      * @exception IOException
-     *                if an input or output exception occurred
+     *                                  if an input or output exception occurred
      * @see #getOutputStream
      * @see #setCharacterEncoding
      */
@@ -154,9 +155,9 @@ public interface ServletResponse {
      * encode text written via the servlet response's writer.
      *
      * @param charset
-     *            a String specifying only the character set defined by IANA
-     *            Character Sets
-     *            (http://www.iana.org/assignments/character-sets)
+     *                a String specifying only the character set defined by IANA
+     *                Character Sets
+     *                (http://www.iana.org/assignments/character-sets)
      * @see #setContentType #setLocale
      * @since 2.4
      */
@@ -177,8 +178,9 @@ public interface ServletResponse {
      * this method sets the HTTP Content-Length header.
      *
      * @param length
-     *            an integer specifying the length of the content being returned
-     *            to the client; sets the Content-Length header
+     *               an integer specifying the length of the content being
+     *               returned
+     *               to the client; sets the Content-Length header
      *
      * @since Servlet 3.1
      */
@@ -204,7 +206,7 @@ public interface ServletResponse {
      * <code>Content-Type</code> header is used.
      *
      * @param type
-     *            a <code>String</code> specifying the MIME type of the content
+     *             a <code>String</code> specifying the MIME type of the content
      * @see #setLocale
      * @see #setCharacterEncoding
      * @see #getOutputStream
@@ -227,9 +229,10 @@ public interface ServletResponse {
      * this method throws an <code>IllegalStateException</code>.
      *
      * @param size
-     *            the preferred buffer size
+     *             the preferred buffer size
      * @exception IllegalStateException
-     *                if this method is called after content has been written
+     *                                  if this method is called after content
+     *                                  has been written
      * @see #getBufferSize
      * @see #flushBuffer
      * @see #isCommitted
@@ -294,7 +297,8 @@ public interface ServletResponse {
      * <code>IllegalStateException</code>.
      *
      * @exception IllegalStateException
-     *                if the response has already been committed
+     *                                  if the response has already been
+     *                                  committed
      * @see #setBufferSize
      * @see #getBufferSize
      * @see #flushBuffer
@@ -344,8 +348,8 @@ public interface ServletResponse {
      * response is committed have no effect.
      *
      * @return The locale specified for this response using the
-     *          {@link #setLocale} method. If no locale has been specified, the
-     *          container's default locale is returned.
+     *         {@link #setLocale} method. If no locale has been specified, the
+     *         container's default locale is returned.
      *
      * @see #setLocale
      */

@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -22,8 +20,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
-
-
 /**
  * Representation of an Context element
  *
@@ -34,7 +30,6 @@ public class ResourceBase implements Serializable, Injectable {
     private static final long serialVersionUID = 1L;
 
     // ------------------------------------------------------------- Properties
-
 
     /**
      * The description of this resource.
@@ -48,8 +43,6 @@ public class ResourceBase implements Serializable, Injectable {
     public void setDescription(String description) {
         this.description = description;
     }
-
-
 
     /**
      * The name of this resource.
@@ -65,7 +58,6 @@ public class ResourceBase implements Serializable, Injectable {
         this.name = name;
     }
 
-
     /**
      * The name of the resource implementation class.
      */
@@ -78,7 +70,6 @@ public class ResourceBase implements Serializable, Injectable {
     public void setType(String type) {
         this.type = type;
     }
-
 
     /**
      * Holder for our configured properties.
@@ -116,8 +107,10 @@ public class ResourceBase implements Serializable, Injectable {
     private final List<InjectionTarget> injectionTargets = new ArrayList<>();
 
     @Override
-    public void addInjectionTarget(String injectionTargetName, String jndiName) {
-        InjectionTarget target = new InjectionTarget(injectionTargetName, jndiName);
+    public void addInjectionTarget(String injectionTargetName,
+            String jndiName) {
+        InjectionTarget target = new InjectionTarget(injectionTargetName,
+                jndiName);
         injectionTargets.add(target);
     }
 
@@ -126,22 +119,20 @@ public class ResourceBase implements Serializable, Injectable {
         return injectionTargets;
     }
 
-
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result +
-                ((description == null) ? 0 : description.hashCode());
-        result = prime * result +
-                ((injectionTargets == null) ? 0 : injectionTargets.hashCode());
+        result = prime * result + ((description == null) ? 0
+                : description.hashCode());
+        result = prime * result + ((injectionTargets == null) ? 0
+                : injectionTargets.hashCode());
         result = prime * result + ((name == null) ? 0 : name.hashCode());
-        result = prime * result +
-                ((properties == null) ? 0 : properties.hashCode());
+        result = prime * result + ((properties == null) ? 0
+                : properties.hashCode());
         result = prime * result + ((type == null) ? 0 : type.hashCode());
         return result;
     }
-
 
     @Override
     public boolean equals(Object obj) {
@@ -192,7 +183,6 @@ public class ResourceBase implements Serializable, Injectable {
         }
         return true;
     }
-
 
     // -------------------------------------------------------- Package Methods
 

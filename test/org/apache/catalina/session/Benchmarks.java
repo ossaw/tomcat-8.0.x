@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -38,16 +36,15 @@ public class Benchmarks {
 
     /*
      * Results on markt's 4-core Windows dev box
-     *  1 thread  -  ~1,400ms
-     *  2 threads -  ~2,100ms
-     *  4 threads -  ~3,100ms
+     * 1 thread - ~1,400ms
+     * 2 threads - ~2,100ms
+     * 4 threads - ~3,100ms
      * 16 threads - ~14,700ms
-     *
      * Results on markt's 2-core OSX dev box
-     *  1 thread  -   ~1,400ms
-     *  2 threads -   ~1,700ms
-     *  4 threads -   ~3,500ms
-     * 16 threads -  ~14,465ms
+     * 1 thread - ~1,400ms
+     * 2 threads - ~1,700ms
+     * 4 threads - ~3,500ms
+     * 16 threads - ~14,465ms
      */
     @Test
     public void testManagerBaseGenerateSessionId() throws Exception {
@@ -66,7 +63,6 @@ public class Benchmarks {
         doTestManagerBaseGenerateSessionId(400, 10000);
     }
 
-
     private void doTestManagerBaseGenerateSessionId(int threadCount,
             int iterCount) throws Exception {
 
@@ -78,21 +74,20 @@ public class Benchmarks {
             // Ignore - this is expected
         }
         mgr.generateSessionId();
-        while (mgr.sessionCreationTiming.size() <
-                ManagerBase.TIMING_STATS_CACHE_SIZE) {
+        while (mgr.sessionCreationTiming
+                .size() < ManagerBase.TIMING_STATS_CACHE_SIZE) {
             mgr.sessionCreationTiming.add(null);
         }
-        while (mgr.sessionExpirationTiming.size() <
-                ManagerBase.TIMING_STATS_CACHE_SIZE) {
+        while (mgr.sessionExpirationTiming
+                .size() < ManagerBase.TIMING_STATS_CACHE_SIZE) {
             mgr.sessionExpirationTiming.add(null);
         }
-
 
         Thread[] threads = new Thread[threadCount];
 
         for (int i = 0; i < threadCount; i++) {
-            threads[i] = new Thread(
-                    new TestThreadGenerateSessionId(mgr, iterCount));
+            threads[i] = new Thread(new TestThreadGenerateSessionId(mgr,
+                    iterCount));
         }
 
         long start = System.currentTimeMillis();
@@ -114,10 +109,9 @@ public class Benchmarks {
         result.append("Threads: ");
         result.append(threadCount);
         result.append(", Time(ms): ");
-        result.append(end-start);
+        result.append(end - start);
         System.out.println(result.toString());
     }
-
 
     private static final class TestThreadGenerateSessionId implements Runnable {
 
@@ -137,18 +131,16 @@ public class Benchmarks {
         }
     }
 
-
     /*
      * Results on markt's 4-core Windows dev box
-     *  1 thread  -  ~3,800ms
-     *  2 threads -  ~6,700ms
-     *  4 threads - ~11,000ms
+     * 1 thread - ~3,800ms
+     * 2 threads - ~6,700ms
+     * 4 threads - ~11,000ms
      * 16 threads - ~43,500ms
-     *
      * Results on markt's 2-core OSX dev box
-     *  1 thread  -  ~4,100ms
-     *  2 threads -  ~5,700ms
-     *  4 threads - ~11,700ms
+     * 1 thread - ~4,100ms
+     * 2 threads - ~5,700ms
+     * 4 threads - ~11,700ms
      * 16 threads - ~45,600ms
      */
     @Test
@@ -162,7 +154,6 @@ public class Benchmarks {
         doTestManagerBaseCreateSession(400, 10000);
     }
 
-
     private void doTestManagerBaseCreateSession(int threadCount,
             int iterCount) {
 
@@ -175,20 +166,20 @@ public class Benchmarks {
         }
         mgr.setContext(new StandardContext());
         mgr.generateSessionId();
-        while (mgr.sessionCreationTiming.size() <
-                ManagerBase.TIMING_STATS_CACHE_SIZE) {
+        while (mgr.sessionCreationTiming
+                .size() < ManagerBase.TIMING_STATS_CACHE_SIZE) {
             mgr.sessionCreationTiming.add(null);
         }
-        while (mgr.sessionExpirationTiming.size() <
-                ManagerBase.TIMING_STATS_CACHE_SIZE) {
+        while (mgr.sessionExpirationTiming
+                .size() < ManagerBase.TIMING_STATS_CACHE_SIZE) {
             mgr.sessionExpirationTiming.add(null);
         }
 
         Thread[] threads = new Thread[threadCount];
 
         for (int i = 0; i < threadCount; i++) {
-            threads[i] = new Thread(
-                    new TestThreadCreateSession(mgr, iterCount));
+            threads[i] = new Thread(new TestThreadCreateSession(mgr,
+                    iterCount));
         }
 
         long start = System.currentTimeMillis();
@@ -210,7 +201,7 @@ public class Benchmarks {
         result.append("Threads: ");
         result.append(threadCount);
         result.append(", Time(ms): ");
-        result.append(end-start);
+        result.append(end - start);
         System.out.println(result.toString());
     }
 
@@ -233,22 +224,19 @@ public class Benchmarks {
         }
     }
 
-
     /*
      * SecureRandom vs. reading /dev/urandom. Very different performance noted
      * on some platforms.
-     *
      * Results on markt's 4-core Windows dev box
-     *              SecureRandom  /dev/urandom
-     *  1 thread  -    ~766ms        N/A
-     *  2 threads -    ~843ms        N/A
-     *  4 threads -    ~766ms        N/A
-     *
+     * SecureRandom /dev/urandom
+     * 1 thread - ~766ms N/A
+     * 2 threads - ~843ms N/A
+     * 4 threads - ~766ms N/A
      * Results on markt's 2-core OSX dev box
-     *              SecureRandom  /dev/urandom
-     *  1 thread  -     ~759ms      ~3,500ms
-     *  2 threads -     ~725ms      ~5,200ms
-     *  4 threads -   ~1,265ms     ~10,500ms
+     * SecureRandom /dev/urandom
+     * 1 thread - ~759ms ~3,500ms
+     * 2 threads - ~725ms ~5,200ms
+     * 4 threads - ~1,265ms ~10,500ms
      */
     @Test
     public void testSecureRandomVsDevURandom() throws Exception {
@@ -300,7 +288,7 @@ public class Benchmarks {
         result.append("Threads: ");
         result.append(threadCount);
         result.append(", Time(ms): ");
-        result.append(end-start);
+        result.append(end - start);
         System.out.println(result.toString());
     }
 

@@ -1,18 +1,16 @@
 /*
- *  Licensed to the Apache Software Foundation (ASF) under one or more
- *  contributor license agreements.  See the NOTICE file distributed with
- *  this work for additional information regarding copyright ownership.
- *  The ASF licenses this file to You under the Apache License, Version 2.0
- *  (the "License"); you may not use this file except in compliance with
- *  the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements. See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.apache.coyote.http11.upgrade;
 
@@ -34,7 +32,8 @@ import org.apache.tomcat.util.net.Nio2Endpoint;
 import org.apache.tomcat.util.net.SocketStatus;
 import org.apache.tomcat.util.net.SocketWrapper;
 
-public class Nio2ServletOutputStream extends AbstractServletOutputStream<Nio2Channel> {
+public class Nio2ServletOutputStream extends
+        AbstractServletOutputStream<Nio2Channel> {
 
     private final AbstractEndpoint<Nio2Channel> endpoint;
     private final Nio2Channel channel;
@@ -55,14 +54,17 @@ public class Nio2ServletOutputStream extends AbstractServletOutputStream<Nio2Cha
                     failed(new EOFException(), attachment);
                 } else if (attachment.hasRemaining()) {
                     channel.write(attachment, socketWrapper.getTimeout(),
-                            TimeUnit.MILLISECONDS, attachment, completionHandler);
+                            TimeUnit.MILLISECONDS, attachment,
+                            completionHandler);
                 } else {
                     writePending.release();
                     if (!Nio2Endpoint.isInline()) {
-                        endpoint.processSocket(socketWrapper, SocketStatus.OPEN_WRITE, false);
+                        endpoint.processSocket(socketWrapper,
+                                SocketStatus.OPEN_WRITE, false);
                     }
                 }
             }
+
             @Override
             public void failed(Throwable exc, ByteBuffer attachment) {
                 socketWrapper.setError(true);
@@ -126,7 +128,8 @@ public class Nio2ServletOutputStream extends AbstractServletOutputStream<Nio2Cha
             Future<Integer> future = null;
             try {
                 future = channel.write(buffer);
-                written = future.get(socketWrapper.getTimeout(), TimeUnit.MILLISECONDS).intValue();
+                written = future.get(socketWrapper.getTimeout(),
+                        TimeUnit.MILLISECONDS).intValue();
             } catch (ExecutionException e) {
                 if (e.getCause() instanceof IOException) {
                     onError(e.getCause());
@@ -150,7 +153,8 @@ public class Nio2ServletOutputStream extends AbstractServletOutputStream<Nio2Cha
                 buffer.put(b, off, len);
                 buffer.flip();
                 Nio2Endpoint.startInline();
-                channel.write(buffer, socketWrapper.getTimeout(), TimeUnit.MILLISECONDS, buffer, completionHandler);
+                channel.write(buffer, socketWrapper.getTimeout(),
+                        TimeUnit.MILLISECONDS, buffer, completionHandler);
                 Nio2Endpoint.endInline();
                 written = len;
             }
@@ -163,7 +167,8 @@ public class Nio2ServletOutputStream extends AbstractServletOutputStream<Nio2Cha
         Future<Boolean> future = null;
         try {
             // Block until a possible non blocking write is done
-            if (writePending.tryAcquire(socketWrapper.getTimeout(), TimeUnit.MILLISECONDS)) {
+            if (writePending.tryAcquire(socketWrapper.getTimeout(),
+                    TimeUnit.MILLISECONDS)) {
                 writePending.release();
                 future = channel.flush();
                 future.get(socketWrapper.getTimeout(), TimeUnit.MILLISECONDS);

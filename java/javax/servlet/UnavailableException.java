@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -49,9 +47,9 @@ public class UnavailableException extends ServletException {
 
     /**
      * @param servlet
-     *            the <code>Servlet</code> instance that is unavailable
+     *                the <code>Servlet</code> instance that is unavailable
      * @param msg
-     *            a <code>String</code> specifying the descriptive message
+     *                a <code>String</code> specifying the descriptive message
      * @deprecated As of Java Servlet API 2.2, use
      *             {@link #UnavailableException(String)} instead.
      */
@@ -66,14 +64,16 @@ public class UnavailableException extends ServletException {
 
     /**
      * @param seconds
-     *            an integer specifying the number of seconds the servlet
-     *            expects to be unavailable; if zero or negative, indicates that
-     *            the servlet can't make an estimate
+     *                an integer specifying the number of seconds the servlet
+     *                expects to be unavailable; if zero or negative, indicates
+     *                that
+     *                the servlet can't make an estimate
      * @param servlet
-     *            the <code>Servlet</code> that is unavailable
+     *                the <code>Servlet</code> that is unavailable
      * @param msg
-     *            a <code>String</code> specifying the descriptive message,
-     *            which can be written to a log file or displayed for the user.
+     *                a <code>String</code> specifying the descriptive message,
+     *                which can be written to a log file or displayed for the
+     *                user.
      * @deprecated As of Java Servlet API 2.2, use
      *             {@link #UnavailableException(String, int)} instead.
      */
@@ -115,12 +115,14 @@ public class UnavailableException extends ServletException {
      * argument.
      *
      * @param msg
-     *            a <code>String</code> specifying the descriptive message,
-     *            which can be written to a log file or displayed for the user.
+     *                a <code>String</code> specifying the descriptive message,
+     *                which can be written to a log file or displayed for the
+     *                user.
      * @param seconds
-     *            an integer specifying the number of seconds the servlet
-     *            expects to be unavailable; if zero or negative, indicates that
-     *            the servlet can't make an estimate
+     *                an integer specifying the number of seconds the servlet
+     *                expects to be unavailable; if zero or negative, indicates
+     *                that
+     *                the servlet can't make an estimate
      */
     public UnavailableException(String msg, int seconds) {
         super(msg);

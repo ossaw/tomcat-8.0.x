@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -24,8 +22,10 @@ import java.util.NoSuchElementException;
  * A keyed pool maintains a pool of instances for each key value.
  * <p>
  * Example of use:
+ * 
  * <pre style="border:solid thin; padding: 1ex;"
- * > Object obj = <code style="color:#00C">null</code>;
+ * >
+ *  Object obj = <code style="color:#00C">null</code>;
  * Object key = <code style="color:#C00">"Key"</code>;
  *
  * <code style="color:#00C">try</code> {
@@ -34,14 +34,18 @@ import java.util.NoSuchElementException;
  * } <code style="color:#00C">catch</code>(Exception e) {
  *     <code style="color:#0C0">// invalidate the object</code>
  *     pool.invalidateObject(key, obj);
- *     <code style="color:#0C0">// do not return the object to the pool twice</code>
+ *     <code style=
+"color:#0C0">// do not return the object to the pool twice</code>
  *     obj = <code style="color:#00C">null</code>;
  * } <code style="color:#00C">finally</code> {
- *     <code style="color:#0C0">// make sure the object is returned to the pool</code>
- *     <code style="color:#00C">if</code>(<code style="color:#00C">null</code> != obj) {
+ *     <code style=
+"color:#0C0">// make sure the object is returned to the pool</code>
+ *     <code style="color:#00C">if</code>(<code style=
+"color:#00C">null</code> != obj) {
  *         pool.returnObject(key, obj);
  *     }
- * }</pre>
+ * }
+ * </pre>
  * <p>
  * {@link KeyedObjectPool} implementations <i>may</i> choose to store at most
  * one instance per key value, or may choose to maintain a pool of instances
@@ -56,11 +60,12 @@ import java.util.NoSuchElementException;
  *
  * @see KeyedPooledObjectFactory
  * @see ObjectPool
- * @see org.apache.tomcat.dbcp.pool2.impl.GenericKeyedObjectPool GenericKeyedObjectPool
+ * @see org.apache.tomcat.dbcp.pool2.impl.GenericKeyedObjectPool
+ *      GenericKeyedObjectPool
  *
  * @since 2.0
  */
-public interface KeyedObjectPool<K,V> {
+public interface KeyedObjectPool<K, V> {
     /**
      * Obtains an instance from this pool for the specified <code>key</code>.
      * <p>
@@ -86,15 +91,19 @@ public interface KeyedObjectPool<K,V> {
      * @return an instance from this pool.
      *
      * @throws IllegalStateException
-     *              after {@link #close close} has been called on this pool
+     *                                after {@link #close close} has been called
+     *                                on this pool
      * @throws Exception
-     *              when {@link KeyedPooledObjectFactory#makeObject
-     *              makeObject} throws an exception
+     *                                when
+     *                                {@link KeyedPooledObjectFactory#makeObject
+     *                                makeObject} throws an exception
      * @throws NoSuchElementException
-     *              when the pool is exhausted and cannot or will not return
-     *              another instance
+     *                                when the pool is exhausted and cannot or
+     *                                will not return
+     *                                another instance
      */
-    V borrowObject(K key) throws Exception, NoSuchElementException, IllegalStateException;
+    V borrowObject(K key) throws Exception, NoSuchElementException,
+            IllegalStateException;
 
     /**
      * Return an instance to the pool. By contract, <code>obj</code>
@@ -107,13 +116,18 @@ public interface KeyedObjectPool<K,V> {
      * @param obj a {@link #borrowObject borrowed} instance to be returned.
      *
      * @throws IllegalStateException
-     *              if an attempt is made to return an object to the pool that
-     *              is in any state other than allocated (i.e. borrowed).
-     *              Attempting to return an object more than once or attempting
-     *              to return an object that was never borrowed from the pool
-     *              will trigger this exception.
+     *                               if an attempt is made to return an object
+     *                               to the pool that
+     *                               is in any state other than allocated (i.e.
+     *                               borrowed).
+     *                               Attempting to return an object more than
+     *                               once or attempting
+     *                               to return an object that was never borrowed
+     *                               from the pool
+     *                               will trigger this exception.
      *
-     * @throws Exception if an instance cannot be returned to the pool
+     * @throws Exception             if an instance cannot be returned to the
+     *                               pool
      */
     void returnObject(K key, V obj) throws Exception;
 
@@ -145,11 +159,15 @@ public interface KeyedObjectPool<K,V> {
      * @param key the key a new instance should be added to
      *
      * @throws Exception
-     *              when {@link KeyedPooledObjectFactory#makeObject} fails.
+     *                                       when
+     *                                       {@link KeyedPooledObjectFactory#makeObject}
+     *                                       fails.
      * @throws IllegalStateException
-     *              after {@link #close} has been called on this pool.
+     *                                       after {@link #close} has been
+     *                                       called on this pool.
      * @throws UnsupportedOperationException
-     *              when this pool cannot add new idle objects.
+     *                                       when this pool cannot add new idle
+     *                                       objects.
      */
     void addObject(K key) throws Exception, IllegalStateException,
             UnsupportedOperationException;
@@ -161,7 +179,7 @@ public interface KeyedObjectPool<K,V> {
      *
      * @param key the key to query
      * @return the number of instances corresponding to the given
-     * <code>key</code> currently idle in this pool.
+     *         <code>key</code> currently idle in this pool.
      */
     int getNumIdle(K key);
 
@@ -172,23 +190,27 @@ public interface KeyedObjectPool<K,V> {
      *
      * @param key the key to query
      * @return the number of instances currently borrowed from but not yet
-     * returned to the pool corresponding to the given <code>key</code>.
-=     */
+     *         returned to the pool corresponding to the given <code>key</code>.
+     *         =
+     */
     int getNumActive(K key);
 
     /**
      * Returns the total number of instances currently idle in this pool.
      * Returns a negative value if this information is not available.
+     * 
      * @return the total number of instances currently idle in this pool.
- =    */
+     *         =
+     */
     int getNumIdle();
 
     /**
      * Returns the total number of instances current borrowed from this pool but
      * not yet returned. Returns a negative value if this information is not
      * available.
+     * 
      * @return the total number of instances current borrowed from this pool but
-     * not yet returned.
+     *         not yet returned.
      */
     int getNumActive();
 
@@ -198,7 +220,7 @@ public interface KeyedObjectPool<K,V> {
      * @throws UnsupportedOperationException when this implementation doesn't
      *                                       support the operation
      *
-     * @throws Exception if the pool cannot be cleared
+     * @throws Exception                     if the pool cannot be cleared
      */
     void clear() throws Exception, UnsupportedOperationException;
 
@@ -211,7 +233,7 @@ public interface KeyedObjectPool<K,V> {
      * @throws UnsupportedOperationException when this implementation doesn't
      *                                       support the operation
      *
-     * @throws Exception if the key cannot be cleared
+     * @throws Exception                     if the key cannot be cleared
      */
     void clear(K key) throws Exception, UnsupportedOperationException;
 

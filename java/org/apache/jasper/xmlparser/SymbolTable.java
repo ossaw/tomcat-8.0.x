@@ -1,24 +1,21 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
  * ====================================================================
- *
  * This software consists of voluntary contributions made by many
  * individuals on behalf of the Apache Software Foundation and was
  * originally based on software copyright (c) 1999, International
- * Business Machines, Inc., http://www.apache.org.  For more
+ * Business Machines, Inc., http://www.apache.org. For more
  * information on the Apache Software Foundation, please see
  * <http://www.apache.org/>.
  */
@@ -34,18 +31,18 @@ package org.apache.jasper.xmlparser;
  * The symbol table performs the same task as <code>String.intern()</code>
  * with the following differences:
  * <ul>
- *  <li>
- *   A new string object does not need to be created in order to
- *   retrieve a unique reference. Symbols can be added by using
- *   a series of characters in a character array.
- *  </li>
- *  <li>
- *   Users of the symbol table can provide their own symbol hashing
- *   implementation. For example, a simple string hashing algorithm
- *   may fail to produce a balanced set of hashcodes for symbols
- *   that are <em>mostly</em> unique. Strings with similar leading
- *   characters are especially prone to this poor hashing behavior.
- *  </li>
+ * <li>
+ * A new string object does not need to be created in order to
+ * retrieve a unique reference. Symbols can be added by using
+ * a series of characters in a character array.
+ * </li>
+ * <li>
+ * Users of the symbol table can provide their own symbol hashing
+ * implementation. For example, a simple string hashing algorithm
+ * may fail to produce a balanced set of hashcodes for symbols
+ * that are <em>mostly</em> unique. Strings with similar leading
+ * characters are especially prone to this poor hashing behavior.
+ * </li>
  * </ul>
  *
  * @author Andy Clark

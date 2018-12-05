@@ -1,18 +1,16 @@
 /*
- *  Licensed to the Apache Software Foundation (ASF) under one or more
- *  contributor license agreements.  See the NOTICE file distributed with
- *  this work for additional information regarding copyright ownership.
- *  The ASF licenses this file to You under the Apache License, Version 2.0
- *  (the "License"); you may not use this file except in compliance with
- *  the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements. See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.apache.coyote.ajp;
 
@@ -39,8 +37,8 @@ public class SimpleAjpClient {
         ajpCping.appendByte(Constants.JK_AJP13_CPING_REQUEST);
         ajpCping.end();
         AJP_CPING = new byte[ajpCping.getLen()];
-        System.arraycopy(ajpCping.getBuffer(), 0, AJP_CPING, 0,
-                ajpCping.getLen());
+        System.arraycopy(ajpCping.getBuffer(), 0, AJP_CPING, 0, ajpCping
+                .getLen());
     }
 
     private final int packetSize;
@@ -345,7 +343,6 @@ public class SimpleAjpClient {
         return message;
     }
 
-
     /*
      * Sends an TesterAjpMessage to the server and returns the response message.
      */
@@ -357,12 +354,11 @@ public class SimpleAjpClient {
     public TesterAjpMessage sendMessage(TesterAjpMessage headers,
             TesterAjpMessage body) throws IOException {
         // Send the headers
-        socket.getOutputStream().write(
-                headers.getBuffer(), 0, headers.getLen());
+        socket.getOutputStream().write(headers.getBuffer(), 0, headers
+                .getLen());
         if (body != null) {
             // Send the body of present
-            socket.getOutputStream().write(
-                    body.getBuffer(), 0, body.getLen());
+            socket.getOutputStream().write(body.getBuffer(), 0, body.getLen());
         }
         // Read the response
         return readMessage();
@@ -399,10 +395,10 @@ public class SimpleAjpClient {
             return message;
         } else {
             if (messageLength > buf.length) {
-                throw new IllegalArgumentException("Message too long [" +
-                        Integer.valueOf(messageLength) +
-                        "] for buffer length [" +
-                        Integer.valueOf(buf.length) + "]");
+                throw new IllegalArgumentException("Message too long ["
+                        + Integer.valueOf(messageLength)
+                        + "] for buffer length [" + Integer.valueOf(buf.length)
+                        + "]");
             }
             read(is, buf, headerLength, messageLength);
             return message;
@@ -410,7 +406,7 @@ public class SimpleAjpClient {
     }
 
     protected boolean read(InputStream is, byte[] buf, int pos, int n)
-        throws IOException {
+            throws IOException {
 
         int read = 0;
         int res = 0;

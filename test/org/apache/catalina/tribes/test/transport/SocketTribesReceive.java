@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -32,20 +30,19 @@ public class SocketTribesReceive {
     static boolean first = true;
     static int count = 0;
     static DecimalFormat df = new DecimalFormat("##.00");
-    static BigDecimal total = new BigDecimal((double)0);
-    static BigDecimal bytes = new BigDecimal((double)32871);
-
+    static BigDecimal total = new BigDecimal((double) 0);
+    static BigDecimal bytes = new BigDecimal((double) 32871);
 
     public static void main(String[] args) throws Exception {
         int size = 43800;
-        if (args.length > 0 ) {
+        if (args.length > 0) {
             try {
                 size = Integer.parseInt(args[0]);
-            } catch (Exception e){
+            } catch (Exception e) {
                 /* Ignore */
             }
         }
-        XByteBuffer xbuf = new XByteBuffer(43800,true);
+        XByteBuffer xbuf = new XByteBuffer(43800, true);
         try (ServerSocket srvSocket = new ServerSocket(9999)) {
             System.out.println("Listening on 9999");
             Socket socket = srvSocket.accept();
@@ -54,37 +51,39 @@ public class SocketTribesReceive {
             Thread t = new Thread() {
                 @Override
                 public void run() {
-                    while ( true ) {
+                    while (true) {
                         try {
                             Thread.sleep(1000);
                             printStats(start, mb, count, df, total);
-                        }catch ( Exception x ) { /* Ignore */ }
+                        } catch (Exception x) {
+                            /* Ignore */ }
                     }
                 }
             };
             t.setDaemon(true);
             t.start();
 
-            while ( true ) {
-                if ( first ) {
-                    first = false; start = System.currentTimeMillis();
+            while (true) {
+                if (first) {
+                    first = false;
+                    start = System.currentTimeMillis();
                 }
                 int len = in.read(buf);
-                if ( len == -1 ) {
+                if (len == -1) {
                     printStats(start, mb, count, df, total);
                     System.exit(1);
                 }
-                xbuf.append(buf,0,len);
-                if ( bytes.intValue() != len ) {
-                    bytes = new BigDecimal((double)len);
+                xbuf.append(buf, 0, len);
+                if (bytes.intValue() != len) {
+                    bytes = new BigDecimal((double) len);
                 }
                 total = total.add(bytes);
-                while ( xbuf.countPackages(true) > 0 ) {
+                while (xbuf.countPackages(true) > 0) {
                     xbuf.extractPackage(true);
                     count++;
                 }
-                mb += ( (double) len) / 1024 / 1024;
-                if ( ((count) % 10000) == 0 ) {
+                mb += ((double) len) / 1024 / 1024;
+                if (((count) % 10000) == 0) {
                     printStats(start, mb, count, df, total);
                 }
             }
@@ -94,9 +93,9 @@ public class SocketTribesReceive {
     private static void printStats(long start, double mb, int count,
             DecimalFormat df, BigDecimal total) {
         long time = System.currentTimeMillis();
-        double seconds = ((double)(time-start))/1000;
-        System.out.println("Throughput " + df.format(mb/seconds) +
-                " MB/seconds messages " + count + ", total " + mb +
-                " MB, total " + total + " bytes.");
+        double seconds = ((double) (time - start)) / 1000;
+        System.out.println("Throughput " + df.format(mb / seconds)
+                + " MB/seconds messages " + count + ", total " + mb
+                + " MB, total " + total + " bytes.");
     }
 }

@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -54,11 +52,13 @@ class EvictionTimer {
      * call to this method *must* call {@link #cancel(TimerTask)} to cancel the
      * task to prevent memory and/or thread leaks in application server
      * environments.
-     * @param task      Task to be scheduled
-     * @param delay     Delay in milliseconds before task is executed
-     * @param period    Time in milliseconds between executions
+     * 
+     * @param task   Task to be scheduled
+     * @param delay  Delay in milliseconds before task is executed
+     * @param period Time in milliseconds between executions
      */
-    static synchronized void schedule(final TimerTask task, final long delay, final long period) {
+    static synchronized void schedule(final TimerTask task, final long delay,
+            final long period) {
         if (null == _timer) {
             // Force the new Timer thread to be created with a context class
             // loader set to the class loader that loaded this library
@@ -67,7 +67,8 @@ class EvictionTimer {
             try {
                 AccessController.doPrivileged(new PrivilegedSetTccl(
                         EvictionTimer.class.getClassLoader()));
-                _timer = AccessController.doPrivileged(new PrivilegedNewEvictionTimer());
+                _timer = AccessController.doPrivileged(
+                        new PrivilegedNewEvictionTimer());
             } finally {
                 AccessController.doPrivileged(new PrivilegedSetTccl(ccl));
             }
@@ -78,7 +79,8 @@ class EvictionTimer {
 
     /**
      * Remove the specified eviction task from the timer.
-     * @param task      Task to be scheduled
+     * 
+     * @param task Task to be scheduled
      */
     static synchronized void cancel(final TimerTask task) {
         task.cancel();
@@ -92,7 +94,8 @@ class EvictionTimer {
     /**
      * {@link PrivilegedAction} used to get the ContextClassLoader
      */
-    private static class PrivilegedGetTccl implements PrivilegedAction<ClassLoader> {
+    private static class PrivilegedGetTccl implements
+            PrivilegedAction<ClassLoader> {
 
         /**
          * {@inheritDoc}
@@ -113,6 +116,7 @@ class EvictionTimer {
 
         /**
          * Create a new PrivilegedSetTccl using the given classloader
+         * 
          * @param classLoader ClassLoader to use
          */
         PrivilegedSetTccl(final ClassLoader cl) {
@@ -146,7 +150,8 @@ class EvictionTimer {
      * reference to the thread context class loader which would be a memory
      * leak.
      */
-    private static class PrivilegedNewEvictionTimer implements PrivilegedAction<Timer> {
+    private static class PrivilegedNewEvictionTimer implements
+            PrivilegedAction<Timer> {
 
         /**
          * {@inheritDoc}

@@ -1,18 +1,16 @@
 /*
- *  Licensed to the Apache Software Foundation (ASF) under one or more
- *  contributor license agreements.  See the NOTICE file distributed with
- *  this work for additional information regarding copyright ownership.
- *  The ASF licenses this file to You under the Apache License, Version 2.0
- *  (the "License"); you may not use this file except in compliance with
- *  the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements. See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.apache.catalina.authenticator;
 
@@ -51,7 +49,6 @@ public class TesterDigestAuthenticatorPerformance {
 
     private DigestAuthenticator authenticator = new DigestAuthenticator();
 
-
     @Test
     public void testSimple() throws Exception {
         doTest(4, 1000000);
@@ -66,8 +63,8 @@ public class TesterDigestAuthenticatorPerformance {
 
         // Create the runnables & threads
         for (int i = 0; i < threadCount; i++) {
-            runnables[i] =
-                    new TesterRunnable(authenticator, nonce, requestCount);
+            runnables[i] = new TesterRunnable(authenticator, nonce,
+                    requestCount);
             threads[i] = new Thread(runnables[i]);
         }
 
@@ -88,16 +85,16 @@ public class TesterDigestAuthenticatorPerformance {
         double totalTime = 0;
         int totalSuccess = 0;
         for (int i = 0; i < threadCount; i++) {
-            System.out.println("Thread: " + i + " Success: " +
-                    runnables[i].getSuccess());
+            System.out.println("Thread: " + i + " Success: " + runnables[i]
+                    .getSuccess());
             totalSuccess = totalSuccess + runnables[i].getSuccess();
             totalTime = totalTime + runnables[i].getTime();
         }
 
-        System.out.println("Average time per request (user): " +
-                totalTime/(threadCount * requestCount));
-        System.out.println("Average time per request (wall): " +
-                wallTime/(threadCount * requestCount));
+        System.out.println("Average time per request (user): " + totalTime
+                / (threadCount * requestCount));
+        System.out.println("Average time per request (wall): " + wallTime
+                / (threadCount * requestCount));
 
         assertEquals(requestCount * threadCount, totalSuccess);
     }
@@ -129,7 +126,6 @@ public class TesterDigestAuthenticatorPerformance {
         authenticator.start();
     }
 
-
     private static class TesterRunnable implements Runnable {
 
         private String nonce;
@@ -150,11 +146,9 @@ public class TesterDigestAuthenticatorPerformance {
         private static final String MD5A2 = MD5Encoder.encode(
                 ConcurrentMessageDigest.digest("MD5", A2.getBytes()));
 
-
-
         // All init code should be in here. run() needs to be quick
-        public TesterRunnable(DigestAuthenticator authenticator,
-                String nonce, int requestCount) throws Exception {
+        public TesterRunnable(DigestAuthenticator authenticator, String nonce,
+                int requestCount) throws Exception {
             this.authenticator = authenticator;
             this.nonce = nonce;
             this.requestCount = requestCount;
@@ -193,15 +187,15 @@ public class TesterDigestAuthenticatorPerformance {
 
         private String buildDigestResponse(String nonce) {
 
-            String ncString = String.format("%1$08x",
-                    Integer.valueOf(nonceCount.incrementAndGet()));
+            String ncString = String.format("%1$08x", Integer.valueOf(nonceCount
+                    .incrementAndGet()));
             String cnonce = "cnonce";
 
-            String response = MD5A1 + ":" + nonce + ":" + ncString + ":" +
-                    cnonce + ":" + QOP + ":" + MD5A2;
+            String response = MD5A1 + ":" + nonce + ":" + ncString + ":"
+                    + cnonce + ":" + QOP + ":" + MD5A2;
 
-            String md5response = MD5Encoder.encode(
-                    ConcurrentMessageDigest.digest("MD5", response.getBytes()));
+            String md5response = MD5Encoder.encode(ConcurrentMessageDigest
+                    .digest("MD5", response.getBytes()));
 
             StringBuilder auth = new StringBuilder();
             auth.append("Digest username=\"");
@@ -228,7 +222,6 @@ public class TesterDigestAuthenticatorPerformance {
             return auth.toString();
         }
     }
-
 
     private static class TesterDigestRequest extends Request {
 

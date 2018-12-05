@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -30,14 +28,13 @@ public class StandardELContext extends ELContext {
     private final FunctionMapper functionMapper;
     private final CompositeELResolver standardResolver;
     private final CompositeELResolver customResolvers;
-    private final Map<String,Object> localBeans = new HashMap<>();
-
+    private final Map<String, Object> localBeans = new HashMap<>();
 
     public StandardELContext(ExpressionFactory factory) {
         wrappedContext = null;
         variableMapper = new StandardVariableMapper();
-        functionMapper =
-                new StandardFunctionMapper(factory.getInitFunctionMap());
+        functionMapper = new StandardFunctionMapper(factory
+                .getInitFunctionMap());
         standardResolver = new CompositeELResolver();
         customResolvers = new CompositeELResolver();
 
@@ -112,11 +109,9 @@ public class StandardELContext extends ELContext {
         return variableMapper;
     }
 
-
-    Map<String,Object> getLocalBeans() {
+    Map<String, Object> getLocalBeans() {
         return localBeans;
     }
-
 
     private static class StandardVariableMapper extends VariableMapper {
 
@@ -143,12 +138,11 @@ public class StandardELContext extends ELContext {
         }
     }
 
-
     private static class StandardBeanNameResolver extends BeanNameResolver {
 
-        private final Map<String,Object> beans;
+        private final Map<String, Object> beans;
 
-        public StandardBeanNameResolver(Map<String,Object> beans) {
+        public StandardBeanNameResolver(Map<String, Object> beans) {
             this.beans = beans;
         }
 
@@ -179,12 +173,11 @@ public class StandardELContext extends ELContext {
         }
     }
 
-
     private static class StandardFunctionMapper extends FunctionMapper {
 
-        private final Map<String,Method> methods = new HashMap<>();
+        private final Map<String, Method> methods = new HashMap<>();
 
-        public StandardFunctionMapper(Map<String,Method> initFunctionMap) {
+        public StandardFunctionMapper(Map<String, Method> initFunctionMap) {
             if (initFunctionMap != null) {
                 methods.putAll(initFunctionMap);
             }

@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -24,7 +22,6 @@ import javax.servlet.Filter;
 
 import org.apache.tomcat.util.res.StringManager;
 
-
 /**
  * Representation of a filter definition for a web application, as represented
  * in a <code>&lt;filter&gt;</code> element in the deployment descriptor.
@@ -35,11 +32,10 @@ public class FilterDef implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private static final StringManager sm =
-        StringManager.getManager(Constants.PACKAGE_NAME);
+    private static final StringManager sm = StringManager.getManager(
+            Constants.PACKAGE_NAME);
 
     // ------------------------------------------------------------- Properties
-
 
     /**
      * The description of this filter.
@@ -54,7 +50,6 @@ public class FilterDef implements Serializable {
         this.description = description;
     }
 
-
     /**
      * The display name of this filter.
      */
@@ -67,7 +62,6 @@ public class FilterDef implements Serializable {
     public void setDisplayName(String displayName) {
         this.displayName = displayName;
     }
-
 
     /**
      * The filter instance associated with this definition
@@ -82,7 +76,6 @@ public class FilterDef implements Serializable {
         this.filter = filter;
     }
 
-
     /**
      * The fully qualified name of the Java class that implements this filter.
      */
@@ -96,7 +89,6 @@ public class FilterDef implements Serializable {
         this.filterClass = filterClass;
     }
 
-
     /**
      * The name of this filter, which must be unique among the filters
      * defined for a particular web application.
@@ -109,12 +101,11 @@ public class FilterDef implements Serializable {
 
     public void setFilterName(String filterName) {
         if (filterName == null || filterName.equals("")) {
-            throw new IllegalArgumentException(
-                    sm.getString("filterDef.invalidFilterName", filterName));
+            throw new IllegalArgumentException(sm.getString(
+                    "filterDef.invalidFilterName", filterName));
         }
         this.filterName = filterName;
     }
-
 
     /**
      * The large icon associated with this filter.
@@ -129,7 +120,6 @@ public class FilterDef implements Serializable {
         this.largeIcon = largeIcon;
     }
 
-
     /**
      * The set of initialization parameters for this filter, keyed by
      * parameter name.
@@ -141,7 +131,6 @@ public class FilterDef implements Serializable {
         return (this.parameters);
 
     }
-
 
     /**
      * The small icon associated with this filter.
@@ -166,15 +155,13 @@ public class FilterDef implements Serializable {
         this.asyncSupported = asyncSupported;
     }
 
-
     // --------------------------------------------------------- Public Methods
-
 
     /**
      * Add an initialization parameter to the set of parameters associated
      * with this filter.
      *
-     * @param name The initialization parameter name
+     * @param name  The initialization parameter name
      * @param value The initialization parameter value
      */
     public void addInitParameter(String name, String value) {
@@ -187,7 +174,6 @@ public class FilterDef implements Serializable {
         parameters.put(name, value);
 
     }
-
 
     /**
      * Render a String representation of this object.
@@ -204,6 +190,5 @@ public class FilterDef implements Serializable {
         return (sb.toString());
 
     }
-
 
 }

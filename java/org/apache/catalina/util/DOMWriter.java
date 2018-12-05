@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -40,17 +38,14 @@ public class DOMWriter {
     /** Canonical output. */
     protected final boolean canonical;
 
-
     public DOMWriter(Writer writer, boolean canonical) {
         out = new PrintWriter(writer);
         this.canonical = canonical;
     }
 
-
     public static String getWriterEncoding() {
         return (PRINTWRITER_ENCODING);
     }
-
 
     /** Prints the specified node, recursively. */
     public void print(Node node) {
@@ -73,8 +68,8 @@ public class DOMWriter {
                     else
                         Encoding = MIME2Java.reverse(Encoding);
 
-                    out.println("<?xml version=\"1.0\" encoding=\"" + Encoding +
-                            "\"?>");
+                    out.println("<?xml version=\"1.0\" encoding=\"" + Encoding
+                            + "\"?>");
                 }
                 print(((Document) node).getDocumentElement());
                 out.flush();
@@ -137,7 +132,7 @@ public class DOMWriter {
                 }
                 out.print("?>");
                 break;
-            }
+        }
 
         if (type == Node.ELEMENT_NODE) {
             out.print("</");
@@ -149,7 +144,6 @@ public class DOMWriter {
 
     } // print(Node)
 
-
     private void printChildren(Node node) {
         NodeList children = node.getChildNodes();
         if (children != null) {
@@ -159,7 +153,6 @@ public class DOMWriter {
             }
         }
     }
-
 
     /** Returns a sorted list of attributes. */
     protected Attr[] sortAttributes(NamedNodeMap attrs) {
@@ -228,7 +221,7 @@ public class DOMWriter {
                         break;
                     }
                     // else, default append char
-                //$FALL-THROUGH$
+                    //$FALL-THROUGH$
                 default:
                     str.append(ch);
             }

@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -25,58 +23,50 @@ public class TestELResolver {
     public void testConvertToType01() {
         ELContext context = new TesterELContext();
 
-        ValueExpression ve =
-                ELManager.getExpressionFactory().createValueExpression(
-                        context, "1", String.class);
+        ValueExpression ve = ELManager.getExpressionFactory()
+                .createValueExpression(context, "1", String.class);
 
         String result = (String) ve.getValue(context);
 
         Assert.assertEquals("1", result);
     }
 
-
     @Test
     public void testConvertToType02() {
         ELContext context = new TesterELContext(new TesterELResolverOne());
 
-        ValueExpression ve =
-                ELManager.getExpressionFactory().createValueExpression(
-                        context, "1", String.class);
+        ValueExpression ve = ELManager.getExpressionFactory()
+                .createValueExpression(context, "1", String.class);
 
         String result = (String) ve.getValue(context);
 
         Assert.assertEquals("ONE", result);
     }
 
-
     @Test
     public void testConvertToType03() {
         ELContext context = new TesterELContext(new TesterELResolverOne());
 
-        ValueExpression ve =
-                ELManager.getExpressionFactory().createValueExpression(
-                        context, "2", String.class);
+        ValueExpression ve = ELManager.getExpressionFactory()
+                .createValueExpression(context, "2", String.class);
 
         String result = (String) ve.getValue(context);
 
         Assert.assertEquals("2", result);
     }
-
 
     @Test
     public void testConvertToType04() {
         CompositeELResolver resolver = new CompositeELResolver();
         ELContext context = new TesterELContext(resolver);
 
-        ValueExpression ve =
-                ELManager.getExpressionFactory().createValueExpression(
-                        context, "2", String.class);
+        ValueExpression ve = ELManager.getExpressionFactory()
+                .createValueExpression(context, "2", String.class);
 
         String result = (String) ve.getValue(context);
 
         Assert.assertEquals("2", result);
     }
-
 
     @Test
     public void testConvertToType05() {
@@ -85,15 +75,13 @@ public class TestELResolver {
         resolver.add(new TesterELResolverTwo());
         ELContext context = new TesterELContext(resolver);
 
-        ValueExpression ve =
-                ELManager.getExpressionFactory().createValueExpression(
-                        context, "1", String.class);
+        ValueExpression ve = ELManager.getExpressionFactory()
+                .createValueExpression(context, "1", String.class);
 
         String result = (String) ve.getValue(context);
 
         Assert.assertEquals("ONE", result);
     }
-
 
     @Test
     public void testConvertToType06() {
@@ -102,15 +90,13 @@ public class TestELResolver {
         resolver.add(new TesterELResolverTwo());
         ELContext context = new TesterELContext(resolver);
 
-        ValueExpression ve =
-                ELManager.getExpressionFactory().createValueExpression(
-                        context, "2", String.class);
+        ValueExpression ve = ELManager.getExpressionFactory()
+                .createValueExpression(context, "2", String.class);
 
         String result = (String) ve.getValue(context);
 
         Assert.assertEquals("TWO", result);
     }
-
 
     @Test
     public void testConvertToType07() {
@@ -119,9 +105,8 @@ public class TestELResolver {
         resolver.add(new TesterELResolverTwo());
         ELContext context = new TesterELContext(resolver);
 
-        ValueExpression ve =
-                ELManager.getExpressionFactory().createValueExpression(
-                        context, "3", String.class);
+        ValueExpression ve = ELManager.getExpressionFactory()
+                .createValueExpression(context, "3", String.class);
 
         String result = (String) ve.getValue(context);
 
@@ -133,8 +118,9 @@ public class TestELResolver {
     public void testDefaultConvertToType() {
         ELContext context = new TesterELContext(new StaticFieldELResolver());
 
-        ValueExpression ve = ELManager.getExpressionFactory().createValueExpression(
-                        context, "${!Boolean.FALSE}", Boolean.class);
+        ValueExpression ve = ELManager.getExpressionFactory()
+                .createValueExpression(context, "${!Boolean.FALSE}",
+                        Boolean.class);
 
         Boolean result = (Boolean) ve.getValue(context);
 

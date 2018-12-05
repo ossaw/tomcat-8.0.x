@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -32,8 +30,7 @@ public class ReplicationTransmitter implements ChannelSender {
 
     private Channel channel;
 
-    public ReplicationTransmitter() {
-    }
+    public ReplicationTransmitter() {}
 
     private MultiPointSender transport = new PooledParallelSender();
 
@@ -49,14 +46,16 @@ public class ReplicationTransmitter implements ChannelSender {
 
     /**
      * Send data to one member
-     * @see org.apache.catalina.tribes.ChannelSender#sendMessage(org.apache.catalina.tribes.ChannelMessage, org.apache.catalina.tribes.Member[])
+     * 
+     * @see org.apache.catalina.tribes.ChannelSender#sendMessage(org.apache.catalina.tribes.ChannelMessage,
+     *      org.apache.catalina.tribes.Member[])
      */
     @Override
-    public void sendMessage(ChannelMessage message, Member[] destination) throws ChannelException {
+    public void sendMessage(ChannelMessage message, Member[] destination)
+            throws ChannelException {
         MultiPointSender sender = getTransport();
-        sender.sendMessage(destination,message);
+        sender.sendMessage(destination, message);
     }
-
 
     /**
      * start the sender and register transmitter mbean
@@ -86,7 +85,8 @@ public class ReplicationTransmitter implements ChannelSender {
      */
     @Override
     public void heartbeat() {
-        if (getTransport()!=null) getTransport().keepalive();
+        if (getTransport() != null)
+            getTransport().keepalive();
     }
 
     /**
@@ -101,7 +101,8 @@ public class ReplicationTransmitter implements ChannelSender {
     }
 
     /**
-     * remove sender from transmitter. ( deregister mbean and disconnect sender )
+     * remove sender from transmitter. ( deregister mbean and disconnect sender
+     * )
      *
      * @see org.apache.catalina.tribes.ChannelSender#remove(org.apache.catalina.tribes.Member)
      */

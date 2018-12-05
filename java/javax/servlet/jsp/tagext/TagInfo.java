@@ -1,20 +1,17 @@
 /*
-* Licensed to the Apache Software Foundation (ASF) under one or more
-* contributor license agreements.  See the NOTICE file distributed with
-* this work for additional information regarding copyright ownership.
-* The ASF licenses this file to You under the Apache License, Version 2.0
-* (the "License"); you may not use this file except in compliance with
-* the License.  You may obtain a copy of the License at
-*
-*     http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*/
-
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements. See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
 package javax.servlet.jsp.tagext;
 
@@ -24,7 +21,7 @@ package javax.servlet.jsp.tagext;
  * and is available only at translation time.
  *
  *
-*/
+ */
 
 public class TagInfo {
 
@@ -39,7 +36,6 @@ public class TagInfo {
      */
 
     public static final String BODY_CONTENT_TAG_DEPENDENT = "tagdependent";
-
 
     /**
      * Static constant for getBodyContent() when it is empty.
@@ -62,32 +58,28 @@ public class TagInfo {
      *
      * Note that, since TagLibibraryInfo reflects both TLD information
      * and taglib directive information, a TagInfo instance is
-     * dependent on a taglib directive.  This is probably a
+     * dependent on a taglib directive. This is probably a
      * design error, which may be fixed in the future.
      *
-     * @param tagName The name of this tag
-     * @param tagClassName The name of the tag handler class
-     * @param bodycontent Information on the body content of these tags
-     * @param infoString The (optional) string information for this tag
-     * @param taglib The instance of the tag library that contains us.
-     * @param tagExtraInfo The instance providing extra Tag info.  May be null
+     * @param tagName       The name of this tag
+     * @param tagClassName  The name of the tag handler class
+     * @param bodycontent   Information on the body content of these tags
+     * @param infoString    The (optional) string information for this tag
+     * @param taglib        The instance of the tag library that contains us.
+     * @param tagExtraInfo  The instance providing extra Tag info. May be null
      * @param attributeInfo An array of AttributeInfo data from descriptor.
-     * May be null;
+     *                      May be null;
      *
      */
-    public TagInfo(String tagName,
-            String tagClassName,
-            String bodycontent,
-            String infoString,
-            TagLibraryInfo taglib,
-            TagExtraInfo tagExtraInfo,
+    public TagInfo(String tagName, String tagClassName, String bodycontent,
+            String infoString, TagLibraryInfo taglib, TagExtraInfo tagExtraInfo,
             TagAttributeInfo[] attributeInfo) {
-        this.tagName       = tagName;
-        this.tagClassName  = tagClassName;
-        this.bodyContent   = bodycontent;
-        this.infoString    = infoString;
-        this.tagLibrary    = taglib;
-        this.tagExtraInfo  = tagExtraInfo;
+        this.tagName = tagName;
+        this.tagClassName = tagClassName;
+        this.bodyContent = bodycontent;
+        this.infoString = infoString;
+        this.tagLibrary = taglib;
+        this.tagExtraInfo = tagExtraInfo;
         this.attributeInfo = attributeInfo;
 
         // Use defaults for unspecified values
@@ -109,39 +101,32 @@ public class TagInfo {
      *
      * Note that, since TagLibibraryInfo reflects both TLD information
      * and taglib directive information, a TagInfo instance is
-     * dependent on a taglib directive.  This is probably a
+     * dependent on a taglib directive. This is probably a
      * design error, which may be fixed in the future.
      *
-     * @param tagName The name of this tag
-     * @param tagClassName The name of the tag handler class
-     * @param bodycontent Information on the body content of these tags
-     * @param infoString The (optional) string information for this tag
-     * @param taglib The instance of the tag library that contains us.
-     * @param tagExtraInfo The instance providing extra Tag info.  May be null
+     * @param tagName       The name of this tag
+     * @param tagClassName  The name of the tag handler class
+     * @param bodycontent   Information on the body content of these tags
+     * @param infoString    The (optional) string information for this tag
+     * @param taglib        The instance of the tag library that contains us.
+     * @param tagExtraInfo  The instance providing extra Tag info. May be null
      * @param attributeInfo An array of AttributeInfo data from descriptor.
-     * May be null;
-     * @param displayName A short name to be displayed by tools
-     * @param smallIcon Path to a small icon to be displayed by tools
-     * @param largeIcon Path to a large icon to be displayed by tools
-     * @param tvi An array of a TagVariableInfo (or null)
+     *                      May be null;
+     * @param displayName   A short name to be displayed by tools
+     * @param smallIcon     Path to a small icon to be displayed by tools
+     * @param largeIcon     Path to a large icon to be displayed by tools
+     * @param tvi           An array of a TagVariableInfo (or null)
      */
-    public TagInfo(String tagName,
-            String tagClassName,
-            String bodycontent,
-            String infoString,
-            TagLibraryInfo taglib,
-            TagExtraInfo tagExtraInfo,
-            TagAttributeInfo[] attributeInfo,
-            String displayName,
-            String smallIcon,
-            String largeIcon,
-            TagVariableInfo[] tvi) {
-        this.tagName       = tagName;
-        this.tagClassName  = tagClassName;
-        this.bodyContent   = bodycontent;
-        this.infoString    = infoString;
-        this.tagLibrary    = taglib;
-        this.tagExtraInfo  = tagExtraInfo;
+    public TagInfo(String tagName, String tagClassName, String bodycontent,
+            String infoString, TagLibraryInfo taglib, TagExtraInfo tagExtraInfo,
+            TagAttributeInfo[] attributeInfo, String displayName,
+            String smallIcon, String largeIcon, TagVariableInfo[] tvi) {
+        this.tagName = tagName;
+        this.tagClassName = tagClassName;
+        this.bodyContent = bodycontent;
+        this.infoString = infoString;
+        this.tagLibrary = taglib;
+        this.tagExtraInfo = tagExtraInfo;
         this.attributeInfo = attributeInfo;
         this.displayName = displayName;
         this.smallIcon = smallIcon;
@@ -163,43 +148,38 @@ public class TagInfo {
      *
      * Note that, since TagLibibraryInfo reflects both TLD information
      * and taglib directive information, a TagInfo instance is
-     * dependent on a taglib directive.  This is probably a
+     * dependent on a taglib directive. This is probably a
      * design error, which may be fixed in the future.
      *
-     * @param tagName The name of this tag
-     * @param tagClassName The name of the tag handler class
-     * @param bodycontent Information on the body content of these tags
-     * @param infoString The (optional) string information for this tag
-     * @param taglib The instance of the tag library that contains us.
-     * @param tagExtraInfo The instance providing extra Tag info.  May be null
-     * @param attributeInfo An array of AttributeInfo data from descriptor.
-     * May be null;
-     * @param displayName A short name to be displayed by tools
-     * @param smallIcon Path to a small icon to be displayed by tools
-     * @param largeIcon Path to a large icon to be displayed by tools
-     * @param tvi An array of a TagVariableInfo (or null)
+     * @param tagName           The name of this tag
+     * @param tagClassName      The name of the tag handler class
+     * @param bodycontent       Information on the body content of these tags
+     * @param infoString        The (optional) string information for this tag
+     * @param taglib            The instance of the tag library that contains
+     *                          us.
+     * @param tagExtraInfo      The instance providing extra Tag info. May be
+     *                          null
+     * @param attributeInfo     An array of AttributeInfo data from descriptor.
+     *                          May be null;
+     * @param displayName       A short name to be displayed by tools
+     * @param smallIcon         Path to a small icon to be displayed by tools
+     * @param largeIcon         Path to a large icon to be displayed by tools
+     * @param tvi               An array of a TagVariableInfo (or null)
      * @param dynamicAttributes True if supports dynamic attributes
      *
      * @since 2.0
      */
-    public TagInfo(String tagName,
-            String tagClassName,
-            String bodycontent,
-            String infoString,
-            TagLibraryInfo taglib,
-            TagExtraInfo tagExtraInfo,
-            TagAttributeInfo[] attributeInfo,
-            String displayName,
-            String smallIcon,
-            String largeIcon,
-            TagVariableInfo[] tvi,
+    public TagInfo(String tagName, String tagClassName, String bodycontent,
+            String infoString, TagLibraryInfo taglib, TagExtraInfo tagExtraInfo,
+            TagAttributeInfo[] attributeInfo, String displayName,
+            String smallIcon, String largeIcon, TagVariableInfo[] tvi,
             boolean dynamicAttributes) {
-        this.tagName       = tagName;
-        this.tagClassName  = tagClassName;
-        this.bodyContent   = bodycontent;
-        this.infoString    = infoString;
-        this.tagLibrary    = taglib;
-        this.tagExtraInfo  = tagExtraInfo;
+        this.tagName = tagName;
+        this.tagClassName = tagClassName;
+        this.bodyContent = bodycontent;
+        this.infoString = infoString;
+        this.tagLibrary = taglib;
+        this.tagExtraInfo = tagExtraInfo;
         this.attributeInfo = attributeInfo;
         this.displayName = displayName;
         this.smallIcon = smallIcon;
@@ -230,9 +210,9 @@ public class TagInfo {
      *         zero-length array if the tag has no attributes.
      */
 
-   public TagAttributeInfo[] getAttributes() {
-       return attributeInfo;
-   }
+    public TagAttributeInfo[] getAttributes() {
+        return attributeInfo;
+    }
 
     /**
      * Information on the scripting objects created by this tag at runtime.
@@ -240,17 +220,17 @@ public class TagInfo {
      *
      * @param data TagData describing this action.
      * @return if a TagExtraInfo object is associated with this TagInfo, the
-     *     result of getTagExtraInfo().getVariableInfo( data ), otherwise
-     *     null.
+     *         result of getTagExtraInfo().getVariableInfo( data ), otherwise
+     *         null.
      */
-   public VariableInfo[] getVariableInfo(TagData data) {
-       VariableInfo[] result = null;
-       TagExtraInfo tei = getTagExtraInfo();
-       if (tei != null) {
-           result = tei.getVariableInfo( data );
-       }
-       return result;
-   }
+    public VariableInfo[] getVariableInfo(TagData data) {
+        VariableInfo[] result = null;
+        TagExtraInfo tei = getTagExtraInfo();
+        if (tei != null) {
+            result = tei.getVariableInfo(data);
+        }
+        return result;
+    }
 
     /**
      * Translation-time validation of the attributes.
@@ -273,15 +253,15 @@ public class TagInfo {
      *
      * @param data The translation-time TagData instance.
      * @return A null object, or zero length array if no errors, an
-     *     array of ValidationMessages otherwise.
+     *         array of ValidationMessages otherwise.
      * @since 2.0
      */
-    public ValidationMessage[] validate( TagData data ) {
+    public ValidationMessage[] validate(TagData data) {
         TagExtraInfo tei = getTagExtraInfo();
-        if( tei == null ) {
+        if (tei == null) {
             return null;
         }
-        return tei.validate( data );
+        return tei.validate(data);
     }
 
     /**
@@ -293,7 +273,6 @@ public class TagInfo {
         tagExtraInfo = tei;
     }
 
-
     /**
      * The instance (if any) for extra tag information.
      *
@@ -302,7 +281,6 @@ public class TagInfo {
     public TagExtraInfo getTagExtraInfo() {
         return tagExtraInfo;
     }
-
 
     /**
      * Name of the class that provides the handler for this tag.
@@ -313,7 +291,6 @@ public class TagInfo {
     public String getTagClassName() {
         return tagClassName;
     }
-
 
     /**
      * The bodycontent information for this tag.
@@ -327,7 +304,6 @@ public class TagInfo {
         return bodyContent;
     }
 
-
     /**
      * The information string for the tag.
      *
@@ -339,13 +315,12 @@ public class TagInfo {
         return infoString;
     }
 
-
     /**
      * Set the TagLibraryInfo property.
      *
      * Note that a TagLibraryInfo element is dependent
      * not just on the TLD information but also on the
-     * specific taglib instance used.  This means that
+     * specific taglib instance used. This means that
      * a fair amount of work needs to be done to construct
      * and initialize TagLib objects.
      *
@@ -369,9 +344,7 @@ public class TagInfo {
         return tagLibrary;
     }
 
-
     // ============== JSP 2.0 TLD Information ========
-
 
     /**
      * Get the displayName.
@@ -418,7 +391,6 @@ public class TagInfo {
         return tagVariableInfo;
     }
 
-
     // ============== JSP 2.0 TLD Information ========
 
     /**
@@ -434,21 +406,21 @@ public class TagInfo {
     /*
      * private fields for 1.1 info
      */
-    private final String             tagName; // the name of the tag
-    private final String             tagClassName;
-    private final String             bodyContent;
-    private final String             infoString;
-    private TagLibraryInfo           tagLibrary;
-    private TagExtraInfo             tagExtraInfo; // instance of TagExtraInfo
+    private final String tagName; // the name of the tag
+    private final String tagClassName;
+    private final String bodyContent;
+    private final String infoString;
+    private TagLibraryInfo tagLibrary;
+    private TagExtraInfo tagExtraInfo; // instance of TagExtraInfo
     private final TagAttributeInfo[] attributeInfo;
 
     /*
      * private fields for 1.2 info
      */
-    private final String             displayName;
-    private final String             smallIcon;
-    private final String             largeIcon;
-    private final TagVariableInfo[]  tagVariableInfo;
+    private final String displayName;
+    private final String smallIcon;
+    private final String largeIcon;
+    private final TagVariableInfo[] tagVariableInfo;
 
     /*
      * Additional private fields for 2.0 info

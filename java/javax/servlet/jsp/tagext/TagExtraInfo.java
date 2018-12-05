@@ -1,20 +1,17 @@
 /*
-* Licensed to the Apache Software Foundation (ASF) under one or more
-* contributor license agreements.  See the NOTICE file distributed with
-* this work for additional information regarding copyright ownership.
-* The ASF licenses this file to You under the Apache License, Version 2.0
-* (the "License"); you may not use this file except in compliance with
-* the License.  You may obtain a copy of the License at
-*
-*     http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*/
-
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements. See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
 package javax.servlet.jsp.tagext;
 
@@ -26,8 +23,8 @@ package javax.servlet.jsp.tagext;
  * <p>
  * This class can be used:
  * <ul>
- * <li> to indicate that the tag defines scripting variables
- * <li> to perform translation-time validation of the tag attributes.
+ * <li>to indicate that the tag defines scripting variables
+ * <li>to perform translation-time validation of the tag attributes.
  * </ul>
  *
  * <p>
@@ -97,22 +94,24 @@ public abstract class TagExtraInfo {
      * this is the preferred way to do validation (although isValid()
      * still works).
      *
-     * <p>JSP 2.0 and higher containers call validate() instead of isValid().
-     * The default implementation of this method is to call isValid().  If
+     * <p>
+     * JSP 2.0 and higher containers call validate() instead of isValid().
+     * The default implementation of this method is to call isValid(). If
      * isValid() returns false, a generic ValidationMessage[] is returned
-     * indicating isValid() returned false.</p>
+     * indicating isValid() returned false.
+     * </p>
      *
      * @param data The TagData instance.
      * @return A null object, or zero length array if no errors, an
-     *     array of ValidationMessages otherwise.
+     *         array of ValidationMessages otherwise.
      * @since 2.0
      */
-    public ValidationMessage[] validate( TagData data ) {
+    public ValidationMessage[] validate(TagData data) {
         ValidationMessage[] result = null;
 
-        if( !isValid( data ) ) {
-            result = new ValidationMessage[] {
-                new ValidationMessage( data.getId(), "isValid() == false" ) };
+        if (!isValid(data)) {
+            result = new ValidationMessage[] { new ValidationMessage(data
+                    .getId(), "isValid() == false") };
         }
 
         return result;
@@ -137,9 +136,8 @@ public abstract class TagExtraInfo {
     }
 
     // private data
-    private  TagInfo tagInfo;
+    private TagInfo tagInfo;
 
     // zero length VariableInfo array
-    private static final VariableInfo[] ZERO_VARIABLE_INFO = { };
+    private static final VariableInfo[] ZERO_VARIABLE_INFO = {};
 }
-

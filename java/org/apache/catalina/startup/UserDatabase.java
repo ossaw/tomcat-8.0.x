@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -15,12 +13,9 @@
  * limitations under the License.
  */
 
-
 package org.apache.catalina.startup;
 
-
 import java.util.Enumeration;
-
 
 /**
  * Abstraction of the set of users defined by the operating system on the
@@ -30,15 +25,12 @@ import java.util.Enumeration;
  */
 public interface UserDatabase {
 
-
     // ----------------------------------------------------------- Properties
-
 
     /**
      * Return the UserConfig listener with which we are associated.
      */
     public UserConfig getUserConfig();
-
 
     /**
      * Set the UserConfig listener with which we are associated.
@@ -47,9 +39,7 @@ public interface UserDatabase {
      */
     public void setUserConfig(UserConfig userConfig);
 
-
     // ------------------------------------------------------- Public Methods
-
 
     /**
      * Return an absolute pathname to the home directory for the specified user.
@@ -58,11 +48,9 @@ public interface UserDatabase {
      */
     public String getHome(String user);
 
-
     /**
      * Return an enumeration of the usernames defined on this server.
      */
     public Enumeration<String> getUsers();
-
 
 }

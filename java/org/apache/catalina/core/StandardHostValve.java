@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -42,7 +40,7 @@ import org.apache.tomcat.util.res.StringManager;
  * Valve that implements the default basic behavior for the
  * <code>StandardHost</code> container implementation.
  * <p>
- * <b>USAGE CONSTRAINT</b>:  This implementation is likely to be useful only
+ * <b>USAGE CONSTRAINT</b>: This implementation is likely to be useful only
  * when processing HTTP requests.
  *
  * @author Craig R. McClanahan
@@ -55,8 +53,8 @@ final class StandardHostValve extends ValveBase {
     // Saves a call to getClassLoader() on very request. Under high load these
     // calls took just long enough to appear as a hot spot (although a very
     // minor one) in a profiler.
-    private static final ClassLoader MY_CLASSLOADER =
-            StandardHostValve.class.getClassLoader();
+    private static final ClassLoader MY_CLASSLOADER = StandardHostValve.class
+            .getClassLoader();
 
     static final boolean STRICT_SERVLET_COMPLIANCE;
 
@@ -79,38 +77,36 @@ final class StandardHostValve extends ValveBase {
         super(true);
     }
 
-
     // ----------------------------------------------------- Instance Variables
 
     /**
      * The string manager for this package.
      */
-    private static final StringManager sm =
-        StringManager.getManager(Constants.Package);
-
+    private static final StringManager sm = StringManager.getManager(
+            Constants.Package);
 
     // --------------------------------------------------------- Public Methods
 
     /**
      * Select the appropriate child Context to process this request,
-     * based on the specified request URI.  If no matching Context can
+     * based on the specified request URI. If no matching Context can
      * be found, return an appropriate HTTP error.
      *
-     * @param request Request to be processed
+     * @param request  Request to be processed
      * @param response Response to be produced
      *
-     * @exception IOException if an input/output error occurred
+     * @exception IOException      if an input/output error occurred
      * @exception ServletException if a servlet error occurred
      */
     @Override
     public final void invoke(Request request, Response response)
-        throws IOException, ServletException {
+            throws IOException, ServletException {
 
         // Select the Context to be used for this Request
         Context context = request.getContext();
         if (context == null) {
-            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
-                 sm.getString("standardHost.noContext"));
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, sm
+                    .getString("standardHost.noContext"));
             return;
         }
 
@@ -143,12 +139,14 @@ final class StandardHostValve extends ValveBase {
                     // Make sure this request/response is here because an error
                     // report is required.
                     if (!response.isErrorReportRequired()) {
-                        throw new IllegalStateException(sm.getString("standardHost.asyncStateError"));
+                        throw new IllegalStateException(sm.getString(
+                                "standardHost.asyncStateError"));
                     }
                 }
             } catch (Throwable t) {
                 ExceptionUtils.handleThrowable(t);
-                container.getLogger().error("Exception Processing " + request.getRequestURI(), t);
+                container.getLogger().error("Exception Processing " + request
+                        .getRequestURI(), t);
                 // If a new error occurred while trying to report a previous
                 // error allow the original error to be reported.
                 if (!response.isErrorReportRequired()) {
@@ -162,7 +160,8 @@ final class StandardHostValve extends ValveBase {
             // complete and/or the container can flush any remaining data
             response.setSuspended(false);
 
-            Throwable t = (Throwable) request.getAttribute(RequestDispatcher.ERROR_EXCEPTION);
+            Throwable t = (Throwable) request.getAttribute(
+                    RequestDispatcher.ERROR_EXCEPTION);
 
             // Protect against NPEs if the context was destroyed during a
             // long running request.
@@ -179,7 +178,8 @@ final class StandardHostValve extends ValveBase {
                 }
             }
 
-            if (!request.isAsync() && (!asyncAtStart || !response.isErrorReportRequired())) {
+            if (!request.isAsync() && (!asyncAtStart || !response
+                    .isErrorReportRequired())) {
                 context.fireRequestDestroyEvent(request);
             }
         } finally {
@@ -193,20 +193,19 @@ final class StandardHostValve extends ValveBase {
         }
     }
 
-
     /**
      * Process Comet event.
      *
-     * @param request Request to be processed
+     * @param request  Request to be processed
      * @param response Response to be produced
-     * @param event the event
+     * @param event    the event
      *
-     * @exception IOException if an input/output error occurred
+     * @exception IOException      if an input/output error occurred
      * @exception ServletException if a servlet error occurred
      */
     @Override
-    public final void event(Request request, Response response, CometEvent event)
-        throws IOException, ServletException {
+    public final void event(Request request, Response response,
+            CometEvent event) throws IOException, ServletException {
 
         // Select the Context to be used for this Request
         Context context = request.getContext();
@@ -215,7 +214,6 @@ final class StandardHostValve extends ValveBase {
 
         // Ask this Context to process this request
         context.getPipeline().getFirst().event(request, response, event);
-
 
         // Error page processing
         response.setSuspended(false);
@@ -239,16 +237,15 @@ final class StandardHostValve extends ValveBase {
         context.unbind(false, MY_CLASSLOADER);
     }
 
-
     // -------------------------------------------------------- Private Methods
 
     /**
      * Handle the HTTP status code (and corresponding message) generated
      * while processing the specified Request to produce the specified
-     * Response.  Any exceptions that occur during generation of the error
+     * Response. Any exceptions that occur during generation of the error
      * report are logged and swallowed.
      *
-     * @param request The request being processed
+     * @param request  The request being processed
      * @param response The response being generated
      */
     private void status(Request request, Response response) {
@@ -261,7 +258,8 @@ final class StandardHostValve extends ValveBase {
             return;
         }
 
-        /* Only look for error pages when isError() is set.
+        /*
+         * Only look for error pages when isError() is set.
          * isError() is set when response.sendError() is invoked. This
          * allows custom error pages without relying on default from
          * web.xml.
@@ -277,27 +275,26 @@ final class StandardHostValve extends ValveBase {
         }
         if (errorPage != null && response.isErrorReportRequired()) {
             response.setAppCommitted(false);
-            request.setAttribute(RequestDispatcher.ERROR_STATUS_CODE,
-                              Integer.valueOf(statusCode));
+            request.setAttribute(RequestDispatcher.ERROR_STATUS_CODE, Integer
+                    .valueOf(statusCode));
 
             String message = response.getMessage();
             if (message == null) {
                 message = "";
             }
             request.setAttribute(RequestDispatcher.ERROR_MESSAGE, message);
-            request.setAttribute(Globals.DISPATCHER_REQUEST_PATH_ATTR,
-                    errorPage.getLocation());
+            request.setAttribute(Globals.DISPATCHER_REQUEST_PATH_ATTR, errorPage
+                    .getLocation());
             request.setAttribute(Globals.DISPATCHER_TYPE_ATTR,
                     DispatcherType.ERROR);
-
 
             Wrapper wrapper = request.getWrapper();
             if (wrapper != null) {
                 request.setAttribute(RequestDispatcher.ERROR_SERVLET_NAME,
-                                  wrapper.getName());
+                        wrapper.getName());
             }
-            request.setAttribute(RequestDispatcher.ERROR_REQUEST_URI,
-                                 request.getRequestURI());
+            request.setAttribute(RequestDispatcher.ERROR_REQUEST_URI, request
+                    .getRequestURI());
             if (custom(request, response, errorPage)) {
                 response.setErrorReported();
                 try {
@@ -305,26 +302,26 @@ final class StandardHostValve extends ValveBase {
                 } catch (ClientAbortException e) {
                     // Ignore
                 } catch (IOException e) {
-                    container.getLogger().warn("Exception Processing " + errorPage, e);
+                    container.getLogger().warn("Exception Processing "
+                            + errorPage, e);
                 }
             }
         }
     }
 
-
     /**
      * Handle the specified Throwable encountered while processing
-     * the specified Request to produce the specified Response.  Any
+     * the specified Request to produce the specified Response. Any
      * exceptions that occur during generation of the exception report are
      * logged and swallowed.
      *
-     * @param request The request being processed
-     * @param response The response being generated
+     * @param request   The request being processed
+     * @param response  The response being generated
      * @param throwable The exception that occurred (which possibly wraps
-     *  a root cause exception
+     *                  a root cause exception
      */
     protected void throwable(Request request, Response response,
-                             Throwable throwable) {
+            Throwable throwable) {
         Context context = request.getContext();
         if (context == null) {
             return;
@@ -340,11 +337,10 @@ final class StandardHostValve extends ValveBase {
         }
 
         // If this is an aborted request from a client just log it and return
-        if (realError instanceof ClientAbortException ) {
+        if (realError instanceof ClientAbortException) {
             if (log.isDebugEnabled()) {
-                log.debug
-                    (sm.getString("standardHost.clientAbort",
-                        realError.getCause().getMessage()));
+                log.debug(sm.getString("standardHost.clientAbort", realError
+                        .getCause().getMessage()));
             }
             return;
         }
@@ -362,25 +358,27 @@ final class StandardHostValve extends ValveBase {
                 request.setAttribute(Globals.DISPATCHER_TYPE_ATTR,
                         DispatcherType.ERROR);
                 request.setAttribute(RequestDispatcher.ERROR_STATUS_CODE,
-                        Integer.valueOf(HttpServletResponse.SC_INTERNAL_SERVER_ERROR));
-                request.setAttribute(RequestDispatcher.ERROR_MESSAGE,
-                                  throwable.getMessage());
+                        Integer.valueOf(
+                                HttpServletResponse.SC_INTERNAL_SERVER_ERROR));
+                request.setAttribute(RequestDispatcher.ERROR_MESSAGE, throwable
+                        .getMessage());
                 request.setAttribute(RequestDispatcher.ERROR_EXCEPTION,
-                                  realError);
+                        realError);
                 Wrapper wrapper = request.getWrapper();
                 if (wrapper != null) {
                     request.setAttribute(RequestDispatcher.ERROR_SERVLET_NAME,
-                                      wrapper.getName());
+                            wrapper.getName());
                 }
                 request.setAttribute(RequestDispatcher.ERROR_REQUEST_URI,
-                                     request.getRequestURI());
+                        request.getRequestURI());
                 request.setAttribute(RequestDispatcher.ERROR_EXCEPTION_TYPE,
-                                  realError.getClass());
+                        realError.getClass());
                 if (custom(request, response, errorPage)) {
                     try {
                         response.finishResponse();
                     } catch (IOException e) {
-                        container.getLogger().warn("Exception Processing " + errorPage, e);
+                        container.getLogger().warn("Exception Processing "
+                                + errorPage, e);
                     }
                 }
             }
@@ -397,21 +395,20 @@ final class StandardHostValve extends ValveBase {
         }
     }
 
-
     /**
      * Handle an HTTP status code or Java exception by forwarding control
-     * to the location included in the specified errorPage object.  It is
+     * to the location included in the specified errorPage object. It is
      * assumed that the caller has already recorded any request attributes
-     * that are to be forwarded to this page.  Return <code>true</code> if
+     * that are to be forwarded to this page. Return <code>true</code> if
      * we successfully utilized the specified error page location, or
      * <code>false</code> if the default error report should be rendered.
      *
-     * @param request The request being processed
-     * @param response The response being generated
+     * @param request   The request being processed
+     * @param response  The response being generated
      * @param errorPage The errorPage directive we are obeying
      */
     private boolean custom(Request request, Response response,
-                             ErrorPage errorPage) {
+            ErrorPage errorPage) {
 
         if (container.getLogger().isDebugEnabled()) {
             container.getLogger().debug("Processing " + errorPage);
@@ -419,14 +416,15 @@ final class StandardHostValve extends ValveBase {
 
         try {
             // Forward control to the specified location
-            ServletContext servletContext =
-                request.getContext().getServletContext();
-            RequestDispatcher rd =
-                servletContext.getRequestDispatcher(errorPage.getLocation());
+            ServletContext servletContext = request.getContext()
+                    .getServletContext();
+            RequestDispatcher rd = servletContext.getRequestDispatcher(errorPage
+                    .getLocation());
 
             if (rd == null) {
-                container.getLogger().error(
-                    sm.getString("standardHostValue.customStatusFailed", errorPage.getLocation()));
+                container.getLogger().error(sm.getString(
+                        "standardHostValue.customStatusFailed", errorPage
+                                .getLocation()));
                 return false;
             }
 
@@ -457,18 +455,17 @@ final class StandardHostValve extends ValveBase {
         }
     }
 
-
     /**
      * Find and return the ErrorPage instance for the specified exception's
      * class, or an ErrorPage instance for the closest superclass for which
-     * there is such a definition.  If no associated ErrorPage instance is
+     * there is such a definition. If no associated ErrorPage instance is
      * found, return <code>null</code>.
      *
-     * @param context The Context in which to search
+     * @param context   The Context in which to search
      * @param exception The exception for which to find an ErrorPage
      */
-    private static ErrorPage findErrorPage
-        (Context context, Throwable exception) {
+    private static ErrorPage findErrorPage(Context context,
+            Throwable exception) {
 
         if (exception == null) {
             return (null);

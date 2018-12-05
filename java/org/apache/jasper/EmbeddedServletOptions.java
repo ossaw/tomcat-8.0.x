@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -181,11 +179,11 @@ public final class EmbeddedServletOptions implements Options {
     private boolean xpoweredBy;
 
     /**
-     * Should we include a source fragment in exception messages, which could be displayed
+     * Should we include a source fragment in exception messages, which could be
+     * displayed
      * to the developer ?
      */
     private boolean displaySourceFragment = true;
-
 
     /**
      * The maximum number of loaded jsps per web-application. If there are more
@@ -203,8 +201,8 @@ public final class EmbeddedServletOptions implements Options {
      * System property that controls if the strict quoting rules are applied
      * when parsing attribute values that use scriptlet expressions (<%=...%>).
      */
-    private static final boolean STRICT_QUOTE_ESCAPING_DEFAULT= Boolean.parseBoolean(
-            System.getProperty(
+    private static final boolean STRICT_QUOTE_ESCAPING_DEFAULT = Boolean
+            .parseBoolean(System.getProperty(
                     "org.apache.jasper.compiler.Parser.STRICT_QUOTE_ESCAPING",
                     "true"));
     /**
@@ -219,13 +217,13 @@ public final class EmbeddedServletOptions implements Options {
      */
     private boolean quoteAttributeEL = true;
 
-    public String getProperty(String name ) {
-        return settings.getProperty( name );
+    public String getProperty(String name) {
+        return settings.getProperty(name);
     }
 
-    public void setProperty(String name, String value ) {
-        if (name != null && value != null){
-            settings.setProperty( name, value );
+    public void setProperty(String name, String value) {
+        if (name != null && value != null) {
+            settings.setProperty(name, value);
         }
     }
 
@@ -445,7 +443,8 @@ public final class EmbeddedServletOptions implements Options {
     }
 
     /**
-     * Should we include a source fragment in exception messages, which could be displayed
+     * Should we include a source fragment in exception messages, which could be
+     * displayed
      * to the developer ?
      */
     @Override
@@ -483,11 +482,11 @@ public final class EmbeddedServletOptions implements Options {
     public EmbeddedServletOptions(ServletConfig config,
             ServletContext context) {
 
-        Enumeration<String> enumeration=config.getInitParameterNames();
-        while( enumeration.hasMoreElements() ) {
-            String k=enumeration.nextElement();
-            String v=config.getInitParameter( k );
-            setProperty( k, v);
+        Enumeration<String> enumeration = config.getInitParameterNames();
+        while (enumeration.hasMoreElements()) {
+            String k = enumeration.nextElement();
+            String v = config.getInitParameter(k);
+            setProperty(k, v);
         }
 
         String keepgen = config.getInitParameter("keepgenerated");
@@ -503,7 +502,6 @@ public final class EmbeddedServletOptions implements Options {
             }
         }
 
-
         String trimsp = config.getInitParameter("trimSpaces");
         if (trimsp != null) {
             if (trimsp.equalsIgnoreCase("true")) {
@@ -518,10 +516,9 @@ public final class EmbeddedServletOptions implements Options {
         }
 
         this.isPoolingEnabled = true;
-        String poolingEnabledParam
-        = config.getInitParameter("enablePooling");
-        if (poolingEnabledParam != null
-                && !poolingEnabledParam.equalsIgnoreCase("true")) {
+        String poolingEnabledParam = config.getInitParameter("enablePooling");
+        if (poolingEnabledParam != null && !poolingEnabledParam
+                .equalsIgnoreCase("true")) {
             if (poolingEnabledParam.equalsIgnoreCase("false")) {
                 this.isPoolingEnabled = false;
             } else {
@@ -547,12 +544,13 @@ public final class EmbeddedServletOptions implements Options {
         String debugInfo = config.getInitParameter("classdebuginfo");
         if (debugInfo != null) {
             if (debugInfo.equalsIgnoreCase("true")) {
-                this.classDebugInfo  = true;
+                this.classDebugInfo = true;
             } else if (debugInfo.equalsIgnoreCase("false")) {
-                this.classDebugInfo  = false;
+                this.classDebugInfo = false;
             } else {
                 if (log.isWarnEnabled()) {
-                    log.warn(Localizer.getMessage("jsp.warning.classDebugInfo"));
+                    log.warn(Localizer.getMessage(
+                            "jsp.warning.classDebugInfo"));
                 }
             }
         }
@@ -561,20 +559,23 @@ public final class EmbeddedServletOptions implements Options {
         if (checkInterval != null) {
             try {
                 this.checkInterval = Integer.parseInt(checkInterval);
-            } catch(NumberFormatException ex) {
+            } catch (NumberFormatException ex) {
                 if (log.isWarnEnabled()) {
                     log.warn(Localizer.getMessage("jsp.warning.checkInterval"));
                 }
             }
         }
 
-        String modificationTestInterval = config.getInitParameter("modificationTestInterval");
+        String modificationTestInterval = config.getInitParameter(
+                "modificationTestInterval");
         if (modificationTestInterval != null) {
             try {
-                this.modificationTestInterval = Integer.parseInt(modificationTestInterval);
-            } catch(NumberFormatException ex) {
+                this.modificationTestInterval = Integer.parseInt(
+                        modificationTestInterval);
+            } catch (NumberFormatException ex) {
                 if (log.isWarnEnabled()) {
-                    log.warn(Localizer.getMessage("jsp.warning.modificationTestInterval"));
+                    log.warn(Localizer.getMessage(
+                            "jsp.warning.modificationTestInterval"));
                 }
             }
         }
@@ -587,7 +588,8 @@ public final class EmbeddedServletOptions implements Options {
                 this.recompileOnFail = false;
             } else {
                 if (log.isWarnEnabled()) {
-                    log.warn(Localizer.getMessage("jsp.warning.recompileOnFail"));
+                    log.warn(Localizer.getMessage(
+                            "jsp.warning.recompileOnFail"));
                 }
             }
         }
@@ -643,8 +645,8 @@ public final class EmbeddedServletOptions implements Options {
             }
         }
 
-        String errBeanClass =
-            config.getInitParameter("errorOnUseBeanInvalidClassAttribute");
+        String errBeanClass = config.getInitParameter(
+                "errorOnUseBeanInvalidClassAttribute");
         if (errBeanClass != null) {
             if (errBeanClass.equalsIgnoreCase("true")) {
                 errorOnUseBeanInvalidClassAttribute = true;
@@ -670,7 +672,8 @@ public final class EmbeddedServletOptions implements Options {
          */
         String dir = config.getInitParameter("scratchdir");
         if (dir != null && Constants.IS_SECURITY_ENABLED) {
-            log.info(Localizer.getMessage("jsp.info.ignoreSetting", "scratchdir", dir));
+            log.info(Localizer.getMessage("jsp.info.ignoreSetting",
+                    "scratchdir", dir));
             dir = null;
         }
         if (dir != null) {
@@ -691,20 +694,20 @@ public final class EmbeddedServletOptions implements Options {
             return;
         }
 
-        if (!(scratchDir.exists() && scratchDir.canRead() &&
-                scratchDir.canWrite() && scratchDir.isDirectory()))
+        if (!(scratchDir.exists() && scratchDir.canRead() && scratchDir
+                .canWrite() && scratchDir.isDirectory()))
             log.fatal(Localizer.getMessage("jsp.error.bad.scratch.dir",
                     scratchDir.getAbsolutePath()));
 
         this.compiler = config.getInitParameter("compiler");
 
         String compilerTargetVM = config.getInitParameter("compilerTargetVM");
-        if(compilerTargetVM != null) {
+        if (compilerTargetVM != null) {
             this.compilerTargetVM = compilerTargetVM;
         }
 
         String compilerSourceVM = config.getInitParameter("compilerSourceVM");
-        if(compilerSourceVM != null) {
+        if (compilerSourceVM != null) {
             this.compilerSourceVM = compilerSourceVM;
         }
 
@@ -744,7 +747,8 @@ public final class EmbeddedServletOptions implements Options {
             }
         }
 
-        String displaySourceFragment = config.getInitParameter("displaySourceFragment");
+        String displaySourceFragment = config.getInitParameter(
+                "displaySourceFragment");
         if (displaySourceFragment != null) {
             if (displaySourceFragment.equalsIgnoreCase("true")) {
                 this.displaySourceFragment = true;
@@ -752,7 +756,8 @@ public final class EmbeddedServletOptions implements Options {
                 this.displaySourceFragment = false;
             } else {
                 if (log.isWarnEnabled()) {
-                    log.warn(Localizer.getMessage("jsp.warning.displaySourceFragment"));
+                    log.warn(Localizer.getMessage(
+                            "jsp.warning.displaySourceFragment"));
                 }
             }
         }
@@ -761,9 +766,10 @@ public final class EmbeddedServletOptions implements Options {
         if (maxLoadedJsps != null) {
             try {
                 this.maxLoadedJsps = Integer.parseInt(maxLoadedJsps);
-            } catch(NumberFormatException ex) {
+            } catch (NumberFormatException ex) {
                 if (log.isWarnEnabled()) {
-                    log.warn(Localizer.getMessage("jsp.warning.maxLoadedJsps", ""+this.maxLoadedJsps));
+                    log.warn(Localizer.getMessage("jsp.warning.maxLoadedJsps",
+                            "" + this.maxLoadedJsps));
                 }
             }
         }
@@ -772,14 +778,16 @@ public final class EmbeddedServletOptions implements Options {
         if (jspIdleTimeout != null) {
             try {
                 this.jspIdleTimeout = Integer.parseInt(jspIdleTimeout);
-            } catch(NumberFormatException ex) {
+            } catch (NumberFormatException ex) {
                 if (log.isWarnEnabled()) {
-                    log.warn(Localizer.getMessage("jsp.warning.jspIdleTimeout", ""+this.jspIdleTimeout));
+                    log.warn(Localizer.getMessage("jsp.warning.jspIdleTimeout",
+                            "" + this.jspIdleTimeout));
                 }
             }
         }
 
-        String strictQuoteEscaping = config.getInitParameter("strictQuoteEscaping");
+        String strictQuoteEscaping = config.getInitParameter(
+                "strictQuoteEscaping");
         if (strictQuoteEscaping != null) {
             if (strictQuoteEscaping.equalsIgnoreCase("true")) {
                 this.strictQuoteEscaping = true;
@@ -787,8 +795,9 @@ public final class EmbeddedServletOptions implements Options {
                 this.strictQuoteEscaping = false;
             } else {
                 if (log.isWarnEnabled()) {
-                    log.warn(Localizer.getMessage("jsp.warning.strictQuoteEscaping",
-                            Boolean.toString(STRICT_QUOTE_ESCAPING_DEFAULT)));
+                    log.warn(Localizer.getMessage(
+                            "jsp.warning.strictQuoteEscaping", Boolean.toString(
+                                    STRICT_QUOTE_ESCAPING_DEFAULT)));
                 }
             }
         }
@@ -801,7 +810,8 @@ public final class EmbeddedServletOptions implements Options {
                 this.quoteAttributeEL = false;
             } else {
                 if (log.isWarnEnabled()) {
-                    log.warn(Localizer.getMessage("jsp.warning.quoteAttributeEL"));
+                    log.warn(Localizer.getMessage(
+                            "jsp.warning.quoteAttributeEL"));
                 }
             }
         }
@@ -818,4 +828,3 @@ public final class EmbeddedServletOptions implements Options {
     }
 
 }
-

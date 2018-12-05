@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -41,7 +39,7 @@ public class HttpServletRequestWrapper extends ServletRequestWrapper implements
      * @param request The request to wrap
      *
      * @throws java.lang.IllegalArgumentException
-     *             if the request is null
+     *         if the request is null
      */
     public HttpServletRequestWrapper(HttpServletRequest request) {
         super(request);
@@ -314,7 +312,8 @@ public class HttpServletRequestWrapper extends ServletRequestWrapper implements
      * @since Servlet 3.0
      */
     @Override
-    public void login(String username, String password) throws ServletException {
+    public void login(String username, String password)
+            throws ServletException {
         this._getHttpServletRequest().login(username, password);
     }
 
@@ -342,8 +341,7 @@ public class HttpServletRequestWrapper extends ServletRequestWrapper implements
      * @since Servlet 3.0
      */
     @Override
-    public Collection<Part> getParts() throws IOException,
-            ServletException {
+    public Collection<Part> getParts() throws IOException, ServletException {
         return this._getHttpServletRequest().getParts();
     }
 
@@ -357,8 +355,7 @@ public class HttpServletRequestWrapper extends ServletRequestWrapper implements
      * @since Servlet 3.0
      */
     @Override
-    public Part getPart(String name) throws IOException,
-            ServletException {
+    public Part getPart(String name) throws IOException, ServletException {
         return this._getHttpServletRequest().getPart(name);
     }
 
@@ -372,7 +369,8 @@ public class HttpServletRequestWrapper extends ServletRequestWrapper implements
      */
     @Override
     public <T extends HttpUpgradeHandler> T upgrade(
-            Class<T> httpUpgradeHandlerClass) throws IOException, ServletException {
+            Class<T> httpUpgradeHandlerClass) throws IOException,
+            ServletException {
         return this._getHttpServletRequest().upgrade(httpUpgradeHandlerClass);
     }
 }

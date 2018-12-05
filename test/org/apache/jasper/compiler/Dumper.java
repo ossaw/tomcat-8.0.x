@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -30,9 +28,9 @@ class Dumper {
                 return "";
 
             StringBuilder buf = new StringBuilder();
-            for (int i=0; i < attrs.getLength(); i++) {
-                buf.append(" " + attrs.getQName(i) + "=\""
-                           + attrs.getValue(i) + "\"");
+            for (int i = 0; i < attrs.getLength(); i++) {
+                buf.append(" " + attrs.getQName(i) + "=\"" + attrs.getValue(i)
+                        + "\"");
             }
             return buf.toString();
         }
@@ -52,16 +50,16 @@ class Dumper {
         }
 
         private void printAttributes(String prefix, Attributes attrs,
-                                     String suffix) {
+                String suffix) {
             printString(prefix, getAttributes(attrs), suffix);
         }
 
         private void dumpBody(Node n) throws JasperException {
             Node.Nodes page = n.getBody();
             if (page != null) {
-//                indent++;
+                //                indent++;
                 page.visit(this);
-//                indent--;
+                //                indent--;
             }
         }
 
@@ -171,7 +169,7 @@ class Dumper {
 
         @Override
         public void visit(Node.ELExpression n) throws JasperException {
-            printString( "${" + n.getText() + "}" );
+            printString("${" + n.getText() + "}");
         }
 
         @Override
@@ -184,7 +182,7 @@ class Dumper {
         @Override
         public void visit(Node.UninterpretedTag n) throws JasperException {
             String tag = n.getQName();
-            printAttributes("<"+tag, n.getAttributes(), ">");
+            printAttributes("<" + tag, n.getAttributes(), ">");
             dumpBody(n);
             printString("</" + tag + ">");
         }
@@ -195,7 +193,7 @@ class Dumper {
         }
 
         private void printIndent() {
-            for (int i=0; i < indent; i++) {
+            for (int i = 0; i < indent; i++) {
                 System.out.print("  ");
             }
         }
@@ -217,4 +215,3 @@ class Dumper {
         }
     }
 }
-

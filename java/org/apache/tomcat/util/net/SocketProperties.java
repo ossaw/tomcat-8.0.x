@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -107,7 +105,7 @@ public class SocketProperties {
      * -1 means unlimited, 0 means no cache
      * Default value is 100MB (1024*1024*100 bytes)
      */
-    protected int bufferPoolSize = 1024*1024*100;
+    protected int bufferPoolSize = 1024 * 1024 * 100;
 
     /**
      * TCP_NO_DELAY option. JVM default used if not set.
@@ -181,40 +179,38 @@ public class SocketProperties {
      */
     protected int unlockTimeout = 250;
 
-    public void setProperties(Socket socket) throws SocketException{
+    public void setProperties(Socket socket) throws SocketException {
         if (rxBufSize != null)
             socket.setReceiveBufferSize(rxBufSize.intValue());
         if (txBufSize != null)
             socket.setSendBufferSize(txBufSize.intValue());
-        if (ooBInline !=null)
+        if (ooBInline != null)
             socket.setOOBInline(ooBInline.booleanValue());
         if (soKeepAlive != null)
             socket.setKeepAlive(soKeepAlive.booleanValue());
-        if (performanceConnectionTime != null && performanceLatency != null &&
-                performanceBandwidth != null)
-            socket.setPerformancePreferences(
-                    performanceConnectionTime.intValue(),
-                    performanceLatency.intValue(),
+        if (performanceConnectionTime != null && performanceLatency != null
+                && performanceBandwidth != null)
+            socket.setPerformancePreferences(performanceConnectionTime
+                    .intValue(), performanceLatency.intValue(),
                     performanceBandwidth.intValue());
         if (soReuseAddress != null)
             socket.setReuseAddress(soReuseAddress.booleanValue());
         if (soLingerOn != null && soLingerTime != null)
-            socket.setSoLinger(soLingerOn.booleanValue(),
-                    soLingerTime.intValue());
+            socket.setSoLinger(soLingerOn.booleanValue(), soLingerTime
+                    .intValue());
         if (soTimeout != null && soTimeout.intValue() >= 0)
             socket.setSoTimeout(soTimeout.intValue());
         if (tcpNoDelay != null)
             socket.setTcpNoDelay(tcpNoDelay.booleanValue());
     }
 
-    public void setProperties(ServerSocket socket) throws SocketException{
+    public void setProperties(ServerSocket socket) throws SocketException {
         if (rxBufSize != null)
             socket.setReceiveBufferSize(rxBufSize.intValue());
-        if (performanceConnectionTime != null && performanceLatency != null &&
-                performanceBandwidth != null)
-            socket.setPerformancePreferences(
-                    performanceConnectionTime.intValue(),
-                    performanceLatency.intValue(),
+        if (performanceConnectionTime != null && performanceLatency != null
+                && performanceBandwidth != null)
+            socket.setPerformancePreferences(performanceConnectionTime
+                    .intValue(), performanceLatency.intValue(),
                     performanceBandwidth.intValue());
         if (soReuseAddress != null)
             socket.setReuseAddress(soReuseAddress.booleanValue());
@@ -222,7 +218,8 @@ public class SocketProperties {
             socket.setSoTimeout(soTimeout.intValue());
     }
 
-    public void setProperties(AsynchronousSocketChannel socket) throws IOException {
+    public void setProperties(AsynchronousSocketChannel socket)
+            throws IOException {
         if (rxBufSize != null)
             socket.setOption(StandardSocketOptions.SO_RCVBUF, rxBufSize);
         if (txBufSize != null)
@@ -230,18 +227,22 @@ public class SocketProperties {
         if (soKeepAlive != null)
             socket.setOption(StandardSocketOptions.SO_KEEPALIVE, soKeepAlive);
         if (soReuseAddress != null)
-            socket.setOption(StandardSocketOptions.SO_REUSEADDR, soReuseAddress);
-        if (soLingerOn != null && soLingerOn.booleanValue() && soLingerTime != null)
+            socket.setOption(StandardSocketOptions.SO_REUSEADDR,
+                    soReuseAddress);
+        if (soLingerOn != null && soLingerOn.booleanValue()
+                && soLingerTime != null)
             socket.setOption(StandardSocketOptions.SO_LINGER, soLingerTime);
         if (tcpNoDelay != null)
             socket.setOption(StandardSocketOptions.TCP_NODELAY, tcpNoDelay);
     }
 
-    public void setProperties(AsynchronousServerSocketChannel socket) throws IOException {
+    public void setProperties(AsynchronousServerSocketChannel socket)
+            throws IOException {
         if (rxBufSize != null)
             socket.setOption(StandardSocketOptions.SO_RCVBUF, rxBufSize);
         if (soReuseAddress != null)
-            socket.setOption(StandardSocketOptions.SO_REUSEADDR, soReuseAddress);
+            socket.setOption(StandardSocketOptions.SO_REUSEADDR,
+                    soReuseAddress);
     }
 
     public boolean getDirectBuffer() {
@@ -341,8 +342,8 @@ public class SocketProperties {
     }
 
     public void setPerformanceConnectionTime(int performanceConnectionTime) {
-        this.performanceConnectionTime =
-            Integer.valueOf(performanceConnectionTime);
+        this.performanceConnectionTime = Integer.valueOf(
+                performanceConnectionTime);
     }
 
     public void setTxBufSize(int txBufSize) {
@@ -444,6 +445,5 @@ public class SocketProperties {
     public void setUnlockTimeout(int unlockTimeout) {
         this.unlockTimeout = unlockTimeout;
     }
-
 
 }

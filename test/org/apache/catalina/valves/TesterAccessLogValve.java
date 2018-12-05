@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -31,7 +29,8 @@ import org.apache.catalina.connector.Response;
 
 public class TesterAccessLogValve extends ValveBase implements AccessLog {
 
-    private static final boolean RELAX_TIMING = Boolean.getBoolean("tomcat.test.relaxTiming");
+    private static final boolean RELAX_TIMING = Boolean.getBoolean(
+            "tomcat.test.relaxTiming");
 
     // Timing tests need an error margin to prevent failures.
     private static final long ERROR_MARGIN = RELAX_TIMING ? 2000 : 100;
@@ -88,10 +87,10 @@ public class TesterAccessLogValve extends ValveBase implements AccessLog {
         assertEquals(entriesLog.toString(), count, entries.size());
         for (Entry entry : entries) {
             assertEquals(status, entry.getStatus());
-            assertTrue(entry.toString() + " duration is not >= " + (minTime - ERROR_MARGIN),
-                    entry.getTime() >= minTime - ERROR_MARGIN);
-            assertTrue(entry.toString() + " duration is not < " + (maxTime + ERROR_MARGIN),
-                    entry.getTime() < maxTime + ERROR_MARGIN);
+            assertTrue(entry.toString() + " duration is not >= " + (minTime
+                    - ERROR_MARGIN), entry.getTime() >= minTime - ERROR_MARGIN);
+            assertTrue(entry.toString() + " duration is not < " + (maxTime
+                    + ERROR_MARGIN), entry.getTime() < maxTime + ERROR_MARGIN);
         }
     }
 

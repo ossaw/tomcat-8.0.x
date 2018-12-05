@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -34,13 +32,14 @@ public class LoaderSF extends StoreFactoryBase {
     /**
      * Store the only the Loader elements, when not default
      *
-     * @see NamingResourcesSF#storeChildren(PrintWriter, int, Object, StoreDescription)
+     * @see NamingResourcesSF#storeChildren(PrintWriter, int, Object,
+     *      StoreDescription)
      */
     @Override
     public void store(PrintWriter aWriter, int indent, Object aElement)
             throws Exception {
-        StoreDescription elementDesc = getRegistry().findDescription(
-                aElement.getClass());
+        StoreDescription elementDesc = getRegistry().findDescription(aElement
+                .getClass());
         if (elementDesc != null) {
             Loader loader = (Loader) aElement;
             if (!isDefaultLoader(loader)) {
@@ -53,10 +52,8 @@ public class LoaderSF extends StoreFactoryBase {
             }
         } else {
             if (log.isWarnEnabled()) {
-                log
-                        .warn("Descriptor for element"
-                                + aElement.getClass()
-                                + " not configured or element class not StandardManager!");
+                log.warn("Descriptor for element" + aElement.getClass()
+                        + " not configured or element class not StandardManager!");
             }
         }
     }
@@ -66,7 +63,7 @@ public class LoaderSF extends StoreFactoryBase {
      * with all-default properties?
      *
      * @param loader
-     *            Loader to be tested
+     *               Loader to be tested
      */
     protected boolean isDefaultLoader(Loader loader) {
 
@@ -74,9 +71,8 @@ public class LoaderSF extends StoreFactoryBase {
             return (false);
         }
         WebappLoader wloader = (WebappLoader) loader;
-        if ((wloader.getDelegate() != false)
-                || !wloader.getLoaderClass().equals(
-                        "org.apache.catalina.loader.WebappClassLoader")) {
+        if ((wloader.getDelegate() != false) || !wloader.getLoaderClass()
+                .equals("org.apache.catalina.loader.WebappClassLoader")) {
             return (false);
         }
         return (true);

@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -60,8 +58,8 @@ public class TestWebappClassLoaderMemoryLeak extends TomcatBaseTest {
 
         Thread[] threads = getThreads();
         for (Thread thread : threads) {
-            if (thread != null && thread.isAlive() &&
-                    TaskServlet.TIMER_THREAD_NAME.equals(thread.getName())) {
+            if (thread != null && thread.isAlive()
+                    && TaskServlet.TIMER_THREAD_NAME.equals(thread.getName())) {
                 thread.join(5000);
                 if (thread.isAlive()) {
                     fail("Timer thread still running");
@@ -76,7 +74,7 @@ public class TestWebappClassLoaderMemoryLeak extends TomcatBaseTest {
      */
     private Thread[] getThreads() {
         // Get the current thread group
-        ThreadGroup tg = Thread.currentThread( ).getThreadGroup( );
+        ThreadGroup tg = Thread.currentThread().getThreadGroup();
         // Find the root thread group
         while (tg.getParent() != null) {
             tg = tg.getParent();
@@ -87,7 +85,7 @@ public class TestWebappClassLoaderMemoryLeak extends TomcatBaseTest {
         int threadCountActual = tg.enumerate(threads);
         // Make sure we don't miss any threads
         while (threadCountActual == threadCountGuess) {
-            threadCountGuess *=2;
+            threadCountGuess *= 2;
             threads = new Thread[threadCountGuess];
             // Note tg.enumerate(Thread[]) silently ignores any threads that
             // can't fit into the array

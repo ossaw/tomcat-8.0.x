@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -31,7 +29,7 @@ import org.apache.tomcat.util.http.fileupload.util.mime.MimeUtility;
  * Parameter values are optional and can be omitted.
  *
  * <p>
- *  <code>param1 = value; param2 = "anything goes; really"; param3</code>
+ * <code>param1 = value; param2 = "anything goes; really"; param3</code>
  * </p>
  */
 public class ParameterParser {
@@ -102,10 +100,8 @@ public class ParameterParser {
             i2--;
         }
         // Strip away quotation marks if necessary
-        if (quoted
-            && ((i2 - i1) >= 2)
-            && (chars[i1] == '"')
-            && (chars[i2 - 1] == '"')) {
+        if (quoted && ((i2 - i1) >= 2) && (chars[i1] == '"') && (chars[i2
+                - 1] == '"')) {
             i1++;
             i2--;
         }
@@ -119,11 +115,12 @@ public class ParameterParser {
     /**
      * Tests if the given character is present in the array of characters.
      *
-     * @param ch the character to test for presense in the array of characters
+     * @param ch      the character to test for presense in the array of
+     *                characters
      * @param charray the array of characters to test against
      *
      * @return {@code true} if the character is present in the array of
-     *   characters, {@code false} otherwise.
+     *         characters, {@code false} otherwise.
      */
     private boolean isOneOf(char ch, final char[] charray) {
         boolean result = false;
@@ -141,7 +138,8 @@ public class ParameterParser {
      * is encountered.
      *
      * @param terminators the array of terminating characters. Any of these
-     * characters when encountered signify the end of the token
+     *                    characters when encountered signify the end of the
+     *                    token
      *
      * @return the token
      */
@@ -165,8 +163,9 @@ public class ParameterParser {
      * is encountered outside the quotation marks.
      *
      * @param terminators the array of terminating characters. Any of these
-     * characters when encountered outside the quotation marks signify the end
-     * of the token
+     *                    characters when encountered outside the quotation
+     *                    marks signify the end
+     *                    of the token
      *
      * @return the token
      */
@@ -197,8 +196,8 @@ public class ParameterParser {
      * case when name/value pairs are parsed.
      *
      * @return {@code true} if parameter names are to be
-     * converted to lower case when name/value pairs are parsed.
-     * Otherwise returns {@code false}
+     *         converted to lower case when name/value pairs are parsed.
+     *         Otherwise returns {@code false}
      */
     public boolean isLowerCaseNames() {
         return this.lowerCaseNames;
@@ -209,8 +208,8 @@ public class ParameterParser {
      * name/value pairs are parsed.
      *
      * @param b {@code true} if parameter names are to be
-     * converted to lower case when name/value pairs are parsed.
-     * {@code false} otherwise.
+     *          converted to lower case when name/value pairs are parsed.
+     *          {@code false} otherwise.
      */
     public void setLowerCaseNames(boolean b) {
         this.lowerCaseNames = b;
@@ -221,12 +220,12 @@ public class ParameterParser {
      * expected to be unique. Multiple separators may be specified and
      * the earliest found in the input string is used.
      *
-     * @param str the string that contains a sequence of name/value pairs
+     * @param str        the string that contains a sequence of name/value pairs
      * @param separators the name/value pairs separators
      *
      * @return a map of name/value pairs
      */
-    public Map<String,String> parse(final String str, char[] separators) {
+    public Map<String, String> parse(final String str, char[] separators) {
         if (separators == null || separators.length == 0) {
             return new HashMap<>();
         }
@@ -248,12 +247,12 @@ public class ParameterParser {
      * Extracts a map of name/value pairs from the given string. Names are
      * expected to be unique.
      *
-     * @param str the string that contains a sequence of name/value pairs
+     * @param str       the string that contains a sequence of name/value pairs
      * @param separator the name/value pairs separator
      *
      * @return a map of name/value pairs
      */
-    public Map<String,String> parse(final String str, char separator) {
+    public Map<String, String> parse(final String str, char separator) {
         if (str == null) {
             return new HashMap<>();
         }
@@ -265,12 +264,12 @@ public class ParameterParser {
      * characters. Names are expected to be unique.
      *
      * @param charArray the array of characters that contains a sequence of
-     * name/value pairs
+     *                  name/value pairs
      * @param separator the name/value pairs separator
      *
      * @return a map of name/value pairs
      */
-    public Map<String,String> parse(final char[] charArray, char separator) {
+    public Map<String, String> parse(final char[] charArray, char separator) {
         if (charArray == null) {
             return new HashMap<>();
         }
@@ -282,23 +281,20 @@ public class ParameterParser {
      * characters. Names are expected to be unique.
      *
      * @param charArray the array of characters that contains a sequence of
-     * name/value pairs
-     * @param offset - the initial offset.
-     * @param length - the length.
+     *                  name/value pairs
+     * @param offset    - the initial offset.
+     * @param length    - the length.
      * @param separator the name/value pairs separator
      *
      * @return a map of name/value pairs
      */
-    public Map<String,String> parse(
-        final char[] charArray,
-        int offset,
-        int length,
-        char separator) {
+    public Map<String, String> parse(final char[] charArray, int offset,
+            int length, char separator) {
 
         if (charArray == null) {
             return new HashMap<>();
         }
-        HashMap<String,String> params = new HashMap<>();
+        HashMap<String, String> params = new HashMap<>();
         this.chars = charArray;
         this.pos = offset;
         this.len = length;
@@ -306,13 +302,11 @@ public class ParameterParser {
         String paramName = null;
         String paramValue = null;
         while (hasChar()) {
-            paramName = parseToken(new char[] {
-                    '=', separator });
+            paramName = parseToken(new char[] { '=', separator });
             paramValue = null;
             if (hasChar() && (charArray[pos] == '=')) {
                 pos++; // skip '='
-                paramValue = parseQuotedToken(new char[] {
-                        separator });
+                paramValue = parseQuotedToken(new char[] { separator });
 
                 if (paramValue != null) {
                     try {

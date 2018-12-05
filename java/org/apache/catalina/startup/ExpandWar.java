@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -50,30 +48,31 @@ public class ExpandWar {
     /**
      * The string resources for this package.
      */
-    protected static final StringManager sm =
-        StringManager.getManager(Constants.Package);
-
+    protected static final StringManager sm = StringManager.getManager(
+            Constants.Package);
 
     /**
      * Expand the WAR file found at the specified URL into an unpacked
      * directory structure.
      *
-     * @param host Host war is being installed for
-     * @param war URL of the web application archive to be expanded
-     *  (must start with "jar:")
+     * @param host     Host war is being installed for
+     * @param war      URL of the web application archive to be expanded
+     *                 (must start with "jar:")
      * @param pathname Context path name for web application
      *
      * @exception IllegalArgumentException if this is not a "jar:" URL or if the
-     *            WAR file is invalid
-     * @exception IOException if an input/output error was encountered
-     *  during expansion
+     *                                     WAR file is invalid
+     * @exception IOException              if an input/output error was
+     *                                     encountered
+     *                                     during expansion
      *
      * @return The absolute path to the expanded directory foe the given WAR
      */
     public static String expand(Host host, URL war, String pathname)
-        throws IOException {
+            throws IOException {
 
-        /* Obtaining the last modified time opens an InputStream and there is no
+        /*
+         * Obtaining the last modified time opens an InputStream and there is no
          * explicit close method. We have to obtain and then close the
          * InputStream to avoid a file leak and the associated locked file.
          */
@@ -84,7 +83,8 @@ public class ExpandWar {
 
         boolean success = false;
         File docBase = new File(host.getAppBaseFile(), pathname);
-        File warTracker = new File(host.getAppBaseFile(), pathname + Constants.WarTracker);
+        File warTracker = new File(host.getAppBaseFile(), pathname
+                + Constants.WarTracker);
         long warLastModified = -1;
 
         try (InputStream is = jfuc.getInputStream()) {
@@ -97,7 +97,8 @@ public class ExpandWar {
             // A WAR was expanded. Tomcat will have set the last modified
             // time of warTracker file to the last modified time of the WAR so
             // changes to the WAR while Tomcat is stopped can be detected
-            if (!warTracker.exists() || warTracker.lastModified() == warLastModified) {
+            if (!warTracker.exists() || warTracker
+                    .lastModified() == warLastModified) {
                 // No (detectable) changes to the WAR
                 success = true;
                 return (docBase.getAbsolutePath());
@@ -106,13 +107,15 @@ public class ExpandWar {
             // WAR must have been modified. Remove expanded directory.
             log.info(sm.getString("expandWar.deleteOld", docBase));
             if (!delete(docBase)) {
-                throw new IOException(sm.getString("expandWar.deleteFailed", docBase));
+                throw new IOException(sm.getString("expandWar.deleteFailed",
+                        docBase));
             }
         }
 
         // Create the new document base directory
-        if(!docBase.mkdir() && !docBase.isDirectory()) {
-            throw new IOException(sm.getString("expandWar.createFailed", docBase));
+        if (!docBase.mkdir() && !docBase.isDirectory()) {
+            throw new IOException(sm.getString("expandWar.createFailed",
+                    docBase));
         }
 
         // Expand the WAR into the new document base directory
@@ -124,7 +127,8 @@ public class ExpandWar {
         // Creating war tracker parent (normally META-INF)
         File warTrackerParent = warTracker.getParentFile();
         if (!warTrackerParent.isDirectory() && !warTrackerParent.mkdirs()) {
-            throw new IOException(sm.getString("expandWar.createFailed", warTrackerParent.getAbsolutePath()));
+            throw new IOException(sm.getString("expandWar.createFailed",
+                    warTrackerParent.getAbsolutePath()));
         }
 
         try (JarFile jarFile = juc.getJarFile()) {
@@ -138,18 +142,17 @@ public class ExpandWar {
                         canonicalDocBasePrefix)) {
                     // Trying to expand outside the docBase
                     // Throw an exception to stop the deployment
-                    throw new IllegalArgumentException(
-                            sm.getString("expandWar.illegalPath",war, name,
-                                    expandedFile.getCanonicalPath(),
-                                    canonicalDocBasePrefix));
+                    throw new IllegalArgumentException(sm.getString(
+                            "expandWar.illegalPath", war, name, expandedFile
+                                    .getCanonicalPath(),
+                            canonicalDocBasePrefix));
                 }
                 int last = name.lastIndexOf('/');
                 if (last >= 0) {
-                    File parent = new File(docBase,
-                                           name.substring(0, last));
+                    File parent = new File(docBase, name.substring(0, last));
                     if (!parent.mkdirs() && !parent.isDirectory()) {
-                        throw new IOException(
-                                sm.getString("expandWar.createFailed", parent));
+                        throw new IOException(sm.getString(
+                                "expandWar.createFailed", parent));
                     }
                 }
                 if (name.endsWith("/")) {
@@ -158,8 +161,9 @@ public class ExpandWar {
 
                 try (InputStream input = jarFile.getInputStream(jarEntry)) {
                     if (null == input)
-                        throw new ZipException(sm.getString("expandWar.missingJarEntry",
-                                jarEntry.getName()));
+                        throw new ZipException(sm.getString(
+                                "expandWar.missingJarEntry", jarEntry
+                                        .getName()));
 
                     // Bugzilla 33636
                     expand(input, expandedFile);
@@ -189,21 +193,22 @@ public class ExpandWar {
         return docBase.getAbsolutePath();
     }
 
-
     /**
      * Validate the WAR file found at the specified URL.
      *
-     * @param host Host war is being installed for
-     * @param war URL of the web application archive to be validated
-     *  (must start with "jar:")
+     * @param host     Host war is being installed for
+     * @param war      URL of the web application archive to be validated
+     *                 (must start with "jar:")
      * @param pathname Context path name for web application
      *
      * @exception IllegalArgumentException if this is not a "jar:" URL or if the
-     *            WAR file is invalid
-     * @exception IOException if an input/output error was encountered
-     *            during validation
+     *                                     WAR file is invalid
+     * @exception IOException              if an input/output error was
+     *                                     encountered
+     *                                     during validation
      */
-    public static void validate(Host host, URL war, String pathname) throws IOException {
+    public static void validate(Host host, URL war, String pathname)
+            throws IOException {
 
         File docBase = new File(host.getAppBaseFile(), pathname);
 
@@ -224,10 +229,10 @@ public class ExpandWar {
                         canonicalDocBasePrefix)) {
                     // Entry located outside the docBase
                     // Throw an exception to stop the deployment
-                    throw new IllegalArgumentException(
-                            sm.getString("expandWar.illegalPath",war, name,
-                                    expandedFile.getCanonicalPath(),
-                                    canonicalDocBasePrefix));
+                    throw new IllegalArgumentException(sm.getString(
+                            "expandWar.illegalPath", war, name, expandedFile
+                                    .getCanonicalPath(),
+                            canonicalDocBasePrefix));
                 }
             }
         } catch (IOException e) {
@@ -235,11 +240,10 @@ public class ExpandWar {
         }
     }
 
-
     /**
      * Copy the specified file or directory to the destination.
      *
-     * @param src File object representing the source
+     * @param src  File object representing the source
      * @param dest File object representing the destination
      */
     public static boolean copy(File src, File dest) {
@@ -263,18 +267,20 @@ public class ExpandWar {
             if (fileSrc.isDirectory()) {
                 result = copy(fileSrc, fileDest);
             } else {
-                try (FileChannel ic = (new FileInputStream(fileSrc)).getChannel();
-                        FileChannel oc = (new FileOutputStream(fileDest)).getChannel()) {
+                try (FileChannel ic = (new FileInputStream(fileSrc))
+                        .getChannel();
+                        FileChannel oc = (new FileOutputStream(fileDest))
+                                .getChannel()) {
                     ic.transferTo(0, ic.size(), oc);
                 } catch (IOException e) {
-                    log.error(sm.getString("expandWar.copy", fileSrc, fileDest), e);
+                    log.error(sm.getString("expandWar.copy", fileSrc, fileDest),
+                            e);
                     result = false;
                 }
             }
         }
         return result;
     }
-
 
     /**
      * Delete the specified directory, including all of its contents and
@@ -287,12 +293,11 @@ public class ExpandWar {
         return delete(dir, true);
     }
 
-
     /**
      * Delete the specified directory, including all of its contents and
      * sub-directories recursively.
      *
-     * @param dir File object representing the directory to be deleted
+     * @param dir        File object representing the directory to be deleted
      * @param logFailure <code>true</code> if failure to delete the resource
      *                   should be logged
      */
@@ -308,12 +313,11 @@ public class ExpandWar {
             }
         }
         if (logFailure && !result) {
-            log.error(sm.getString(
-                    "expandWar.deleteFailed", dir.getAbsolutePath()));
+            log.error(sm.getString("expandWar.deleteFailed", dir
+                    .getAbsolutePath()));
         }
         return result;
     }
-
 
     /**
      * Delete the specified directory, including all of its contents and
@@ -325,12 +329,11 @@ public class ExpandWar {
         return deleteDir(dir, true);
     }
 
-
     /**
      * Delete the specified directory, including all of its contents and
      * sub-directories recursively.
      *
-     * @param dir File object representing the directory to be deleted
+     * @param dir        File object representing the directory to be deleted
      * @param logFailure <code>true</code> if failure to delete the resource
      *                   should be logged
      */
@@ -357,25 +360,25 @@ public class ExpandWar {
         }
 
         if (logFailure && !result) {
-            log.error(sm.getString(
-                    "expandWar.deleteFailed", dir.getAbsolutePath()));
+            log.error(sm.getString("expandWar.deleteFailed", dir
+                    .getAbsolutePath()));
         }
 
         return result;
     }
 
-
     /**
      * Expand the specified input stream into the specified file.
      *
      * @param input InputStream to be copied
-     * @param file The file to be created
+     * @param file  The file to be created
      *
      * @exception IOException if an input/output error occurs
      */
-    private static void expand(InputStream input, File file) throws IOException {
-        try (BufferedOutputStream output =
-                new BufferedOutputStream(new FileOutputStream(file))) {
+    private static void expand(InputStream input, File file)
+            throws IOException {
+        try (BufferedOutputStream output = new BufferedOutputStream(
+                new FileOutputStream(file))) {
             byte buffer[] = new byte[2048];
             while (true) {
                 int n = input.read(buffer);

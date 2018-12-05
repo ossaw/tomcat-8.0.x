@@ -1,18 +1,16 @@
 /*
- *  Licensed to the Apache Software Foundation (ASF) under one or more
- *  contributor license agreements.  See the NOTICE file distributed with
- *  this work for additional information regarding copyright ownership.
- *  The ASF licenses this file to You under the Apache License, Version 2.0
- *  (the "License"); you may not use this file except in compliance with
- *  the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements. See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.apache.tomcat.websocket.server;
 
@@ -31,18 +29,17 @@ import org.apache.tomcat.websocket.WsSession;
 public class WsFrameServer extends WsFrameBase {
 
     private static final Log log = LogFactory.getLog(WsFrameServer.class);
-    private static final StringManager sm = StringManager.getManager(Constants.PACKAGE_NAME);
+    private static final StringManager sm = StringManager.getManager(
+            Constants.PACKAGE_NAME);
 
     private final ServletInputStream sis;
     private final Object connectionReadLock = new Object();
-
 
     public WsFrameServer(ServletInputStream sis, WsSession wsSession,
             Transformation transformation) {
         super(wsSession, transformation);
         this.sis = sis;
     }
-
 
     /**
      * Called when there is data in the ServletInputStream to process.
@@ -57,9 +54,11 @@ public class WsFrameServer extends WsFrameBase {
         synchronized (connectionReadLock) {
             while (isOpen() && sis.isReady()) {
                 // Fill up the input buffer with as much data as we can
-                int read = sis.read(inputBuffer, writePos, inputBuffer.length - writePos);
+                int read = sis.read(inputBuffer, writePos, inputBuffer.length
+                        - writePos);
                 if (log.isDebugEnabled()) {
-                    log.debug(sm.getString("wsFrameServer.bytesRead", Integer.toString(read)));
+                    log.debug(sm.getString("wsFrameServer.bytesRead", Integer
+                            .toString(read)));
                 }
                 if (read == 0) {
                     return;
@@ -73,20 +72,17 @@ public class WsFrameServer extends WsFrameBase {
         }
     }
 
-
     @Override
     protected boolean isMasked() {
         // Data is from the client so it should be masked
         return true;
     }
 
-
     @Override
     protected Transformation getTransformation() {
         // Overridden to make it visible to other classes in this package
         return super.getTransformation();
     }
-
 
     @Override
     protected Log getLog() {

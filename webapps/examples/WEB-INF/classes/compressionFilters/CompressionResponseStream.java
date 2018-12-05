@@ -1,19 +1,17 @@
 /*
-* Licensed to the Apache Software Foundation (ASF) under one or more
-* contributor license agreements.  See the NOTICE file distributed with
-* this work for additional information regarding copyright ownership.
-* The ASF licenses this file to You under the Apache License, Version 2.0
-* (the "License"); you may not use this file except in compliance with
-* the License.  You may obtain a copy of the License at
-*
-*     http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*/
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements. See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package compressionFilters;
 
 import java.io.IOException;
@@ -39,7 +37,7 @@ public class CompressionResponseStream extends ServletOutputStream {
      * Construct a servlet output stream associated with the specified Response.
      *
      * @param responseWrapper The associated response wrapper
-     * @param originalOutput the output stream
+     * @param originalOutput  the output stream
      */
     public CompressionResponseStream(
             CompressionServletResponseWrapper responseWrapper,
@@ -51,9 +49,7 @@ public class CompressionResponseStream extends ServletOutputStream {
         this.output = originalOutput;
     }
 
-
     // ----------------------------------------------------- Instance Variables
-
 
     /**
      * The threshold number which decides to compress or not.
@@ -69,7 +65,8 @@ public class CompressionResponseStream extends ServletOutputStream {
     /**
      * The mime types to compress
      */
-    protected String[] compressionMimeTypes = {"text/html", "text/xml", "text/plain"};
+    protected String[] compressionMimeTypes = { "text/html", "text/xml",
+            "text/plain" };
 
     /**
      * Debug level
@@ -106,7 +103,6 @@ public class CompressionResponseStream extends ServletOutputStream {
      */
     protected final ServletOutputStream output;
 
-
     // --------------------------------------------------------- Public Methods
 
     /**
@@ -116,7 +112,6 @@ public class CompressionResponseStream extends ServletOutputStream {
         this.debug = debug;
     }
 
-
     /**
      * Set the compressionThreshold number and create buffer for this size
      */
@@ -124,7 +119,8 @@ public class CompressionResponseStream extends ServletOutputStream {
         this.compressionThreshold = compressionThreshold;
         buffer = new byte[this.compressionThreshold];
         if (debug > 1) {
-            System.out.println("compressionThreshold is set to "+ this.compressionThreshold);
+            System.out.println("compressionThreshold is set to "
+                    + this.compressionThreshold);
         }
     }
 
@@ -134,7 +130,8 @@ public class CompressionResponseStream extends ServletOutputStream {
     protected void setCompressionBuffer(int compressionBuffer) {
         this.compressionBuffer = compressionBuffer;
         if (debug > 1) {
-            System.out.println("compressionBuffer is set to "+ this.compressionBuffer);
+            System.out.println("compressionBuffer is set to "
+                    + this.compressionBuffer);
         }
     }
 
@@ -144,8 +141,8 @@ public class CompressionResponseStream extends ServletOutputStream {
     public void setCompressionMimeTypes(String[] compressionMimeTypes) {
         this.compressionMimeTypes = compressionMimeTypes;
         if (debug > 1) {
-            System.out.println("compressionMimeTypes is set to " +
-                    Arrays.toString(this.compressionMimeTypes));
+            System.out.println("compressionMimeTypes is set to " + Arrays
+                    .toString(this.compressionMimeTypes));
         }
     }
 
@@ -183,7 +180,6 @@ public class CompressionResponseStream extends ServletOutputStream {
 
     }
 
-
     /**
      * Flush any buffered data for this output stream, which also causes the
      * response to be committed.
@@ -211,7 +207,8 @@ public class CompressionResponseStream extends ServletOutputStream {
         }
         if (bufferCount > 0) {
             if (debug > 1) {
-                System.out.println("flushing out to GZipStream, bufferCount = " + bufferCount);
+                System.out.println("flushing out to GZipStream, bufferCount = "
+                        + bufferCount);
             }
             writeToGZip(buffer, 0, bufferCount);
             bufferCount = 0;
@@ -230,7 +227,7 @@ public class CompressionResponseStream extends ServletOutputStream {
     public void write(int b) throws IOException {
 
         if (debug > 1) {
-            System.out.println("write "+b+" in CompressionResponseStream ");
+            System.out.println("write " + b + " in CompressionResponseStream ");
         }
         if (closed)
             throw new IOException("Cannot write to a closed output stream");
@@ -242,7 +239,6 @@ public class CompressionResponseStream extends ServletOutputStream {
         buffer[bufferCount++] = (byte) b;
 
     }
-
 
     /**
      * Write <code>b.length</code> bytes from the specified byte array
@@ -259,8 +255,6 @@ public class CompressionResponseStream extends ServletOutputStream {
 
     }
 
-
-
     /**
      * TODO SERVLET 3.1
      */
@@ -269,7 +263,6 @@ public class CompressionResponseStream extends ServletOutputStream {
         // TODO Auto-generated method stub
         return false;
     }
-
 
     /**
      * TODO SERVLET 3.1
@@ -280,12 +273,11 @@ public class CompressionResponseStream extends ServletOutputStream {
 
     }
 
-
     /**
      * Write <code>len</code> bytes from the specified byte array, starting
      * at the specified offset, to our output stream.
      *
-     * @param b The byte array containing the bytes to be written
+     * @param b   The byte array containing the bytes to be written
      * @param off Zero-relative starting offset of the bytes to be written
      * @param len The number of bytes to be written
      *
@@ -295,7 +287,8 @@ public class CompressionResponseStream extends ServletOutputStream {
     public void write(byte b[], int off, int len) throws IOException {
 
         if (debug > 1) {
-            System.out.println("write, bufferCount = " + bufferCount + " len = " + len + " off = " + off);
+            System.out.println("write, bufferCount = " + bufferCount + " len = "
+                    + len + " off = " + off);
         }
         if (debug > 2) {
             System.out.print("write(");
@@ -363,33 +356,39 @@ public class CompressionResponseStream extends ServletOutputStream {
             boolean compressibleMimeType = false;
             // Check for compatible MIME-TYPE
             if (compressionMimeTypes != null) {
-                if (startsWithStringArray(compressionMimeTypes, response.getContentType())) {
+                if (startsWithStringArray(compressionMimeTypes, response
+                        .getContentType())) {
                     compressibleMimeType = true;
                     if (debug > 0) {
-                        System.out.println("mime type " + response.getContentType() + " is compressible");
+                        System.out.println("mime type " + response
+                                .getContentType() + " is compressible");
                     }
                 } else {
                     if (debug > 0) {
-                        System.out.println("mime type " + response.getContentType() + " is not compressible");
+                        System.out.println("mime type " + response
+                                .getContentType() + " is not compressible");
                     }
                 }
             }
 
             if (response.isCommitted()) {
                 if (debug > 1)
-                    System.out.print("Response already committed. Using original output stream");
+                    System.out.print(
+                            "Response already committed. Using original output stream");
                 gzipstream = output;
             } else if (alreadyCompressed) {
                 if (debug > 1)
-                    System.out.print("Response already compressed. Using original output stream");
+                    System.out.print(
+                            "Response already compressed. Using original output stream");
                 gzipstream = output;
             } else if (!compressibleMimeType) {
                 if (debug > 1)
-                    System.out.print("Response mime type is not compressible. Using original output stream");
+                    System.out.print(
+                            "Response mime type is not compressible. Using original output stream");
                 gzipstream = output;
             } else {
                 response.addHeader("Content-Encoding", "gzip");
-                response.setContentLength(-1);  // don't use any preset content-length as it will be wrong after gzipping
+                response.setContentLength(-1); // don't use any preset content-length as it will be wrong after gzipping
                 response.setBufferSize(compressionBuffer);
                 gzipstream = new GZIPOutputStream(output);
             }
@@ -398,9 +397,7 @@ public class CompressionResponseStream extends ServletOutputStream {
 
     }
 
-
     // -------------------------------------------------------- Package Methods
-
 
     /**
      * Has this response stream been closed?
@@ -415,11 +412,11 @@ public class CompressionResponseStream extends ServletOutputStream {
      * Checks if any entry in the string array starts with the specified value
      *
      * @param sArray the StringArray
-     * @param value string
+     * @param value  string
      */
     private boolean startsWithStringArray(String sArray[], String value) {
         if (value == null)
-           return false;
+            return false;
         for (int i = 0; i < sArray.length; i++) {
             if (value.startsWith(sArray[i])) {
                 return true;

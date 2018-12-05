@@ -1,24 +1,21 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
  * ====================================================================
- *
  * This software consists of voluntary contributions made by many
  * individuals on behalf of the Apache Software Foundation and was
  * originally based on software copyright (c) 1999, International
- * Business Machines, Inc., http://www.apache.org.  For more
+ * Business Machines, Inc., http://www.apache.org. For more
  * information on the Apache Software Foundation, please see
  * <http://www.apache.org/>.
  */
@@ -89,16 +86,17 @@ public class XMLEncodingDetector {
      * Appendix F.1: Detection Without External Encoding Information.
      *
      * @return Two-element array, where the first element (of type
-     * java.lang.String) contains the name of the (auto)detected encoding, and
-     * the second element (of type java.lang.Boolean) specifies whether the
-     * encoding was specified using the 'encoding' attribute of an XML prolog
-     * (TRUE) or autodetected (FALSE).
+     *         java.lang.String) contains the name of the (auto)detected
+     *         encoding, and
+     *         the second element (of type java.lang.Boolean) specifies whether
+     *         the
+     *         encoding was specified using the 'encoding' attribute of an XML
+     *         prolog
+     *         (TRUE) or autodetected (FALSE).
      */
     public static Object[] getEncoding(String fname, Jar jar,
-                                       JspCompilationContext ctxt,
-                                       ErrorDispatcher err)
-        throws IOException, JasperException
-    {
+            JspCompilationContext ctxt, ErrorDispatcher err) throws IOException,
+            JasperException {
         InputStream inStream = JspUtil.getInputStream(fname, jar, ctxt);
         XMLEncodingDetector detector = new XMLEncodingDetector();
         Object[] ret = detector.getEncoding(inStream, err);
@@ -108,22 +106,19 @@ public class XMLEncodingDetector {
     }
 
     private Object[] getEncoding(InputStream in, ErrorDispatcher err)
-        throws IOException, JasperException
-    {
+            throws IOException, JasperException {
         this.stream = in;
-        this.err=err;
+        this.err = err;
         createInitialReader();
         scanXMLDecl();
 
-        return new Object[] { this.encoding,
-                              Boolean.valueOf(this.isEncodingSetInProlog),
-                              Boolean.valueOf(this.isBomPresent),
-                              Integer.valueOf(this.skip) };
+        return new Object[] { this.encoding, Boolean.valueOf(
+                this.isEncodingSetInProlog), Boolean.valueOf(this.isBomPresent),
+                Integer.valueOf(this.skip) };
     }
 
     // stub method
-    void endEntity() {
-    }
+    void endEntity() {}
 
     // Adapted from:
     // org.apache.xerces.impl.XMLEntityManager.startEntity()
@@ -137,20 +132,20 @@ public class XMLEncodingDetector {
             // read first four bytes and determine encoding
             final byte[] b4 = new byte[4];
             int count = 0;
-            for (; count<4; count++ ) {
-                b4[count] = (byte)stream.read();
+            for (; count < 4; count++) {
+                b4[count] = (byte) stream.read();
             }
             if (count == 4) {
-                Object [] encodingDesc = getEncodingName(b4, count);
-                encoding = (String)(encodingDesc[0]);
-                isBigEndian = (Boolean)(encodingDesc[1]);
+                Object[] encodingDesc = getEncodingName(b4, count);
+                encoding = (String) (encodingDesc[0]);
+                isBigEndian = (Boolean) (encodingDesc[1]);
 
                 if (encodingDesc.length > 3) {
-                    isBomPresent = ((Boolean)(encodingDesc[2])).booleanValue();
-                    skip = ((Integer)(encodingDesc[3])).intValue();
+                    isBomPresent = ((Boolean) (encodingDesc[2])).booleanValue();
+                    skip = ((Integer) (encodingDesc[3])).intValue();
                 } else {
                     isBomPresent = true;
-                    skip = ((Integer)(encodingDesc[2])).intValue();
+                    skip = ((Integer) (encodingDesc[2])).intValue();
                 }
 
                 stream.reset();
@@ -183,21 +178,20 @@ public class XMLEncodingDetector {
      * Creates a reader capable of reading the given input stream in
      * the specified encoding.
      *
-     * @param inputStream  The input stream.
-     * @param encoding     The encoding name that the input stream is
-     *                     encoded using. If the user has specified that
-     *                     Java encoding names are allowed, then the
-     *                     encoding name may be a Java encoding name;
-     *                     otherwise, it is an ianaEncoding name.
-     * @param isBigEndian   For encodings (like uCS-4), whose names cannot
-     *                      specify a byte order, this tells whether the order
-     *                      is bigEndian. null means unknown or not relevant.
+     * @param inputStream The input stream.
+     * @param encoding    The encoding name that the input stream is
+     *                    encoded using. If the user has specified that
+     *                    Java encoding names are allowed, then the
+     *                    encoding name may be a Java encoding name;
+     *                    otherwise, it is an ianaEncoding name.
+     * @param isBigEndian For encodings (like uCS-4), whose names cannot
+     *                    specify a byte order, this tells whether the order
+     *                    is bigEndian. null means unknown or not relevant.
      *
      * @return Returns a reader.
      */
     private Reader createReader(InputStream inputStream, String encoding,
-                                Boolean isBigEndian)
-                throws IOException, JasperException {
+            Boolean isBigEndian) throws IOException, JasperException {
 
         // normalize encoding name
         if (encoding == null) {
@@ -222,7 +216,7 @@ public class XMLEncodingDetector {
                 }
             } else {
                 err.jspError("jsp.error.xml.encodingByteOrderUnsupported",
-                             encoding);
+                        encoding);
             }
         }
         if (ENCODING.equals("ISO-10646-UCS-2")) {
@@ -235,7 +229,7 @@ public class XMLEncodingDetector {
                 }
             } else {
                 err.jspError("jsp.error.xml.encodingByteOrderUnsupported",
-                             encoding);
+                        encoding);
             }
         }
 
@@ -274,15 +268,18 @@ public class XMLEncodingDetector {
      *
      * @param b4    The first four bytes of the input.
      * @param count The number of bytes actually read.
-     * @return a 2-element array:  the first element, an IANA-encoding string,
-     *  the second element a Boolean which is true iff the document is big
-     *  endian, false if it's little-endian, and null if the distinction isn't
-     *  relevant.
+     * @return a 2-element array: the first element, an IANA-encoding string,
+     *         the second element a Boolean which is true iff the document is
+     *         big
+     *         endian, false if it's little-endian, and null if the distinction
+     *         isn't
+     *         relevant.
      */
     private Object[] getEncodingName(byte[] b4, int count) {
 
         if (count < 2) {
-            return new Object[]{"UTF-8", null, Boolean.FALSE, Integer.valueOf(0)};
+            return new Object[] { "UTF-8", null, Boolean.FALSE, Integer.valueOf(
+                    0) };
         }
 
         // UTF-16, with BOM
@@ -290,70 +287,78 @@ public class XMLEncodingDetector {
         int b1 = b4[1] & 0xFF;
         if (b0 == 0xFE && b1 == 0xFF) {
             // UTF-16, big-endian
-            return new Object [] {"UTF-16BE", Boolean.TRUE, Integer.valueOf(2)};
+            return new Object[] { "UTF-16BE", Boolean.TRUE, Integer.valueOf(
+                    2) };
         }
         if (b0 == 0xFF && b1 == 0xFE) {
             // UTF-16, little-endian
-            return new Object [] {"UTF-16LE", Boolean.FALSE, Integer.valueOf(2)};
+            return new Object[] { "UTF-16LE", Boolean.FALSE, Integer.valueOf(
+                    2) };
         }
 
         // default to UTF-8 if we don't have enough bytes to make a
         // good determination of the encoding
         if (count < 3) {
-            return new Object [] {"UTF-8", null, Boolean.FALSE, Integer.valueOf(0)};
+            return new Object[] { "UTF-8", null, Boolean.FALSE, Integer.valueOf(
+                    0) };
         }
 
         // UTF-8 with a BOM
         int b2 = b4[2] & 0xFF;
         if (b0 == 0xEF && b1 == 0xBB && b2 == 0xBF) {
-            return new Object [] {"UTF-8", null, Integer.valueOf(3)};
+            return new Object[] { "UTF-8", null, Integer.valueOf(3) };
         }
 
         // default to UTF-8 if we don't have enough bytes to make a
         // good determination of the encoding
         if (count < 4) {
-            return new Object [] {"UTF-8", null, Integer.valueOf(0)};
+            return new Object[] { "UTF-8", null, Integer.valueOf(0) };
         }
 
         // other encodings
         int b3 = b4[3] & 0xFF;
         if (b0 == 0x00 && b1 == 0x00 && b2 == 0x00 && b3 == 0x3C) {
             // UCS-4, big endian (1234)
-            return new Object [] {"ISO-10646-UCS-4", Boolean.TRUE, Integer.valueOf(4)};
+            return new Object[] { "ISO-10646-UCS-4", Boolean.TRUE, Integer
+                    .valueOf(4) };
         }
         if (b0 == 0x3C && b1 == 0x00 && b2 == 0x00 && b3 == 0x00) {
             // UCS-4, little endian (4321)
-            return new Object [] {"ISO-10646-UCS-4", Boolean.FALSE, Integer.valueOf(4)};
+            return new Object[] { "ISO-10646-UCS-4", Boolean.FALSE, Integer
+                    .valueOf(4) };
         }
         if (b0 == 0x00 && b1 == 0x00 && b2 == 0x3C && b3 == 0x00) {
             // UCS-4, unusual octet order (2143)
             // REVISIT: What should this be?
-            return new Object [] {"ISO-10646-UCS-4", null, Integer.valueOf(4)};
+            return new Object[] { "ISO-10646-UCS-4", null, Integer.valueOf(4) };
         }
         if (b0 == 0x00 && b1 == 0x3C && b2 == 0x00 && b3 == 0x00) {
             // UCS-4, unusual octect order (3412)
             // REVISIT: What should this be?
-            return new Object [] {"ISO-10646-UCS-4", null, Integer.valueOf(4)};
+            return new Object[] { "ISO-10646-UCS-4", null, Integer.valueOf(4) };
         }
         if (b0 == 0x00 && b1 == 0x3C && b2 == 0x00 && b3 == 0x3F) {
             // UTF-16, big-endian, no BOM
             // (or could turn out to be UCS-2...
             // REVISIT: What should this be?
-            return new Object [] {"UTF-16BE", Boolean.TRUE, Integer.valueOf(4)};
+            return new Object[] { "UTF-16BE", Boolean.TRUE, Integer.valueOf(
+                    4) };
         }
         if (b0 == 0x3C && b1 == 0x00 && b2 == 0x3F && b3 == 0x00) {
             // UTF-16, little-endian, no BOM
             // (or could turn out to be UCS-2...
-            return new Object [] {"UTF-16LE", Boolean.FALSE, Integer.valueOf(4)};
+            return new Object[] { "UTF-16LE", Boolean.FALSE, Integer.valueOf(
+                    4) };
         }
         if (b0 == 0x4C && b1 == 0x6F && b2 == 0xA7 && b3 == 0x94) {
             // EBCDIC
             // a la xerces1, return CP037 instead of EBCDIC here
-            return new Object [] {"CP037", null, Integer.valueOf(4)};
+            return new Object[] { "CP037", null, Integer.valueOf(4) };
         }
 
         // default encoding
-        return new Object [] {"UTF-8", null, Boolean.FALSE, Integer.valueOf(0)};
+        return new Object[] { "UTF-8", null, Boolean.FALSE, Integer.valueOf(
+                0) };
 
     }
 
@@ -387,8 +392,7 @@ public class XMLEncodingDetector {
         // return peeked character
         if (fCurrentEntity.isExternal()) {
             return c != '\r' ? c : '\n';
-        }
-        else {
+        } else {
             return c;
         }
 
@@ -414,10 +418,10 @@ public class XMLEncodingDetector {
         // scan character
         int c = fCurrentEntity.ch[fCurrentEntity.position++];
         boolean external = false;
-        if (c == '\n' ||
-            (c == '\r' && (external = fCurrentEntity.isExternal()))) {
+        if (c == '\n' || (c == '\r' && (external = fCurrentEntity
+                .isExternal()))) {
             if (fCurrentEntity.position == fCurrentEntity.count) {
-                fCurrentEntity.ch[0] = (char)c;
+                fCurrentEntity.ch[0] = (char) c;
                 load(1, false);
             }
             if (c == '\r' && external) {
@@ -465,8 +469,8 @@ public class XMLEncodingDetector {
                 fCurrentEntity.ch[0] = fCurrentEntity.ch[offset];
                 offset = 0;
                 if (load(1, false)) {
-                    String symbol = fSymbolTable.addSymbol(fCurrentEntity.ch,
-                                                           0, 1);
+                    String symbol = fSymbolTable.addSymbol(fCurrentEntity.ch, 0,
+                            1);
                     return symbol;
                 }
             }
@@ -476,13 +480,13 @@ public class XMLEncodingDetector {
                     if (length == fBufferSize) {
                         // bad luck we have to resize our buffer
                         char[] tmp = new char[fBufferSize * 2];
-                        System.arraycopy(fCurrentEntity.ch, offset,
-                                         tmp, 0, length);
+                        System.arraycopy(fCurrentEntity.ch, offset, tmp, 0,
+                                length);
                         fCurrentEntity.ch = tmp;
                         fBufferSize *= 2;
                     } else {
                         System.arraycopy(fCurrentEntity.ch, offset,
-                                         fCurrentEntity.ch, 0, length);
+                                fCurrentEntity.ch, 0, length);
                     }
                     offset = 0;
                     if (load(length, false)) {
@@ -532,8 +536,7 @@ public class XMLEncodingDetector {
      * @throws IOException  Thrown if i/o error occurs.
      * @throws EOFException Thrown on end of file.
      */
-    public int scanLiteral(int quote, XMLString content)
-        throws IOException {
+    public int scanLiteral(int quote, XMLString content) throws IOException {
 
         // load more characters, if needed
         if (fCurrentEntity.position == fCurrentEntity.count) {
@@ -570,8 +573,7 @@ public class XMLEncodingDetector {
                         newlines++;
                     }
                     /***/
-                }
-                else if (c == '\n') {
+                } else if (c == '\n') {
                     newlines++;
                     if (fCurrentEntity.position == fCurrentEntity.count) {
                         offset = 0;
@@ -580,15 +582,16 @@ public class XMLEncodingDetector {
                             break;
                         }
                     }
-                    /*** NEWLINE NORMALIZATION ***
-                         if (fCurrentEntity.ch[fCurrentEntity.position] == '\r'
-                         && external) {
-                         fCurrentEntity.position++;
-                         offset++;
-                         }
-                         /***/
-                }
-                else {
+                    /***
+                     * NEWLINE NORMALIZATION ***
+                     * if (fCurrentEntity.ch[fCurrentEntity.position] == '\r'
+                     * && external) {
+                     * fCurrentEntity.position++;
+                     * offset++;
+                     * }
+                     * /
+                     ***/
+                } else {
                     fCurrentEntity.position--;
                     break;
                 }
@@ -617,8 +620,7 @@ public class XMLEncodingDetector {
         // return next character
         if (fCurrentEntity.position != fCurrentEntity.count) {
             c = fCurrentEntity.ch[fCurrentEntity.position];
-        }
-        else {
+        } else {
             c = -1;
         }
         return c;
@@ -656,7 +658,7 @@ public class XMLEncodingDetector {
      * @throws EOFException Thrown on end of file.
      */
     public boolean scanData(String delimiter, XMLStringBuffer buffer)
-        throws IOException {
+            throws IOException {
 
         boolean done = false;
         int delimLen = delimiter.length();
@@ -668,10 +670,11 @@ public class XMLEncodingDetector {
 
             if (fCurrentEntity.position == fCurrentEntity.count) {
                 load(0, true);
-            }
-            else if (fCurrentEntity.position >= fCurrentEntity.count - delimLen) {
+            } else if (fCurrentEntity.position >= fCurrentEntity.count
+                    - delimLen) {
                 System.arraycopy(fCurrentEntity.ch, fCurrentEntity.position,
-                                 fCurrentEntity.ch, 0, fCurrentEntity.count - fCurrentEntity.position);
+                        fCurrentEntity.ch, 0, fCurrentEntity.count
+                                - fCurrentEntity.position);
                 load(fCurrentEntity.count - fCurrentEntity.position, false);
                 fCurrentEntity.position = 0;
             }
@@ -679,10 +682,10 @@ public class XMLEncodingDetector {
                 // something must be wrong with the input: e.g., file ends an
                 // unterminated comment
                 int length = fCurrentEntity.count - fCurrentEntity.position;
-                buffer.append (fCurrentEntity.ch, fCurrentEntity.position,
-                               length);
+                buffer.append(fCurrentEntity.ch, fCurrentEntity.position,
+                        length);
                 fCurrentEntity.position = fCurrentEntity.count;
-                load(0,true);
+                load(0, true);
                 return false;
             }
 
@@ -710,8 +713,7 @@ public class XMLEncodingDetector {
                         else {
                             newlines++;
                         }
-                    }
-                    else if (c == '\n') {
+                    } else if (c == '\n') {
                         newlines++;
                         if (fCurrentEntity.position == fCurrentEntity.count) {
                             offset = 0;
@@ -721,8 +723,7 @@ public class XMLEncodingDetector {
                                 break;
                             }
                         }
-                    }
-                    else {
+                    } else {
                         fCurrentEntity.position--;
                         break;
                     }
@@ -738,43 +739,41 @@ public class XMLEncodingDetector {
             }
 
             // iterate over buffer looking for delimiter
-        OUTER: while (fCurrentEntity.position < fCurrentEntity.count) {
-            c = fCurrentEntity.ch[fCurrentEntity.position++];
-            if (c == charAt0) {
-                // looks like we just hit the delimiter
-                int delimOffset = fCurrentEntity.position - 1;
-                for (int i = 1; i < delimLen; i++) {
-                    if (fCurrentEntity.position == fCurrentEntity.count) {
-                        fCurrentEntity.position -= i;
-                        break OUTER;
+            OUTER: while (fCurrentEntity.position < fCurrentEntity.count) {
+                c = fCurrentEntity.ch[fCurrentEntity.position++];
+                if (c == charAt0) {
+                    // looks like we just hit the delimiter
+                    int delimOffset = fCurrentEntity.position - 1;
+                    for (int i = 1; i < delimLen; i++) {
+                        if (fCurrentEntity.position == fCurrentEntity.count) {
+                            fCurrentEntity.position -= i;
+                            break OUTER;
+                        }
+                        c = fCurrentEntity.ch[fCurrentEntity.position++];
+                        if (delimiter.charAt(i) != c) {
+                            fCurrentEntity.position--;
+                            break;
+                        }
                     }
-                    c = fCurrentEntity.ch[fCurrentEntity.position++];
-                    if (delimiter.charAt(i) != c) {
-                        fCurrentEntity.position--;
+                    if (fCurrentEntity.position == delimOffset + delimLen) {
+                        done = true;
                         break;
                     }
-                }
-                if (fCurrentEntity.position == delimOffset + delimLen) {
-                    done = true;
+                } else if (c == '\n' || (external && c == '\r')) {
+                    fCurrentEntity.position--;
                     break;
+                } else if (XMLChar.isInvalid(c)) {
+                    fCurrentEntity.position--;
+                    int length = fCurrentEntity.position - offset;
+                    buffer.append(fCurrentEntity.ch, offset, length);
+                    return true;
                 }
             }
-            else if (c == '\n' || (external && c == '\r')) {
-                fCurrentEntity.position--;
-                break;
-            }
-            else if (XMLChar.isInvalid(c)) {
-                fCurrentEntity.position--;
-                int length = fCurrentEntity.position - offset;
-                buffer.append(fCurrentEntity.ch, offset, length);
-                return true;
-            }
-        }
             int length = fCurrentEntity.position - offset;
             if (done) {
                 length -= delimLen;
             }
-            buffer.append (fCurrentEntity.ch, offset, length);
+            buffer.append(fCurrentEntity.ch, offset, length);
 
             // return true if string was skipped
         } while (!done);
@@ -812,7 +811,7 @@ public class XMLEncodingDetector {
         } else if (c == '\n' && cc == '\r' && fCurrentEntity.isExternal()) {
             // handle newlines
             if (fCurrentEntity.position == fCurrentEntity.count) {
-                fCurrentEntity.ch[0] = (char)cc;
+                fCurrentEntity.ch[0] = (char) cc;
                 load(1, false);
             }
             fCurrentEntity.position++;
@@ -858,11 +857,11 @@ public class XMLEncodingDetector {
                 // handle newlines
                 if (c == '\n' || (external && c == '\r')) {
                     if (fCurrentEntity.position == fCurrentEntity.count - 1) {
-                        fCurrentEntity.ch[0] = (char)c;
+                        fCurrentEntity.ch[0] = (char) c;
                         entityChanged = load(1, true);
                         if (!entityChanged)
-                                // the load change the position to be 1,
-                                // need to restore it when entity not changed
+                            // the load change the position to be 1,
+                            // need to restore it when entity not changed
                             fCurrentEntity.position = 0;
                     }
                     if (c == '\r' && external) {
@@ -872,14 +871,17 @@ public class XMLEncodingDetector {
                             fCurrentEntity.position--;
                         }
                     }
-                    /*** NEWLINE NORMALIZATION ***
-                         else {
-                         if (fCurrentEntity.ch[fCurrentEntity.position + 1] == '\r'
-                         && external) {
-                         fCurrentEntity.position++;
-                         }
-                         }
-                         /***/
+                    /***
+                     * NEWLINE NORMALIZATION ***
+                     * else {
+                     * if (fCurrentEntity.ch[fCurrentEntity.position + 1] ==
+                     * '\r'
+                     * && external) {
+                     * fCurrentEntity.position++;
+                     * }
+                     * }
+                     * /
+                     ***/
                 }
                 // load more characters, if needed
                 if (!entityChanged)
@@ -887,7 +889,8 @@ public class XMLEncodingDetector {
                 if (fCurrentEntity.position == fCurrentEntity.count) {
                     load(0, true);
                 }
-            } while (XMLChar.isSpace(c = fCurrentEntity.ch[fCurrentEntity.position]));
+            } while (XMLChar.isSpace(
+                    c = fCurrentEntity.ch[fCurrentEntity.position]));
             return true;
         }
 
@@ -924,8 +927,10 @@ public class XMLEncodingDetector {
                 fCurrentEntity.position -= i + 1;
                 return false;
             }
-            if (i < length - 1 && fCurrentEntity.position == fCurrentEntity.count) {
-                System.arraycopy(fCurrentEntity.ch, fCurrentEntity.count - i - 1, fCurrentEntity.ch, 0, i + 1);
+            if (i < length - 1
+                    && fCurrentEntity.position == fCurrentEntity.count) {
+                System.arraycopy(fCurrentEntity.ch, fCurrentEntity.count - i
+                        - 1, fCurrentEntity.ch, 0, i + 1);
                 // REVISIT: Can a string to be skipped cross an
                 //          entity boundary? -Ac
                 if (load(i + 1, false)) {
@@ -954,8 +959,7 @@ public class XMLEncodingDetector {
      * @return Returns true if the entity changed as a result of this
      *         load operation.
      */
-    final boolean load(int offset, boolean changeEntity)
-        throws IOException {
+    final boolean load(int offset, boolean changeEntity) throws IOException {
 
         // read characters
         int count = fCurrentEntity.reader.read(fCurrentEntity.ch, offset,
@@ -998,13 +1002,13 @@ public class XMLEncodingDetector {
      * We need it because java.io.InputStreams don't provide
      * functionality to reread processed bytes, and they have a habit
      * of reading more than one character when you call their read()
-     * methods.  This means that, once we discover the true (declared)
+     * methods. This means that, once we discover the true (declared)
      * encoding of a document, we can neither backtrack to read the
      * whole doc again nor start reading where we are with a new
      * reader.
      *
      * This class allows rewinding an inputStream by allowing a mark
-     * to be set, and the stream reset to that position.  <strong>The
+     * to be set, and the stream reset to that position. <strong>The
      * class assumes that it needs to read one character per
      * invocation when it's read() method is invoked, but uses the
      * underlying InputStream's read(char[], offset length) method--it
@@ -1050,7 +1054,7 @@ public class XMLEncodingDetector {
                 fEndOffset = fOffset;
                 return -1;
             }
-            fData[fLength++] = (byte)b;
+            fData[fLength++] = (byte) b;
             fOffset++;
             return b & 0xff;
         }
@@ -1068,15 +1072,14 @@ public class XMLEncodingDetector {
                     fEndOffset = fOffset;
                     return -1;
                 }
-                b[off] = (byte)returnedVal;
+                b[off] = (byte) returnedVal;
                 return 1;
             }
             if (len < bytesLeft) {
                 if (len <= 0) {
                     return 0;
                 }
-            }
-            else {
+            } else {
                 len = bytesLeft;
             }
             if (b != null) {
@@ -1087,9 +1090,7 @@ public class XMLEncodingDetector {
         }
 
         @Override
-        public long skip(long n)
-            throws IOException
-        {
+        public long skip(long n) throws IOException {
             int bytesLeft;
             if (n <= 0) {
                 return 0;
@@ -1112,7 +1113,7 @@ public class XMLEncodingDetector {
             n -= bytesLeft;
             /*
              * In a manner of speaking, when this class isn't permitting more
-             * than one byte at a time to be read, it is "blocking".  The
+             * than one byte at a time to be read, it is "blocking". The
              * available() method should indicate how much can be read without
              * blocking, so while we're in this mode, it should only indicate
              * that bytes in its buffer are available; otherwise, the result of
@@ -1168,11 +1169,10 @@ public class XMLEncodingDetector {
                 fStringBuffer.clear();
                 fStringBuffer.append("xml");
                 while (XMLChar.isName(peekChar())) {
-                    fStringBuffer.append((char)scanChar());
+                    fStringBuffer.append((char) scanChar());
                 }
                 String target = fSymbolTable.addSymbol(fStringBuffer.ch,
-                                                       fStringBuffer.offset,
-                                                       fStringBuffer.length);
+                        fStringBuffer.offset, fStringBuffer.length);
                 scanPIData(target, fString);
             }
 
@@ -1188,6 +1188,7 @@ public class XMLEncodingDetector {
     /**
      * Scans an XML or text declaration.
      * <p>
+     * 
      * <pre>
      * [23] XMLDecl ::= '&lt;?xml' VersionInfo EncodingDecl? SDDecl? S? '?>'
      * [24] VersionInfo ::= S 'version' Eq (' VersionNum ' | " VersionNum ")
@@ -1204,7 +1205,7 @@ public class XMLEncodingDetector {
      *                         declaration.
      */
     private void scanXMLDeclOrTextDecl(boolean scanningTextDecl)
-        throws IOException, JasperException {
+            throws IOException, JasperException {
 
         // scan decl
         scanXMLDeclOrTextDecl(scanningTextDecl, fStrings);
@@ -1224,6 +1225,7 @@ public class XMLEncodingDetector {
     /**
      * Scans an XML or text declaration.
      * <p>
+     * 
      * <pre>
      * [23] XMLDecl ::= '<?xml' VersionInfo EncodingDecl? SDDecl? S? '?>'
      * [24] VersionInfo ::= S 'version' Eq (' VersionNum ' | " VersionNum ")
@@ -1235,19 +1237,21 @@ public class XMLEncodingDetector {
      * [77] TextDecl ::= '<?xml' VersionInfo? EncodingDecl S? '?>'
      * </pre>
      *
-     * @param scanningTextDecl True if a text declaration is to
-     *                         be scanned instead of an XML
-     *                         declaration.
+     * @param scanningTextDecl      True if a text declaration is to
+     *                              be scanned instead of an XML
+     *                              declaration.
      * @param pseudoAttributeValues An array of size 3 to return the version,
-     *                         encoding and standalone pseudo attribute values
-     *                         (in that order).
+     *                              encoding and standalone pseudo attribute
+     *                              values
+     *                              (in that order).
      *
-     * <strong>Note:</strong> This method uses fString, anything in it
-     * at the time of calling is lost.
+     *                              <strong>Note:</strong> This method uses
+     *                              fString, anything in it
+     *                              at the time of calling is lost.
      */
     private void scanXMLDeclOrTextDecl(boolean scanningTextDecl,
-                                       String[] pseudoAttributeValues)
-                throws IOException, JasperException {
+            String[] pseudoAttributeValues) throws IOException,
+            JasperException {
 
         // pseudo-attribute values
         String version = null;
@@ -1271,9 +1275,9 @@ public class XMLEncodingDetector {
                     if (name == fVersionSymbol) {
                         if (!sawSpace) {
                             reportFatalError(scanningTextDecl
-                                       ? "jsp.error.xml.spaceRequiredBeforeVersionInTextDecl"
-                                       : "jsp.error.xml.spaceRequiredBeforeVersionInXMLDecl",
-                                             null);
+                                    ? "jsp.error.xml.spaceRequiredBeforeVersionInTextDecl"
+                                    : "jsp.error.xml.spaceRequiredBeforeVersionInXMLDecl",
+                                    null);
                         }
                         version = fString.toString();
                         state = STATE_ENCODING;
@@ -1282,7 +1286,7 @@ public class XMLEncodingDetector {
                             // in such cases.
                             // some may object the throwing of fatalError.
                             err.jspError("jsp.error.xml.versionNotSupported",
-                                         version);
+                                    version);
                         }
                     } else if (name == fEncodingSymbol) {
                         if (!scanningTextDecl) {
@@ -1290,17 +1294,17 @@ public class XMLEncodingDetector {
                         }
                         if (!sawSpace) {
                             reportFatalError(scanningTextDecl
-                                      ? "jsp.error.xml.spaceRequiredBeforeEncodingInTextDecl"
-                                      : "jsp.error.xml.spaceRequiredBeforeEncodingInXMLDecl",
-                                             null);
+                                    ? "jsp.error.xml.spaceRequiredBeforeEncodingInTextDecl"
+                                    : "jsp.error.xml.spaceRequiredBeforeEncodingInXMLDecl",
+                                    null);
                         }
                         encoding = fString.toString();
-                        state = scanningTextDecl ? STATE_DONE : STATE_STANDALONE;
+                        state = scanningTextDecl ? STATE_DONE
+                                : STATE_STANDALONE;
                     } else {
                         if (scanningTextDecl) {
                             err.jspError("jsp.error.xml.encodingDeclRequired");
-                        }
-                        else {
+                        } else {
                             err.jspError("jsp.error.xml.versionInfoRequired");
                         }
                     }
@@ -1310,21 +1314,24 @@ public class XMLEncodingDetector {
                     if (name == fEncodingSymbol) {
                         if (!sawSpace) {
                             reportFatalError(scanningTextDecl
-                                      ? "jsp.error.xml.spaceRequiredBeforeEncodingInTextDecl"
-                                      : "jsp.error.xml.spaceRequiredBeforeEncodingInXMLDecl",
-                                             null);
+                                    ? "jsp.error.xml.spaceRequiredBeforeEncodingInTextDecl"
+                                    : "jsp.error.xml.spaceRequiredBeforeEncodingInXMLDecl",
+                                    null);
                         }
                         encoding = fString.toString();
-                        state = scanningTextDecl ? STATE_DONE : STATE_STANDALONE;
+                        state = scanningTextDecl ? STATE_DONE
+                                : STATE_STANDALONE;
                         // TODO: check encoding name; set encoding on
                         //       entity scanner
                     } else if (!scanningTextDecl && name == fStandaloneSymbol) {
                         if (!sawSpace) {
-                            err.jspError("jsp.error.xml.spaceRequiredBeforeStandalone");
+                            err.jspError(
+                                    "jsp.error.xml.spaceRequiredBeforeStandalone");
                         }
                         standalone = fString.toString();
                         state = STATE_DONE;
-                        if (!standalone.equals("yes") && !standalone.equals("no")) {
+                        if (!standalone.equals("yes") && !standalone.equals(
+                                "no")) {
                             err.jspError("jsp.error.xml.sdDeclInvalid");
                         }
                     } else {
@@ -1335,11 +1342,13 @@ public class XMLEncodingDetector {
                 case STATE_STANDALONE: {
                     if (name == fStandaloneSymbol) {
                         if (!sawSpace) {
-                            err.jspError("jsp.error.xml.spaceRequiredBeforeStandalone");
+                            err.jspError(
+                                    "jsp.error.xml.spaceRequiredBeforeStandalone");
                         }
                         standalone = fString.toString();
                         state = STATE_DONE;
-                        if (!standalone.equals("yes") && !standalone.equals("no")) {
+                        if (!standalone.equals("yes") && !standalone.equals(
+                                "no")) {
                             err.jspError("jsp.error.xml.sdDeclInvalid");
                         }
                     } else {
@@ -1399,12 +1408,12 @@ public class XMLEncodingDetector {
      *
      * @return The name of the attribute
      *
-     * <strong>Note:</strong> This method uses fStringBuffer2, anything in it
-     * at the time of calling is lost.
+     *         <strong>Note:</strong> This method uses fStringBuffer2, anything
+     *         in it
+     *         at the time of calling is lost.
      */
-    public String scanPseudoAttribute(boolean scanningTextDecl,
-                                      XMLString value)
-                throws IOException, JasperException {
+    public String scanPseudoAttribute(boolean scanningTextDecl, XMLString value)
+            throws IOException, JasperException {
 
         String name = scanName();
         if (name == null) {
@@ -1412,18 +1421,16 @@ public class XMLEncodingDetector {
         }
         skipSpaces();
         if (!skipChar('=')) {
-            reportFatalError(scanningTextDecl ?
-                             "jsp.error.xml.eqRequiredInTextDecl"
-                             : "jsp.error.xml.eqRequiredInXMLDecl",
-                             name);
+            reportFatalError(scanningTextDecl
+                    ? "jsp.error.xml.eqRequiredInTextDecl"
+                    : "jsp.error.xml.eqRequiredInXMLDecl", name);
         }
         skipSpaces();
         int quote = peekChar();
         if (quote != '\'' && quote != '"') {
-            reportFatalError(scanningTextDecl ?
-                             "jsp.error.xml.quoteRequiredInTextDecl"
-                             : "jsp.error.xml.quoteRequiredInXMLDecl" ,
-                             name);
+            reportFatalError(scanningTextDecl
+                    ? "jsp.error.xml.quoteRequiredInTextDecl"
+                    : "jsp.error.xml.quoteRequiredInXMLDecl", name);
         }
         scanChar();
         int c = scanLiteral(quote, value);
@@ -1433,15 +1440,13 @@ public class XMLEncodingDetector {
                 fStringBuffer2.append(value);
                 if (c != -1) {
                     if (c == '&' || c == '%' || c == '<' || c == ']') {
-                        fStringBuffer2.append((char)scanChar());
-                    }
-                    else if (XMLChar.isHighSurrogate(c)) {
+                        fStringBuffer2.append((char) scanChar());
+                    } else if (XMLChar.isHighSurrogate(c)) {
                         scanSurrogates(fStringBuffer2);
-                    }
-                    else if (XMLChar.isInvalid(c)) {
+                    } else if (XMLChar.isInvalid(c)) {
                         String key = scanningTextDecl
-                            ? "jsp.error.xml.invalidCharInTextDecl"
-                            : "jsp.error.xml.invalidCharInXMLDecl";
+                                ? "jsp.error.xml.invalidCharInTextDecl"
+                                : "jsp.error.xml.invalidCharInXMLDecl";
                         reportFatalError(key, Integer.toString(c, 16));
                         scanChar();
                     }
@@ -1452,10 +1457,9 @@ public class XMLEncodingDetector {
             value.setValues(fStringBuffer2);
         }
         if (!skipChar(quote)) {
-            reportFatalError(scanningTextDecl ?
-                             "jsp.error.xml.closeQuoteMissingInTextDecl"
-                             : "jsp.error.xml.closeQuoteMissingInXMLDecl",
-                             name);
+            reportFatalError(scanningTextDecl
+                    ? "jsp.error.xml.closeQuoteMissingInTextDecl"
+                    : "jsp.error.xml.closeQuoteMissingInXMLDecl", name);
         }
 
         // return
@@ -1474,10 +1478,10 @@ public class XMLEncodingDetector {
      * at the time of calling is lost.
      *
      * @param target The PI target
-     * @param data The string to fill in with the data
+     * @param data   The string to fill in with the data
      */
-    private void scanPIData(String target, XMLString data)
-        throws IOException, JasperException {
+    private void scanPIData(String target, XMLString data) throws IOException,
+            JasperException {
 
         // check target
         if (target.length() == 3) {
@@ -1495,8 +1499,7 @@ public class XMLEncodingDetector {
                 // we found the end, there is no data
                 data.clear();
                 return;
-            }
-            else {
+            } else {
                 // if there is data there should be some space
                 err.jspError("jsp.error.xml.spaceRequiredInPI");
             }
@@ -1511,8 +1514,8 @@ public class XMLEncodingDetector {
                     if (XMLChar.isHighSurrogate(c)) {
                         scanSurrogates(fStringBuffer);
                     } else if (XMLChar.isInvalid(c)) {
-                        err.jspError("jsp.error.xml.invalidCharInPI",
-                                     Integer.toHexString(c));
+                        err.jspError("jsp.error.xml.invalidCharInPI", Integer
+                                .toHexString(c));
                         scanChar();
                     }
                 }
@@ -1533,31 +1536,31 @@ public class XMLEncodingDetector {
      * @param buf The StringBuffer to append the read surrogates to.
      * @return True if it succeeded.
      */
-    private boolean scanSurrogates(XMLStringBuffer buf)
-        throws IOException, JasperException {
+    private boolean scanSurrogates(XMLStringBuffer buf) throws IOException,
+            JasperException {
 
         int high = scanChar();
         int low = peekChar();
         if (!XMLChar.isLowSurrogate(low)) {
-            err.jspError("jsp.error.xml.invalidCharInContent",
-                         Integer.toString(high, 16));
+            err.jspError("jsp.error.xml.invalidCharInContent", Integer.toString(
+                    high, 16));
             return false;
         }
         scanChar();
 
         // convert surrogates to supplemental character
-        int c = XMLChar.supplemental((char)high, (char)low);
+        int c = XMLChar.supplemental((char) high, (char) low);
 
         // supplemental character must be a valid XML character
         if (!XMLChar.isValid(c)) {
-            err.jspError("jsp.error.xml.invalidCharInContent",
-                         Integer.toString(c, 16));
+            err.jspError("jsp.error.xml.invalidCharInContent", Integer.toString(
+                    c, 16));
             return false;
         }
 
         // fill in the buffer
-        buf.append((char)high);
-        buf.append((char)low);
+        buf.append((char) high);
+        buf.append((char) low);
 
         return true;
 
@@ -1569,10 +1572,8 @@ public class XMLEncodingDetector {
      * Convenience function used in all XML scanners.
      */
     private void reportFatalError(String msgId, String arg)
-                throws JasperException {
+            throws JasperException {
         err.jspError(msgId, arg);
     }
 
 }
-
-

@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -19,7 +17,6 @@ package org.apache.tomcat.util.descriptor.web;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
-
 
 /**
  * Representation of a web service reference for a web application, as
@@ -33,7 +30,6 @@ public class ContextService extends ResourceBase {
     private static final long serialVersionUID = 1L;
 
     // ------------------------------------------------------------- Properties
-
 
     /**
      * The WebService reference name.
@@ -162,8 +158,10 @@ public class ContextService extends ResourceBase {
     }
 
     /**
-     * Declares a client dependency on the container to resolving a Service Endpoint Interface
-     * to a WSDL port. It optionally associates the Service Endpoint Interface with a
+     * Declares a client dependency on the container to resolving a Service
+     * Endpoint Interface
+     * to a WSDL port. It optionally associates the Service Endpoint Interface
+     * with a
      * particular port-component.
      *
      */
@@ -200,9 +198,7 @@ public class ContextService extends ResourceBase {
         handlers.put(handler.getName(), handler);
     }
 
-
     // --------------------------------------------------------- Public Methods
-
 
     /**
      * Return a String representation of this object.
@@ -261,30 +257,27 @@ public class ContextService extends ResourceBase {
         return (sb.toString());
     }
 
-
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = super.hashCode();
-        result = prime * result +
-                ((displayname == null) ? 0 : displayname.hashCode());
-        result = prime * result +
-                ((handlers == null) ? 0 : handlers.hashCode());
-        result = prime *
-                result +
-                ((jaxrpcmappingfile == null) ? 0 : jaxrpcmappingfile.hashCode());
-        result = prime * result +
-                ((largeIcon == null) ? 0 : largeIcon.hashCode());
-        result = prime * result +
-                ((serviceInterface == null) ? 0 : serviceInterface.hashCode());
+        result = prime * result + ((displayname == null) ? 0
+                : displayname.hashCode());
+        result = prime * result + ((handlers == null) ? 0
+                : handlers.hashCode());
+        result = prime * result + ((jaxrpcmappingfile == null) ? 0
+                : jaxrpcmappingfile.hashCode());
+        result = prime * result + ((largeIcon == null) ? 0
+                : largeIcon.hashCode());
+        result = prime * result + ((serviceInterface == null) ? 0
+                : serviceInterface.hashCode());
         result = prime * result + Arrays.hashCode(serviceqname);
-        result = prime * result +
-                ((smallIcon == null) ? 0 : smallIcon.hashCode());
-        result = prime * result +
-                ((wsdlfile == null) ? 0 : wsdlfile.hashCode());
+        result = prime * result + ((smallIcon == null) ? 0
+                : smallIcon.hashCode());
+        result = prime * result + ((wsdlfile == null) ? 0
+                : wsdlfile.hashCode());
         return result;
     }
-
 
     @Override
     public boolean equals(Object obj) {

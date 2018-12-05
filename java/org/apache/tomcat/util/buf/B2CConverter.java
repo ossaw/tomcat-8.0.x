@@ -1,18 +1,16 @@
 /*
- *  Licensed to the Apache Software Foundation (ASF) under one or more
- *  contributor license agreements.  See the NOTICE file distributed with
- *  this work for additional information regarding copyright ownership.
- *  The ASF licenses this file to You under the Apache License, Version 2.0
- *  (the "License"); you may not use this file except in compliance with
- *  the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements. See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.apache.tomcat.util.buf;
 
@@ -36,22 +34,21 @@ import org.apache.tomcat.util.res.StringManager;
  */
 public class B2CConverter {
 
-    private static final StringManager sm =
-        StringManager.getManager(Constants.Package);
+    private static final StringManager sm = StringManager.getManager(
+            Constants.Package);
 
-    private static final Map<String, Charset> encodingToCharsetCache =
-            new HashMap<>();
+    private static final Map<String, Charset> encodingToCharsetCache = new HashMap<>();
 
     // Protected so unit tests can use it
     protected static final int LEFTOVER_SIZE = 9;
 
     static {
-        for (Charset charset: Charset.availableCharsets().values()) {
-            encodingToCharsetCache.put(
-                    charset.name().toLowerCase(Locale.ENGLISH), charset);
+        for (Charset charset : Charset.availableCharsets().values()) {
+            encodingToCharsetCache.put(charset.name().toLowerCase(
+                    Locale.ENGLISH), charset);
             for (String alias : charset.aliases()) {
-                encodingToCharsetCache.put(
-                        alias.toLowerCase(Locale.ENGLISH), charset);
+                encodingToCharsetCache.put(alias.toLowerCase(Locale.ENGLISH),
+                        charset);
             }
         }
     }
@@ -75,8 +72,8 @@ public class B2CConverter {
 
         if (charset == null) {
             // Pre-population of the cache means this must be invalid
-            throw new UnsupportedEncodingException(
-                    sm.getString("b2cConverter.unknownEncoding", lowerCaseEnc));
+            throw new UnsupportedEncodingException(sm.getString(
+                    "b2cConverter.unknownEncoding", lowerCaseEnc));
         }
         return charset;
     }
@@ -128,9 +125,9 @@ public class B2CConverter {
     /**
      * Convert the given bytes to characters.
      *
-     * @param bc byte input
-     * @param cc char output
-     * @param endOfInput    Is this all of the available data
+     * @param bc         byte input
+     * @param cc         char output
+     * @param endOfInput Is this all of the available data
      */
     public void convert(ByteChunk bc, CharChunk cc, boolean endOfInput)
             throws IOException {
@@ -144,8 +141,8 @@ public class B2CConverter {
         }
         if ((cb == null) || (cb.array() != cc.getBuffer())) {
             // Create a new char buffer if anything changed
-            cb = CharBuffer.wrap(cc.getBuffer(), cc.getEnd(),
-                    cc.getBuffer().length - cc.getEnd());
+            cb = CharBuffer.wrap(cc.getBuffer(), cc.getEnd(), cc
+                    .getBuffer().length - cc.getEnd());
         } else {
             // Initialize the char buffer
             cb.limit(cc.getBuffer().length);

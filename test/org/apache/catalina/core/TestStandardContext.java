@@ -1,18 +1,16 @@
 /*
- *  Licensed to the Apache Software Foundation (ASF) under one or more
- *  contributor license agreements.  See the NOTICE file distributed with
- *  this work for additional information regarding copyright ownership.
- *  The ASF licenses this file to You under the Apache License, Version 2.0
- *  (the "License"); you may not use this file except in compliance with
- *  the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements. See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.apache.catalina.core;
 
@@ -75,14 +73,10 @@ import org.apache.tomcat.util.descriptor.web.FilterDef;
 import org.apache.tomcat.util.descriptor.web.FilterMap;
 import org.apache.tomcat.util.descriptor.web.LoginConfig;
 
-
 public class TestStandardContext extends TomcatBaseTest {
 
-    private static final String REQUEST =
-        "GET / HTTP/1.1\r\n" +
-        "Host: anything\r\n" +
-        "Connection: close\r\n" +
-        "\r\n";
+    private static final String REQUEST = "GET / HTTP/1.1\r\n"
+            + "Host: anything\r\n" + "Connection: close\r\n" + "\r\n";
 
     @Test
     public void testBug46243() throws Exception {
@@ -104,8 +98,8 @@ public class TestStandardContext extends TomcatBaseTest {
         tomcat.start();
 
         // Configure the client
-        Bug46243Client client =
-                new Bug46243Client(tomcat.getConnector().getLocalPort());
+        Bug46243Client client = new Bug46243Client(tomcat.getConnector()
+                .getLocalPort());
         client.setRequest(new String[] { REQUEST });
 
         client.connect();
@@ -130,7 +124,8 @@ public class TestStandardContext extends TomcatBaseTest {
                 + HelloWorldServlet.RESPONSE_TEXT, client.getResponseBody());
     }
 
-    private static void configureTest46243Context(Context context, boolean fail) {
+    private static void configureTest46243Context(Context context,
+            boolean fail) {
         // Add a test filter that fails
         FilterDef filterDef = new FilterDef();
         filterDef.setFilterClass(Bug46243Filter.class.getName());
@@ -218,8 +213,8 @@ public class TestStandardContext extends TomcatBaseTest {
         assertEquals(LifecycleState.STARTED, context.getState());
 
         // Using a test from testBug49922() to check that the webapp is running
-        ByteChunk result = getUrl("http://localhost:" + getPort() +
-                "/bug49922/target");
+        ByteChunk result = getUrl("http://localhost:" + getPort()
+                + "/bug49922/target");
         assertEquals("Target", result.toString());
     }
 
@@ -254,16 +249,18 @@ public class TestStandardContext extends TomcatBaseTest {
         assertEquals(LifecycleState.STARTED, context.getState());
 
         // Using a test from testBug49922() to check that the webapp is running
-        ByteChunk result = getUrl("http://localhost:" + getPort() +
-                "/bug49922/target");
+        ByteChunk result = getUrl("http://localhost:" + getPort()
+                + "/bug49922/target");
         assertEquals("Target", result.toString());
     }
 
     private static class FailingWebappLoader extends WebappLoader {
         private boolean fail = true;
+
         protected void setFail(boolean fail) {
             this.fail = fail;
         }
+
         @Override
         protected void startInternal() throws LifecycleException {
             if (fail) {
@@ -276,9 +273,11 @@ public class TestStandardContext extends TomcatBaseTest {
     private static class FailingLifecycleListener implements LifecycleListener {
         private final String failEvent = Lifecycle.CONFIGURE_START_EVENT;
         private boolean fail = true;
+
         protected void setFail(boolean fail) {
             this.fail = fail;
         }
+
         @Override
         public void lifecycleEvent(LifecycleEvent event) {
             if (fail && event.getType().equals(failEvent)) {
@@ -298,8 +297,8 @@ public class TestStandardContext extends TomcatBaseTest {
         ByteChunk result = new ByteChunk();
 
         // Check filter and servlet aren't called
-        int rc = getUrl("http://localhost:" + getPort() +
-                "/test/bug49922/foo", result, null);
+        int rc = getUrl("http://localhost:" + getPort() + "/test/bug49922/foo",
+                result, null);
         assertEquals(HttpServletResponse.SC_NOT_FOUND, rc);
         assertTrue(result.getLength() > 0);
 
@@ -308,7 +307,8 @@ public class TestStandardContext extends TomcatBaseTest {
         assertEquals("FilterServlet", result.toString());
 
         // Check path mapping works
-        result = getUrl("http://localhost:" + getPort() + "/test/bug49922/servlet");
+        result = getUrl("http://localhost:" + getPort()
+                + "/test/bug49922/servlet");
         assertEquals("FilterServlet", result.toString());
 
         // Check servlet name mapping works
@@ -316,25 +316,24 @@ public class TestStandardContext extends TomcatBaseTest {
         assertEquals("FilterServlet", result.toString());
 
         // Check filter is only called once
-        result = getUrl("http://localhost:" + getPort() +
-                "/test/bug49922/servlet/foo.do");
+        result = getUrl("http://localhost:" + getPort()
+                + "/test/bug49922/servlet/foo.do");
         assertEquals("FilterServlet", result.toString());
-        result = getUrl("http://localhost:" + getPort() +
-                "/test/bug49922/servlet/foo.od");
+        result = getUrl("http://localhost:" + getPort()
+                + "/test/bug49922/servlet/foo.od");
         assertEquals("FilterServlet", result.toString());
 
         // Check dispatcher mapping
-        result = getUrl("http://localhost:" + getPort() +
-                "/test/bug49922/target");
+        result = getUrl("http://localhost:" + getPort()
+                + "/test/bug49922/target");
         assertEquals("Target", result.toString());
-        result = getUrl("http://localhost:" + getPort() +
-                "/test/bug49922/forward");
+        result = getUrl("http://localhost:" + getPort()
+                + "/test/bug49922/forward");
         assertEquals("FilterTarget", result.toString());
-        result = getUrl("http://localhost:" + getPort() +
-                "/test/bug49922/include");
+        result = getUrl("http://localhost:" + getPort()
+                + "/test/bug49922/include");
         assertEquals("IncludeFilterTarget", result.toString());
     }
-
 
     public static final class Bug49922Filter implements Filter {
 
@@ -441,16 +440,16 @@ public class TestStandardContext extends TomcatBaseTest {
 
         // Request the first servlet
         ByteChunk bc = new ByteChunk();
-        int rc = getUrl("http://localhost:" + getPort() + "/bug50015",
-                bc, null);
+        int rc = getUrl("http://localhost:" + getPort() + "/bug50015", bc,
+                null);
 
         // Check for a 401
         assertNotSame("OK", bc.toString());
         assertEquals(401, rc);
     }
 
-    public static final class Bug50015SCI
-            implements ServletContainerInitializer {
+    public static final class Bug50015SCI implements
+            ServletContainerInitializer {
 
         @Override
         public void onStartup(Set<Class<?>> c, ServletContext ctx)
@@ -512,8 +511,7 @@ public class TestStandardContext extends TomcatBaseTest {
 
         // Request the first servlet
         ByteChunk bc = new ByteChunk();
-        int rc = getUrl("http://localhost:" + getPort() + "/test",
-                bc, null);
+        int rc = getUrl("http://localhost:" + getPort() + "/test", bc, null);
 
         // Check for a 401
         if (enableDeny) {
@@ -526,8 +524,8 @@ public class TestStandardContext extends TomcatBaseTest {
         }
     }
 
-    public static final class DenyUncoveredHttpMethodsSCI
-            implements ServletContainerInitializer {
+    public static final class DenyUncoveredHttpMethodsSCI implements
+            ServletContainerInitializer {
 
         @Override
         public void onStartup(Set<Class<?>> c, ServletContext ctx)
@@ -540,8 +538,8 @@ public class TestStandardContext extends TomcatBaseTest {
             // Add a constraint with uncovered methods
             HttpConstraintElement hce = new HttpConstraintElement(
                     TransportGuarantee.NONE, "tomcat");
-            HttpMethodConstraintElement hmce =
-                    new HttpMethodConstraintElement("POST", hce);
+            HttpMethodConstraintElement hmce = new HttpMethodConstraintElement(
+                    "POST", hce);
             Set<HttpMethodConstraintElement> hmces = new HashSet<>();
             hmces.add(hmce);
             ServletSecurityElement sse = new ServletSecurityElement(hmces);
@@ -585,8 +583,8 @@ public class TestStandardContext extends TomcatBaseTest {
         assertTrue(loadOnStartUp == sci.getServlet().isInitCalled());
     }
 
-    public static final class Bug51376SCI
-            implements ServletContainerInitializer {
+    public static final class Bug51376SCI implements
+            ServletContainerInitializer {
 
         private Bug51376Servlet s = null;
         private boolean loadOnStartUp;
@@ -645,8 +643,8 @@ public class TestStandardContext extends TomcatBaseTest {
         }
 
         protected boolean isOk() {
-            if (initOk != null && initOk.booleanValue() && destroyOk != null &&
-                    destroyOk.booleanValue()) {
+            if (initOk != null && initOk.booleanValue() && destroyOk != null
+                    && destroyOk.booleanValue()) {
                 return true;
             } else if (initOk == null && destroyOk == null) {
                 return true;
@@ -679,9 +677,8 @@ public class TestStandardContext extends TomcatBaseTest {
         // Make sure regular multipart works properly
         client.doRequest("/multipart", false, true); // send multipart request
 
-        assertEquals("Regular multipart doesn't work",
-                     "parts=1",
-                     client.getResponseBody());
+        assertEquals("Regular multipart doesn't work", "parts=1", client
+                .getResponseBody());
 
         client.reset();
 
@@ -699,9 +696,9 @@ public class TestStandardContext extends TomcatBaseTest {
         // there is no @MultipartConfig
         client.doRequest("/regular", true, true); // send multipart request
 
-        assertEquals("Incorrect response for configured casual multipart request",
-                     "parts=1",
-                     client.getResponseBody());
+        assertEquals(
+                "Incorrect response for configured casual multipart request",
+                "parts=1", client.getResponseBody());
 
         client.reset();
     }
@@ -711,16 +708,15 @@ public class TestStandardContext extends TomcatBaseTest {
 
         @Override
         protected void service(HttpServletRequest req, HttpServletResponse resp)
-            throws ServletException, IOException {
+                throws ServletException, IOException {
             // Just echo the parameters and values back as plain text
             resp.setContentType("text/plain");
             resp.setCharacterEncoding("UTF-8");
 
             PrintWriter out = resp.getWriter();
 
-            out.println("parts=" + (null == req.getParts()
-                                    ? "null"
-                                    : Integer.valueOf(req.getParts().size())));
+            out.println("parts=" + (null == req.getParts() ? "null"
+                    : Integer.valueOf(req.getParts().size())));
         }
     }
 
@@ -738,12 +734,14 @@ public class TestStandardContext extends TomcatBaseTest {
         private Context context;
 
         private synchronized void init() throws Exception {
-            if (init) return;
+            if (init)
+                return;
 
             Tomcat tomcat = getTomcatInstance();
             context = tomcat.addContext("", TEMP_DIR);
             Tomcat.addServlet(context, "regular", new Bug49711Servlet());
-            Wrapper w = Tomcat.addServlet(context, "multipart", new Bug49711Servlet_multipart());
+            Wrapper w = Tomcat.addServlet(context, "multipart",
+                    new Bug49711Servlet_multipart());
 
             // Tomcat.addServlet does not respect annotations, so we have
             // to set our own MultipartConfigElement.
@@ -758,9 +756,8 @@ public class TestStandardContext extends TomcatBaseTest {
             init = true;
         }
 
-        private Exception doRequest(String uri,
-                                    boolean allowCasualMultipart,
-                                    boolean makeMultipartRequest) {
+        private Exception doRequest(String uri, boolean allowCasualMultipart,
+                boolean makeMultipartRequest) {
             try {
                 init();
 
@@ -772,36 +769,28 @@ public class TestStandardContext extends TomcatBaseTest {
                 // Send specified request body using method
                 String[] request;
 
-                if(makeMultipartRequest) {
+                if (makeMultipartRequest) {
                     String boundary = "--simpleboundary";
 
                     String content = "--" + boundary + CRLF
-                        + "Content-Disposition: form-data; name=\"name\"" + CRLF + CRLF
-                        + "value" + CRLF
-                        + "--" + boundary + "--" + CRLF;
+                            + "Content-Disposition: form-data; name=\"name\""
+                            + CRLF + CRLF + "value" + CRLF + "--" + boundary
+                            + "--" + CRLF;
 
                     // Re-encode the content so that bytes = characters
                     content = new String(content.getBytes("UTF-8"), "ASCII");
 
-                    request = new String[] {
-                        "POST http://localhost:" + getPort() + uri + " HTTP/1.1" + CRLF
-                        + "Host: localhost" + CRLF
-                        + "Connection: close" + CRLF
-                        + "Content-Type: multipart/form-data; boundary=" + boundary + CRLF
-                        + "Content-Length: " + content.length() + CRLF
-                        + CRLF
-                        + content
-                        + CRLF
-                    };
-                }
-                else
-                {
-                    request = new String[] {
-                        "GET http://localhost:" + getPort() + uri + " HTTP/1.1" + CRLF
-                        + "Host: localhost" + CRLF
-                        + "Connection: close" + CRLF
-                        + CRLF
-                    };
+                    request = new String[] { "POST http://localhost:"
+                            + getPort() + uri + " HTTP/1.1" + CRLF
+                            + "Host: localhost" + CRLF + "Connection: close"
+                            + CRLF
+                            + "Content-Type: multipart/form-data; boundary="
+                            + boundary + CRLF + "Content-Length: " + content
+                                    .length() + CRLF + CRLF + content + CRLF };
+                } else {
+                    request = new String[] { "GET http://localhost:" + getPort()
+                            + uri + " HTTP/1.1" + CRLF + "Host: localhost"
+                            + CRLF + "Connection: close" + CRLF + CRLF };
                 }
 
                 setRequest(request);
@@ -892,8 +881,8 @@ public class TestStandardContext extends TomcatBaseTest {
         host.setFailCtxIfServletStartFails(true);
         assertTrue(context.getComputedFailCtxIfServletStartFails());
         context.setFailCtxIfServletStartFails(Boolean.FALSE);
-        assertFalse("flag on Context should override Host config",
-                context.getComputedFailCtxIfServletStartFails());
+        assertFalse("flag on Context should override Host config", context
+                .getComputedFailCtxIfServletStartFails());
 
         // second, we test the actual effect of the flag on the startup
         Wrapper servlet = Tomcat.addServlet(context, "myservlet",
@@ -908,8 +897,8 @@ public class TestStandardContext extends TomcatBaseTest {
         assertFalse(context.getState().isAvailable());
 
         host.removeChild(context);
-        context = (StandardContext) tomcat.addContext("",
-                docBase.getAbsolutePath());
+        context = (StandardContext) tomcat.addContext("", docBase
+                .getAbsolutePath());
         servlet = Tomcat.addServlet(context, "myservlet",
                 new FailingStartupServlet());
         servlet.setLoadOnStartup(1);
@@ -933,7 +922,8 @@ public class TestStandardContext extends TomcatBaseTest {
     public void testBug56085() throws Exception {
         Tomcat tomcat = getTomcatInstanceTestWebapp(false, true);
 
-        String realPath = ((Context) tomcat.getHost().findChildren()[0]).getRealPath("\\");
+        String realPath = ((Context) tomcat.getHost().findChildren()[0])
+                .getRealPath("\\");
 
         Assert.assertNull(realPath);
     }
@@ -949,18 +939,21 @@ public class TestStandardContext extends TomcatBaseTest {
 
         File f = new File(testContext.getDocBase());
         if (!f.isAbsolute()) {
-            f = new File(((Host) testContext.getParent()).getAppBaseFile(), f.getPath());
+            f = new File(((Host) testContext.getParent()).getAppBaseFile(), f
+                    .getPath());
         }
         String base = f.getCanonicalPath();
 
-
         doTestBug57556(testContext, "", base + File.separatorChar);
         doTestBug57556(testContext, "/", base + File.separatorChar);
-        doTestBug57556(testContext, "/jsp", base + File.separatorChar+ "jsp");
-        doTestBug57556(testContext, "/jsp/", base + File.separatorChar+ "jsp" + File.separatorChar);
-        doTestBug57556(testContext, "/index.html", base + File.separatorChar + "index.html");
+        doTestBug57556(testContext, "/jsp", base + File.separatorChar + "jsp");
+        doTestBug57556(testContext, "/jsp/", base + File.separatorChar + "jsp"
+                + File.separatorChar);
+        doTestBug57556(testContext, "/index.html", base + File.separatorChar
+                + "index.html");
         doTestBug57556(testContext, "/foo", base + File.separatorChar + "foo");
-        doTestBug57556(testContext, "/foo/", base + File.separatorChar + "foo" + File.separatorChar);
+        doTestBug57556(testContext, "/foo/", base + File.separatorChar + "foo"
+                + File.separatorChar);
     }
 
     @Test
@@ -972,7 +965,8 @@ public class TestStandardContext extends TomcatBaseTest {
 
         File f = new File(testContext.getDocBase());
         if (!f.isAbsolute()) {
-            f = new File(((Host) testContext.getParent()).getAppBaseFile(), f.getPath());
+            f = new File(((Host) testContext.getParent()).getAppBaseFile(), f
+                    .getPath());
         }
         String base = f.getCanonicalPath();
 
@@ -980,7 +974,8 @@ public class TestStandardContext extends TomcatBaseTest {
         doTestBug57556(testContext, "/", base);
     }
 
-    private void doTestBug57556(Context testContext, String path, String expected) throws Exception {
+    private void doTestBug57556(Context testContext, String path,
+            String expected) throws Exception {
         String realPath = testContext.getRealPath(path);
         Assert.assertNotNull(realPath);
         Assert.assertEquals(expected, realPath);
@@ -991,8 +986,8 @@ public class TestStandardContext extends TomcatBaseTest {
         Context context = new StandardContext();
 
         context.setResourceOnlyServlets("a,b,c");
-        Assert.assertThat(Arrays.asList(context.getResourceOnlyServlets().split(",")),
-                CoreMatchers.hasItems("a", "b", "c"));
+        Assert.assertThat(Arrays.asList(context.getResourceOnlyServlets().split(
+                ",")), CoreMatchers.hasItems("a", "b", "c"));
     }
 
     @Test

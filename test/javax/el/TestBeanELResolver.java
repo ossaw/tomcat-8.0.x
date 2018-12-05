@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -43,13 +41,12 @@ public class TestBeanELResolver {
 
         Bean bean = new Bean();
 
-        ValueExpression varBean =
-            factory.createValueExpression(bean, Bean.class);
+        ValueExpression varBean = factory.createValueExpression(bean,
+                Bean.class);
         context.getVariableMapper().setVariable("bean", varBean);
 
-
-        ValueExpression ve = factory.createValueExpression(
-                context, "${bean.valueA}", String.class);
+        ValueExpression ve = factory.createValueExpression(context,
+                "${bean.valueA}", String.class);
         Exception e = null;
         try {
             ve.getValue(context);
@@ -60,9 +57,9 @@ public class TestBeanELResolver {
                 e instanceof PropertyNotFoundException);
         String type = Bean.class.getName();
         String msg = e.getMessage();
-        Assert.assertTrue("No reference to type [" + type +
-                "] where property cannot be found in [" + msg + "]",
-                msg.contains(type));
+        Assert.assertTrue("No reference to type [" + type
+                + "] where property cannot be found in [" + msg + "]", msg
+                        .contains(type));
     }
 
     /**
@@ -88,9 +85,11 @@ public class TestBeanELResolver {
     @Test
     public void testGetType03() {
         BeanELResolver resolver = new BeanELResolver();
-        ELContext context = new StandardELContext(ELManager.getExpressionFactory());
+        ELContext context = new StandardELContext(ELManager
+                .getExpressionFactory());
 
-        Class<?> result = resolver.getType(context, new Bean(), PROPERTY01_NAME);
+        Class<?> result = resolver.getType(context, new Bean(),
+                PROPERTY01_NAME);
 
         Assert.assertEquals(String.class, result);
         Assert.assertTrue(context.isPropertyResolved());
@@ -102,7 +101,8 @@ public class TestBeanELResolver {
     @Test(expected = PropertyNotFoundException.class)
     public void testGetType04() {
         BeanELResolver resolver = new BeanELResolver();
-        ELContext context = new StandardELContext(ELManager.getExpressionFactory());
+        ELContext context = new StandardELContext(ELManager
+                .getExpressionFactory());
 
         resolver.getType(context, new Bean(), PROPERTY02_NAME);
     }
@@ -114,7 +114,8 @@ public class TestBeanELResolver {
     @Test(expected = PropertyNotFoundException.class)
     public void testGetType05() {
         BeanELResolver resolver = new BeanELResolver();
-        ELContext context = new StandardELContext(ELManager.getExpressionFactory());
+        ELContext context = new StandardELContext(ELManager
+                .getExpressionFactory());
 
         resolver.getType(context, new Bean(), new Object());
     }
@@ -142,9 +143,11 @@ public class TestBeanELResolver {
     @Test
     public void testGetValue03() {
         BeanELResolver resolver = new BeanELResolver();
-        ELContext context = new StandardELContext(ELManager.getExpressionFactory());
+        ELContext context = new StandardELContext(ELManager
+                .getExpressionFactory());
 
-        Object result = resolver.getValue(context, new TesterBean(BEAN_NAME), PROPERTY03_NAME);
+        Object result = resolver.getValue(context, new TesterBean(BEAN_NAME),
+                PROPERTY03_NAME);
 
         Assert.assertEquals(BEAN_NAME, result);
         Assert.assertTrue(context.isPropertyResolved());
@@ -156,7 +159,8 @@ public class TestBeanELResolver {
     @Test(expected = PropertyNotFoundException.class)
     public void testGetValue04() {
         BeanELResolver resolver = new BeanELResolver();
-        ELContext context = new StandardELContext(ELManager.getExpressionFactory());
+        ELContext context = new StandardELContext(ELManager
+                .getExpressionFactory());
 
         resolver.getValue(context, new Bean(), PROPERTY02_NAME);
     }
@@ -168,7 +172,8 @@ public class TestBeanELResolver {
     @Test(expected = PropertyNotFoundException.class)
     public void testGetValue05() {
         BeanELResolver resolver = new BeanELResolver();
-        ELContext context = new StandardELContext(ELManager.getExpressionFactory());
+        ELContext context = new StandardELContext(ELManager
+                .getExpressionFactory());
 
         resolver.getValue(context, new Bean(), new Object());
     }
@@ -179,7 +184,8 @@ public class TestBeanELResolver {
     @Test(expected = PropertyNotFoundException.class)
     public void testGetValue06() {
         BeanELResolver resolver = new BeanELResolver();
-        ELContext context = new StandardELContext(ELManager.getExpressionFactory());
+        ELContext context = new StandardELContext(ELManager
+                .getExpressionFactory());
 
         resolver.getValue(context, new Bean(), PROPERTY01_NAME);
     }
@@ -190,7 +196,8 @@ public class TestBeanELResolver {
     @Test(expected = ELException.class)
     public void testGetValue07() {
         BeanELResolver resolver = new BeanELResolver();
-        ELContext context = new StandardELContext(ELManager.getExpressionFactory());
+        ELContext context = new StandardELContext(ELManager
+                .getExpressionFactory());
 
         resolver.getValue(context, new TesterBean(BEAN_NAME), PROPERTY01_NAME);
     }
@@ -218,7 +225,8 @@ public class TestBeanELResolver {
     @Test(expected = PropertyNotWritableException.class)
     public void testSetValue03() {
         BeanELResolver resolver = new BeanELResolver(true);
-        ELContext context = new StandardELContext(ELManager.getExpressionFactory());
+        ELContext context = new StandardELContext(ELManager
+                .getExpressionFactory());
 
         resolver.setValue(context, new Bean(), new Object(), new Object());
     }
@@ -229,12 +237,14 @@ public class TestBeanELResolver {
     @Test
     public void testSetValue04() {
         BeanELResolver resolver = new BeanELResolver();
-        ELContext context = new StandardELContext(ELManager.getExpressionFactory());
+        ELContext context = new StandardELContext(ELManager
+                .getExpressionFactory());
 
         TesterBean bean = new TesterBean(BEAN_NAME);
         resolver.setValue(context, bean, PROPERTY03_NAME, PROPERTY_VALUE);
 
-        Assert.assertEquals(PROPERTY_VALUE, resolver.getValue(context, bean, PROPERTY03_NAME));
+        Assert.assertEquals(PROPERTY_VALUE, resolver.getValue(context, bean,
+                PROPERTY03_NAME));
         Assert.assertTrue(context.isPropertyResolved());
     }
 
@@ -245,7 +255,8 @@ public class TestBeanELResolver {
     @Test(expected = PropertyNotFoundException.class)
     public void testSetValue05() {
         BeanELResolver resolver = new BeanELResolver();
-        ELContext context = new StandardELContext(ELManager.getExpressionFactory());
+        ELContext context = new StandardELContext(ELManager
+                .getExpressionFactory());
 
         resolver.setValue(context, new Bean(), new Object(), PROPERTY_VALUE);
     }
@@ -256,7 +267,8 @@ public class TestBeanELResolver {
     @Test(expected = PropertyNotFoundException.class)
     public void testSetValue06() {
         BeanELResolver resolver = new BeanELResolver();
-        ELContext context = new StandardELContext(ELManager.getExpressionFactory());
+        ELContext context = new StandardELContext(ELManager
+                .getExpressionFactory());
 
         resolver.setValue(context, new Bean(), PROPERTY02_NAME, PROPERTY_VALUE);
     }
@@ -268,9 +280,11 @@ public class TestBeanELResolver {
     @Test(expected = PropertyNotWritableException.class)
     public void testSetValue07() {
         BeanELResolver resolver = new BeanELResolver();
-        ELContext context = new StandardELContext(ELManager.getExpressionFactory());
+        ELContext context = new StandardELContext(ELManager
+                .getExpressionFactory());
 
-        resolver.setValue(context, new TesterBean(BEAN_NAME), PROPERTY01_NAME, PROPERTY_VALUE);
+        resolver.setValue(context, new TesterBean(BEAN_NAME), PROPERTY01_NAME,
+                PROPERTY_VALUE);
     }
 
     /**
@@ -288,7 +302,8 @@ public class TestBeanELResolver {
     @Test
     public void testIsReadOnly02() {
         BeanELResolver resolver = new BeanELResolver();
-        ELContext context = new StandardELContext(ELManager.getExpressionFactory());
+        ELContext context = new StandardELContext(ELManager
+                .getExpressionFactory());
 
         resolver.isReadOnly(context, null, new Object());
 
@@ -308,16 +323,19 @@ public class TestBeanELResolver {
     @Test
     public void testIsReadOnly03() {
         BeanELResolver resolver = new BeanELResolver();
-        ELContext context = new StandardELContext(ELManager.getExpressionFactory());
+        ELContext context = new StandardELContext(ELManager
+                .getExpressionFactory());
 
-        boolean result = resolver.isReadOnly(context, new TesterBean(BEAN_NAME), PROPERTY03_NAME);
+        boolean result = resolver.isReadOnly(context, new TesterBean(BEAN_NAME),
+                PROPERTY03_NAME);
 
         Assert.assertFalse(result);
         Assert.assertTrue(context.isPropertyResolved());
 
         resolver = new BeanELResolver(true);
 
-        result = resolver.isReadOnly(context, new TesterBean(BEAN_NAME), PROPERTY03_NAME);
+        result = resolver.isReadOnly(context, new TesterBean(BEAN_NAME),
+                PROPERTY03_NAME);
 
         Assert.assertTrue(result);
         Assert.assertTrue(context.isPropertyResolved());
@@ -329,7 +347,8 @@ public class TestBeanELResolver {
     @Test(expected = PropertyNotFoundException.class)
     public void testIsReadOnly04() {
         BeanELResolver resolver = new BeanELResolver();
-        ELContext context = new StandardELContext(ELManager.getExpressionFactory());
+        ELContext context = new StandardELContext(ELManager
+                .getExpressionFactory());
 
         resolver.isReadOnly(context, new TesterBean(BEAN_NAME), new Integer(0));
     }
@@ -340,7 +359,8 @@ public class TestBeanELResolver {
     @Test(expected = PropertyNotFoundException.class)
     public void testIsReadOnly05() {
         BeanELResolver resolver = new BeanELResolver();
-        ELContext context = new StandardELContext(ELManager.getExpressionFactory());
+        ELContext context = new StandardELContext(ELManager
+                .getExpressionFactory());
 
         resolver.isReadOnly(context, new Bean(), PROPERTY02_NAME);
     }
@@ -352,9 +372,11 @@ public class TestBeanELResolver {
     @Test
     public void testIsReadOnly06() {
         BeanELResolver resolver = new BeanELResolver();
-        ELContext context = new StandardELContext(ELManager.getExpressionFactory());
+        ELContext context = new StandardELContext(ELManager
+                .getExpressionFactory());
 
-        boolean result = resolver.isReadOnly(context, new TesterBean(BEAN_NAME), PROPERTY01_NAME);
+        boolean result = resolver.isReadOnly(context, new TesterBean(BEAN_NAME),
+                PROPERTY01_NAME);
 
         Assert.assertTrue(result);
         Assert.assertTrue(context.isPropertyResolved());
@@ -367,9 +389,11 @@ public class TestBeanELResolver {
     @Test
     public void testGetFeatureDescriptors01() {
         BeanELResolver resolver = new BeanELResolver();
-        ELContext context = new StandardELContext(ELManager.getExpressionFactory());
+        ELContext context = new StandardELContext(ELManager
+                .getExpressionFactory());
 
-        Iterator<FeatureDescriptor> result = resolver.getFeatureDescriptors(context, null);
+        Iterator<FeatureDescriptor> result = resolver.getFeatureDescriptors(
+                context, null);
 
         Assert.assertNull(result);
     }
@@ -380,16 +404,19 @@ public class TestBeanELResolver {
     @Test
     public void testGetFeatureDescriptors02() {
         BeanELResolver resolver = new BeanELResolver();
-        ELContext context = new StandardELContext(ELManager.getExpressionFactory());
+        ELContext context = new StandardELContext(ELManager
+                .getExpressionFactory());
 
-        Iterator<FeatureDescriptor> result = resolver.getFeatureDescriptors(context, new Bean());
+        Iterator<FeatureDescriptor> result = resolver.getFeatureDescriptors(
+                context, new Bean());
 
         while (result.hasNext()) {
-            PropertyDescriptor featureDescriptor = (PropertyDescriptor) result.next();
+            PropertyDescriptor featureDescriptor = (PropertyDescriptor) result
+                    .next();
             Assert.assertEquals(featureDescriptor.getPropertyType(),
                     featureDescriptor.getValue(ELResolver.TYPE));
-            Assert.assertEquals(Boolean.TRUE,
-                    featureDescriptor.getValue(ELResolver.RESOLVABLE_AT_DESIGN_TIME));
+            Assert.assertEquals(Boolean.TRUE, featureDescriptor.getValue(
+                    ELResolver.RESOLVABLE_AT_DESIGN_TIME));
         }
     }
 
@@ -399,7 +426,8 @@ public class TestBeanELResolver {
     @Test(expected = NullPointerException.class)
     public void testInvoke01() {
         BeanELResolver resolver = new BeanELResolver();
-        resolver.invoke(null, new Object(), new Object(), new Class<?>[0], new Object[0]);
+        resolver.invoke(null, new Object(), new Object(), new Class<?>[0],
+                new Object[0]);
     }
 
     /**
@@ -416,10 +444,11 @@ public class TestBeanELResolver {
     @Test
     public void testInvoke03() {
         BeanELResolver resolver = new BeanELResolver();
-        ELContext context = new StandardELContext(ELManager.getExpressionFactory());
+        ELContext context = new StandardELContext(ELManager
+                .getExpressionFactory());
 
-        Object result = resolver.invoke(context, new TesterBean(BEAN_NAME), METHOD01_NAME,
-                new Class<?>[] {}, new Object[] {});
+        Object result = resolver.invoke(context, new TesterBean(BEAN_NAME),
+                METHOD01_NAME, new Class<?>[] {}, new Object[] {});
 
         Assert.assertEquals(BEAN_NAME, result);
         Assert.assertTrue(context.isPropertyResolved());
@@ -434,15 +463,17 @@ public class TestBeanELResolver {
     }
 
     /**
-     * Tests that a call to &lt;init&gt; as a method name will throw an exception.
+     * Tests that a call to &lt;init&gt; as a method name will throw an
+     * exception.
      */
     @Test(expected = MethodNotFoundException.class)
     public void testInvoke05() {
         BeanELResolver resolver = new BeanELResolver();
-        ELContext context = new StandardELContext(ELManager.getExpressionFactory());
+        ELContext context = new StandardELContext(ELManager
+                .getExpressionFactory());
 
-        resolver.invoke(context, new TesterBean(BEAN_NAME), METHOD02_NAME, new Class<?>[] {},
-                new Object[] {});
+        resolver.invoke(context, new TesterBean(BEAN_NAME), METHOD02_NAME,
+                new Class<?>[] {}, new Object[] {});
     }
 
     /**
@@ -451,10 +482,11 @@ public class TestBeanELResolver {
     @Test(expected = MethodNotFoundException.class)
     public void testInvoke06() {
         BeanELResolver resolver = new BeanELResolver();
-        ELContext context = new StandardELContext(ELManager.getExpressionFactory());
+        ELContext context = new StandardELContext(ELManager
+                .getExpressionFactory());
 
-        resolver.invoke(context, new TesterBean(BEAN_NAME), METHOD03_NAME, new Class<?>[] {},
-                new Object[] {});
+        resolver.invoke(context, new TesterBean(BEAN_NAME), METHOD03_NAME,
+                new Class<?>[] {}, new Object[] {});
     }
 
     private static class Bean {
@@ -465,33 +497,35 @@ public class TestBeanELResolver {
         }
     }
 
-    private void doNegativeTest(Object base, Object trigger, MethodUnderTest method,
-            boolean checkResult) {
+    private void doNegativeTest(Object base, Object trigger,
+            MethodUnderTest method, boolean checkResult) {
         BeanELResolver resolver = new BeanELResolver();
-        ELContext context = new StandardELContext(ELManager.getExpressionFactory());
+        ELContext context = new StandardELContext(ELManager
+                .getExpressionFactory());
 
         Object result = null;
         switch (method) {
-        case GET_VALUE: {
-            result = resolver.getValue(context, base, trigger);
-            break;
-        }
-        case SET_VALUE: {
-            resolver.setValue(context, base, trigger, new Object());
-            break;
-        }
-        case GET_TYPE: {
-            result = resolver.getType(context, base, trigger);
-            break;
-        }
-        case INVOKE: {
-            result = resolver.invoke(context, base, trigger, new Class<?>[0], new Object[0]);
-            break;
-        }
-        default: {
-            // Should never happen
-            Assert.fail("Missing case for method");
-        }
+            case GET_VALUE: {
+                result = resolver.getValue(context, base, trigger);
+                break;
+            }
+            case SET_VALUE: {
+                resolver.setValue(context, base, trigger, new Object());
+                break;
+            }
+            case GET_TYPE: {
+                result = resolver.getType(context, base, trigger);
+                break;
+            }
+            case INVOKE: {
+                result = resolver.invoke(context, base, trigger,
+                        new Class<?>[0], new Object[0]);
+                break;
+            }
+            default: {
+                // Should never happen
+                Assert.fail("Missing case for method");
+            }
         }
 
         if (checkResult) {

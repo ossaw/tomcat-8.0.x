@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -36,6 +34,7 @@ public class SocketNioReceive {
     static double seconds = 0;
 
     protected static Object mutex = new Object();
+
     public static void main(String[] args) throws Exception {
         Member mbr = new MemberImpl("localhost", 9999, 0);
         ChannelData data = new ChannelData();
@@ -55,11 +54,14 @@ public class SocketNioReceive {
             try {
                 synchronized (mutex) {
                     mutex.wait(5000);
-                    if ( start != 0 ) {
-                        System.out.println("Throughput " + df.format(mb / seconds) + " MB/seconds, messages "+count+" accepts "+accept+", total "+mb+" MB.");
+                    if (start != 0) {
+                        System.out.println("Throughput " + df.format(mb
+                                / seconds) + " MB/seconds, messages " + count
+                                + " accepts " + accept + ", total " + mb
+                                + " MB.");
                     }
                 }
-            }catch (Throwable x) {
+            } catch (Throwable x) {
                 x.printStackTrace();
             }
         }
@@ -68,25 +70,30 @@ public class SocketNioReceive {
     public static class MyList implements MessageListener {
         boolean first = true;
 
-
         @Override
         public void messageReceived(ChannelMessage msg) {
             if (first) {
                 first = false;
                 start = System.currentTimeMillis();
             }
-            mb += ( (double) len) / 1024 / 1024;
-            synchronized (this) {count++;}
-            if ( ( (count) % 10000) == 0) {
+            mb += ((double) len) / 1024 / 1024;
+            synchronized (this) {
+                count++;
+            }
+            if (((count) % 10000) == 0) {
                 long time = System.currentTimeMillis();
-                seconds = ( (double) (time - start)) / 1000;
-                System.out.println("Throughput " + df.format(mb / seconds) + " MB/seconds, messages "+count+", total "+mb+" MB.");
+                seconds = ((double) (time - start)) / 1000;
+                System.out.println("Throughput " + df.format(mb / seconds)
+                        + " MB/seconds, messages " + count + ", total " + mb
+                        + " MB.");
             }
         }
 
         @Override
         public boolean accept(ChannelMessage msg) {
-            synchronized (this) {accept++;}
+            synchronized (this) {
+                accept++;
+            }
             return true;
         }
 

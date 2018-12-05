@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -19,9 +17,11 @@ package org.apache.jasper.util;
 /**
  *
  * The FastRemovalDequeue is a Dequeue that supports constant time removal of
- * entries. This is achieved by using a doubly linked list and wrapping any object
+ * entries. This is achieved by using a doubly linked list and wrapping any
+ * object
  * added to the collection with an Entry type, that is returned to the consumer.
- * When removing an object from the list, the consumer provides this Entry object.
+ * When removing an object from the list, the consumer provides this Entry
+ * object.
  *
  * The Entry type is nearly opaque to the consumer of the queue. The only public
  * member is the getter for any object displaced when adding a new object to the
@@ -40,7 +40,8 @@ package org.apache.jasper.util;
  * A typical use of the FastRemovalDequeue is a list of entries in sorted order,
  * where the sort position of an object will only switch to first or last.
  *
- * Whenever the sort position needs to change, the consumer can remove the object
+ * Whenever the sort position needs to change, the consumer can remove the
+ * object
  * and reinsert it in front or at the end in constant time.
  * So keeping the list sorted is very cheap.
  *
@@ -64,7 +65,7 @@ public class FastRemovalDequeue<T> {
      *                grow
      */
     public FastRemovalDequeue(int maxSize) {
-        if (maxSize <=1 ) {
+        if (maxSize <= 1) {
             maxSize = 2;
         }
         this.maxSize = maxSize;
@@ -79,7 +80,7 @@ public class FastRemovalDequeue<T> {
      * ensure correct publication of changes.
      *
      * @return the size of the list.
-     * */
+     */
     public synchronized int getSize() {
         return size;
     }
@@ -90,7 +91,7 @@ public class FastRemovalDequeue<T> {
      *
      * @param object the object to prepend to the start of the list.
      * @return an entry for use when the object should be moved.
-     * */
+     */
     public synchronized Entry push(final T object) {
         Entry entry = new Entry(object);
         if (size >= maxSize) {
@@ -114,7 +115,7 @@ public class FastRemovalDequeue<T> {
      *
      * @param object the object to append to the end of the list.
      * @return an entry for use when the object should be moved.
-     * */
+     */
     public synchronized Entry unpop(final T object) {
         Entry entry = new Entry(object);
         if (size >= maxSize) {
@@ -144,7 +145,7 @@ public class FastRemovalDequeue<T> {
             first = first.getNext();
             content = element.getContent();
             if (first == null) {
-                last =null;
+                last = null;
             } else {
                 first.setPrevious(null);
             }
@@ -208,10 +209,9 @@ public class FastRemovalDequeue<T> {
      * push(), but explicitely coding might be a bit faster.
      *
      * @param element the entry to move in front.
-     * */
+     */
     public synchronized void moveFirst(final Entry element) {
-        if (element.getValid() &&
-            element.getPrevious() != null) {
+        if (element.getValid() && element.getPrevious() != null) {
             Entry prev = element.getPrevious();
             Entry next = element.getNext();
             prev.setNext(next);
@@ -234,10 +234,9 @@ public class FastRemovalDequeue<T> {
      * unpop(), but explicitly coding might be a bit faster.
      *
      * @param element the entry to move to the back.
-     * */
+     */
     public synchronized void moveLast(final Entry element) {
-        if (element.getValid() &&
-            element.getNext() != null) {
+        if (element.getValid() && element.getNext() != null) {
             Entry next = element.getNext();
             Entry prev = element.getPrevious();
             next.setPrevious(prev);

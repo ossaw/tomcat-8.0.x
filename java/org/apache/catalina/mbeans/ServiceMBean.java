@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -29,8 +27,7 @@ import org.apache.tomcat.util.modeler.BaseModelMBean;
 
 public class ServiceMBean extends BaseModelMBean {
 
-    public ServiceMBean()
-        throws MBeanException, RuntimeOperationsException {
+    public ServiceMBean() throws MBeanException, RuntimeOperationsException {
 
         super();
 
@@ -41,17 +38,18 @@ public class ServiceMBean extends BaseModelMBean {
      * with this Service's Container.
      *
      * @param address The IP address on which to bind
-     * @param port TCP port number to listen on
-     * @param isAjp Create a AJP/1.3 Connector
-     * @param isSSL Create a secure Connector
+     * @param port    TCP port number to listen on
+     * @param isAjp   Create a AJP/1.3 Connector
+     * @param isSSL   Create a secure Connector
      *
      * @throws MBeanException error creating the connector
      */
-    public void addConnector(String address, int port, boolean isAjp, boolean isSSL) throws MBeanException {
+    public void addConnector(String address, int port, boolean isAjp,
+            boolean isSSL) throws MBeanException {
 
         Service service;
         try {
-            service = (Service)getManagedResource();
+            service = (Service) getManagedResource();
         } catch (InstanceNotFoundException e) {
             throw new MBeanException(e);
         } catch (RuntimeOperationsException e) {
@@ -61,7 +59,7 @@ public class ServiceMBean extends BaseModelMBean {
         }
         String protocol = isAjp ? "AJP/1.3" : "HTTP/1.1";
         Connector connector = new Connector(protocol);
-        if ((address!=null) && (address.length()>0)) {
+        if ((address != null) && (address.length() > 0)) {
             connector.setProperty("address", address);
         }
         connector.setPort(port);
@@ -74,6 +72,7 @@ public class ServiceMBean extends BaseModelMBean {
 
     /**
      * Adds a named executor to the service
+     * 
      * @param type Classname of the Executor to be added
      * @throws MBeanException error creating the executor
      */
@@ -81,7 +80,7 @@ public class ServiceMBean extends BaseModelMBean {
 
         Service service;
         try {
-            service = (Service)getManagedResource();
+            service = (Service) getManagedResource();
         } catch (InstanceNotFoundException e) {
             throw new MBeanException(e);
         } catch (RuntimeOperationsException e) {
@@ -92,7 +91,7 @@ public class ServiceMBean extends BaseModelMBean {
 
         Executor executor;
         try {
-             executor = (Executor)Class.forName(type).newInstance();
+            executor = (Executor) Class.forName(type).newInstance();
         } catch (InstantiationException e) {
             throw new MBeanException(e);
         } catch (IllegalAccessException e) {
@@ -107,6 +106,7 @@ public class ServiceMBean extends BaseModelMBean {
 
     /**
      * Find and return the set of Connectors associated with this Service.
+     * 
      * @return an array of string representations of the connectors
      * @throws MBeanException error accessing the associated service
      */
@@ -114,7 +114,7 @@ public class ServiceMBean extends BaseModelMBean {
 
         Service service;
         try {
-            service = (Service)getManagedResource();
+            service = (Service) getManagedResource();
         } catch (InstanceNotFoundException e) {
             throw new MBeanException(e);
         } catch (RuntimeOperationsException e) {
@@ -126,7 +126,7 @@ public class ServiceMBean extends BaseModelMBean {
         Connector[] connectors = service.findConnectors();
         String[] str = new String[connectors.length];
 
-        for(int i=0; i< connectors.length; i++){
+        for (int i = 0; i < connectors.length; i++) {
             str[i] = connectors[i].toString();
         }
 
@@ -136,6 +136,7 @@ public class ServiceMBean extends BaseModelMBean {
 
     /**
      * Retrieves all executors.
+     * 
      * @return an array of string representations of the executors
      * @throws MBeanException error accessing the associated service
      */
@@ -143,7 +144,7 @@ public class ServiceMBean extends BaseModelMBean {
 
         Service service;
         try {
-            service = (Service)getManagedResource();
+            service = (Service) getManagedResource();
         } catch (InstanceNotFoundException e) {
             throw new MBeanException(e);
         } catch (RuntimeOperationsException e) {
@@ -155,7 +156,7 @@ public class ServiceMBean extends BaseModelMBean {
         Executor[] executors = service.findExecutors();
         String[] str = new String[executors.length];
 
-        for(int i=0; i< executors.length; i++){
+        for (int i = 0; i < executors.length; i++) {
             str[i] = executors[i].toString();
         }
 
@@ -164,15 +165,16 @@ public class ServiceMBean extends BaseModelMBean {
 
     /**
      * Retrieves executor by name
+     * 
      * @param name Name of the executor to be retrieved
      * @return a string representation of the executor
      * @throws MBeanException error accessing the associated service
      */
-    public String getExecutor(String name) throws MBeanException{
+    public String getExecutor(String name) throws MBeanException {
 
         Service service;
         try {
-            service = (Service)getManagedResource();
+            service = (Service) getManagedResource();
         } catch (InstanceNotFoundException e) {
             throw new MBeanException(e);
         } catch (RuntimeOperationsException e) {

@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -40,13 +38,13 @@ public class TagAttributeInfo {
      * a TLD (Tag Library Descriptor).
      *
      * @param name
-     *            The name of the attribute.
+     *                 The name of the attribute.
      * @param required
-     *            If this attribute is required in tag instances.
+     *                 If this attribute is required in tag instances.
      * @param type
-     *            The name of the type of the attribute.
+     *                 The name of the type of the attribute.
      * @param reqTime
-     *            Whether this attribute holds a request-time Attribute.
+     *                 Whether this attribute holds a request-time Attribute.
      */
     public TagAttributeInfo(String name, boolean required, String type,
             boolean reqTime) {
@@ -59,21 +57,22 @@ public class TagAttributeInfo {
      * code that is parsing a TLD (Tag Library Descriptor).
      *
      * @param name
-     *            The name of the attribute.
+     *                 The name of the attribute.
      * @param required
-     *            If this attribute is required in tag instances.
+     *                 If this attribute is required in tag instances.
      * @param type
-     *            The name of the type of the attribute.
+     *                 The name of the type of the attribute.
      * @param reqTime
-     *            Whether this attribute holds a request-time Attribute.
+     *                 Whether this attribute holds a request-time Attribute.
      * @param fragment
-     *            Whether this attribute is of type JspFragment
+     *                 Whether this attribute is of type JspFragment
      *
      * @since 2.0
      */
     public TagAttributeInfo(String name, boolean required, String type,
             boolean reqTime, boolean fragment) {
-        this(name, required, type, reqTime, fragment, null, false, false, null, null);
+        this(name, required, type, reqTime, fragment, null, false, false, null,
+                null);
     }
 
     /**
@@ -82,29 +81,36 @@ public class TagAttributeInfo {
      * code that is parsing a TLD (Tag Library Descriptor).
      *
      * @param name
-     *            The name of the attribute.
+     *                         The name of the attribute.
      * @param required
-     *            If this attribute is required in tag instances.
+     *                         If this attribute is required in tag instances.
      * @param type
-     *            The name of the type of the attribute.
+     *                         The name of the type of the attribute.
      * @param reqTime
-     *            Whether this attribute holds a request-time Attribute.
+     *                         Whether this attribute holds a request-time
+     *                         Attribute.
      * @param fragment
-     *            Whether this attribute is of type JspFragment
+     *                         Whether this attribute is of type JspFragment
      * @param description
-     *            Description of this attribute
+     *                         Description of this attribute
      * @param deferredValue
-     *            Does this attribute accept value expressions (written as
-     *            Strings) as attribute values the evaluation of which is
-     *            deferred until calculated by the tag
+     *                         Does this attribute accept value expressions
+     *                         (written as
+     *                         Strings) as attribute values the evaluation of
+     *                         which is
+     *                         deferred until calculated by the tag
      * @param deferredMethod
-     *            Does this attribute accept method expressions (written as
-     *            Strings) as attribute values the evaluation of which is
-     *            deferred until calculated by the tag
+     *                         Does this attribute accept method expressions
+     *                         (written as
+     *                         Strings) as attribute values the evaluation of
+     *                         which is
+     *                         deferred until calculated by the tag
      * @param expectedTypeName
-     *            The expected type when the deferred value is evaluated
+     *                         The expected type when the deferred value is
+     *                         evaluated
      * @param methodSignature
-     *            The expected method signature if a deferred method
+     *                         The expected method signature if a deferred
+     *                         method
      *
      * @since JSP 2.1
      */
@@ -168,7 +174,7 @@ public class TagAttributeInfo {
      * objects and looks for "id".
      *
      * @param a
-     *            An array of TagAttributeInfo
+     *          An array of TagAttributeInfo
      * @return The TagAttributeInfo reference with name "id"
      */
     public static TagAttributeInfo getIdAttribute(TagAttributeInfo a[]) {

@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -136,12 +134,12 @@ public abstract class Compiler {
             pageInfo.setIncludeCoda(jspProperty.getIncludeCoda());
         }
         if (jspProperty.isDeferedSyntaxAllowedAsLiteral() != null) {
-            pageInfo.setDeferredSyntaxAllowedAsLiteral(JspUtil.booleanValue(jspProperty
-                    .isDeferedSyntaxAllowedAsLiteral()));
+            pageInfo.setDeferredSyntaxAllowedAsLiteral(JspUtil.booleanValue(
+                    jspProperty.isDeferedSyntaxAllowedAsLiteral()));
         }
         if (jspProperty.isTrimDirectiveWhitespaces() != null) {
-            pageInfo.setTrimDirectiveWhitespaces(JspUtil.booleanValue(jspProperty
-                    .isTrimDirectiveWhitespaces()));
+            pageInfo.setTrimDirectiveWhitespaces(JspUtil.booleanValue(
+                    jspProperty.isTrimDirectiveWhitespaces()));
         }
         // Default ContentType processing is deferred until after the page has
         // been parsed
@@ -150,9 +148,8 @@ public abstract class Compiler {
                     errDispatcher);
         }
         if (jspProperty.isErrorOnUndeclaredNamespace() != null) {
-            pageInfo.setErrorOnUndeclaredNamespace(
-                    JspUtil.booleanValue(
-                            jspProperty.isErrorOnUndeclaredNamespace()));
+            pageInfo.setErrorOnUndeclaredNamespace(JspUtil.booleanValue(
+                    jspProperty.isErrorOnUndeclaredNamespace()));
         }
         if (ctxt.isTagFile()) {
             try {
@@ -191,16 +188,16 @@ public abstract class Compiler {
             ParserController parserCtl = new ParserController(ctxt, this);
 
             // Pass 1 - the directives
-            Node.Nodes directives =
-                parserCtl.parseDirectives(ctxt.getJspFile());
+            Node.Nodes directives = parserCtl.parseDirectives(ctxt
+                    .getJspFile());
             Validator.validateDirectives(this, directives);
 
             // Pass 2 - the whole translation unit
             pageNodes = parserCtl.parse(ctxt.getJspFile());
 
             // Leave this until now since it can only be set once - bug 49726
-            if (pageInfo.getContentType() == null &&
-                    jspProperty.getDefaultContentType() != null) {
+            if (pageInfo.getContentType() == null && jspProperty
+                    .getDefaultContentType() != null) {
                 pageInfo.setContentType(jspProperty.getDefaultContentType());
             }
 
@@ -267,8 +264,8 @@ public abstract class Compiler {
             if (file.exists()) {
                 if (!file.delete()) {
                     log.warn(Localizer.getMessage(
-                            "jsp.warning.compiler.javafile.delete.fail",
-                            file.getAbsolutePath()));
+                            "jsp.warning.compiler.javafile.delete.fail", file
+                                    .getAbsolutePath()));
                 }
             }
             throw e;
@@ -297,8 +294,8 @@ public abstract class Compiler {
         OutputStreamWriter osw = null;
 
         try {
-            osw = new OutputStreamWriter(
-                    new FileOutputStream(javaFileName), javaEncoding);
+            osw = new OutputStreamWriter(new FileOutputStream(javaFileName),
+                    javaEncoding);
         } catch (UnsupportedEncodingException ex) {
             errDispatcher.jspError("jsp.error.needAlternateJavaEncoding",
                     javaEncoding);
@@ -328,8 +325,9 @@ public abstract class Compiler {
      * tag files that are referenced by this page are also compiled.
      *
      * @param compileClass
-     *            If true, generate both .java and .class file If false,
-     *            generate only .java file
+     *                     If true, generate both .java and .class file If
+     *                     false,
+     *                     generate only .java file
      */
     public void compile(boolean compileClass) throws FileNotFoundException,
             JasperException, Exception {
@@ -341,10 +339,11 @@ public abstract class Compiler {
      * tag files that are referenced by this page are also compiled.
      *
      * @param compileClass
-     *            If true, generate both .java and .class file If false,
-     *            generate only .java file
+     *                     If true, generate both .java and .class file If
+     *                     false,
+     *                     generate only .java file
      * @param jspcMode
-     *            true if invoked from JspC, false otherwise
+     *                     true if invoked from JspC, false otherwise
      */
     public void compile(boolean compileClass, boolean jspcMode)
             throws FileNotFoundException, JasperException, Exception {
@@ -365,8 +364,8 @@ public abstract class Compiler {
                 if (targetFile.exists()) {
                     targetFile.setLastModified(jspLastModified.longValue());
                     if (jsw != null) {
-                        jsw.setServletClassLastModifiedTime(
-                                jspLastModified.longValue());
+                        jsw.setServletClassLastModifiedTime(jspLastModified
+                                .longValue());
                     }
                 }
             }
@@ -412,17 +411,18 @@ public abstract class Compiler {
      * on. This method can by overridden by a subclasses of Compiler.
      *
      * @param checkClass
-     *            If true, check against .class file, if false, check against
-     *            .java file.
+     *                   If true, check against .class file, if false, check
+     *                   against
+     *                   .java file.
      */
     public boolean isOutDated(boolean checkClass) {
 
-        if (jsw != null
-                && (ctxt.getOptions().getModificationTestInterval() > 0)) {
+        if (jsw != null && (ctxt.getOptions()
+                .getModificationTestInterval() > 0)) {
 
-            if (jsw.getLastModificationTest()
-                    + (ctxt.getOptions().getModificationTestInterval() * 1000) > System
-                    .currentTimeMillis()) {
+            if (jsw.getLastModificationTest() + (ctxt.getOptions()
+                    .getModificationTestInterval() * 1000) > System
+                            .currentTimeMillis()) {
                 return false;
             }
             jsw.setLastModificationTest(System.currentTimeMillis());
@@ -465,14 +465,14 @@ public abstract class Compiler {
             return false;
         }
 
-        Map<String,Long> depends = jsw.getDependants();
+        Map<String, Long> depends = jsw.getDependants();
         if (depends == null) {
             return false;
         }
 
-        Iterator<Entry<String,Long>> it = depends.entrySet().iterator();
+        Iterator<Entry<String, Long>> it = depends.entrySet().iterator();
         while (it.hasNext()) {
-            Entry<String,Long> include = it.next();
+            Entry<String, Long> include = it.next();
             try {
                 String key = include.getKey();
                 URL includeUrl;
@@ -481,7 +481,8 @@ public abstract class Compiler {
                     // Assume we constructed this correctly
                     int entryStart = key.lastIndexOf("!/");
                     String entry = key.substring(entryStart + 2);
-                    try (Jar jar = JarFactory.newInstance(new URL(key.substring(4, entryStart)))) {
+                    try (Jar jar = JarFactory.newInstance(new URL(key.substring(
+                            4, entryStart)))) {
                         includeLastModified = jar.getLastModified(entry);
                     }
                 } else {
@@ -495,8 +496,8 @@ public abstract class Compiler {
                     }
                     URLConnection iuc = includeUrl.openConnection();
                     if (iuc instanceof JarURLConnection) {
-                        includeLastModified =
-                            ((JarURLConnection) iuc).getJarEntry().getTime();
+                        includeLastModified = ((JarURLConnection) iuc)
+                                .getJarEntry().getTime();
                     } else {
                         includeLastModified = iuc.getLastModified();
                     }
@@ -555,8 +556,8 @@ public abstract class Compiler {
             }
         } catch (Exception e) {
             // Remove as much as possible, log possible exceptions
-            log.warn(Localizer.getMessage("jsp.warning.compiler.classfile.delete.fail.unknown"),
-                     e);
+            log.warn(Localizer.getMessage(
+                    "jsp.warning.compiler.classfile.delete.fail.unknown"), e);
         }
     }
 
@@ -574,8 +575,8 @@ public abstract class Compiler {
             }
         } catch (Exception e) {
             // Remove as much as possible, log possible exceptions
-            log.warn(Localizer.getMessage("jsp.warning.compiler.classfile.delete.fail.unknown"),
-                     e);
+            log.warn(Localizer.getMessage(
+                    "jsp.warning.compiler.classfile.delete.fail.unknown"), e);
         }
     }
 }

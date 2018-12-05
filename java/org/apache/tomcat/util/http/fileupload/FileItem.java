@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -23,10 +21,12 @@ import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 
 /**
- * <p> This class represents a file or form item that was received within a
+ * <p>
+ * This class represents a file or form item that was received within a
  * <code>multipart/form-data</code> POST request.
  *
- * <p> After retrieving an instance of this class from a {@link
+ * <p>
+ * After retrieving an instance of this class from a {@link
  * org.apache.tomcat.util.http.fileupload.FileUpload FileUpload} instance (see
  * {@link org.apache.tomcat.util.http.fileupload.FileUpload
  * #parseRequest(RequestContext)}), you may
@@ -35,7 +35,8 @@ import java.io.UnsupportedEncodingException;
  * {@link #getInputStream()} and process the file without attempting to load
  * it into memory, which may come handy with large files.
  *
- * <p> While this interface does not extend
+ * <p>
+ * While this interface does not extend
  * <code>javax.activation.DataSource</code> per se (to avoid a seldom used
  * dependency), several of the defined methods are specifically defined with
  * the same signatures as methods in that interface. This allows an
@@ -76,9 +77,11 @@ public interface FileItem extends FileItemHeadersSupport {
      *
      * @return The original filename in the client's filesystem.
      * @throws InvalidFileNameException The file name contains a NUL character,
-     *   which might be an indicator of a security attack. If you intend to
-     *   use the file name anyways, catch the exception and use
-     *   InvalidFileNameException#getName().
+     *                                  which might be an indicator of a
+     *                                  security attack. If you intend to
+     *                                  use the file name anyways, catch the
+     *                                  exception and use
+     *                                  InvalidFileNameException#getName().
      */
     String getName();
 
@@ -109,7 +112,7 @@ public interface FileItem extends FileItemHeadersSupport {
 
     /**
      * Returns the contents of the file item as a String, using the specified
-     * encoding.  This method uses {@link #get()} to retrieve the
+     * encoding. This method uses {@link #get()} to retrieve the
      * contents of the item.
      *
      * @param encoding The character encoding to use.
@@ -123,7 +126,7 @@ public interface FileItem extends FileItemHeadersSupport {
 
     /**
      * Returns the contents of the file item as a String, using the default
-     * character encoding.  This method uses {@link #get()} to retrieve the
+     * character encoding. This method uses {@link #get()} to retrieve the
      * contents of the item.
      *
      * @return The contents of the item, as a string.

@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -22,7 +20,6 @@ import java.io.ByteArrayOutputStream;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.WriteListener;
 
-
 /**
  * Class that extends ServletOuputStream, used as a wrapper from within
  * <code>SsiInclude</code>
@@ -36,7 +33,6 @@ public class ByteArrayServletOutputStream extends ServletOutputStream {
      */
     protected final ByteArrayOutputStream buf;
 
-
     /**
      * Construct a new ServletOutputStream.
      */
@@ -44,14 +40,12 @@ public class ByteArrayServletOutputStream extends ServletOutputStream {
         buf = new ByteArrayOutputStream();
     }
 
-
     /**
      * @return the byte array.
      */
     public byte[] toByteArray() {
         return buf.toByteArray();
     }
-
 
     /**
      * Write to our buffer.
@@ -72,7 +66,6 @@ public class ByteArrayServletOutputStream extends ServletOutputStream {
         return false;
     }
 
-
     /**
      * TODO SERVLET 3.1
      */
@@ -81,6 +74,5 @@ public class ByteArrayServletOutputStream extends ServletOutputStream {
         // TODO Auto-generated method stub
 
     }
-
 
 }

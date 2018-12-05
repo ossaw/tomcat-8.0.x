@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -31,8 +29,8 @@ import org.apache.tomcat.util.res.StringManager;
 public class Cache {
 
     private static final Log log = LogFactory.getLog(Cache.class);
-    protected static final StringManager sm =
-            StringManager.getManager(Constants.Package);
+    protected static final StringManager sm = StringManager.getManager(
+            Constants.Package);
 
     private static final long TARGET_FREE_PERCENT_GET = 5;
     private static final long TARGET_FREE_PERCENT_BACKGROUND = 10;
@@ -45,19 +43,19 @@ public class Cache {
 
     private long ttl = 5000;
     private long maxSize = 10 * 1024 * 1024;
-    private int objectMaxSize = (int) maxSize/OBJECT_MAX_SIZE_FACTOR;
+    private int objectMaxSize = (int) maxSize / OBJECT_MAX_SIZE_FACTOR;
 
     private AtomicLong lookupCount = new AtomicLong(0);
     private AtomicLong hitCount = new AtomicLong(0);
 
-    private final ConcurrentMap<String,CachedResource> resourceCache =
-            new ConcurrentHashMap<>();
+    private final ConcurrentMap<String, CachedResource> resourceCache = new ConcurrentHashMap<>();
 
     public Cache(StandardRoot root) {
         this.root = root;
     }
 
-    protected WebResource getResource(String path, boolean useClassLoaderResources) {
+    protected WebResource getResource(String path,
+            boolean useClassLoaderResources) {
 
         if (noCache(path)) {
             return root.getResourceInternal(path, useClassLoaderResources);
@@ -67,7 +65,8 @@ public class Cache {
 
         CachedResource cacheEntry = resourceCache.get(path);
 
-        if (cacheEntry != null && !cacheEntry.validateResource(useClassLoaderResources)) {
+        if (cacheEntry != null && !cacheEntry.validateResource(
+                useClassLoaderResources)) {
             removeCacheEntry(path);
             cacheEntry = null;
         }
@@ -75,8 +74,8 @@ public class Cache {
         if (cacheEntry == null) {
             // Local copy to ensure consistency
             int objectMaxSizeBytes = getObjectMaxSizeBytes();
-            CachedResource newCacheEntry =
-                    new CachedResource(this, root, path, getTtl(), objectMaxSizeBytes);
+            CachedResource newCacheEntry = new CachedResource(this, root, path,
+                    getTtl(), objectMaxSizeBytes);
 
             // Concurrent callers will end up with the same CachedResource
             // instance
@@ -98,10 +97,10 @@ public class Cache {
                     // efficiency (younger entries may be evicted before older
                     // ones) for speed since this is on the critical path for
                     // request processing
-                    long targetSize =
-                            maxSize * (100 - TARGET_FREE_PERCENT_GET) / 100;
-                    long newSize = evict(
-                            targetSize, resourceCache.values().iterator());
+                    long targetSize = maxSize * (100 - TARGET_FREE_PERCENT_GET)
+                            / 100;
+                    long newSize = evict(targetSize, resourceCache.values()
+                            .iterator());
                     if (newSize > maxSize) {
                         // Unable to create sufficient space for this resource
                         // Remove it from the cache
@@ -121,7 +120,8 @@ public class Cache {
         return cacheEntry;
     }
 
-    protected WebResource[] getResources(String path, boolean useClassLoaderResources) {
+    protected WebResource[] getResources(String path,
+            boolean useClassLoaderResources) {
         lookupCount.incrementAndGet();
 
         // Don't call noCache(path) since the class loader only caches
@@ -129,7 +129,8 @@ public class Cache {
 
         CachedResource cacheEntry = resourceCache.get(path);
 
-        if (cacheEntry != null && !cacheEntry.validateResources(useClassLoaderResources)) {
+        if (cacheEntry != null && !cacheEntry.validateResources(
+                useClassLoaderResources)) {
             removeCacheEntry(path);
             cacheEntry = null;
         }
@@ -137,8 +138,8 @@ public class Cache {
         if (cacheEntry == null) {
             // Local copy to ensure consistency
             int objectMaxSizeBytes = getObjectMaxSizeBytes();
-            CachedResource newCacheEntry =
-                    new CachedResource(this, root, path, getTtl(), objectMaxSizeBytes);
+            CachedResource newCacheEntry = new CachedResource(this, root, path,
+                    getTtl(), objectMaxSizeBytes);
 
             // Concurrent callers will end up with the same CachedResource
             // instance
@@ -158,10 +159,10 @@ public class Cache {
                     // efficiency (younger entries may be evicted before older
                     // ones) for speed since this is on the critical path for
                     // request processing
-                    long targetSize =
-                            maxSize * (100 - TARGET_FREE_PERCENT_GET) / 100;
-                    long newSize = evict(
-                            targetSize, resourceCache.values().iterator());
+                    long targetSize = maxSize * (100 - TARGET_FREE_PERCENT_GET)
+                            / 100;
+                    long newSize = evict(targetSize, resourceCache.values()
+                            .iterator());
                     if (newSize > maxSize) {
                         // Unable to create sufficient space for this resource
                         // Remove it from the cache
@@ -185,28 +186,27 @@ public class Cache {
         // Create an ordered set of all cached resources with the least recently
         // used first. This is a background process so we can afford to take the
         // time to order the elements first
-        TreeSet<CachedResource> orderedResources =
-                new TreeSet<>(new EvictionOrder());
+        TreeSet<CachedResource> orderedResources = new TreeSet<>(
+                new EvictionOrder());
         orderedResources.addAll(resourceCache.values());
 
         Iterator<CachedResource> iter = orderedResources.iterator();
 
-        long targetSize =
-                maxSize * (100 - TARGET_FREE_PERCENT_BACKGROUND) / 100;
+        long targetSize = maxSize * (100 - TARGET_FREE_PERCENT_BACKGROUND)
+                / 100;
         long newSize = evict(targetSize, iter);
 
         if (newSize > targetSize) {
-            log.info(sm.getString("cache.backgroundEvictFail",
-                    Long.valueOf(TARGET_FREE_PERCENT_BACKGROUND),
-                    root.getContext().getName(),
-                    Long.valueOf(newSize / 1024)));
+            log.info(sm.getString("cache.backgroundEvictFail", Long.valueOf(
+                    TARGET_FREE_PERCENT_BACKGROUND), root.getContext()
+                            .getName(), Long.valueOf(newSize / 1024)));
         }
     }
 
     private boolean noCache(String path) {
         // Don't cache resources used by the class loader (it has its own cache)
-        if (path.startsWith("/WEB-INF/classes/") ||
-                path.startsWith("/WEB-INF/lib/")) {
+        if (path.startsWith("/WEB-INF/classes/") || path.startsWith(
+                "/WEB-INF/lib/")) {
             return true;
         }
         return false;
@@ -273,7 +273,8 @@ public class Cache {
 
     public void setObjectMaxSize(int objectMaxSize) {
         if (objectMaxSize * 1024L > Integer.MAX_VALUE) {
-            log.warn(sm.getString("cache.objectMaxSizeTooBigBytes", Integer.valueOf(objectMaxSize)));
+            log.warn(sm.getString("cache.objectMaxSizeTooBigBytes", Integer
+                    .valueOf(objectMaxSize)));
             this.objectMaxSize = Integer.MAX_VALUE;
         }
         // Internally bytes, externally kilobytes
@@ -295,8 +296,9 @@ public class Cache {
             return;
         }
         if (objectMaxSize > limit) {
-            log.warn(sm.getString("cache.objectMaxSizeTooBig",
-                    Integer.valueOf(objectMaxSize / 1024), Integer.valueOf((int)limit / 1024)));
+            log.warn(sm.getString("cache.objectMaxSizeTooBig", Integer.valueOf(
+                    objectMaxSize / 1024), Integer.valueOf((int) limit
+                            / 1024)));
             objectMaxSize = (int) limit;
         }
     }

@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -46,8 +44,8 @@ public class TestGenerator extends TomcatBaseTest {
     public void testBug45015a() throws Exception {
         getTomcatInstanceTestWebapp(false, true);
 
-        ByteChunk res = getUrl("http://localhost:" + getPort() +
-                "/test/bug45nnn/bug45015a.jsp");
+        ByteChunk res = getUrl("http://localhost:" + getPort()
+                + "/test/bug45nnn/bug45015a.jsp");
 
         String result = res.toString();
         // Beware of the differences between escaping in JSP attributes and
@@ -68,8 +66,8 @@ public class TestGenerator extends TomcatBaseTest {
     public void testBug45015b() throws Exception {
         getTomcatInstanceTestWebapp(false, true);
 
-        int rc = getUrl("http://localhost:" + getPort() +
-                "/test/bug45nnn/bug45015b.jsp", new ByteChunk(), null);
+        int rc = getUrl("http://localhost:" + getPort()
+                + "/test/bug45nnn/bug45015b.jsp", new ByteChunk(), null);
 
         assertEquals(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, rc);
     }
@@ -78,8 +76,8 @@ public class TestGenerator extends TomcatBaseTest {
     public void testBug45015c() throws Exception {
         getTomcatInstanceTestWebapp(false, true);
 
-        int rc = getUrl("http://localhost:" + getPort() +
-                "/test/bug45nnn/bug45015c.jsp", new ByteChunk(), null);
+        int rc = getUrl("http://localhost:" + getPort()
+                + "/test/bug45nnn/bug45015c.jsp", new ByteChunk(), null);
 
         assertEquals(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, rc);
     }
@@ -88,8 +86,8 @@ public class TestGenerator extends TomcatBaseTest {
     public void testBug48701Fail() throws Exception {
         getTomcatInstanceTestWebapp(true, true);
 
-        int rc = getUrl("http://localhost:" + getPort() +
-                "/test/bug48nnn/bug48701-fail.jsp", new ByteChunk(), null);
+        int rc = getUrl("http://localhost:" + getPort()
+                + "/test/bug48nnn/bug48701-fail.jsp", new ByteChunk(), null);
 
         assertEquals(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, rc);
     }
@@ -110,15 +108,16 @@ public class TestGenerator extends TomcatBaseTest {
     }
 
     @Test
-    public void testBug48701TagVariableInfoNameFromAttribute() throws Exception {
+    public void testBug48701TagVariableInfoNameFromAttribute()
+            throws Exception {
         testBug48701("bug48nnn/bug48701-TVI-NFA.jsp");
     }
 
     private void testBug48701(String jsp) throws Exception {
         getTomcatInstanceTestWebapp(false, true);
 
-        ByteChunk res = getUrl("http://localhost:" + getPort() +
-                "/test/" + jsp);
+        ByteChunk res = getUrl("http://localhost:" + getPort() + "/test/"
+                + jsp);
 
         String result = res.toString();
         assertEcho(result, "00-PASS");
@@ -146,17 +145,14 @@ public class TestGenerator extends TomcatBaseTest {
             return super.doStartTag();
         }
 
-
     }
 
     public static class Bug48701TEI extends TagExtraInfo {
 
         @Override
         public VariableInfo[] getVariableInfo(TagData data) {
-            return new VariableInfo[] {
-                    new VariableInfo("now", Bean.class.getCanonicalName(),
-                            true, VariableInfo.AT_END)
-                };
+            return new VariableInfo[] { new VariableInfo("now", Bean.class
+                    .getCanonicalName(), true, VariableInfo.AT_END) };
         }
 
     }
@@ -177,16 +173,14 @@ public class TestGenerator extends TomcatBaseTest {
     public void testBug49799() throws Exception {
 
         String[] expected = { "<p style=\"color:red\">00-Red</p>",
-                              "<p>01-Not Red</p>",
-                              "<p style=\"color:red\">02-Red</p>",
-                              "<p>03-Not Red</p>",
-                              "<p style=\"color:red\">04-Red</p>",
-                              "<p>05-Not Red</p>"};
+                "<p>01-Not Red</p>", "<p style=\"color:red\">02-Red</p>",
+                "<p>03-Not Red</p>", "<p style=\"color:red\">04-Red</p>",
+                "<p>05-Not Red</p>" };
 
         getTomcatInstanceTestWebapp(false, true);
 
         ByteChunk res = new ByteChunk();
-        Map<String,List<String>> headers = new HashMap<>();
+        Map<String, List<String>> headers = new HashMap<>();
 
         getUrl("http://localhost:" + getPort() + "/test/bug49nnn/bug49799.jsp",
                 res, headers);
@@ -213,15 +207,15 @@ public class TestGenerator extends TomcatBaseTest {
         getTomcatInstanceTestWebapp(false, true);
 
         ByteChunk bc = new ByteChunk();
-        int rc = getUrl("http://localhost:" + getPort() +
-                "/test/bug5nnnn/bug56529.jsp", bc, null);
+        int rc = getUrl("http://localhost:" + getPort()
+                + "/test/bug5nnnn/bug56529.jsp", bc, null);
         Assert.assertEquals(HttpServletResponse.SC_OK, rc);
         String response = bc.toStringInternal();
-        Assert.assertTrue(response,
-                response.contains("[1:attribute1: '', attribute2: '']"));
-        Assert.assertTrue(response,
-                response.contains("[2:attribute1: '', attribute2: '']"));
-   }
+        Assert.assertTrue(response, response.contains(
+                "[1:attribute1: '', attribute2: '']"));
+        Assert.assertTrue(response, response.contains(
+                "[2:attribute1: '', attribute2: '']"));
+    }
 
     public static class Bug56529 extends TagSupport {
 
@@ -250,9 +244,8 @@ public class TestGenerator extends TomcatBaseTest {
         @Override
         public int doEndTag() throws JspException {
             try {
-                pageContext.getOut().print(
-                        "attribute1: '" + attribute1 + "', " + "attribute2: '"
-                                + attribute2 + "'");
+                pageContext.getOut().print("attribute1: '" + attribute1 + "', "
+                        + "attribute2: '" + attribute2 + "'");
             } catch (IOException e) {
                 throw new JspException(e);
             }

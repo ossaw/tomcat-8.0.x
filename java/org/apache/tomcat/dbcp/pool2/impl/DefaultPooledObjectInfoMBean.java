@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -21,11 +19,11 @@ package org.apache.tomcat.dbcp.pool2.impl;
  * exposed via JMX.
  *
  * NOTE: This interface exists only to define those attributes and methods that
- *       will be made available via JMX. It must not be implemented by clients
- *       as it is subject to change between major, minor and patch version
- *       releases of commons pool. Clients that implement this interface may
- *       not, therefore, be able to upgrade to a new minor or patch release
- *       without requiring code changes.
+ * will be made available via JMX. It must not be implemented by clients
+ * as it is subject to change between major, minor and patch version
+ * releases of commons pool. Clients that implement this interface may
+ * not, therefore, be able to upgrade to a new minor or patch release
+ * without requiring code changes.
  *
  * @since 2.0
  */
@@ -70,7 +68,6 @@ public interface DefaultPooledObjectInfoMBean {
      */
     String getLastBorrowTrace();
 
-
     /**
      * Obtain the time (using the same basis as
      * {@link System#currentTimeMillis()})the wrapped object was last returned.
@@ -108,6 +105,7 @@ public interface DefaultPooledObjectInfoMBean {
 
     /**
      * Get the number of times this object has been borrowed.
+     * 
      * @return The number of times this object has been borrowed.
      * @since 2.1
      */

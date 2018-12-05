@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -35,7 +33,6 @@ public abstract class BeanNameResolver {
         return false;
     }
 
-
     /**
      * Returns the named bean.
      *
@@ -46,7 +43,6 @@ public abstract class BeanNameResolver {
     public Object getBean(String beanName) {
         return null;
     }
-
 
     /**
      * Sets a value of a bean of the given name. If the named bean does not
@@ -63,7 +59,6 @@ public abstract class BeanNameResolver {
         throw new PropertyNotWritableException();
     }
 
-
     /**
      * Is the named bean read-only?
      *
@@ -75,7 +70,6 @@ public abstract class BeanNameResolver {
     public boolean isReadOnly(String beanName) {
         return true;
     }
-
 
     /**
      * Is it permitted to create a bean of the given name?

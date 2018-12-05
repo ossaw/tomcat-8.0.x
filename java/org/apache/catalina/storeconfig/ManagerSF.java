@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -35,13 +33,14 @@ public class ManagerSF extends StoreFactoryBase {
     /**
      * Store the only the Manager elements
      *
-     * @see NamingResourcesSF#storeChildren(PrintWriter, int, Object, StoreDescription)
+     * @see NamingResourcesSF#storeChildren(PrintWriter, int, Object,
+     *      StoreDescription)
      */
     @Override
     public void store(PrintWriter aWriter, int indent, Object aElement)
             throws Exception {
-        StoreDescription elementDesc = getRegistry().findDescription(
-                aElement.getClass());
+        StoreDescription elementDesc = getRegistry().findDescription(aElement
+                .getClass());
         if (elementDesc != null) {
             if (aElement instanceof StandardManager) {
                 StandardManager manager = (StandardManager) aElement;
@@ -66,12 +65,12 @@ public class ManagerSF extends StoreFactoryBase {
      * with all-default properties?
      *
      * @param smanager
-     *            Manager to be tested
+     *                 Manager to be tested
      */
     protected boolean isDefaultManager(StandardManager smanager) {
 
-        if (!"SESSIONS.ser".equals(smanager.getPathname())
-                || (smanager.getMaxActiveSessions() != -1)) {
+        if (!"SESSIONS.ser".equals(smanager.getPathname()) || (smanager
+                .getMaxActiveSessions() != -1)) {
             return (false);
         }
         return (true);
@@ -84,7 +83,8 @@ public class ManagerSF extends StoreFactoryBase {
         if (aManager instanceof Manager) {
             Manager manager = (Manager) aManager;
             // Store nested <SessionIdGenerator> element
-            SessionIdGenerator sessionIdGenerator = manager.getSessionIdGenerator();
+            SessionIdGenerator sessionIdGenerator = manager
+                    .getSessionIdGenerator();
             if (sessionIdGenerator != null) {
                 storeElement(aWriter, indent, sessionIdGenerator);
             }

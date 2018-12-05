@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -28,7 +26,8 @@ import org.apache.tomcat.dbcp.pool2.KeyedObjectPool;
  * A {@link DelegatingPreparedStatement} that cooperates with
  * {@link PoolingConnection} to implement a pool of {@link PreparedStatement}s.
  * <p>
- * My {@link #close} method returns me to my containing pool. (See {@link PoolingConnection}.)
+ * My {@link #close} method returns me to my containing pool. (See
+ * {@link PoolingConnection}.)
  *
  * @param <K> the key type
  *
@@ -54,10 +53,12 @@ public class PoolablePreparedStatement<K> extends DelegatingPreparedStatement {
 
     /**
      * Constructor
+     * 
      * @param stmt my underlying {@link PreparedStatement}
-     * @param key my key" as used by {@link KeyedObjectPool}
+     * @param key  my key" as used by {@link KeyedObjectPool}
      * @param pool the {@link KeyedObjectPool} from which I was obtained.
-     * @param conn the {@link java.sql.Connection Connection} from which I was created
+     * @param conn the {@link java.sql.Connection Connection} from which I was
+     *             created
      */
     public PoolablePreparedStatement(final PreparedStatement stmt, final K key,
             final KeyedObjectPool<K, PoolablePreparedStatement<K>> pool,
@@ -68,7 +69,7 @@ public class PoolablePreparedStatement<K> extends DelegatingPreparedStatement {
 
         // Remove from trace now because this statement will be
         // added by the activate method.
-        if(getConnectionInternal() != null) {
+        if (getConnectionInternal() != null) {
             getConnectionInternal().removeTrace(this);
         }
     }
@@ -100,20 +101,22 @@ public class PoolablePreparedStatement<K> extends DelegatingPreparedStatement {
         if (!isClosed()) {
             try {
                 _pool.returnObject(_key, this);
-            } catch(final SQLException e) {
+            } catch (final SQLException e) {
                 throw e;
-            } catch(final RuntimeException e) {
+            } catch (final RuntimeException e) {
                 throw e;
-            } catch(final Exception e) {
-                throw new SQLException("Cannot close preparedstatement (return to pool failed)", e);
+            } catch (final Exception e) {
+                throw new SQLException(
+                        "Cannot close preparedstatement (return to pool failed)",
+                        e);
             }
         }
     }
 
     @Override
-    public void activate() throws SQLException{
+    public void activate() throws SQLException {
         setClosedInternal(false);
-        if(getConnectionInternal() != null) {
+        if (getConnectionInternal() != null) {
             getConnectionInternal().addTrace(this);
         }
         super.activate();
@@ -127,7 +130,7 @@ public class PoolablePreparedStatement<K> extends DelegatingPreparedStatement {
             clearBatch();
         }
         setClosedInternal(true);
-        if(getConnectionInternal() != null) {
+        if (getConnectionInternal() != null) {
             getConnectionInternal().removeTrace(this);
         }
 
@@ -136,8 +139,9 @@ public class PoolablePreparedStatement<K> extends DelegatingPreparedStatement {
         // FIXME The PreparedStatement we're wrapping should handle this for us.
         // See bug 17301 for what could happen when ResultSets are closed twice.
         final List<AbandonedTrace> resultSets = getTrace();
-        if( resultSets != null) {
-            final ResultSet[] set = resultSets.toArray(new ResultSet[resultSets.size()]);
+        if (resultSets != null) {
+            final ResultSet[] set = resultSets.toArray(new ResultSet[resultSets
+                    .size()]);
             for (final ResultSet element : set) {
                 element.close();
             }

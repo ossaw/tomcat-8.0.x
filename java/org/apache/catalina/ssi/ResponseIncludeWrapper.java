@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -71,9 +69,9 @@ public class ResponseIncludeWrapper extends HttpServletResponseWrapper {
      * Initialize our wrapper with the current HttpServletResponse and
      * ServletOutputStream.
      *
-     * @param context The servlet context
-     * @param request The HttpServletResponse to use
-     * @param response The response to use
+     * @param context                    The servlet context
+     * @param request                    The HttpServletResponse to use
+     * @param response                   The response to use
      * @param captureServletOutputStream The ServletOutputStream to use
      */
     public ResponseIncludeWrapper(ServletContext context,
@@ -85,9 +83,9 @@ public class ResponseIncludeWrapper extends HttpServletResponseWrapper {
         this.captureServletOutputStream = captureServletOutputStream;
     }
 
-
     /**
-     * Flush the servletOutputStream or printWriter ( only one will be non-null )
+     * Flush the servletOutputStream or printWriter ( only one will be non-null
+     * )
      * This must be called after a requestDispatcher.include, since we can't
      * assume that the included servlet flushed its stream.
      */
@@ -100,29 +98,26 @@ public class ResponseIncludeWrapper extends HttpServletResponseWrapper {
         }
     }
 
-
     /**
      * Return a printwriter, throws and exception if a OutputStream already
      * been returned.
      *
      * @return a PrintWriter object
      * @exception java.io.IOException
-     *                if the outputstream already been called
+     *            if the outputstream already been called
      */
     @Override
     public PrintWriter getWriter() throws java.io.IOException {
         if (servletOutputStream == null) {
             if (printWriter == null) {
                 setCharacterEncoding(getCharacterEncoding());
-                printWriter = new PrintWriter(
-                        new OutputStreamWriter(captureServletOutputStream,
-                                               getCharacterEncoding()));
+                printWriter = new PrintWriter(new OutputStreamWriter(
+                        captureServletOutputStream, getCharacterEncoding()));
             }
             return printWriter;
         }
         throw new IllegalStateException();
     }
-
 
     /**
      * Return a OutputStream, throws and exception if a printwriter already
@@ -130,7 +125,7 @@ public class ResponseIncludeWrapper extends HttpServletResponseWrapper {
      *
      * @return a OutputStream object
      * @exception java.io.IOException
-     *                if the printwriter already been called
+     *            if the printwriter already been called
      */
     @Override
     public ServletOutputStream getOutputStream() throws java.io.IOException {
@@ -143,14 +138,14 @@ public class ResponseIncludeWrapper extends HttpServletResponseWrapper {
         throw new IllegalStateException();
     }
 
-
     /**
      * Returns the value of the <code>last-modified</code> header field. The
      * result is the number of milliseconds since January 1, 1970 GMT.
      *
      * @return the date the resource referenced by this
-     *   <code>ResponseIncludeWrapper</code> was last modified, or -1 if not
-     *   known.
+     *         <code>ResponseIncludeWrapper</code> was last modified, or -1 if
+     *         not
+     *         known.
      */
     public long getLastModified() {
         if (lastModified == -1) {
@@ -165,7 +160,8 @@ public class ResponseIncludeWrapper extends HttpServletResponseWrapper {
      * Returns the value of the <code>content-type</code> header field.
      *
      * @return the content type of the resource referenced by this
-     *   <code>ResponseIncludeWrapper</code>, or <code>null</code> if not known.
+     *         <code>ResponseIncludeWrapper</code>, or <code>null</code> if not
+     *         known.
      */
     @Override
     public String getContentType() {
@@ -195,7 +191,6 @@ public class ResponseIncludeWrapper extends HttpServletResponseWrapper {
         }
     }
 
-
     @Override
     public void addDateHeader(String name, long value) {
         super.addDateHeader(name, value);
@@ -211,7 +206,7 @@ public class ResponseIncludeWrapper extends HttpServletResponseWrapper {
         String lname = name.toLowerCase(Locale.ENGLISH);
         if (lname.equals(LAST_MODIFIED)) {
             try {
-                synchronized(RFC1123_FORMAT) {
+                synchronized (RFC1123_FORMAT) {
                     lastModified = RFC1123_FORMAT.parse(value).getTime();
                 }
             } catch (Throwable ignore) {
@@ -237,15 +232,13 @@ public class ResponseIncludeWrapper extends HttpServletResponseWrapper {
         String lname = name.toLowerCase(Locale.ENGLISH);
         if (lname.equals(LAST_MODIFIED)) {
             try {
-                synchronized(RFC1123_FORMAT) {
+                synchronized (RFC1123_FORMAT) {
                     lastModified = RFC1123_FORMAT.parse(value).getTime();
                 }
             } catch (Throwable ignore) {
                 ExceptionUtils.handleThrowable(ignore);
             }
-        }
-        else if (lname.equals(CONTENT_TYPE))
-        {
+        } else if (lname.equals(CONTENT_TYPE)) {
             contentType = value;
         }
     }

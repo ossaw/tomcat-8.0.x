@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -61,10 +59,8 @@ public class TestScriptingVariabler extends TomcatBaseTest {
          */
         @Override
         public VariableInfo[] getVariableInfo(TagData data) {
-            return new VariableInfo[] {
-                new VariableInfo("Test", "java.lang.String", true,
-                    VariableInfo.AT_END)
-            };
+            return new VariableInfo[] { new VariableInfo("Test",
+                    "java.lang.String", true, VariableInfo.AT_END) };
         }
     }
 
@@ -74,7 +70,8 @@ public class TestScriptingVariabler extends TomcatBaseTest {
 
         Exception e = null;
         try {
-            getUrl("http://localhost:" + getPort() + "/test/bug48nnn/bug48616.jsp");
+            getUrl("http://localhost:" + getPort()
+                    + "/test/bug48nnn/bug48616.jsp");
         } catch (IOException ioe) {
             e = ioe;
         }
@@ -89,7 +86,8 @@ public class TestScriptingVariabler extends TomcatBaseTest {
 
         Exception e = null;
         try {
-            getUrl("http://localhost:" + getPort() + "/test/bug48nnn/bug48616b.jsp");
+            getUrl("http://localhost:" + getPort()
+                    + "/test/bug48nnn/bug48616b.jsp");
         } catch (IOException ioe) {
             e = ioe;
         }

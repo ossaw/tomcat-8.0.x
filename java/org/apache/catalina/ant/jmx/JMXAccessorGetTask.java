@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -15,15 +13,12 @@
  * limitations under the License.
  */
 
-
 package org.apache.catalina.ant.jmx;
-
 
 import javax.management.MBeanServerConnection;
 import javax.management.ObjectName;
 
 import org.apache.tools.ant.BuildException;
-
 
 /**
  * Access <em>JMX</em> JSR 160 MBeans Server.
@@ -35,8 +30,10 @@ import org.apache.tools.ant.BuildException;
  * <p>
  * Examples:
  * <br>
- * Get a Mbean IDataSender attribute nrOfRequests and create a new ant property <em>IDataSender.9025.nrOfRequests</em>
+ * Get a Mbean IDataSender attribute nrOfRequests and create a new ant property
+ * <em>IDataSender.9025.nrOfRequests</em>
  * </p>
+ * 
  * <pre>
  *   &lt;jmx:get
  *           ref="jmx.server"
@@ -47,7 +44,8 @@ import org.apache.tools.ant.BuildException;
  *       /&gt;
  * </pre>
  * <p>
- * First call to a remote MBeanserver save the JMXConnection a referenz <em>jmx.server</em>
+ * First call to a remote MBeanserver save the JMXConnection a referenz
+ * <em>jmx.server</em>
  * </p>
  * These tasks require Ant 1.6 or later interface.
  *
@@ -55,7 +53,6 @@ import org.apache.tools.ant.BuildException;
  * @since 5.5.10
  */
 public class JMXAccessorGetTask extends JMXAccessorTask {
-
 
     // ----------------------------------------------------- Instance Variables
 
@@ -77,7 +74,6 @@ public class JMXAccessorGetTask extends JMXAccessorTask {
         this.attribute = attribute;
     }
 
-
     // ------------------------------------------------------ protected Methods
 
     /**
@@ -86,22 +82,20 @@ public class JMXAccessorGetTask extends JMXAccessorTask {
      * executed successfully or not.
      *
      * @exception BuildException
-     *                if an error occurs
+     *                           if an error occurs
      */
     @Override
     public String jmxExecute(MBeanServerConnection jmxServerConnection)
-        throws Exception {
+            throws Exception {
 
         if (getName() == null) {
             throw new BuildException("Must specify a 'name'");
         }
         if ((attribute == null)) {
-            throw new BuildException(
-                    "Must specify a 'attribute' for get");
+            throw new BuildException("Must specify a 'attribute' for get");
         }
-        return  jmxGet(jmxServerConnection, getName());
-     }
-
+        return jmxGet(jmxServerConnection, getName());
+    }
 
     /**
      * @param jmxServerConnection
@@ -109,15 +103,16 @@ public class JMXAccessorGetTask extends JMXAccessorTask {
      * @return The value of the given named attribute
      * @throws Exception
      */
-    protected String jmxGet(MBeanServerConnection jmxServerConnection,String name) throws Exception {
+    protected String jmxGet(MBeanServerConnection jmxServerConnection,
+            String name) throws Exception {
         String error = null;
-        if(isEcho()) {
-            handleOutput("MBean " + name + " get attribute " + attribute );
+        if (isEcho()) {
+            handleOutput("MBean " + name + " get attribute " + attribute);
         }
-        Object result = jmxServerConnection.getAttribute(
-                new ObjectName(name), attribute);
+        Object result = jmxServerConnection.getAttribute(new ObjectName(name),
+                attribute);
         if (result != null) {
-            echoResult(attribute,result);
+            echoResult(attribute, result);
             createProperty(result);
         } else
             error = "Attribute " + attribute + " is empty";

@@ -1,20 +1,17 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 
 package org.apache.catalina.ha.backend;
 
@@ -34,8 +31,7 @@ import org.apache.juli.logging.LogFactory;
 /*
  * Sender to proxies using multicast socket.
  */
-public class TcpSender
-    implements Sender {
+public class TcpSender implements Sender {
 
     private static final Log log = LogFactory.getLog(HeartbeatListener.class);
 
@@ -46,7 +42,6 @@ public class TcpSender
      */
     protected Proxy[] proxies = null;
 
-
     /**
      * Active connections.
      */
@@ -54,7 +49,6 @@ public class TcpSender
     protected Socket[] connections = null;
     protected BufferedReader[] connectionReaders = null;
     protected BufferedWriter[] connectionWriters = null;
-
 
     @Override
     public void init(HeartbeatListener config) throws Exception {
@@ -65,12 +59,13 @@ public class TcpSender
         while (tok.hasMoreTokens()) {
             String token = tok.nextToken().trim();
             int pos = token.indexOf(':');
-            if (pos <=0)
+            if (pos <= 0)
                 throw new Exception("bad ProxyList");
             proxies[i] = new Proxy();
             proxies[i].port = Integer.parseInt(token.substring(pos + 1));
             try {
-                 proxies[i].address = InetAddress.getByName(token.substring(0, pos));
+                proxies[i].address = InetAddress.getByName(token.substring(0,
+                        pos));
             } catch (Exception e) {
                 throw new Exception("bad ProxyList");
             }
@@ -95,16 +90,24 @@ public class TcpSender
                 try {
                     if (config.getHost() != null) {
                         connections[i] = new Socket();
-                        InetAddress addr =  InetAddress.getByName(config.getHost());
-                        InetSocketAddress addrs = new InetSocketAddress(addr, 0);
+                        InetAddress addr = InetAddress.getByName(config
+                                .getHost());
+                        InetSocketAddress addrs = new InetSocketAddress(addr,
+                                0);
                         connections[i].setReuseAddress(true);
                         connections[i].bind(addrs);
-                        addrs = new InetSocketAddress(proxies[i].address, proxies[i].port);
+                        addrs = new InetSocketAddress(proxies[i].address,
+                                proxies[i].port);
                         connections[i].connect(addrs);
                     } else
-                        connections[i] = new Socket(proxies[i].address, proxies[i].port);
-                    connectionReaders[i] = new BufferedReader(new InputStreamReader(connections[i].getInputStream()));
-                    connectionWriters[i] = new BufferedWriter(new OutputStreamWriter(connections[i].getOutputStream()));
+                        connections[i] = new Socket(proxies[i].address,
+                                proxies[i].port);
+                    connectionReaders[i] = new BufferedReader(
+                            new InputStreamReader(connections[i]
+                                    .getInputStream()));
+                    connectionWriters[i] = new BufferedWriter(
+                            new OutputStreamWriter(connections[i]
+                                    .getOutputStream()));
                 } catch (Exception ex) {
                     log.error("Unable to connect to proxy: " + ex);
                     close(i);
@@ -124,7 +127,8 @@ public class TcpSender
                 writer.write("\r\n");
                 writer.flush();
             } catch (Exception ex) {
-                log.error("Unable to send collected load information to proxy: " + ex);
+                log.error("Unable to send collected load information to proxy: "
+                        + ex);
                 close(i);
             }
             if (connections[i] == null)
@@ -137,7 +141,9 @@ public class TcpSender
                 close(i);
                 continue;
             } else {
-                responseStatus = responseStatus.substring(responseStatus.indexOf(' ') + 1, responseStatus.indexOf(' ', responseStatus.indexOf(' ') + 1));
+                responseStatus = responseStatus.substring(responseStatus
+                        .indexOf(' ') + 1, responseStatus.indexOf(' ',
+                                responseStatus.indexOf(' ') + 1));
                 int status = Integer.parseInt(responseStatus);
                 if (status != 200) {
                     log.error("Status is " + status);
@@ -160,7 +166,8 @@ public class TcpSender
                 if (contentLength > 0) {
                     char[] buf = new char[512];
                     while (contentLength > 0) {
-                        int thisTime = (contentLength > buf.length) ? buf.length : contentLength;
+                        int thisTime = (contentLength > buf.length) ? buf.length
+                                : contentLength;
                         int n = connectionReaders[i].read(buf, 0, thisTime);
                         if (n <= 0) {
                             log.error("Read content failed");
@@ -169,7 +176,7 @@ public class TcpSender
                         } else {
                             contentLength -= n;
                         }
-                   }
+                    }
                 }
             }
 

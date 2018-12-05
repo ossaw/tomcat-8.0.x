@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -30,7 +28,6 @@ import javax.el.VariableMapper;
 
 import org.apache.el.lang.EvaluationContext;
 import org.apache.el.util.MessageFactory;
-
 
 /**
  * @author Jacob Hookom [jacob@hookom.net]
@@ -62,8 +59,7 @@ public final class AstFunction extends SimpleNode {
     }
 
     @Override
-    public Class<?> getType(EvaluationContext ctx)
-            throws ELException {
+    public Class<?> getType(EvaluationContext ctx) throws ELException {
 
         FunctionMapper fnMapper = ctx.getFunctionMapper();
 
@@ -80,8 +76,7 @@ public final class AstFunction extends SimpleNode {
     }
 
     @Override
-    public Object getValue(EvaluationContext ctx)
-            throws ELException {
+    public Object getValue(EvaluationContext ctx) throws ELException {
 
         FunctionMapper fnMapper = ctx.getFunctionMapper();
 
@@ -115,8 +110,8 @@ public final class AstFunction extends SimpleNode {
             if (obj instanceof LambdaExpression) {
                 // Build arguments
                 int i = 0;
-                while (obj instanceof LambdaExpression &&
-                        i < jjtGetNumChildren()) {
+                while (obj instanceof LambdaExpression
+                        && i < jjtGetNumChildren()) {
                     Node args = jjtGetChild(i);
                     obj = ((LambdaExpression) obj).invoke(
                             ((AstMethodParameters) args).getParameters(ctx));
@@ -134,13 +129,17 @@ public final class AstFunction extends SimpleNode {
             // Call to a constructor or a static method
             obj = ctx.getImportHandler().resolveClass(this.localName);
             if (obj != null) {
-                return ctx.getELResolver().invoke(ctx, new ELClass((Class<?>) obj), "<init>", null,
-                        ((AstMethodParameters) this.children[0]).getParameters(ctx));
+                return ctx.getELResolver().invoke(ctx, new ELClass(
+                        (Class<?>) obj), "<init>", null,
+                        ((AstMethodParameters) this.children[0]).getParameters(
+                                ctx));
             }
             obj = ctx.getImportHandler().resolveStatic(this.localName);
             if (obj != null) {
-                return ctx.getELResolver().invoke(ctx, new ELClass((Class<?>) obj), this.localName,
-                        null, ((AstMethodParameters) this.children[0]).getParameters(ctx));
+                return ctx.getELResolver().invoke(ctx, new ELClass(
+                        (Class<?>) obj), this.localName, null,
+                        ((AstMethodParameters) this.children[0]).getParameters(
+                                ctx));
             }
         }
 
@@ -171,15 +170,18 @@ public final class AstFunction extends SimpleNode {
                         if (inputParameterCount < methodParameterCount) {
                             params[i] = null;
                         } else {
-                            Object[] varargs =
-                                    new Object[inputParameterCount - methodParameterCount + 1];
+                            Object[] varargs = new Object[inputParameterCount
+                                    - methodParameterCount + 1];
                             Class<?> target = paramTypes[i].getComponentType();
                             for (int j = i; j < inputParameterCount; j++) {
-                                varargs[j-i] = parameters.jjtGetChild(j).getValue(ctx);
-                                varargs[j-i] = coerceToType(ctx, varargs[j-i], target);
+                                varargs[j - i] = parameters.jjtGetChild(j)
+                                        .getValue(ctx);
+                                varargs[j - i] = coerceToType(ctx, varargs[j
+                                        - i], target);
                             }
                             params[i] = varargs;
-                            params[i] = coerceToType(ctx, params[i], paramTypes[i]);
+                            params[i] = coerceToType(ctx, params[i],
+                                    paramTypes[i]);
                         }
                     } else {
                         params[i] = parameters.jjtGetChild(i).getValue(ctx);
@@ -218,10 +220,9 @@ public final class AstFunction extends SimpleNode {
         this.prefix = prefix;
     }
 
-
     @Override
-    public String toString()
-    {
-        return ELParserTreeConstants.jjtNodeName[id] + "[" + this.getOutputName() + "]";
+    public String toString() {
+        return ELParserTreeConstants.jjtNodeName[id] + "[" + this
+                .getOutputName() + "]";
     }
 }

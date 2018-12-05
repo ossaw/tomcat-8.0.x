@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -34,29 +32,29 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.juli.logging.Log;
 import org.apache.juli.logging.LogFactory;
 
-
 /**
- * <p>Implementation of a Filter that logs interesting contents from the
+ * <p>
+ * Implementation of a Filter that logs interesting contents from the
  * specified Request (before processing) and the corresponding Response
- * (after processing).  It is especially useful in debugging problems
- * related to headers and cookies.</p>
+ * (after processing). It is especially useful in debugging problems
+ * related to headers and cookies.
+ * </p>
  *
- * <p>When using this Filter, it is strongly recommended that the
+ * <p>
+ * When using this Filter, it is strongly recommended that the
  * <code>org.apache.catalina.filter.RequestDumperFilter</code> logger is
  * directed to a dedicated file and that the
- * <code>org.apache.juli.VerbatimFormmater</code> is used.</p>
+ * <code>org.apache.juli.VerbatimFormmater</code> is used.
+ * </p>
  *
  * @author Craig R. McClanahan
  */
 public class RequestDumperFilter implements Filter {
 
-    private static final String NON_HTTP_REQ_MSG =
-        "Not available. Non-http request.";
-    private static final String NON_HTTP_RES_MSG =
-        "Not available. Non-http response.";
+    private static final String NON_HTTP_REQ_MSG = "Not available. Non-http request.";
+    private static final String NON_HTTP_RES_MSG = "Not available. Non-http response.";
 
-    private static final ThreadLocal<Timestamp> timestamp =
-            new ThreadLocal<Timestamp>() {
+    private static final ThreadLocal<Timestamp> timestamp = new ThreadLocal<Timestamp>() {
         @Override
         protected Timestamp initialValue() {
             return new Timestamp();
@@ -68,7 +66,6 @@ public class RequestDumperFilter implements Filter {
      */
     private static final Log log = LogFactory.getLog(RequestDumperFilter.class);
 
-
     /**
      * Log the interesting request parameters, invoke the next Filter in the
      * sequence, and log the interesting response parameters.
@@ -77,13 +74,12 @@ public class RequestDumperFilter implements Filter {
      * @param response The servlet response to be created
      * @param chain    The filter chain being processed
      *
-     * @exception IOException if an input/output error occurs
+     * @exception IOException      if an input/output error occurs
      * @exception ServletException if a servlet error occurs
      */
     @Override
     public void doFilter(ServletRequest request, ServletResponse response,
-            FilterChain chain)
-        throws IOException, ServletException {
+            FilterChain chain) throws IOException, ServletException {
 
         HttpServletRequest hRequest = null;
         HttpServletResponse hResponse = null;
@@ -107,8 +103,8 @@ public class RequestDumperFilter implements Filter {
         }
 
         doLog(" characterEncoding", request.getCharacterEncoding());
-        doLog("     contentLength",
-                Long.toString(request.getContentLengthLong()));
+        doLog("     contentLength", Long.toString(request
+                .getContentLengthLong()));
         doLog("       contentType", request.getContentType());
 
         if (hRequest == null) {
@@ -120,8 +116,8 @@ public class RequestDumperFilter implements Filter {
             Cookie cookies[] = hRequest.getCookies();
             if (cookies != null) {
                 for (int i = 0; i < cookies.length; i++) {
-                    doLog("            cookie", cookies[i].getName() +
-                            "=" + cookies[i].getValue());
+                    doLog("            cookie", cookies[i].getName() + "="
+                            + cookies[i].getValue());
                 }
             }
             Enumeration<String> hnames = hRequest.getHeaderNames();
@@ -185,8 +181,7 @@ public class RequestDumperFilter implements Filter {
 
         doLog("            scheme", request.getScheme());
         doLog("        serverName", request.getServerName());
-        doLog("        serverPort",
-                Integer.toString(request.getServerPort()));
+        doLog("        serverPort", Integer.toString(request.getServerPort()));
 
         if (hRequest == null) {
             doLog("       servletPath", NON_HTTP_REQ_MSG);
@@ -194,8 +189,8 @@ public class RequestDumperFilter implements Filter {
             doLog("       servletPath", hRequest.getServletPath());
         }
 
-        doLog("          isSecure",
-                Boolean.valueOf(request.isSecure()).toString());
+        doLog("          isSecure", Boolean.valueOf(request.isSecure())
+                .toString());
         doLog("------------------",
                 "--------------------------------------------");
 
@@ -234,8 +229,8 @@ public class RequestDumperFilter implements Filter {
         if (hResponse == null) {
             doLog("        remoteUser", NON_HTTP_RES_MSG);
         } else {
-            doLog("            status",
-                    Integer.toString(hResponse.getStatus()));
+            doLog("            status", Integer.toString(hResponse
+                    .getStatus()));
         }
 
         doLog("END TIME          ", getTimestamp());
@@ -276,9 +271,10 @@ public class RequestDumperFilter implements Filter {
 
     private static final class Timestamp {
         private final Date date = new Date(0);
-        private final SimpleDateFormat format =
-            new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss");
+        private final SimpleDateFormat format = new SimpleDateFormat(
+                "dd-MMM-yyyy HH:mm:ss");
         private String dateString = format.format(date);
+
         private void update() {
             dateString = format.format(date);
         }

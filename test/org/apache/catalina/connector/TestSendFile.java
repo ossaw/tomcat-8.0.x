@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -41,7 +39,7 @@ import org.apache.catalina.startup.Tomcat;
 import org.apache.catalina.startup.TomcatBaseTest;
 import org.apache.tomcat.util.buf.ByteChunk;
 
-public class TestSendFile extends TomcatBaseTest{
+public class TestSendFile extends TomcatBaseTest {
 
     public static final int ITERATIONS = 10;
     public static final int EXPECTED_CONTENT_LENGTH = 100000;
@@ -54,12 +52,13 @@ public class TestSendFile extends TomcatBaseTest{
         Context root = tomcat.addContext("", TEMP_DIR);
 
         File[] files = new File[ITERATIONS];
-        for (int i=0; i<ITERATIONS; i++) {
-            files[i] = generateFile(TEMP_DIR, "-"+i, EXPECTED_CONTENT_LENGTH * (i+1));
+        for (int i = 0; i < ITERATIONS; i++) {
+            files[i] = generateFile(TEMP_DIR, "-" + i, EXPECTED_CONTENT_LENGTH
+                    * (i + 1));
         }
         try {
 
-            for (int i=0; i<ITERATIONS; i++) {
+            for (int i = 0; i < ITERATIONS; i++) {
                 WritingServlet servlet = new WritingServlet(files[i]);
                 Tomcat.addServlet(root, "servlet" + i, servlet);
                 root.addServletMappingDecoded("/servlet" + i, "servlet" + i);
@@ -69,12 +68,15 @@ public class TestSendFile extends TomcatBaseTest{
 
             ByteChunk bc = new ByteChunk();
             Map<String, List<String>> respHeaders = new HashMap<>();
-            for (int i=0; i<ITERATIONS; i++) {
+            for (int i = 0; i < ITERATIONS; i++) {
                 long start = System.currentTimeMillis();
-                int rc = getUrl("http://localhost:" + getPort() + "/servlet" + i, bc, null, respHeaders);
+                int rc = getUrl("http://localhost:" + getPort() + "/servlet"
+                        + i, bc, null, respHeaders);
                 assertEquals(HttpServletResponse.SC_OK, rc);
-                System.out.println("Client received "+bc.getLength() + " bytes in "+(System.currentTimeMillis()-start)+" ms.");
-                assertEquals(EXPECTED_CONTENT_LENGTH * (i+1), bc.getLength());
+                System.out.println("Client received " + bc.getLength()
+                        + " bytes in " + (System.currentTimeMillis() - start)
+                        + " ms.");
+                assertEquals(EXPECTED_CONTENT_LENGTH * (i + 1), bc.getLength());
 
                 bc.recycle();
             }
@@ -85,10 +87,13 @@ public class TestSendFile extends TomcatBaseTest{
         }
     }
 
-    public File generateFile(String dir, String suffix, int size) throws IOException {
-        String name = "testSendFile-" + System.currentTimeMillis() + suffix + ".txt";
+    public File generateFile(String dir, String suffix, int size)
+            throws IOException {
+        String name = "testSendFile-" + System.currentTimeMillis() + suffix
+                + ".txt";
         File f = new File(dir, name);
-        try (FileWriter fw = new FileWriter(f, false); BufferedWriter w = new BufferedWriter(fw);) {
+        try (FileWriter fw = new FileWriter(f, false);
+                BufferedWriter w = new BufferedWriter(fw);) {
             int defSize = 8192;
             while (size > 0) {
                 int bytes = Math.min(size, defSize);
@@ -99,12 +104,11 @@ public class TestSendFile extends TomcatBaseTest{
             }
             w.flush();
         }
-        System.out.println("Created file:" + f.getAbsolutePath() + " with " + f.length()
-                + " bytes.");
+        System.out.println("Created file:" + f.getAbsolutePath() + " with " + f
+                .length() + " bytes.");
         return f;
 
     }
-
 
     private static class WritingServlet extends HttpServlet {
 
@@ -123,10 +127,13 @@ public class TestSendFile extends TomcatBaseTest{
             resp.setContentType("'application/octet-stream");
             resp.setCharacterEncoding("ISO-8859-1");
             resp.setContentLengthLong(f.length());
-            if (Boolean.TRUE.equals(req.getAttribute(Globals.SENDFILE_SUPPORTED_ATTR))) {
-                req.setAttribute(Globals.SENDFILE_FILENAME_ATTR, f.getAbsolutePath());
+            if (Boolean.TRUE.equals(req.getAttribute(
+                    Globals.SENDFILE_SUPPORTED_ATTR))) {
+                req.setAttribute(Globals.SENDFILE_FILENAME_ATTR, f
+                        .getAbsolutePath());
                 req.setAttribute(Globals.SENDFILE_FILE_START_ATTR, new Long(0));
-                req.setAttribute(Globals.SENDFILE_FILE_END_ATTR, new Long(f.length()));
+                req.setAttribute(Globals.SENDFILE_FILE_END_ATTR, new Long(f
+                        .length()));
             } else {
                 byte[] c = new byte[8192];
                 try (BufferedInputStream in = new BufferedInputStream(
@@ -136,12 +143,13 @@ public class TestSendFile extends TomcatBaseTest{
                     long start = System.currentTimeMillis();
                     do {
                         len = in.read(c);
-                        if (len>0) {
-                            resp.getOutputStream().write(c,0,len);
+                        if (len > 0) {
+                            resp.getOutputStream().write(c, 0, len);
                             written += len;
                         }
                     } while (len > 0);
-                    System.out.println("Server Wrote "+written + " bytes in "+(System.currentTimeMillis()-start)+" ms.");
+                    System.out.println("Server Wrote " + written + " bytes in "
+                            + (System.currentTimeMillis() - start) + " ms.");
                 }
             }
         }

@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -49,8 +47,8 @@ public class TestApplicationContext extends TomcatBaseTest {
     public void testBug53257() throws Exception {
         getTomcatInstanceTestWebapp(false, true);
 
-        ByteChunk res = getUrl("http://localhost:" + getPort() +
-                "/test/bug53257/index.jsp");
+        ByteChunk res = getUrl("http://localhost:" + getPort()
+                + "/test/bug53257/index.jsp");
 
         String result = res.toString();
         String[] lines = result.split("\n");
@@ -61,50 +59,46 @@ public class TestApplicationContext extends TomcatBaseTest {
         }
     }
 
-
     @Test
     public void testBug53467() throws Exception {
         getTomcatInstanceTestWebapp(false, true);
 
         ByteChunk res = new ByteChunk();
-        int rc = getUrl("http://localhost:" + getPort() +
-                "/test/bug5nnnn/bug53467].jsp", res, null);
+        int rc = getUrl("http://localhost:" + getPort()
+                + "/test/bug5nnnn/bug53467].jsp", res, null);
 
         Assert.assertEquals(HttpServletResponse.SC_OK, rc);
         Assert.assertTrue(res.toString().contains("<p>OK</p>"));
     }
-
 
     @Test(expected = IllegalArgumentException.class)
     public void testAddFilterWithFilterNameNull() throws LifecycleException {
         getServletContext().addFilter(null, (Filter) null);
     }
 
-
     @Test(expected = IllegalArgumentException.class)
-    public void testAddFilterWithFilterNameEmptyString() throws LifecycleException {
+    public void testAddFilterWithFilterNameEmptyString()
+            throws LifecycleException {
         getServletContext().addFilter("", (Filter) null);
     }
-
 
     @Test(expected = IllegalArgumentException.class)
     public void testAddServletWithServletNameNull() throws LifecycleException {
         getServletContext().addServlet(null, (Servlet) null);
     }
 
-
     @Test(expected = IllegalArgumentException.class)
-    public void testAddServletWithServletNameEmptyString() throws LifecycleException {
+    public void testAddServletWithServletNameEmptyString()
+            throws LifecycleException {
         getServletContext().addServlet("", (Servlet) null);
     }
-
 
     @Test
     public void testGetJspConfigDescriptor() throws Exception {
         Tomcat tomcat = getTomcatInstanceTestWebapp(false, false);
 
-        StandardContext standardContext =
-                (StandardContext) tomcat.getHost().findChildren()[0];
+        StandardContext standardContext = (StandardContext) tomcat.getHost()
+                .findChildren()[0];
 
         ServletContext servletContext = standardContext.getServletContext();
 
@@ -119,8 +113,8 @@ public class TestApplicationContext extends TomcatBaseTest {
     public void testJspPropertyGroupsAreIsolated() throws Exception {
         Tomcat tomcat = getTomcatInstanceTestWebapp(false, false);
 
-        StandardContext standardContext =
-                (StandardContext) tomcat.getHost().findChildren()[0];
+        StandardContext standardContext = (StandardContext) tomcat.getHost()
+                .findChildren()[0];
 
         ServletContext servletContext = standardContext.getServletContext();
 
@@ -128,10 +122,10 @@ public class TestApplicationContext extends TomcatBaseTest {
 
         tomcat.start();
 
-        JspConfigDescriptor jspConfigDescriptor =
-                servletContext.getJspConfigDescriptor();
-        Collection<JspPropertyGroupDescriptor> propertyGroups =
-                jspConfigDescriptor.getJspPropertyGroups();
+        JspConfigDescriptor jspConfigDescriptor = servletContext
+                .getJspConfigDescriptor();
+        Collection<JspPropertyGroupDescriptor> propertyGroups = jspConfigDescriptor
+                .getJspPropertyGroups();
         Assert.assertFalse(propertyGroups.isEmpty());
         propertyGroups.clear();
 
@@ -140,23 +134,20 @@ public class TestApplicationContext extends TomcatBaseTest {
         Assert.assertFalse(propertyGroups.isEmpty());
     }
 
-
     private ServletContext getServletContext() throws LifecycleException {
         Tomcat tomcat = getTomcatInstanceTestWebapp(false, false);
 
-        StandardContext standardContext =
-                (StandardContext) tomcat.getHost().findChildren()[0];
+        StandardContext standardContext = (StandardContext) tomcat.getHost()
+                .findChildren()[0];
 
         return standardContext.getServletContext();
     }
-
 
     @Test(expected = IllegalStateException.class)
     public void testSetInitParameter() throws Exception {
         getTomcatInstance().start();
         getServletContext().setInitParameter("name", "value");
     }
-
 
     /*
      * Cross-context requests with parallel deployment
@@ -207,7 +198,6 @@ public class TestApplicationContext extends TomcatBaseTest {
         Assert.assertTrue(body, body.contains("09-ROOT"));
     }
 
-
     private static class Bug57190Servlet extends HttpServlet {
 
         private static final long serialVersionUID = 1L;
@@ -223,13 +213,15 @@ public class TestApplicationContext extends TomcatBaseTest {
             pw.println("03-" + sc.getContext("/foo##1").getInitParameter("id"));
             pw.println("04-" + sc.getContext("/foo##2").getInitParameter("id"));
             pw.println("05-" + sc.getContext("/foo##3").getInitParameter("id"));
-            pw.println("06-" + sc.getContext("/unknown").getInitParameter("id"));
+            pw.println("06-" + sc.getContext("/unknown").getInitParameter(
+                    "id"));
             pw.println("07-" + sc.getContext("/").getInitParameter("id"));
-            pw.println("08-" + sc.getContext("/foo/bar").getInitParameter("id"));
-            pw.println("09-" + sc.getContext("/football").getInitParameter("id"));
+            pw.println("08-" + sc.getContext("/foo/bar").getInitParameter(
+                    "id"));
+            pw.println("09-" + sc.getContext("/football").getInitParameter(
+                    "id"));
         }
     }
-
 
     private static class SetIdListener implements LifecycleListener {
 
@@ -242,7 +234,8 @@ public class TestApplicationContext extends TomcatBaseTest {
         @Override
         public void lifecycleEvent(LifecycleEvent event) {
             if (Lifecycle.CONFIGURE_START_EVENT.equals(event.getType())) {
-                ((Context) event.getSource()).getServletContext().setInitParameter("id", id);
+                ((Context) event.getSource()).getServletContext()
+                        .setInitParameter("id", id);
             }
         }
     }

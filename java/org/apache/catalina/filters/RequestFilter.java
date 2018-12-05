@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -15,7 +13,6 @@
  * limitations under the License.
  */
 package org.apache.catalina.filters;
-
 
 import java.io.IOException;
 import java.util.regex.Pattern;
@@ -40,24 +37,23 @@ import org.apache.catalina.comet.CometFilterChain;
  * This filter is configured by setting the <code>allow</code> and/or
  * <code>deny</code> properties to a regular expressions (in the syntax
  * supported by {@link Pattern}) to which the appropriate request property will
- * be compared.  Evaluation proceeds as follows:
+ * be compared. Evaluation proceeds as follows:
  * <ul>
  * <li>The subclass extracts the request property to be filtered, and
- *     calls the common <code>process()</code> method.
+ * calls the common <code>process()</code> method.
  * <li>If there is a deny expression configured, the property will be compared
- *     to the expression. If a match is found, this request will be rejected
- *     with a "Forbidden" HTTP response.</li>
+ * to the expression. If a match is found, this request will be rejected
+ * with a "Forbidden" HTTP response.</li>
  * <li>If there is a allow expression configured, the property will be compared
- *     to the expression. If a match is found, this request will be allowed to
- *     pass through to the next filter in the current pipeline.</li>
+ * to the expression. If a match is found, this request will be allowed to
+ * pass through to the next filter in the current pipeline.</li>
  * <li>If a deny expression was specified but no allow expression, allow this
- *     request to pass through (because none of the deny expressions matched
- *     it).
+ * request to pass through (because none of the deny expressions matched
+ * it).
  * <li>The request will be rejected with a "Forbidden" HTTP response.</li>
  * </ul>
  */
 public abstract class RequestFilter extends FilterBase implements CometFilter {
-
 
     // ----------------------------------------------------- Instance Variables
 
@@ -82,9 +78,7 @@ public abstract class RequestFilter extends FilterBase implements CometFilter {
      */
     private static final String PLAIN_TEXT_MIME_TYPE = "text/plain";
 
-
     // ------------------------------------------------------------- Properties
-
 
     /**
      * Return the regular expression used to test for allowed requests for this
@@ -96,7 +90,6 @@ public abstract class RequestFilter extends FilterBase implements CometFilter {
         }
         return allow.toString();
     }
-
 
     /**
      * Set the regular expression used to test for allowed requests for this
@@ -112,7 +105,6 @@ public abstract class RequestFilter extends FilterBase implements CometFilter {
         }
     }
 
-
     /**
      * Return the regular expression used to test for denied requests for this
      * Filter, if any; otherwise, return <code>null</code>.
@@ -123,7 +115,6 @@ public abstract class RequestFilter extends FilterBase implements CometFilter {
         }
         return deny.toString();
     }
-
 
     /**
      * Set the regular expression used to test for denied requests for this
@@ -139,14 +130,12 @@ public abstract class RequestFilter extends FilterBase implements CometFilter {
         }
     }
 
-
     /**
      * Return response status code that is used to reject denied request.
      */
     public int getDenyStatus() {
         return denyStatus;
     }
-
 
     /**
      * Set response status code that is used to reject denied request.
@@ -155,9 +144,7 @@ public abstract class RequestFilter extends FilterBase implements CometFilter {
         this.denyStatus = denyStatus;
     }
 
-
     // --------------------------------------------------------- Public Methods
-
 
     /**
      * Extract the desired request property, and pass it (along with the
@@ -165,11 +152,11 @@ public abstract class RequestFilter extends FilterBase implements CometFilter {
      * <code>process()</code> method to perform the actual filtering.
      * This method must be implemented by a concrete subclass.
      *
-     * @param request The servlet request to be processed
+     * @param request  The servlet request to be processed
      * @param response The servlet response to be created
-     * @param chain The filter chain
+     * @param chain    The filter chain
      *
-     * @exception IOException if an input/output error occurs
+     * @exception IOException      if an input/output error occurs
      * @exception ServletException if a servlet error occurs
      */
     @Override
@@ -177,30 +164,27 @@ public abstract class RequestFilter extends FilterBase implements CometFilter {
             ServletResponse response, FilterChain chain) throws IOException,
             ServletException;
 
-
     // ------------------------------------------------------ Protected Methods
-
 
     @Override
     protected boolean isConfigProblemFatal() {
         return true;
     }
 
-
     /**
      * Perform the filtering that has been configured for this Filter, matching
      * against the specified request property.
      *
      * @param property The request property on which to filter
-     * @param request The servlet request to be processed
+     * @param request  The servlet request to be processed
      * @param response The servlet response to be processed
      *
-     * @exception IOException if an input/output error occurs
+     * @exception IOException      if an input/output error occurs
      * @exception ServletException if a servlet error occurs
      */
     protected void process(String property, ServletRequest request,
-            ServletResponse response, FilterChain chain)
-            throws IOException, ServletException {
+            ServletResponse response, FilterChain chain) throws IOException,
+            ServletException {
 
         if (isAllowed(property)) {
             chain.doFilter(request, response);
@@ -208,7 +192,8 @@ public abstract class RequestFilter extends FilterBase implements CometFilter {
             if (response instanceof HttpServletResponse) {
                 if (getLogger().isDebugEnabled()) {
                     getLogger().debug(sm.getString("requestFilter.deny",
-                            ((HttpServletRequest) request).getRequestURI(), property));
+                            ((HttpServletRequest) request).getRequestURI(),
+                            property));
                 }
                 ((HttpServletResponse) response).sendError(denyStatus);
             } else {
@@ -217,15 +202,14 @@ public abstract class RequestFilter extends FilterBase implements CometFilter {
         }
     }
 
-
     /**
      * Perform the filtering that has been configured for this Filter, matching
      * against the specified request property.
      *
-     * @param property  The property to check against the allow/deny rules
-     * @param event     The comet event to be filtered
-     * @param chain     The comet filter chain
-     * @exception IOException if an input/output error occurs
+     * @param property The property to check against the allow/deny rules
+     * @param event    The comet event to be filtered
+     * @param chain    The comet filter chain
+     * @exception IOException      if an input/output error occurs
      * @exception ServletException if a servlet error occurs
      */
     protected void processCometEvent(String property, CometEvent event,
@@ -243,9 +227,9 @@ public abstract class RequestFilter extends FilterBase implements CometFilter {
     /**
      * Process the allow and deny rules for the provided property.
      *
-     * @param property  The property to test against the allow and deny lists
-     * @return          <code>true</code> if this request should be allowed,
-     *                  <code>false</code> otherwise
+     * @param property The property to test against the allow and deny lists
+     * @return <code>true</code> if this request should be allowed,
+     *         <code>false</code> otherwise
      */
     private boolean isAllowed(String property) {
         if (deny != null && deny.matcher(property).matches()) {

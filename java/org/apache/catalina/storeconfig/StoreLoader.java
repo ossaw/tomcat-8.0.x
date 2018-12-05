@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -38,7 +36,8 @@ import org.xml.sax.SAXException;
  *             standard="true"
  *             default="true"
  *             tagClass="org.apache.catalina.core.StandardServer"
- *             storeFactoryClass="org.apache.catalina.storeconfig.StandardServerSF">
+ *             storeFactoryClass=
+"org.apache.catalina.storeconfig.StandardServerSF">
  *           <TransientAttributes>
  *             <Attribute></Attribute>
  *           </TransientAttributes>
@@ -82,7 +81,7 @@ public class StoreLoader {
 
     private StoreRegistry registry;
 
-    private URL registryResource ;
+    private URL registryResource;
 
     /**
      * @return Returns the registry.
@@ -93,7 +92,7 @@ public class StoreLoader {
 
     /**
      * @param registry
-     *            The registry to set.
+     *                 The registry to set.
      */
     public void setRegistry(StoreRegistry registry) {
         this.registry = registry;
@@ -114,10 +113,9 @@ public class StoreLoader {
         digester.addObjectCreate("Registry",
                 "org.apache.catalina.storeconfig.StoreRegistry", "className");
         digester.addSetProperties("Registry");
-        digester
-                .addObjectCreate("Registry/Description",
-                        "org.apache.catalina.storeconfig.StoreDescription",
-                        "className");
+        digester.addObjectCreate("Registry/Description",
+                "org.apache.catalina.storeconfig.StoreDescription",
+                "className");
         digester.addSetProperties("Registry/Description");
         digester.addRule("Registry/Description", new StoreFactoryRule(
                 "org.apache.catalina.storeconfig.StoreFactoryBase",
@@ -192,14 +190,15 @@ public class StoreLoader {
 
         InputStream is = null;
         Throwable error = null;
-        registryResource = null ;
+        registryResource = null;
         try {
             String configUrl = getConfigUrl();
             if (configUrl != null) {
                 is = (new URL(configUrl)).openStream();
                 if (log.isInfoEnabled())
-                    log.info("Find registry server-registry.xml from system property at url "
-                            + configUrl);
+                    log.info(
+                            "Find registry server-registry.xml from system property at url "
+                                    + configUrl);
                 registryResource = new URL(configUrl);
             }
         } catch (Throwable t) {
@@ -212,8 +211,8 @@ public class StoreLoader {
                 File reg = new File(conf, "server-registry.xml");
                 is = new FileInputStream(reg);
                 if (log.isInfoEnabled())
-                    log.info("Find registry server-registry.xml at file "
-                            + reg.getCanonicalPath());
+                    log.info("Find registry server-registry.xml at file " + reg
+                            .getCanonicalPath());
                 registryResource = reg.toURI().toURL();
             } catch (Throwable t) {
                 // Ignore
@@ -221,13 +220,13 @@ public class StoreLoader {
         }
         if (is == null) {
             try {
-                is = StoreLoader.class
-                        .getResourceAsStream("/org/apache/catalina/storeconfig/server-registry.xml");
+                is = StoreLoader.class.getResourceAsStream(
+                        "/org/apache/catalina/storeconfig/server-registry.xml");
                 if (log.isInfoEnabled())
-                    log
-                            .info("Find registry server-registry.xml at classpath resource");
-                registryResource = StoreLoader.class
-                    .getResource("/org/apache/catalina/storeconfig/server-registry.xml");
+                    log.info(
+                            "Find registry server-registry.xml at classpath resource");
+                registryResource = StoreLoader.class.getResource(
+                        "/org/apache/catalina/storeconfig/server-registry.xml");
 
             } catch (Throwable t) {
                 // Ignore
@@ -256,8 +255,8 @@ public class StoreLoader {
      * Get the value of the catalina.home environment variable.
      */
     private static String getCatalinaHome() {
-        return System.getProperty("catalina.home", System
-                .getProperty("user.dir"));
+        return System.getProperty("catalina.home", System.getProperty(
+                "user.dir"));
     }
 
     /**

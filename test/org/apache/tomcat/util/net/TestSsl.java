@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -57,16 +55,17 @@ public class TestSsl extends TomcatBaseTest {
         Tomcat tomcat = getTomcatInstance();
 
         File appDir = new File(getBuildDirectory(), "webapps/examples");
-        org.apache.catalina.Context ctxt  = tomcat.addWebapp(
-                null, "/examples", appDir.getAbsolutePath());
+        org.apache.catalina.Context ctxt = tomcat.addWebapp(null, "/examples",
+                appDir.getAbsolutePath());
         ctxt.addApplicationListener(WsContextListener.class.getName());
 
         TesterSupport.initSsl(tomcat);
 
         tomcat.start();
-        ByteChunk res = getUrl("https://localhost:" + getPort() +
-            "/examples/servlets/servlet/HelloWorldExample");
-        assertTrue(res.toString().indexOf("<a href=\"../helloworld.html\">") > 0);
+        ByteChunk res = getUrl("https://localhost:" + getPort()
+                + "/examples/servlets/servlet/HelloWorldExample");
+        assertTrue(res.toString().indexOf(
+                "<a href=\"../helloworld.html\">") > 0);
     }
 
     @Test
@@ -76,19 +75,19 @@ public class TestSsl extends TomcatBaseTest {
         Tomcat tomcat = getTomcatInstance();
 
         File appDir = new File(getBuildDirectory(), "webapps/examples");
-        org.apache.catalina.Context ctxt  = tomcat.addWebapp(
-                null, "/examples", appDir.getAbsolutePath());
+        org.apache.catalina.Context ctxt = tomcat.addWebapp(null, "/examples",
+                appDir.getAbsolutePath());
         ctxt.addApplicationListener(WsContextListener.class.getName());
 
         TesterSupport.initSsl(tomcat, "localhost-copy1.jks", "changeit",
                 "tomcatpass");
 
         tomcat.start();
-        ByteChunk res = getUrl("https://localhost:" + getPort() +
-            "/examples/servlets/servlet/HelloWorldExample");
-        assertTrue(res.toString().indexOf("<a href=\"../helloworld.html\">") > 0);
+        ByteChunk res = getUrl("https://localhost:" + getPort()
+                + "/examples/servlets/servlet/HelloWorldExample");
+        assertTrue(res.toString().indexOf(
+                "<a href=\"../helloworld.html\">") > 0);
     }
-
 
     @Test
     public void testRenegotiateWorks() throws Exception {
@@ -98,8 +97,7 @@ public class TestSsl extends TomcatBaseTest {
                 TesterSupport.isRenegotiationSupported(getTomcatInstance()));
 
         Context root = tomcat.addContext("", TEMP_DIR);
-        Wrapper w =
-            Tomcat.addServlet(root, "tester", new TesterServlet());
+        Wrapper w = Tomcat.addServlet(root, "tester", new TesterServlet());
         w.setAsyncSupported(true);
         root.addServletMappingDecoded("/", "tester");
 
@@ -143,7 +141,8 @@ public class TestSsl extends TomcatBaseTest {
         }
 
         Assert.assertTrue(listener.isComplete());
-        System.out.println("Renegotiation completed after " + listenerComplete + " requests");
+        System.out.println("Renegotiation completed after " + listenerComplete
+                + " requests");
     }
 
     private void doRequest(OutputStream os, Reader r) throws IOException {
@@ -161,7 +160,7 @@ public class TestSsl extends TomcatBaseTest {
         }
 
         // Skip to the end of the headers
-        char[] endOfHeaders ="\r\n\r\n".toCharArray();
+        char[] endOfHeaders = "\r\n\r\n".toCharArray();
         int found = 0;
         while (found != endOfHeaders.length) {
             if (r.read() == endOfHeaders[found]) {
@@ -179,7 +178,8 @@ public class TestSsl extends TomcatBaseTest {
         }
     }
 
-    private static class TesterHandshakeListener implements HandshakeCompletedListener {
+    private static class TesterHandshakeListener implements
+            HandshakeCompletedListener {
 
         private volatile boolean complete = false;
 

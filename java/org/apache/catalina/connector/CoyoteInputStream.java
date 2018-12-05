@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -34,17 +32,14 @@ import org.apache.tomcat.util.res.StringManager;
  */
 public class CoyoteInputStream extends ServletInputStream {
 
-    protected static final StringManager sm =
-            StringManager.getManager(Constants.Package);
-
+    protected static final StringManager sm = StringManager.getManager(
+            Constants.Package);
 
     protected InputBuffer ib;
-
 
     protected CoyoteInputStream(InputBuffer ib) {
         this.ib = ib;
     }
-
 
     /**
      * Clear facade.
@@ -52,7 +47,6 @@ public class CoyoteInputStream extends ServletInputStream {
     void clear() {
         ib = null;
     }
-
 
     /**
      * Prevent cloning the facade.
@@ -62,30 +56,29 @@ public class CoyoteInputStream extends ServletInputStream {
         throw new CloneNotSupportedException();
     }
 
-
     @Override
     public int read() throws IOException {
         checkNonBlockingRead();
 
-        if (SecurityUtil.isPackageProtectionEnabled()){
+        if (SecurityUtil.isPackageProtectionEnabled()) {
 
-            try{
-                Integer result =
-                    AccessController.doPrivileged(
-                        new PrivilegedExceptionAction<Integer>(){
+            try {
+                Integer result = AccessController.doPrivileged(
+                        new PrivilegedExceptionAction<Integer>() {
 
                             @Override
-                            public Integer run() throws IOException{
-                                Integer integer = Integer.valueOf(ib.readByte());
+                            public Integer run() throws IOException {
+                                Integer integer = Integer.valueOf(ib
+                                        .readByte());
                                 return integer;
                             }
 
-                });
+                        });
                 return result.intValue();
-            } catch(PrivilegedActionException pae){
+            } catch (PrivilegedActionException pae) {
                 Exception e = pae.getException();
-                if (e instanceof IOException){
-                    throw (IOException)e;
+                if (e instanceof IOException) {
+                    throw (IOException) e;
                 } else {
                     throw new RuntimeException(e.getMessage(), e);
                 }
@@ -98,30 +91,30 @@ public class CoyoteInputStream extends ServletInputStream {
     @Override
     public int available() throws IOException {
 
-        if (SecurityUtil.isPackageProtectionEnabled()){
-            try{
-                Integer result =
-                    AccessController.doPrivileged(
-                        new PrivilegedExceptionAction<Integer>(){
+        if (SecurityUtil.isPackageProtectionEnabled()) {
+            try {
+                Integer result = AccessController.doPrivileged(
+                        new PrivilegedExceptionAction<Integer>() {
 
                             @Override
-                            public Integer run() throws IOException{
-                                Integer integer = Integer.valueOf(ib.available());
+                            public Integer run() throws IOException {
+                                Integer integer = Integer.valueOf(ib
+                                        .available());
                                 return integer;
                             }
 
-                });
+                        });
                 return result.intValue();
-            } catch(PrivilegedActionException pae){
+            } catch (PrivilegedActionException pae) {
                 Exception e = pae.getException();
-                if (e instanceof IOException){
-                    throw (IOException)e;
+                if (e instanceof IOException) {
+                    throw (IOException) e;
                 } else {
                     throw new RuntimeException(e.getMessage(), e);
                 }
             }
         } else {
-           return ib.available();
+            return ib.available();
         }
     }
 
@@ -129,59 +122,56 @@ public class CoyoteInputStream extends ServletInputStream {
     public int read(final byte[] b) throws IOException {
         checkNonBlockingRead();
 
-        if (SecurityUtil.isPackageProtectionEnabled()){
-            try{
-                Integer result =
-                    AccessController.doPrivileged(
-                        new PrivilegedExceptionAction<Integer>(){
+        if (SecurityUtil.isPackageProtectionEnabled()) {
+            try {
+                Integer result = AccessController.doPrivileged(
+                        new PrivilegedExceptionAction<Integer>() {
 
                             @Override
-                            public Integer run() throws IOException{
-                                Integer integer =
-                                    Integer.valueOf(ib.read(b, 0, b.length));
+                            public Integer run() throws IOException {
+                                Integer integer = Integer.valueOf(ib.read(b, 0,
+                                        b.length));
                                 return integer;
                             }
 
-                });
+                        });
                 return result.intValue();
-            } catch(PrivilegedActionException pae){
+            } catch (PrivilegedActionException pae) {
                 Exception e = pae.getException();
-                if (e instanceof IOException){
-                    throw (IOException)e;
+                if (e instanceof IOException) {
+                    throw (IOException) e;
                 } else {
-                    throw new RuntimeException(e.getMessage() ,e);
+                    throw new RuntimeException(e.getMessage(), e);
                 }
             }
         } else {
             return ib.read(b, 0, b.length);
-         }
+        }
     }
-
 
     @Override
     public int read(final byte[] b, final int off, final int len)
-        throws IOException {
+            throws IOException {
         checkNonBlockingRead();
 
-        if (SecurityUtil.isPackageProtectionEnabled()){
-            try{
-                Integer result =
-                    AccessController.doPrivileged(
-                        new PrivilegedExceptionAction<Integer>(){
+        if (SecurityUtil.isPackageProtectionEnabled()) {
+            try {
+                Integer result = AccessController.doPrivileged(
+                        new PrivilegedExceptionAction<Integer>() {
 
                             @Override
-                            public Integer run() throws IOException{
-                                Integer integer =
-                                    Integer.valueOf(ib.read(b, off, len));
+                            public Integer run() throws IOException {
+                                Integer integer = Integer.valueOf(ib.read(b,
+                                        off, len));
                                 return integer;
                             }
 
-                });
+                        });
                 return result.intValue();
-            } catch(PrivilegedActionException pae){
+            } catch (PrivilegedActionException pae) {
                 Exception e = pae.getException();
-                if (e instanceof IOException){
-                    throw (IOException)e;
+                if (e instanceof IOException) {
+                    throw (IOException) e;
                 } else {
                     throw new RuntimeException(e.getMessage(), e);
                 }
@@ -191,12 +181,10 @@ public class CoyoteInputStream extends ServletInputStream {
         }
     }
 
-
     @Override
     public int readLine(byte[] b, int off, int len) throws IOException {
         return super.readLine(b, off, len);
     }
-
 
     /**
      * Close the stream
@@ -206,28 +194,28 @@ public class CoyoteInputStream extends ServletInputStream {
     @Override
     public void close() throws IOException {
 
-        if (SecurityUtil.isPackageProtectionEnabled()){
-            try{
+        if (SecurityUtil.isPackageProtectionEnabled()) {
+            try {
                 AccessController.doPrivileged(
-                    new PrivilegedExceptionAction<Void>(){
+                        new PrivilegedExceptionAction<Void>() {
 
-                        @Override
-                        public Void run() throws IOException{
-                            ib.close();
-                            return null;
-                        }
+                            @Override
+                            public Void run() throws IOException {
+                                ib.close();
+                                return null;
+                            }
 
-                });
-            } catch(PrivilegedActionException pae){
+                        });
+            } catch (PrivilegedActionException pae) {
                 Exception e = pae.getException();
-                if (e instanceof IOException){
-                    throw (IOException)e;
+                if (e instanceof IOException) {
+                    throw (IOException) e;
                 } else {
                     throw new RuntimeException(e.getMessage(), e);
                 }
             }
         } else {
-             ib.close();
+            ib.close();
         }
     }
 
@@ -236,23 +224,20 @@ public class CoyoteInputStream extends ServletInputStream {
         return ib.isFinished();
     }
 
-
     @Override
     public boolean isReady() {
         return ib.isReady();
     }
-
 
     @Override
     public void setReadListener(ReadListener listener) {
         ib.setReadListener(listener);
     }
 
-
     private void checkNonBlockingRead() {
         if (!ib.isBlocking() && !ib.isReady()) {
-            throw new IllegalStateException(
-                    sm.getString("coyoteInputStream.nbNotready"));
+            throw new IllegalStateException(sm.getString(
+                    "coyoteInputStream.nbNotready"));
         }
     }
 }

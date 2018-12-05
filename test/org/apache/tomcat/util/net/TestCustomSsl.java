@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -63,23 +61,23 @@ public class TestCustomSsl extends TomcatBaseTest {
 
         connector.setProperty("sslProtocol", "tls");
 
-        File keystoreFile =
-            new File("test/org/apache/tomcat/util/net/localhost.jks");
-        connector.setAttribute(
-                "keystoreFile", keystoreFile.getAbsolutePath());
+        File keystoreFile = new File(
+                "test/org/apache/tomcat/util/net/localhost.jks");
+        connector.setAttribute("keystoreFile", keystoreFile.getAbsolutePath());
 
         connector.setSecure(true);
         connector.setProperty("SSLEnabled", "true");
 
         File appDir = new File(getBuildDirectory(), "webapps/examples");
-        Context ctxt  = tomcat.addWebapp(
-                null, "/examples", appDir.getAbsolutePath());
+        Context ctxt = tomcat.addWebapp(null, "/examples", appDir
+                .getAbsolutePath());
         ctxt.addApplicationListener(WsContextListener.class.getName());
 
         tomcat.start();
-        ByteChunk res = getUrl("https://localhost:" + getPort() +
-            "/examples/servlets/servlet/HelloWorldExample");
-        assertTrue(res.toString().indexOf("<a href=\"../helloworld.html\">") > 0);
+        ByteChunk res = getUrl("https://localhost:" + getPort()
+                + "/examples/servlets/servlet/HelloWorldExample");
+        assertTrue(res.toString().indexOf(
+                "<a href=\"../helloworld.html\">") > 0);
     }
 
     @Test
@@ -121,8 +119,8 @@ public class TestCustomSsl extends TomcatBaseTest {
         TesterSupport.configureClientSsl();
 
         // Unprotected resource
-        ByteChunk res =
-                getUrl("https://localhost:" + getPort() + "/unprotected");
+        ByteChunk res = getUrl("https://localhost:" + getPort()
+                + "/unprotected");
         assertEquals("OK", res.toString());
 
         // Protected resource
@@ -130,7 +128,7 @@ public class TestCustomSsl extends TomcatBaseTest {
         int rc = -1;
         try {
             rc = getUrl("https://localhost:" + getPort() + "/protected", res,
-                null, null);
+                    null, null);
         } catch (SocketException se) {
             if (serverTrustAll) {
                 fail(se.getMessage());

@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -36,7 +34,8 @@ import java.util.ResourceBundle;
 public abstract class ServletOutputStream extends OutputStream {
 
     private static final String LSTRING_FILE = "javax.servlet.LocalStrings";
-    private static final ResourceBundle lStrings = ResourceBundle.getBundle(LSTRING_FILE);
+    private static final ResourceBundle lStrings = ResourceBundle.getBundle(
+            LSTRING_FILE);
 
     /**
      * Does nothing, because this is an abstract class.
@@ -50,9 +49,9 @@ public abstract class ServletOutputStream extends OutputStream {
      * return-line feed (CRLF) character at the end.
      *
      * @param s
-     *            the <code>String</code> to send to the client
+     *          the <code>String</code> to send to the client
      * @exception IOException
-     *                if an input or output exception occurred
+     *                        if an input or output exception occurred
      */
     public void print(String s) throws IOException {
         if (s == null)
@@ -83,9 +82,9 @@ public abstract class ServletOutputStream extends OutputStream {
      * return-line feed (CRLF) character at the end.
      *
      * @param b
-     *            the <code>boolean</code> value to send to the client
+     *          the <code>boolean</code> value to send to the client
      * @exception IOException
-     *                if an input or output exception occurred
+     *                        if an input or output exception occurred
      */
     public void print(boolean b) throws IOException {
         String msg;
@@ -102,9 +101,9 @@ public abstract class ServletOutputStream extends OutputStream {
      * (CRLF) at the end.
      *
      * @param c
-     *            the character to send to the client
+     *          the character to send to the client
      * @exception IOException
-     *                if an input or output exception occurred
+     *                        if an input or output exception occurred
      */
     public void print(char c) throws IOException {
         print(String.valueOf(c));
@@ -115,9 +114,9 @@ public abstract class ServletOutputStream extends OutputStream {
      * the end.
      *
      * @param i
-     *            the int to send to the client
+     *          the int to send to the client
      * @exception IOException
-     *                if an input or output exception occurred
+     *                        if an input or output exception occurred
      */
     public void print(int i) throws IOException {
         print(String.valueOf(i));
@@ -128,9 +127,9 @@ public abstract class ServletOutputStream extends OutputStream {
      * return-line feed (CRLF) at the end.
      *
      * @param l
-     *            the <code>long</code> value to send to the client
+     *          the <code>long</code> value to send to the client
      * @exception IOException
-     *                if an input or output exception occurred
+     *                        if an input or output exception occurred
      */
     public void print(long l) throws IOException {
         print(String.valueOf(l));
@@ -141,9 +140,9 @@ public abstract class ServletOutputStream extends OutputStream {
      * return-line feed (CRLF) at the end.
      *
      * @param f
-     *            the <code>float</code> value to send to the client
+     *          the <code>float</code> value to send to the client
      * @exception IOException
-     *                if an input or output exception occurred
+     *                        if an input or output exception occurred
      */
     public void print(float f) throws IOException {
         print(String.valueOf(f));
@@ -154,9 +153,9 @@ public abstract class ServletOutputStream extends OutputStream {
      * return-line feed (CRLF) at the end.
      *
      * @param d
-     *            the <code>double</code> value to send to the client
+     *          the <code>double</code> value to send to the client
      * @exception IOException
-     *                if an input or output exception occurred
+     *                        if an input or output exception occurred
      */
     public void print(double d) throws IOException {
         print(String.valueOf(d));
@@ -166,7 +165,7 @@ public abstract class ServletOutputStream extends OutputStream {
      * Writes a carriage return-line feed (CRLF) to the client.
      *
      * @exception IOException
-     *                if an input or output exception occurred
+     *                        if an input or output exception occurred
      */
     public void println() throws IOException {
         print("\r\n");
@@ -177,9 +176,9 @@ public abstract class ServletOutputStream extends OutputStream {
      * return-line feed (CRLF).
      *
      * @param s
-     *            the <code>String</code> to write to the client
+     *          the <code>String</code> to write to the client
      * @exception IOException
-     *                if an input or output exception occurred
+     *                        if an input or output exception occurred
      */
     public void println(String s) throws IOException {
         print(s);
@@ -191,9 +190,9 @@ public abstract class ServletOutputStream extends OutputStream {
      * return-line feed (CRLF).
      *
      * @param b
-     *            the <code>boolean</code> value to write to the client
+     *          the <code>boolean</code> value to write to the client
      * @exception IOException
-     *                if an input or output exception occurred
+     *                        if an input or output exception occurred
      */
     public void println(boolean b) throws IOException {
         print(b);
@@ -205,9 +204,9 @@ public abstract class ServletOutputStream extends OutputStream {
      * (CRLF).
      *
      * @param c
-     *            the character to write to the client
+     *          the character to write to the client
      * @exception IOException
-     *                if an input or output exception occurred
+     *                        if an input or output exception occurred
      */
     public void println(char c) throws IOException {
         print(c);
@@ -219,9 +218,9 @@ public abstract class ServletOutputStream extends OutputStream {
      * (CRLF) character.
      *
      * @param i
-     *            the int to write to the client
+     *          the int to write to the client
      * @exception IOException
-     *                if an input or output exception occurred
+     *                        if an input or output exception occurred
      */
     public void println(int i) throws IOException {
         print(i);
@@ -233,9 +232,9 @@ public abstract class ServletOutputStream extends OutputStream {
      * return-line feed (CRLF).
      *
      * @param l
-     *            the <code>long</code> value to write to the client
+     *          the <code>long</code> value to write to the client
      * @exception IOException
-     *                if an input or output exception occurred
+     *                        if an input or output exception occurred
      */
     public void println(long l) throws IOException {
         print(l);
@@ -247,9 +246,9 @@ public abstract class ServletOutputStream extends OutputStream {
      * return-line feed (CRLF).
      *
      * @param f
-     *            the <code>float</code> value to write to the client
+     *          the <code>float</code> value to write to the client
      * @exception IOException
-     *                if an input or output exception occurred
+     *                        if an input or output exception occurred
      */
     public void println(float f) throws IOException {
         print(f);
@@ -261,9 +260,9 @@ public abstract class ServletOutputStream extends OutputStream {
      * return-line feed (CRLF).
      *
      * @param d
-     *            the <code>double</code> value to write to the client
+     *          the <code>double</code> value to write to the client
      * @exception IOException
-     *                if an input or output exception occurred
+     *                        if an input or output exception occurred
      */
     public void println(double d) throws IOException {
         print(d);
@@ -288,13 +287,13 @@ public abstract class ServletOutputStream extends OutputStream {
      * thereby switches to non-blocking IO. It is only valid to switch to
      * non-blocking IO within async processing or HTTP upgrade processing.
      *
-     * @param listener  The non-blocking IO write listener
+     * @param listener The non-blocking IO write listener
      *
-     * @throws IllegalStateException    If this method is called if neither
-     *                                  async nor HTTP upgrade is in progress or
-     *                                  if the {@link WriteListener} has already
-     *                                  been set
-     * @throws NullPointerException     If listener is null
+     * @throws IllegalStateException If this method is called if neither
+     *                               async nor HTTP upgrade is in progress or
+     *                               if the {@link WriteListener} has already
+     *                               been set
+     * @throws NullPointerException  If listener is null
      *
      * @since Servlet 3.1
      */

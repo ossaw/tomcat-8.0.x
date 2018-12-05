@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -36,7 +34,7 @@ public abstract class ELContext {
 
     private List<EvaluationListener> listeners = new ArrayList<>();
 
-    private Deque<Map<String,Object>> lambdaArguments = new LinkedList<>();
+    private Deque<Map<String, Object>> lambdaArguments = new LinkedList<>();
 
     public ELContext() {
         this.resolved = false;
@@ -71,7 +69,8 @@ public abstract class ELContext {
      * @param contextObject The object to add
      *
      * @throws NullPointerException
-     *              If the supplied key or context is <code>null</code>
+     *                              If the supplied key or context is
+     *                              <code>null</code>
      */
     public void putContext(@SuppressWarnings("rawtypes") Class key,
             Object contextObject) {
@@ -95,7 +94,7 @@ public abstract class ELContext {
      * @return The value of the context object associated with the given key
      *
      * @throws NullPointerException
-     *              If the supplied key is <code>null</code>
+     *                              If the supplied key is <code>null</code>
      */
     public Object getContext(@SuppressWarnings("rawtypes") Class key) {
         if (key == null) {
@@ -225,7 +224,7 @@ public abstract class ELContext {
      * @since EL 3.0
      */
     public boolean isLambdaArgument(String name) {
-        for (Map<String,Object> arguments : lambdaArguments) {
+        for (Map<String, Object> arguments : lambdaArguments) {
             if (arguments.containsKey(name)) {
                 return true;
             }
@@ -243,7 +242,7 @@ public abstract class ELContext {
      * @since EL 3.0
      */
     public Object getLambdaArgument(String name) {
-        for (Map<String,Object> arguments : lambdaArguments) {
+        for (Map<String, Object> arguments : lambdaArguments) {
             Object result = arguments.get(name);
             if (result != null) {
                 return result;
@@ -260,7 +259,7 @@ public abstract class ELContext {
      *                  expression.
      * @since EL 3.0
      */
-    public void enterLambdaScope(Map<String,Object> arguments) {
+    public void enterLambdaScope(Map<String, Object> arguments) {
         lambdaArguments.push(arguments);
     }
 
@@ -283,7 +282,7 @@ public abstract class ELContext {
      * @return An instance of the requested type.
      *
      * @throws ELException
-     *              If the conversion fails
+     *                     If the conversion fails
      *
      * @since EL 3.0
      */

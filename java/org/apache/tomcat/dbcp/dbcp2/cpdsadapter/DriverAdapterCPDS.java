@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -49,12 +47,12 @@ import org.apache.tomcat.dbcp.pool2.impl.GenericKeyedObjectPoolConfig;
  * of {@link javax.sql.ConnectionPoolDataSource}, but still include a
  * {@link java.sql.DriverManager} implementation.
  * <code>ConnectionPoolDataSource</code>s are not used within general
- * applications.  They are used by <code>DataSource</code> implementations
+ * applications. They are used by <code>DataSource</code> implementations
  * that pool <code>Connection</code>s, such as
- * {@link org.apache.tomcat.dbcp.dbcp2.datasources.SharedPoolDataSource}.  A J2EE
+ * {@link org.apache.tomcat.dbcp.dbcp2.datasources.SharedPoolDataSource}. A J2EE
  * container will normally provide some method of initializing the
  * <code>ConnectionPoolDataSource</code> whose attributes are presented
- * as bean getters/setters and then deploying it via JNDI.  It is then
+ * as bean getters/setters and then deploying it via JNDI. It is then
  * available as a source of physical connections to the database, when
  * the pooling <code>DataSource</code> needs to create a new
  * physical connection.
@@ -72,7 +70,7 @@ import org.apache.tomcat.dbcp.pool2.impl.GenericKeyedObjectPoolConfig;
  * The DriverAdapterCPDS also provides <code>PreparedStatement</code> pooling
  * which is not generally available in jbdc2
  * <code>ConnectionPoolDataSource</code> implementation, but is
- * addressed within the jdbc3 specification.  The <code>PreparedStatement</code>
+ * addressed within the jdbc3 specification. The <code>PreparedStatement</code>
  * pool in DriverAdapterCPDS has been in the dbcp package for some time, but
  * it has not undergone extensive testing in the configuration used here.
  * It should be considered experimental and can be toggled with the
@@ -81,8 +79,9 @@ import org.apache.tomcat.dbcp.pool2.impl.GenericKeyedObjectPoolConfig;
  *
  * <p>
  * The <a href="package-summary.html">package documentation</a> contains an
- * example using catalina and JNDI.  The <a
- * href="../datasources/package-summary.html">datasources package documentation</a>
+ * example using catalina and JNDI. The <a
+ * href="../datasources/package-summary.html">datasources package
+ * documentation</a>
  * shows how to use <code>DriverAdapterCPDS</code> as a source for
  * <code>Jdbc2PoolDataSource</code> without the use of JNDI.
  * </p>
@@ -90,15 +89,12 @@ import org.apache.tomcat.dbcp.pool2.impl.GenericKeyedObjectPoolConfig;
  * @author John D. McNally
  * @since 2.0
  */
-public class DriverAdapterCPDS
-    implements ConnectionPoolDataSource, Referenceable, Serializable,
-               ObjectFactory {
+public class DriverAdapterCPDS implements ConnectionPoolDataSource,
+        Referenceable, Serializable, ObjectFactory {
 
     private static final long serialVersionUID = -4820523787212147844L;
 
-
-    private static final String GET_CONNECTION_CALLED
-            = "A PooledConnection was already requested from this source, "
+    private static final String GET_CONNECTION_CALLED = "A PooledConnection was already requested from this source, "
             + "further initialization is not allowed.";
 
     /** Description */
@@ -120,8 +116,7 @@ public class DriverAdapterCPDS
     // PreparedStatement pool properties
     private boolean poolPreparedStatements;
     private int maxIdle = 10;
-    private long _timeBetweenEvictionRunsMillis =
-            BaseObjectPoolConfig.DEFAULT_TIME_BETWEEN_EVICTION_RUNS_MILLIS;
+    private long _timeBetweenEvictionRunsMillis = BaseObjectPoolConfig.DEFAULT_TIME_BETWEEN_EVICTION_RUNS_MILLIS;
     private int _numTestsPerEvictionRun = -1;
     private int _minEvictableIdleTimeMillis = -1;
     private int _maxPreparedStatements = -1;
@@ -145,8 +140,7 @@ public class DriverAdapterCPDS
     /**
      * Default no-arg constructor for Serialization
      */
-    public DriverAdapterCPDS() {
-    }
+    public DriverAdapterCPDS() {}
 
     /**
      * Attempt to establish a database connection using the default
@@ -159,12 +153,13 @@ public class DriverAdapterCPDS
 
     /**
      * Attempt to establish a database connection.
+     * 
      * @param username name to be used for the connection
-     * @param pass password to be used fur the connection
+     * @param pass     password to be used fur the connection
      */
     @Override
-    public PooledConnection getPooledConnection(final String username, final String pass)
-            throws SQLException {
+    public PooledConnection getPooledConnection(final String username,
+            final String pass) throws SQLException {
         getConnectionCalled = true;
         PooledConnectionImpl pci = null;
         // Workaround for buggy WebLogic 5.1 classloader - ignore the
@@ -179,10 +174,9 @@ public class DriverAdapterCPDS
                 pci = new PooledConnectionImpl(DriverManager.getConnection(
                         getUrl(), username, pass));
             }
-            pci.setAccessToUnderlyingConnectionAllowed(isAccessToUnderlyingConnectionAllowed());
-        }
-        catch (final ClassCircularityError e)
-        {
+            pci.setAccessToUnderlyingConnectionAllowed(
+                    isAccessToUnderlyingConnectionAllowed());
+        } catch (final ClassCircularityError e) {
             if (connectionProperties != null) {
                 pci = new PooledConnectionImpl(DriverManager.getConnection(
                         getUrl(), connectionProperties));
@@ -190,7 +184,8 @@ public class DriverAdapterCPDS
                 pci = new PooledConnectionImpl(DriverManager.getConnection(
                         getUrl(), username, pass));
             }
-            pci.setAccessToUnderlyingConnectionAllowed(isAccessToUnderlyingConnectionAllowed());
+            pci.setAccessToUnderlyingConnectionAllowed(
+                    isAccessToUnderlyingConnectionAllowed());
         }
         KeyedObjectPool<PStmtKeyCPDS, PoolablePreparedStatement<PStmtKeyCPDS>> stmtPool = null;
         if (isPoolPreparedStatements()) {
@@ -199,16 +194,15 @@ public class DriverAdapterCPDS
             config.setBlockWhenExhausted(false);
             config.setMaxWaitMillis(0);
             config.setMaxIdlePerKey(getMaxIdle());
-            if (getMaxPreparedStatements() <= 0)
-            {
+            if (getMaxPreparedStatements() <= 0) {
                 // since there is no limit, create a prepared statement pool with an eviction thread
                 //  evictor settings are the same as the connection pool settings.
-                config.setTimeBetweenEvictionRunsMillis(getTimeBetweenEvictionRunsMillis());
+                config.setTimeBetweenEvictionRunsMillis(
+                        getTimeBetweenEvictionRunsMillis());
                 config.setNumTestsPerEvictionRun(getNumTestsPerEvictionRun());
-                config.setMinEvictableIdleTimeMillis(getMinEvictableIdleTimeMillis());
-            }
-            else
-            {
+                config.setMinEvictableIdleTimeMillis(
+                        getMinEvictableIdleTimeMillis());
+            } else {
                 // since there is limit, create a prepared statement pool without an eviction thread
                 //  pool has LRU functionality so when the limit is reached, 15% of the pool is cleared.
                 // see org.apache.tomcat.dbcp.pool2.impl.GenericKeyedObjectPool.clearOldest method
@@ -239,32 +233,31 @@ public class DriverAdapterCPDS
         // this class implements its own factory
         final String factory = getClass().getName();
 
-        final Reference ref = new Reference(getClass().getName(), factory, null);
+        final Reference ref = new Reference(getClass().getName(), factory,
+                null);
 
         ref.add(new StringRefAddr("description", getDescription()));
         ref.add(new StringRefAddr("driver", getDriver()));
-        ref.add(new StringRefAddr("loginTimeout",
-                                  String.valueOf(getLoginTimeout())));
+        ref.add(new StringRefAddr("loginTimeout", String.valueOf(
+                getLoginTimeout())));
         ref.add(new StringRefAddr("password", getPassword()));
         ref.add(new StringRefAddr("user", getUser()));
         ref.add(new StringRefAddr("url", getUrl()));
 
-        ref.add(new StringRefAddr("poolPreparedStatements",
-                                  String.valueOf(isPoolPreparedStatements())));
-        ref.add(new StringRefAddr("maxIdle",
-                                  String.valueOf(getMaxIdle())));
-        ref.add(new StringRefAddr("timeBetweenEvictionRunsMillis",
-            String.valueOf(getTimeBetweenEvictionRunsMillis())));
-        ref.add(new StringRefAddr("numTestsPerEvictionRun",
-            String.valueOf(getNumTestsPerEvictionRun())));
-        ref.add(new StringRefAddr("minEvictableIdleTimeMillis",
-            String.valueOf(getMinEvictableIdleTimeMillis())));
-        ref.add(new StringRefAddr("maxPreparedStatements",
-            String.valueOf(getMaxPreparedStatements())));
+        ref.add(new StringRefAddr("poolPreparedStatements", String.valueOf(
+                isPoolPreparedStatements())));
+        ref.add(new StringRefAddr("maxIdle", String.valueOf(getMaxIdle())));
+        ref.add(new StringRefAddr("timeBetweenEvictionRunsMillis", String
+                .valueOf(getTimeBetweenEvictionRunsMillis())));
+        ref.add(new StringRefAddr("numTestsPerEvictionRun", String.valueOf(
+                getNumTestsPerEvictionRun())));
+        ref.add(new StringRefAddr("minEvictableIdleTimeMillis", String.valueOf(
+                getMinEvictableIdleTimeMillis())));
+        ref.add(new StringRefAddr("maxPreparedStatements", String.valueOf(
+                getMaxPreparedStatements())));
 
         return ref;
     }
-
 
     // ----------------------------------------------------------------------
     // ObjectFactory implementation
@@ -274,13 +267,12 @@ public class DriverAdapterCPDS
      */
     @Override
     public Object getObjectInstance(final Object refObj, final Name name,
-                                    final Context context, final Hashtable<?,?> env)
-            throws Exception {
+            final Context context, final Hashtable<?, ?> env) throws Exception {
         // The spec says to return null if we can't create an instance
         // of the reference
         DriverAdapterCPDS cpds = null;
         if (refObj instanceof Reference) {
-            final Reference ref = (Reference)refObj;
+            final Reference ref = (Reference) refObj;
             if (ref.getClassName().equals(getClass().getName())) {
                 RefAddr ra = ref.get("description");
                 if (ra != null && ra.getContent() != null) {
@@ -306,8 +298,8 @@ public class DriverAdapterCPDS
 
                 ra = ref.get("poolPreparedStatements");
                 if (ra != null && ra.getContent() != null) {
-                    setPoolPreparedStatements(Boolean.valueOf(
-                        ra.getContent().toString()).booleanValue());
+                    setPoolPreparedStatements(Boolean.valueOf(ra.getContent()
+                            .toString()).booleanValue());
                 }
                 ra = ref.get("maxIdle");
                 if (ra != null && ra.getContent() != null) {
@@ -316,31 +308,31 @@ public class DriverAdapterCPDS
 
                 ra = ref.get("timeBetweenEvictionRunsMillis");
                 if (ra != null && ra.getContent() != null) {
-                    setTimeBetweenEvictionRunsMillis(
-                        Integer.parseInt(ra.getContent().toString()));
+                    setTimeBetweenEvictionRunsMillis(Integer.parseInt(ra
+                            .getContent().toString()));
                 }
 
                 ra = ref.get("numTestsPerEvictionRun");
                 if (ra != null && ra.getContent() != null) {
-                    setNumTestsPerEvictionRun(
-                        Integer.parseInt(ra.getContent().toString()));
+                    setNumTestsPerEvictionRun(Integer.parseInt(ra.getContent()
+                            .toString()));
                 }
 
                 ra = ref.get("minEvictableIdleTimeMillis");
                 if (ra != null && ra.getContent() != null) {
-                    setMinEvictableIdleTimeMillis(
-                        Integer.parseInt(ra.getContent().toString()));
+                    setMinEvictableIdleTimeMillis(Integer.parseInt(ra
+                            .getContent().toString()));
                 }
                 ra = ref.get("maxPreparedStatements");
                 if (ra != null && ra.getContent() != null) {
-                    setMaxPreparedStatements(
-                        Integer.parseInt(ra.getContent().toString()));
+                    setMaxPreparedStatements(Integer.parseInt(ra.getContent()
+                            .toString()));
                 }
 
                 ra = ref.get("accessToUnderlyingConnectionAllowed");
                 if (ra != null && ra.getContent() != null) {
-                    setAccessToUnderlyingConnectionAllowed(
-                            Boolean.valueOf(ra.getContent().toString()).booleanValue());
+                    setAccessToUnderlyingConnectionAllowed(Boolean.valueOf(ra
+                            .getContent().toString()).booleanValue());
                 }
 
                 cpds = this;
@@ -372,19 +364,26 @@ public class DriverAdapterCPDS
     }
 
     /**
-     * <p>Sets the connection properties passed to the JDBC driver.</p>
+     * <p>
+     * Sets the connection properties passed to the JDBC driver.
+     * </p>
      *
-     * <p>If <code>props</code> contains "user" and/or "password"
+     * <p>
+     * If <code>props</code> contains "user" and/or "password"
      * properties, the corresponding instance properties are set. If these
      * properties are not present, they are filled in using
-     * {@link #getUser()}, {@link #getPassword()} when {@link #getPooledConnection()}
+     * {@link #getUser()}, {@link #getPassword()} when
+     * {@link #getPooledConnection()}
      * is called, or using the actual parameters to the method call when
      * {@link #getPooledConnection(String, String)} is called. Calls to
-     * {@link #setUser(String)} or {@link #setPassword(String)} overwrite the values
-     * of these properties if <code>connectionProperties</code> is not null.</p>
+     * {@link #setUser(String)} or {@link #setPassword(String)} overwrite the
+     * values
+     * of these properties if <code>connectionProperties</code> is not null.
+     * </p>
      *
      * @param props Connection properties to use when creating new connections.
-     * @throws IllegalStateException if {@link #getPooledConnection()} has been called
+     * @throws IllegalStateException if {@link #getPooledConnection()} has been
+     *                               called
      */
     public void setConnectionProperties(final Properties props) {
         assertInitializationAllowed();
@@ -398,8 +397,8 @@ public class DriverAdapterCPDS
     }
 
     /**
-     * Gets the value of description.  This property is here for use by
-     * the code which will deploy this datasource.  It is not used
+     * Gets the value of description. This property is here for use by
+     * the code which will deploy this datasource. It is not used
      * internally.
      *
      * @return value of description, may be null.
@@ -410,18 +409,19 @@ public class DriverAdapterCPDS
     }
 
     /**
-     * Sets the value of description.  This property is here for use by
-     * the code which will deploy this datasource.  It is not used
+     * Sets the value of description. This property is here for use by
+     * the code which will deploy this datasource. It is not used
      * internally.
      *
-     * @param v  Value to assign to description.
+     * @param v Value to assign to description.
      */
-    public void setDescription(final String  v) {
+    public void setDescription(final String v) {
         this.description = v;
     }
 
     /**
      * Gets the value of password for the default user.
+     * 
      * @return value of password.
      */
     public String getPassword() {
@@ -430,8 +430,10 @@ public class DriverAdapterCPDS
 
     /**
      * Sets the value of password for the default user.
-     * @param v  Value to assign to password.
-     * @throws IllegalStateException if {@link #getPooledConnection()} has been called
+     * 
+     * @param v Value to assign to password.
+     * @throws IllegalStateException if {@link #getPooledConnection()} has been
+     *                               called
      */
     public void setPassword(final String v) {
         assertInitializationAllowed();
@@ -443,6 +445,7 @@ public class DriverAdapterCPDS
 
     /**
      * Gets the value of url used to locate the database for this datasource.
+     * 
      * @return value of url.
      */
     public String getUrl() {
@@ -450,10 +453,13 @@ public class DriverAdapterCPDS
     }
 
     /**
-     * Sets the value of URL string used to locate the database for this datasource.
-     * @param v  Value to assign to url.
-     * @throws IllegalStateException if {@link #getPooledConnection()} has been called
-    */
+     * Sets the value of URL string used to locate the database for this
+     * datasource.
+     * 
+     * @param v Value to assign to url.
+     * @throws IllegalStateException if {@link #getPooledConnection()} has been
+     *                               called
+     */
     public void setUrl(final String v) {
         assertInitializationAllowed();
         this.url = v;
@@ -461,6 +467,7 @@ public class DriverAdapterCPDS
 
     /**
      * Gets the value of default user (login or username).
+     * 
      * @return value of user.
      */
     public String getUser() {
@@ -469,8 +476,10 @@ public class DriverAdapterCPDS
 
     /**
      * Sets the value of default user (login or username).
-     * @param v  Value to assign to user.
-     * @throws IllegalStateException if {@link #getPooledConnection()} has been called
+     * 
+     * @param v Value to assign to user.
+     * @throws IllegalStateException if {@link #getPooledConnection()} has been
+     *                               called
      */
     public void setUser(final String v) {
         assertInitializationAllowed();
@@ -482,6 +491,7 @@ public class DriverAdapterCPDS
 
     /**
      * Gets the driver classname.
+     * 
      * @return value of driver.
      */
     public String getDriver() {
@@ -489,10 +499,12 @@ public class DriverAdapterCPDS
     }
 
     /**
-     * Sets the driver classname.  Setting the driver classname cause the
+     * Sets the driver classname. Setting the driver classname cause the
      * driver to be registered with the DriverManager.
-     * @param v  Value to assign to driver.
-     * @throws IllegalStateException if {@link #getPooledConnection()} has been called
+     * 
+     * @param v Value to assign to driver.
+     * @throws IllegalStateException if {@link #getPooledConnection()} has been
+     *                               called
      */
     public void setDriver(final String v) throws ClassNotFoundException {
         assertInitializationAllowed();
@@ -535,13 +547,12 @@ public class DriverAdapterCPDS
         logWriter = out;
     }
 
-
     // ------------------------------------------------------------------
     // PreparedStatement pool properties
 
-
     /**
      * Flag to toggle the pooling of <code>PreparedStatement</code>s
+     * 
      * @return value of poolPreparedStatements.
      */
     public boolean isPoolPreparedStatements() {
@@ -550,8 +561,10 @@ public class DriverAdapterCPDS
 
     /**
      * Flag to toggle the pooling of <code>PreparedStatement</code>s
-     * @param v  true to pool statements.
-     * @throws IllegalStateException if {@link #getPooledConnection()} has been called
+     * 
+     * @param v true to pool statements.
+     * @throws IllegalStateException if {@link #getPooledConnection()} has been
+     *                               called
      */
     public void setPoolPreparedStatements(final boolean v) {
         assertInitializationAllowed();
@@ -561,6 +574,7 @@ public class DriverAdapterCPDS
     /**
      * Gets the maximum number of statements that can remain idle in the
      * pool, without extra ones being released, or negative for no limit.
+     * 
      * @return the value of maxIdle
      */
     public int getMaxIdle() {
@@ -572,7 +586,8 @@ public class DriverAdapterCPDS
      * pool, without extra ones being released, or negative for no limit.
      *
      * @param maxIdle The maximum number of statements that can remain idle
-     * @throws IllegalStateException if {@link #getPooledConnection()} has been called
+     * @throws IllegalStateException if {@link #getPooledConnection()} has been
+     *                               called
      */
     public void setMaxIdle(final int maxIdle) {
         assertInitializationAllowed();
@@ -584,6 +599,7 @@ public class DriverAdapterCPDS
      * idle object evictor thread.
      * When non-positive, no idle object evictor thread will be
      * run.
+     * 
      * @return the value of the evictor thread timer
      * @see #setTimeBetweenEvictionRunsMillis(long)
      */
@@ -596,9 +612,11 @@ public class DriverAdapterCPDS
      * idle object evictor thread.
      * When non-positive, no idle object evictor thread will be
      * run.
+     * 
      * @param timeBetweenEvictionRunsMillis
      * @see #getTimeBetweenEvictionRunsMillis()
-     * @throws IllegalStateException if {@link #getPooledConnection()} has been called
+     * @throws IllegalStateException if {@link #getPooledConnection()} has been
+     *                               called
      */
     public void setTimeBetweenEvictionRunsMillis(
             final long timeBetweenEvictionRunsMillis) {
@@ -621,14 +639,17 @@ public class DriverAdapterCPDS
      * Sets the number of statements to examine during each run of the
      * idle object evictor thread (if any).
      * <p>
-     * When a negative value is supplied, <tt>ceil({*link #numIdle})/abs({*link #getNumTestsPerEvictionRun})</tt>
-     * tests will be run.  I.e., when the value is <i>-n</i>, roughly one <i>n</i>th of the
+     * When a negative value is supplied,
+     * <tt>ceil({*link #numIdle})/abs({*link #getNumTestsPerEvictionRun})</tt>
+     * tests will be run. I.e., when the value is <i>-n</i>, roughly one
+     * <i>n</i>th of the
      * idle objects will be tested per run.
      *
      * @param numTestsPerEvictionRun number of statements to examine per run
      * @see #getNumTestsPerEvictionRun()
      * @see #setTimeBetweenEvictionRunsMillis(long)
-     * @throws IllegalStateException if {@link #getPooledConnection()} has been called
+     * @throws IllegalStateException if {@link #getPooledConnection()} has been
+     *                               called
      */
     public void setNumTestsPerEvictionRun(final int numTestsPerEvictionRun) {
         assertInitializationAllowed();
@@ -653,12 +674,15 @@ public class DriverAdapterCPDS
      * (if any).
      * When non-positive, no objects will be evicted from the pool
      * due to idle time alone.
+     * 
      * @param minEvictableIdleTimeMillis minimum time to set (in ms)
      * @see #getMinEvictableIdleTimeMillis()
      * @see #setTimeBetweenEvictionRunsMillis(long)
-     * @throws IllegalStateException if {@link #getPooledConnection()} has been called
+     * @throws IllegalStateException if {@link #getPooledConnection()} has been
+     *                               called
      */
-    public void setMinEvictableIdleTimeMillis(final int minEvictableIdleTimeMillis) {
+    public void setMinEvictableIdleTimeMillis(
+            final int minEvictableIdleTimeMillis) {
         assertInitializationAllowed();
         _minEvictableIdleTimeMillis = minEvictableIdleTimeMillis;
     }
@@ -679,7 +703,8 @@ public class DriverAdapterCPDS
      *
      * @param allow Access to the underlying connection is granted when true.
      */
-    public synchronized void setAccessToUnderlyingConnectionAllowed(final boolean allow) {
+    public synchronized void setAccessToUnderlyingConnectionAllowed(
+            final boolean allow) {
         this.accessToUnderlyingConnectionAllowed = allow;
     }
 
@@ -688,18 +713,17 @@ public class DriverAdapterCPDS
      *
      * @return maxPrepartedStatements value
      */
-    public int getMaxPreparedStatements()
-    {
+    public int getMaxPreparedStatements() {
         return _maxPreparedStatements;
     }
 
     /**
      * Sets the maximum number of prepared statements.
+     * 
      * @param maxPreparedStatements the new maximum number of prepared
-     * statements
+     *                              statements
      */
-    public void setMaxPreparedStatements(final int maxPreparedStatements)
-    {
+    public void setMaxPreparedStatements(final int maxPreparedStatements) {
         _maxPreparedStatements = maxPreparedStatements;
     }
 }

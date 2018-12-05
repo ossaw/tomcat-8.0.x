@@ -1,18 +1,16 @@
 /*
- *  Licensed to the Apache Software Foundation (ASF) under one or more
- *  contributor license agreements.  See the NOTICE file distributed with
- *  this work for additional information regarding copyright ownership.
- *  The ASF licenses this file to You under the Apache License, Version 2.0
- *  (the "License"); you may not use this file except in compliance with
- *  the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements. See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.apache.tomcat.util.http.parser;
 
@@ -38,95 +36,81 @@ public class TestMediaType {
     private static final String SUBTYPE = " bar ";
     private static final String TYPES = TYPE + "/" + SUBTYPE;
 
-    private static final Parameter PARAM_TOKEN =
-            new Parameter("a", "b");
-    private static final Parameter PARAM_QUOTED =
-            new Parameter("x", "\"y\"");
-    private static final Parameter PARAM_EMPTY_QUOTED =
-            new Parameter("z", "\"\"");
-    private static final Parameter PARAM_COMPLEX_QUOTED =
-            new Parameter("w", "\"foo'bar,a=b;x=y\"");
+    private static final Parameter PARAM_TOKEN = new Parameter("a", "b");
+    private static final Parameter PARAM_QUOTED = new Parameter("x", "\"y\"");
+    private static final Parameter PARAM_EMPTY_QUOTED = new Parameter("z",
+            "\"\"");
+    private static final Parameter PARAM_COMPLEX_QUOTED = new Parameter("w",
+            "\"foo'bar,a=b;x=y\"");
 
     private static final String CHARSET = "UTF-8";
     private static final String WS_CHARSET = " \tUTF-8";
     private static final String CHARSET_WS = "UTF-8 \t";
     // Since this is quoted, it should retain the space at the end
     private static final String CHARSET_QUOTED = "\"" + CHARSET_WS + "\"";
-    private static final Parameter PARAM_CHARSET =
-            new Parameter("charset", CHARSET);
-    private static final Parameter PARAM_WS_CHARSET =
-            new Parameter("charset", WS_CHARSET);
-    private static final Parameter PARAM_CHARSET_WS =
-            new Parameter("charset", CHARSET_WS);
-    private static final Parameter PARAM_CHARSET_QUOTED =
-            new Parameter("charset", CHARSET_QUOTED);
+    private static final Parameter PARAM_CHARSET = new Parameter("charset",
+            CHARSET);
+    private static final Parameter PARAM_WS_CHARSET = new Parameter("charset",
+            WS_CHARSET);
+    private static final Parameter PARAM_CHARSET_WS = new Parameter("charset",
+            CHARSET_WS);
+    private static final Parameter PARAM_CHARSET_QUOTED = new Parameter(
+            "charset", CHARSET_QUOTED);
 
-
-    private static final String[] LWS_VALUES = new String[] {
-            "", " ", "\t", "\r", "\n", "\r\n", " \r", " \n", " \r\n",
-            "\r ", "\n ", "\r\n ", " \r ", " \n ", " \r\n " };
-
+    private static final String[] LWS_VALUES = new String[] { "", " ", "\t",
+            "\r", "\n", "\r\n", " \r", " \n", " \r\n", "\r ", "\n ", "\r\n ",
+            " \r ", " \n ", " \r\n " };
 
     @Test
     public void testSimple() throws IOException {
         doTest();
     }
 
-
     @Test
     public void testSimpleWithToken() throws IOException {
         doTest(PARAM_TOKEN);
     }
-
 
     @Test
     public void testSimpleWithQuotedString() throws IOException {
         doTest(PARAM_QUOTED);
     }
 
-
     @Test
     public void testSimpleWithEmptyQuotedString() throws IOException {
         doTest(PARAM_EMPTY_QUOTED);
     }
-
 
     @Test
     public void testSimpleWithComplesQuotedString() throws IOException {
         doTest(PARAM_COMPLEX_QUOTED);
     }
 
-
     @Test
     public void testSimpleWithCharset() throws IOException {
         doTest(PARAM_CHARSET);
     }
-
 
     @Test
     public void testSimpleWithCharsetWhitespaceBefore() throws IOException {
         doTest(PARAM_WS_CHARSET);
     }
 
-
     @Test
     public void testSimpleWithCharsetWhitespaceAfter() throws IOException {
         doTest(PARAM_CHARSET_WS);
     }
-
 
     @Test
     public void testSimpleWithCharsetQuoted() throws IOException {
         doTest(PARAM_CHARSET_QUOTED);
     }
 
-
     @Test
     public void testSimpleWithAll() throws IOException {
         doTest(PARAM_COMPLEX_QUOTED, PARAM_EMPTY_QUOTED, PARAM_QUOTED,
                 PARAM_TOKEN, PARAM_CHARSET);
     }
-
 
     @Test
     public void testCharset() throws IOException {
@@ -143,7 +127,6 @@ public class TestMediaType {
         assertEquals("foo/bar; a=b", m.toStringNoCharset());
     }
 
-
     @Test
     public void testCharsetQuoted() throws IOException {
         StringBuilder sb = new StringBuilder();
@@ -154,16 +137,14 @@ public class TestMediaType {
         MediaType m = MediaType.parseMediaType(sr);
 
         assertEquals(CHARSET_WS, m.getCharset());
-        assertEquals(TYPES.replaceAll(" ", ""),
-                m.toStringNoCharset());
+        assertEquals(TYPES.replaceAll(" ", ""), m.toStringNoCharset());
     }
-
 
     @Test
     public void testBug52811() throws IOException {
-        String input = "multipart/related;boundary=1_4F50BD36_CDF8C28;" +
-                "Start=\"<31671603.smil>\";" +
-                "Type=\"application/smil;charset=UTF-8\"";
+        String input = "multipart/related;boundary=1_4F50BD36_CDF8C28;"
+                + "Start=\"<31671603.smil>\";"
+                + "Type=\"application/smil;charset=UTF-8\"";
 
         StringReader sr = new StringReader(input);
         MediaType m = MediaType.parseMediaType(sr);
@@ -177,17 +158,16 @@ public class TestMediaType {
 
         assertEquals("1_4F50BD36_CDF8C28", m.getParameterValue("boundary"));
         assertEquals("\"<31671603.smil>\"", m.getParameterValue("Start"));
-        assertEquals("\"application/smil;charset=UTF-8\"",
-                m.getParameterValue("Type"));
+        assertEquals("\"application/smil;charset=UTF-8\"", m.getParameterValue(
+                "Type"));
 
-        String expected = "multipart/related; boundary=1_4F50BD36_CDF8C28; " +
-                "start=\"<31671603.smil>\"; " +
-                "type=\"application/smil;charset=UTF-8\"";
+        String expected = "multipart/related; boundary=1_4F50BD36_CDF8C28; "
+                + "start=\"<31671603.smil>\"; "
+                + "type=\"application/smil;charset=UTF-8\"";
         assertEquals(expected, m.toString());
         assertEquals(expected, m.toStringNoCharset());
         assertNull(m.getCharset());
     }
-
 
     @Test
     public void testBug53353() throws IOException {
@@ -211,7 +191,6 @@ public class TestMediaType {
         assertEquals("UTF-8", m.getCharset());
     }
 
-
     @Test
     public void testBug55454() throws IOException {
         String input = "text/html;;charset=UTF-8";
@@ -229,7 +208,6 @@ public class TestMediaType {
 
         assertEquals("text/html; charset=UTF-8", m.toString());
     }
-
 
     private void doTest(Parameter... parameters) throws IOException {
         for (String lws : LWS_VALUES) {
@@ -256,18 +234,17 @@ public class TestMediaType {
         assertEquals(SUBTYPE.trim(), m.getSubtype());
 
         // Check the parameters
-        for (int i = 0; i <  parameters.length; i++) {
-            assertEquals(parameters[i].getValue().trim(),
-                    m.getParameterValue(parameters[i].getName().trim()));
+        for (int i = 0; i < parameters.length; i++) {
+            assertEquals(parameters[i].getValue().trim(), m.getParameterValue(
+                    parameters[i].getName().trim()));
         }
     }
-
 
     private static class Parameter {
         private final String name;
         private final String value;
 
-        public Parameter(String name,String value) {
+        public Parameter(String name, String value) {
             this.name = name;
             this.value = value;
         }
@@ -298,7 +275,7 @@ public class TestMediaType {
             sb.append(lws);
             return sb.toString();
         }
-}
+    }
 
     @Test
     public void testCase() throws Exception {

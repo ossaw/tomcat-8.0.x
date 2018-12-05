@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -16,7 +14,6 @@
  */
 
 package org.apache.jasper.compiler.tagplugin;
-
 
 /**
  * This interface allows the plugin author to make inquiries about the
@@ -43,18 +40,20 @@ public interface TagPluginContext {
 
     /**
      * Generate an import statement
+     * 
      * @param s Name of the import class, '*' allowed.
      */
     void generateImport(String s);
 
     /**
-     * Generate a declaration in the of the generated class.  This can be
+     * Generate a declaration in the of the generated class. This can be
      * used to declare an inner class, a method, or a class variable.
-     * @param id An unique ID identifying the declaration.  It is not
-     *           part of the declaration, and is used to ensure that the
-     *           declaration will only appear once.  If this method is
-     *           invoked with the same id more than once in the translation
-     *           unit, only the first declaration will be taken.
+     * 
+     * @param id   An unique ID identifying the declaration. It is not
+     *             part of the declaration, and is used to ensure that the
+     *             declaration will only appear once. If this method is
+     *             invoked with the same id more than once in the translation
+     *             unit, only the first declaration will be taken.
      * @param text The text of the declaration.
      **/
     void generateDeclaration(String id, String text);
@@ -71,7 +70,7 @@ public interface TagPluginContext {
     boolean isConstantAttribute(String attribute);
 
     /**
-     * @return A string that is the value of a constant attribute.  Undefined
+     * @return A string that is the value of a constant attribute. Undefined
      *         if the attribute is not a (translation-time) constant.
      *         null if the attribute is not specified.
      */
@@ -81,6 +80,7 @@ public interface TagPluginContext {
      * Generate codes to evaluate value of a attribute in the custom tag
      * The codes is a Java expression.
      * NOTE: Currently cannot handle attributes that are fragments.
+     * 
      * @param attribute The specified attribute
      */
     void generateAttribute(String attribute);
@@ -99,10 +99,11 @@ public interface TagPluginContext {
     void dontUseTagPlugin();
 
     /**
-     * Get the PluginContext for the parent of this custom tag.  NOTE:
+     * Get the PluginContext for the parent of this custom tag. NOTE:
      * The operations available for PluginContext so obtained is limited
      * to getPluginAttribute and setPluginAttribute, and queries (e.g.
-     * isScriptless().  There should be no calls to generate*().
+     * isScriptless(). There should be no calls to generate*().
+     * 
      * @return The pluginContext for the parent node.
      *         null if the parent is not a custom tag, or if the pluginConxt
      *         if not available (because useTagPlugin is false, e.g).
@@ -112,7 +113,7 @@ public interface TagPluginContext {
     /**
      * Associate the attribute with a value in the current tagplugin context.
      * The plugin attributes can be used for communication among tags that
-     * must work together as a group.  See &lt;c:when&gt; for an example.
+     * must work together as a group. See &lt;c:when&gt; for an example.
      */
     void setPluginAttribute(String attr, Object value);
 
@@ -126,4 +127,3 @@ public interface TagPluginContext {
      */
     boolean isTagFile();
 }
-

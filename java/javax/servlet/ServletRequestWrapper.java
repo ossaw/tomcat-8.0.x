@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -50,6 +48,7 @@ public class ServletRequestWrapper implements ServletRequest {
 
     /**
      * Get the wrapped request.
+     * 
      * @return the wrapped request object
      */
     public ServletRequest getRequest() {
@@ -58,6 +57,7 @@ public class ServletRequestWrapper implements ServletRequest {
 
     /**
      * Sets the request object being wrapped.
+     * 
      * @param request The new wrapped request.
      *
      * @throws IllegalArgumentException if the request is null.
@@ -370,8 +370,9 @@ public class ServletRequestWrapper implements ServletRequest {
      * wrapped request object.
      *
      * @throws IllegalStateException If asynchronous processing is not supported
-     *         for this request or if the request is already in asynchronous
-     *         mode
+     *                               for this request or if the request is
+     *                               already in asynchronous
+     *                               mode
      * @since Servlet 3.0
      */
     @Override
@@ -383,13 +384,14 @@ public class ServletRequestWrapper implements ServletRequest {
      * The default behavior of this method is to return startAsync(Runnable) on
      * the wrapped request object.
      *
-     * @param servletRequest    The ServletRequest with which to initialise the
-     *                          asynchronous context
-     * @param servletResponse   The ServletResponse with which to initialise the
-     *                          asynchronous context
+     * @param servletRequest  The ServletRequest with which to initialise the
+     *                        asynchronous context
+     * @param servletResponse The ServletResponse with which to initialise the
+     *                        asynchronous context
      * @throws IllegalStateException If asynchronous processing is not supported
-     *         for this request or if the request is already in asynchronous
-     *         mode
+     *                               for this request or if the request is
+     *                               already in asynchronous
+     *                               mode
      * @since Servlet 3.0
      */
     @Override
@@ -433,6 +435,7 @@ public class ServletRequestWrapper implements ServletRequest {
 
     /**
      * TODO SERVLET3 - Add comments
+     * 
      * @param wrapped The request to compare to the wrapped request
      * @return <code>true</code> if the request wrapped by this wrapper (or
      *         series of wrappers) is the same as the supplied request,
@@ -451,6 +454,7 @@ public class ServletRequestWrapper implements ServletRequest {
 
     /**
      * TODO SERVLET3 - Add comments
+     * 
      * @param wrappedType The class to compare to the class of the wrapped
      *                    request
      * @return <code>true</code> if the request wrapped by this wrapper (or

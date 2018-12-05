@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -61,7 +59,8 @@ public interface HttpServletRequest extends ServletRequest {
      * <p>
      * Same as the value of the CGI variable AUTH_TYPE.
      *
-     * @return one of the static members BASIC_AUTH, FORM_AUTH, CLIENT_CERT_AUTH,
+     * @return one of the static members BASIC_AUTH, FORM_AUTH,
+     *         CLIENT_CERT_AUTH,
      *         DIGEST_AUTH (suitable for == comparison) or the
      *         container-specific string indicating the authentication scheme,
      *         or <code>null</code> if the request was not authenticated.
@@ -91,13 +90,14 @@ public interface HttpServletRequest extends ServletRequest {
      * an <code>IllegalArgumentException</code>.
      *
      * @param name
-     *            a <code>String</code> specifying the name of the header
+     *             a <code>String</code> specifying the name of the header
      * @return a <code>long</code> value representing the date specified in the
      *         header expressed as the number of milliseconds since January 1,
      *         1970 GMT, or -1 if the named header was not included with the
      *         request
      * @exception IllegalArgumentException
-     *                If the header value can't be converted to a date
+     *                                     If the header value can't be
+     *                                     converted to a date
      */
     public long getDateHeader(String name);
 
@@ -110,7 +110,7 @@ public interface HttpServletRequest extends ServletRequest {
      * method with any request header.
      *
      * @param name
-     *            a <code>String</code> specifying the header name
+     *             a <code>String</code> specifying the header name
      * @return a <code>String</code> containing the value of the requested
      *         header, or <code>null</code> if the request does not have a
      *         header of that name
@@ -130,8 +130,9 @@ public interface HttpServletRequest extends ServletRequest {
      * insensitive. You can use this method with any request header.
      *
      * @param name
-     *            a <code>String</code> specifying the header name
-     * @return an <code>Enumeration</code> containing the values of the requested
+     *             a <code>String</code> specifying the header name
+     * @return an <code>Enumeration</code> containing the values of the
+     *         requested
      *         header. If the request does not have any headers of that name
      *         return an empty enumeration. If the container does not allow
      *         access to header information, return null
@@ -161,12 +162,14 @@ public interface HttpServletRequest extends ServletRequest {
      * The header name is case insensitive.
      *
      * @param name
-     *            a <code>String</code> specifying the name of a request header
-     * @return an integer expressing the value of the request header or -1 if the
+     *             a <code>String</code> specifying the name of a request header
+     * @return an integer expressing the value of the request header or -1 if
+     *         the
      *         request doesn't have a header of this name
      * @exception NumberFormatException
-     *                If the header value can't be converted to an
-     *                <code>int</code>
+     *                                  If the header value can't be converted
+     *                                  to an
+     *                                  <code>int</code>
      */
     public int getIntHeader(String name);
 
@@ -256,7 +259,7 @@ public interface HttpServletRequest extends ServletRequest {
      * method returns <code>false</code>.
      *
      * @param role
-     *            a <code>String</code> specifying the name of the role
+     *             a <code>String</code> specifying the name of the role
      * @return a <code>boolean</code> indicating whether the user making this
      *         request belongs to a given role; <code>false</code> if the user
      *         has not been authenticated
@@ -363,9 +366,11 @@ public interface HttpServletRequest extends ServletRequest {
      * thrown.
      *
      * @param create
-     *            <code>true</code> to create a new session for this request if
-     *            necessary; <code>false</code> to return <code>null</code> if
-     *            there's no current session
+     *               <code>true</code> to create a new session for this request
+     *               if
+     *               necessary; <code>false</code> to return <code>null</code>
+     *               if
+     *               there's no current session
      * @return the <code>HttpSession</code> associated with this request or
      *         <code>null</code> if <code>create</code> is <code>false</code>
      *         and the request has no valid session
@@ -435,17 +440,21 @@ public interface HttpServletRequest extends ServletRequest {
      * Triggers the same authentication process as would be triggered if the
      * request is for a resource that is protected by a security constraint.
      *
-     * @param response  The response to use to return any authentication
-     *                  challenge
+     * @param response The response to use to return any authentication
+     *                 challenge
      * @return <code>true</code> if the user is successfully authenticated and
      *         <code>false</code> if not
      *
-     * @throws IOException if the authentication process attempted to read from
-     *         the request or write to the response and an I/O error occurred
+     * @throws IOException           if the authentication process attempted to
+     *                               read from
+     *                               the request or write to the response and an
+     *                               I/O error occurred
      * @throws IllegalStateException if the authentication process attempted to
-     *         write to the response after it had been committed
-     * @throws ServletException if the authentication failed and the caller is
-     *         expected to handle the failure
+     *                               write to the response after it had been
+     *                               committed
+     * @throws ServletException      if the authentication failed and the caller
+     *                               is
+     *                               expected to handle the failure
      * @since Servlet 3.0
      */
     public boolean authenticate(HttpServletResponse response)
@@ -455,15 +464,17 @@ public interface HttpServletRequest extends ServletRequest {
      * Authenticate the provided user name and password and then associated the
      * authenticated user with the request.
      *
-     * @param username  The user name to authenticate
-     * @param password  The password to use to authenticate the user
+     * @param username The user name to authenticate
+     * @param password The password to use to authenticate the user
      *
      * @throws ServletException
-     *             If any of {@link #getRemoteUser()},
-     *             {@link #getUserPrincipal()} or {@link #getAuthType()} are
-     *             non-null, if the configured authenticator does not support
-     *             user name and password authentication or if the
-     *             authentication fails
+     *                          If any of {@link #getRemoteUser()},
+     *                          {@link #getUserPrincipal()} or
+     *                          {@link #getAuthType()} are
+     *                          non-null, if the configured authenticator does
+     *                          not support
+     *                          user name and password authentication or if the
+     *                          authentication fails
      * @since Servlet 3.0
      */
     public void login(String username, String password) throws ServletException;
@@ -472,7 +483,7 @@ public interface HttpServletRequest extends ServletRequest {
      * Removes any authenticated user from the request.
      *
      * @throws ServletException
-     *             If the logout fails
+     *                          If the logout fails
      * @since Servlet 3.0
      */
     public void logout() throws ServletException;
@@ -482,16 +493,16 @@ public interface HttpServletRequest extends ServletRequest {
      *
      * @return A collection of all uploaded Parts.
      * @throws IOException
-     *             if an I/O error occurs
+     *                               if an I/O error occurs
      * @throws IllegalStateException
-     *             if size limits are exceeded or no multipart configuration is
-     *             provided
+     *                               if size limits are exceeded or no multipart
+     *                               configuration is
+     *                               provided
      * @throws ServletException
-     *             if the request is not multipart/form-data
+     *                               if the request is not multipart/form-data
      * @since Servlet 3.0
      */
-    public Collection<Part> getParts() throws IOException,
-            ServletException;
+    public Collection<Part> getParts() throws IOException, ServletException;
 
     /**
      * Gets the named Part or null if the Part does not exist. Triggers upload
@@ -501,15 +512,14 @@ public interface HttpServletRequest extends ServletRequest {
      *
      * @return The named Part or null if the Part does not exist
      * @throws IOException
-     *             if an I/O error occurs
+     *                               if an I/O error occurs
      * @throws IllegalStateException
-     *             if size limits are exceeded
+     *                               if size limits are exceeded
      * @throws ServletException
-     *             if the request is not multipart/form-data
+     *                               if the request is not multipart/form-data
      * @since Servlet 3.0
      */
-    public Part getPart(String name) throws IOException,
-            ServletException;
+    public Part getPart(String name) throws IOException, ServletException;
 
     /**
      * Start the HTTP upgrade process and pass the connection to the provided
@@ -519,18 +529,20 @@ public interface HttpServletRequest extends ServletRequest {
      * Protocol specific headers must have already been set before this method
      * is called.
      *
-     * @param <T>                     The type of the upgrade handler
+     * @param                         <T> The type of the upgrade handler
      * @param httpUpgradeHandlerClass The class that implements the upgrade
      *                                handler
      *
      * @return A newly created instance of the specified upgrade handler type
      *
      * @throws IOException
-     *             if an I/O error occurred during the upgrade
+     *                          if an I/O error occurred during the upgrade
      * @throws ServletException
-     *             if the given httpUpgradeHandlerClass fails to be instantiated
+     *                          if the given httpUpgradeHandlerClass fails to be
+     *                          instantiated
      * @since Servlet 3.1
      */
     public <T extends HttpUpgradeHandler> T upgrade(
-            Class<T> httpUpgradeHandlerClass) throws java.io.IOException, ServletException;
+            Class<T> httpUpgradeHandlerClass) throws java.io.IOException,
+            ServletException;
 }

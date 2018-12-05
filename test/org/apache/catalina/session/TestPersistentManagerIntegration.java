@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -113,18 +111,18 @@ public class TestPersistentManagerIntegration extends TomcatBaseTest {
         ctx.addValve(new PersistentValve());
         tomcat.start();
         Assert.assertEquals(manager.getActiveSessions(), 0);
-        Assert.assertTrue("No sessions managed", manager.getSessionIdsFull().isEmpty());
-        Assert.assertEquals(
-                "NO_SESSION",
-                getUrl(
-                        "http://localhost:" + getPort()
-                                + "/dummy?no_create_session=true").toString());
+        Assert.assertTrue("No sessions managed", manager.getSessionIdsFull()
+                .isEmpty());
+        Assert.assertEquals("NO_SESSION", getUrl("http://localhost:" + getPort()
+                + "/dummy?no_create_session=true").toString());
         Assert.assertEquals(manager.getActiveSessions(), 0);
-        Assert.assertTrue("No sessions where created", manager.getSessionIdsFull().isEmpty());
+        Assert.assertTrue("No sessions where created", manager
+                .getSessionIdsFull().isEmpty());
     }
 
     @Test
-    public void testCreateSessionAndPassivate() throws IOException, LifecycleException, ClassNotFoundException {
+    public void testCreateSessionAndPassivate() throws IOException,
+            LifecycleException, ClassNotFoundException {
 
         // Setup Tomcat instance
         Tomcat tomcat = getTomcatInstance();
@@ -144,14 +142,17 @@ public class TestPersistentManagerIntegration extends TomcatBaseTest {
         ctx.setManager(manager);
         ctx.addValve(new PersistentValve());
         tomcat.start();
-        Assert.assertEquals("No active sessions", manager.getActiveSessions(), 0);
-        Assert.assertTrue("No sessions managed", manager.getSessionIdsFull().isEmpty());
-        String sessionId = getUrl(
-                "http://localhost:" + getPort()
-                        + "/dummy?no_create_session=false").toString();
+        Assert.assertEquals("No active sessions", manager.getActiveSessions(),
+                0);
+        Assert.assertTrue("No sessions managed", manager.getSessionIdsFull()
+                .isEmpty());
+        String sessionId = getUrl("http://localhost:" + getPort()
+                + "/dummy?no_create_session=false").toString();
         Assert.assertNotNull("Session is stored", store.load(sessionId));
-        Assert.assertEquals("All sessions are passivated", manager.getActiveSessions(), 0);
-        Assert.assertTrue("One session was created", !manager.getSessionIdsFull().isEmpty());
+        Assert.assertEquals("All sessions are passivated", manager
+                .getActiveSessions(), 0);
+        Assert.assertTrue("One session was created", !manager
+                .getSessionIdsFull().isEmpty());
     }
 
     @Test
@@ -196,13 +197,15 @@ public class TestPersistentManagerIntegration extends TomcatBaseTest {
 
         manager.processPersistenceChecks();
         Assert.assertEquals(Arrays.asList(sessionId), store.getSavedIds());
-        Assert.assertEquals(lastAccessedTime, session.getLastAccessedTimeInternal());
+        Assert.assertEquals(lastAccessedTime, session
+                .getLastAccessedTimeInternal());
 
         // session was not accessed, so no save will be performed
         waitForClockUpdate();
         manager.processPersistenceChecks();
         Assert.assertEquals(Arrays.asList(sessionId), store.getSavedIds());
-        Assert.assertEquals(lastAccessedTime, session.getLastAccessedTimeInternal());
+        Assert.assertEquals(lastAccessedTime, session
+                .getLastAccessedTimeInternal());
 
         // access session
         session.access();
@@ -210,13 +213,13 @@ public class TestPersistentManagerIntegration extends TomcatBaseTest {
 
         // session was accessed, so it will be saved once again
         manager.processPersistenceChecks();
-        Assert.assertEquals(Arrays.asList(sessionId, sessionId),
-                store.getSavedIds());
+        Assert.assertEquals(Arrays.asList(sessionId, sessionId), store
+                .getSavedIds());
 
         // session was not accessed, so once again no save will happen
         manager.processPersistenceChecks();
-        Assert.assertEquals(Arrays.asList(sessionId, sessionId),
-                store.getSavedIds());
+        Assert.assertEquals(Arrays.asList(sessionId, sessionId), store
+                .getSavedIds());
     }
 
     private static class DummyServlet extends HttpServlet {
@@ -226,8 +229,8 @@ public class TestPersistentManagerIntegration extends TomcatBaseTest {
         @Override
         protected void doGet(HttpServletRequest req, HttpServletResponse resp)
                 throws ServletException, IOException {
-            boolean createSession = !Boolean.parseBoolean(req
-                            .getParameter("no_create_session"));
+            boolean createSession = !Boolean.parseBoolean(req.getParameter(
+                    "no_create_session"));
             HttpSession session = req.getSession(createSession);
             if (session == null) {
                 resp.getWriter().print("NO_SESSION");

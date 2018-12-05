@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -15,16 +13,14 @@
  * limitations under the License.
  */
 
-
 package org.apache.tomcat.util.descriptor.web;
 
 import java.io.Serializable;
 
-
 /**
  * Representation of a context initialization parameter that is configured
  * in the server configuration file, rather than the application deployment
- * descriptor.  This is convenient for establishing default values (which
+ * descriptor. This is convenient for establishing default values (which
  * may be configured to allow application overrides or not) without having
  * to modify the application deployment descriptor itself.
  *
@@ -35,7 +31,6 @@ public class ApplicationParameter implements Serializable {
     private static final long serialVersionUID = 1L;
 
     // ------------------------------------------------------------- Properties
-
 
     /**
      * The description of this environment entry.
@@ -50,7 +45,6 @@ public class ApplicationParameter implements Serializable {
         this.description = description;
     }
 
-
     /**
      * The name of this application parameter.
      */
@@ -63,7 +57,6 @@ public class ApplicationParameter implements Serializable {
     public void setName(String name) {
         this.name = name;
     }
-
 
     /**
      * Does this application parameter allow overrides by the application
@@ -79,7 +72,6 @@ public class ApplicationParameter implements Serializable {
         this.override = override;
     }
 
-
     /**
      * The value of this application parameter.
      */
@@ -94,7 +86,6 @@ public class ApplicationParameter implements Serializable {
     }
 
     // --------------------------------------------------------- Public Methods
-
 
     /**
      * Return a String representation of this object.
@@ -117,6 +108,5 @@ public class ApplicationParameter implements Serializable {
         return (sb.toString());
 
     }
-
 
 }

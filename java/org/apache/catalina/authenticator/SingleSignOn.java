@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -42,26 +40,28 @@ import org.apache.tomcat.util.res.StringManager;
  * A <strong>Valve</strong> that supports a "single sign on" user experience,
  * where the security identity of a user who successfully authenticates to one
  * web application is propagated to other web applications in the same
- * security domain.  For successful use, the following requirements must
+ * security domain. For successful use, the following requirements must
  * be met:
  * <ul>
  * <li>This Valve must be configured on the Container that represents a
- *     virtual host (typically an implementation of <code>Host</code>).</li>
+ * virtual host (typically an implementation of <code>Host</code>).</li>
  * <li>The <code>Realm</code> that contains the shared user and role
- *     information must be configured on the same Container (or a higher
- *     one), and not overridden at the web application level.</li>
+ * information must be configured on the same Container (or a higher
+ * one), and not overridden at the web application level.</li>
  * <li>The web applications themselves must use one of the standard
- *     Authenticators found in the
- *     <code>org.apache.catalina.authenticator</code> package.</li>
+ * Authenticators found in the
+ * <code>org.apache.catalina.authenticator</code> package.</li>
  * </ul>
  *
  * @author Craig R. McClanahan
  */
 public class SingleSignOn extends ValveBase {
 
-    private static final StringManager sm = StringManager.getManager(Constants.Package);
+    private static final StringManager sm = StringManager.getManager(
+            Constants.Package);
 
-    /* The engine at the top of the container hierarchy in which this SSO Valve
+    /*
+     * The engine at the top of the container hierarchy in which this SSO Valve
      * has been placed. It is used to get back to a session object from a
      * SingleSignOnSessionKey and is updated when the Valve starts and stops.
      */
@@ -73,14 +73,13 @@ public class SingleSignOn extends ValveBase {
         super(true);
     }
 
-
     // ----------------------------------------------------- Instance Variables
 
     /**
      * The cache of SingleSignOnEntry instances for authenticated Principals,
      * keyed by the cookie value that is used to select them.
      */
-    protected Map<String,SingleSignOnEntry> cache = new ConcurrentHashMap<>();
+    protected Map<String, SingleSignOnEntry> cache = new ConcurrentHashMap<>();
 
     /**
      * Indicates whether this valve should require a downstream Authenticator to
@@ -94,7 +93,6 @@ public class SingleSignOn extends ValveBase {
      */
     private String cookieDomain;
 
-
     // ------------------------------------------------------------- Properties
 
     /**
@@ -106,7 +104,6 @@ public class SingleSignOn extends ValveBase {
     public String getCookieDomain() {
         return cookieDomain;
     }
-
 
     /**
      * Sets the domain to be used for sso cookies.
@@ -121,7 +118,6 @@ public class SingleSignOn extends ValveBase {
         }
     }
 
-
     /**
      * Gets whether each request needs to be reauthenticated (by an
      * Authenticator downstream in the pipeline) to the security
@@ -129,20 +125,19 @@ public class SingleSignOn extends ValveBase {
      * to the request based on the presence of a valid SSO entry without
      * rechecking with the <code>Realm</code>.
      *
-     * @return  <code>true</code> if it is required that a downstream
-     *          Authenticator reauthenticate each request before calls to
-     *          <code>HttpServletRequest.setUserPrincipal()</code>
-     *          and <code>HttpServletRequest.setAuthType()</code> are made;
-     *          <code>false</code> if the <code>Valve</code> can itself make
-     *          those calls relying on the presence of a valid SingleSignOn
-     *          entry associated with the request.
+     * @return <code>true</code> if it is required that a downstream
+     *         Authenticator reauthenticate each request before calls to
+     *         <code>HttpServletRequest.setUserPrincipal()</code>
+     *         and <code>HttpServletRequest.setAuthType()</code> are made;
+     *         <code>false</code> if the <code>Valve</code> can itself make
+     *         those calls relying on the presence of a valid SingleSignOn
+     *         entry associated with the request.
      *
      * @see #setRequireReauthentication
      */
     public boolean getRequireReauthentication() {
         return requireReauthentication;
     }
-
 
     /**
      * Sets whether each request needs to be reauthenticated (by an
@@ -153,19 +148,19 @@ public class SingleSignOn extends ValveBase {
      * <p>
      * If this property is <code>false</code> (the default), this
      * <code>Valve</code> will bind a UserPrincipal and AuthType to the request
-     * if a valid SSO entry is associated with the request.  It will not notify
+     * if a valid SSO entry is associated with the request. It will not notify
      * the security <code>Realm</code> of the incoming request.
      * <p>
      * This property should be set to <code>true</code> if the overall server
      * configuration requires that the <code>Realm</code> reauthenticate each
-     * request thread.  An example of such a configuration would be one where
+     * request thread. An example of such a configuration would be one where
      * the <code>Realm</code> implementation provides security for both a
      * web tier and an associated EJB tier, and needs to set security
      * credentials on each request thread in order to support EJB access.
      * <p>
      * If this property is set to <code>true</code>, this Valve will set flags
      * on the request notifying the downstream Authenticator that the request
-     * is associated with an SSO session.  The Authenticator will then call its
+     * is associated with an SSO session. The Authenticator will then call its
      * {@link AuthenticatorBase#reauthenticateFromSSO reauthenticateFromSSO}
      * method to attempt to reauthenticate the request to the
      * <code>Realm</code>, using any credentials that were cached with this
@@ -174,13 +169,13 @@ public class SingleSignOn extends ValveBase {
      * The default value of this property is <code>false</code>, in order
      * to maintain backward compatibility with previous versions of Tomcat.
      *
-     * @param required  <code>true</code> if it is required that a downstream
-     *                  Authenticator reauthenticate each request before calls
-     *                  to  <code>HttpServletRequest.setUserPrincipal()</code>
-     *                  and <code>HttpServletRequest.setAuthType()</code> are
-     *                  made; <code>false</code> if the <code>Valve</code> can
-     *                  itself make those calls relying on the presence of a
-     *                  valid SingleSignOn entry associated with the request.
+     * @param required <code>true</code> if it is required that a downstream
+     *                 Authenticator reauthenticate each request before calls
+     *                 to <code>HttpServletRequest.setUserPrincipal()</code>
+     *                 and <code>HttpServletRequest.setAuthType()</code> are
+     *                 made; <code>false</code> if the <code>Valve</code> can
+     *                 itself make those calls relying on the presence of a
+     *                 valid SingleSignOn entry associated with the request.
      *
      * @see AuthenticatorBase#reauthenticateFromSSO
      */
@@ -188,32 +183,33 @@ public class SingleSignOn extends ValveBase {
         this.requireReauthentication = required;
     }
 
-
     // ---------------------------------------------------------- Valve Methods
 
     /**
      * Perform single-sign-on support processing for this request.
      *
-     * @param request The servlet request we are processing
+     * @param request  The servlet request we are processing
      * @param response The servlet response we are creating
      *
-     * @exception IOException if an input/output error occurs
+     * @exception IOException      if an input/output error occurs
      * @exception ServletException if a servlet error occurs
      */
     @Override
-    public void invoke(Request request, Response response)
-        throws IOException, ServletException {
+    public void invoke(Request request, Response response) throws IOException,
+            ServletException {
 
         request.removeNote(Constants.REQ_SSOID_NOTE);
 
         // Has a valid user already been authenticated?
         if (containerLog.isDebugEnabled()) {
-            containerLog.debug(sm.getString("singleSignOn.debug.invoke", request.getRequestURI()));
+            containerLog.debug(sm.getString("singleSignOn.debug.invoke", request
+                    .getRequestURI()));
         }
         if (request.getUserPrincipal() != null) {
             if (containerLog.isDebugEnabled()) {
-                containerLog.debug(sm.getString("singleSignOn.debug.hasPrincipal",
-                        request.getUserPrincipal().getName()));
+                containerLog.debug(sm.getString(
+                        "singleSignOn.debug.hasPrincipal", request
+                                .getUserPrincipal().getName()));
             }
             getNext().invoke(request, response);
             return;
@@ -227,7 +223,8 @@ public class SingleSignOn extends ValveBase {
         Cookie cookies[] = request.getCookies();
         if (cookies != null) {
             for (int i = 0; i < cookies.length; i++) {
-                if (Constants.SINGLE_SIGN_ON_COOKIE.equals(cookies[i].getName())) {
+                if (Constants.SINGLE_SIGN_ON_COOKIE.equals(cookies[i]
+                        .getName())) {
                     cookie = cookies[i];
                     break;
                 }
@@ -235,7 +232,8 @@ public class SingleSignOn extends ValveBase {
         }
         if (cookie == null) {
             if (containerLog.isDebugEnabled()) {
-                containerLog.debug(sm.getString("singleSignOn.debug.cookieNotFound"));
+                containerLog.debug(sm.getString(
+                        "singleSignOn.debug.cookieNotFound"));
             }
             getNext().invoke(request, response);
             return;
@@ -249,9 +247,10 @@ public class SingleSignOn extends ValveBase {
         SingleSignOnEntry entry = cache.get(cookie.getValue());
         if (entry != null) {
             if (containerLog.isDebugEnabled()) {
-                containerLog.debug(sm.getString("singleSignOn.debug.principalFound",
-                        entry.getPrincipal() != null ? entry.getPrincipal().getName() : "",
-                        entry.getAuthType()));
+                containerLog.debug(sm.getString(
+                        "singleSignOn.debug.principalFound", entry
+                                .getPrincipal() != null ? entry.getPrincipal()
+                                        .getName() : "", entry.getAuthType()));
             }
             request.setNote(Constants.REQ_SSOID_NOTE, cookie.getValue());
             // Only set security elements if reauthentication is not required
@@ -261,8 +260,9 @@ public class SingleSignOn extends ValveBase {
             }
         } else {
             if (containerLog.isDebugEnabled()) {
-                containerLog.debug(sm.getString("singleSignOn.debug.principalNotFound",
-                        cookie.getValue()));
+                containerLog.debug(sm.getString(
+                        "singleSignOn.debug.principalNotFound", cookie
+                                .getValue()));
             }
             // No need to return a valid SSO session ID
             cookie.setValue("REMOVE");
@@ -279,8 +279,8 @@ public class SingleSignOn extends ValveBase {
             // not security sensitive, ensure that expectations for secure and
             // httpOnly are met
             cookie.setSecure(request.isSecure());
-            if (request.getServletContext().getSessionCookieConfig().isHttpOnly() ||
-                    request.getContext().getUseHttpOnly()) {
+            if (request.getServletContext().getSessionCookieConfig()
+                    .isHttpOnly() || request.getContext().getUseHttpOnly()) {
                 cookie.setHttpOnly(true);
             }
 
@@ -290,7 +290,6 @@ public class SingleSignOn extends ValveBase {
         // Invoke the next Valve in our pipeline
         getNext().invoke(request, response);
     }
-
 
     // ------------------------------------------------------ Protected Methods
 
@@ -313,12 +312,13 @@ public class SingleSignOn extends ValveBase {
         // If so, we'll just remove the expired session from the SSO. If the
         // session was logged out, we'll log out of all session associated with
         // the SSO.
-        if (((session.getMaxInactiveInterval() > 0)
-            && (session.getIdleTimeInternal() >= session.getMaxInactiveInterval() * 1000))
-            || (!session.getManager().getContext().getState().isAvailable())) {
+        if (((session.getMaxInactiveInterval() > 0) && (session
+                .getIdleTimeInternal() >= session.getMaxInactiveInterval()
+                        * 1000)) || (!session.getManager().getContext()
+                                .getState().isAvailable())) {
             if (containerLog.isDebugEnabled()) {
-                containerLog.debug(sm.getString("singleSignOn.debug.sessionTimeout",
-                        ssoId, session));
+                containerLog.debug(sm.getString(
+                        "singleSignOn.debug.sessionTimeout", ssoId, session));
             }
             removeSession(ssoId, session);
         } else {
@@ -326,8 +326,8 @@ public class SingleSignOn extends ValveBase {
             // Deregister this single session id, invalidating
             // associated sessions
             if (containerLog.isDebugEnabled()) {
-                containerLog.debug(sm.getString("singleSignOn.debug.sessionLogout",
-                        ssoId, session));
+                containerLog.debug(sm.getString(
+                        "singleSignOn.debug.sessionLogout", ssoId, session));
             }
             // First remove the session that we know has expired / been logged
             // out since it has already been removed from its Manager and, if
@@ -342,12 +342,11 @@ public class SingleSignOn extends ValveBase {
         }
     }
 
-
     /**
      * Associate the specified single sign on identifier with the
      * specified Session.
      *
-     * @param ssoId Single sign on identifier
+     * @param ssoId   Single sign on identifier
      * @param session Session to be associated
      *
      * @return <code>true</code> if the session was associated to the given SSO
@@ -357,8 +356,8 @@ public class SingleSignOn extends ValveBase {
         SingleSignOnEntry sso = cache.get(ssoId);
         if (sso == null) {
             if (containerLog.isDebugEnabled()) {
-                containerLog.debug(sm.getString("singleSignOn.debug.associateFail",
-                        ssoId, session));
+                containerLog.debug(sm.getString(
+                        "singleSignOn.debug.associateFail", ssoId, session));
             }
             return false;
         } else {
@@ -370,7 +369,6 @@ public class SingleSignOn extends ValveBase {
             return true;
         }
     }
-
 
     /**
      * Deregister the specified single sign on identifier, and invalidate
@@ -385,7 +383,8 @@ public class SingleSignOn extends ValveBase {
 
         if (sso == null) {
             if (containerLog.isDebugEnabled()) {
-                containerLog.debug(sm.getString("singleSignOn.debug.deregisterFail", ssoId));
+                containerLog.debug(sm.getString(
+                        "singleSignOn.debug.deregisterFail", ssoId));
             }
             return;
         }
@@ -394,12 +393,14 @@ public class SingleSignOn extends ValveBase {
         Set<SingleSignOnSessionKey> ssoKeys = sso.findSessions();
         if (ssoKeys.size() == 0) {
             if (containerLog.isDebugEnabled()) {
-                containerLog.debug(sm.getString("singleSignOn.debug.deregisterNone", ssoId));
+                containerLog.debug(sm.getString(
+                        "singleSignOn.debug.deregisterNone", ssoId));
             }
         }
         for (SingleSignOnSessionKey ssoKey : ssoKeys) {
             if (containerLog.isDebugEnabled()) {
-                containerLog.debug(sm.getString("singleSignOn.debug.deregister", ssoKey, ssoId));
+                containerLog.debug(sm.getString("singleSignOn.debug.deregister",
+                        ssoKey, ssoId));
             }
             // Invalidate this session
             expire(ssoKey);
@@ -410,41 +411,45 @@ public class SingleSignOn extends ValveBase {
         // in the cache
     }
 
-
     private void expire(SingleSignOnSessionKey key) {
         if (engine == null) {
-            containerLog.warn(sm.getString("singleSignOn.sessionExpire.engineNull", key));
+            containerLog.warn(sm.getString(
+                    "singleSignOn.sessionExpire.engineNull", key));
             return;
         }
         Container host = engine.findChild(key.getHostName());
         if (host == null) {
-            containerLog.warn(sm.getString("singleSignOn.sessionExpire.hostNotFound", key));
+            containerLog.warn(sm.getString(
+                    "singleSignOn.sessionExpire.hostNotFound", key));
             return;
         }
         Context context = (Context) host.findChild(key.getContextName());
         if (context == null) {
-            containerLog.warn(sm.getString("singleSignOn.sessionExpire.contextNotFound", key));
+            containerLog.warn(sm.getString(
+                    "singleSignOn.sessionExpire.contextNotFound", key));
             return;
         }
         Manager manager = context.getManager();
         if (manager == null) {
-            containerLog.warn(sm.getString("singleSignOn.sessionExpire.managerNotFound", key));
+            containerLog.warn(sm.getString(
+                    "singleSignOn.sessionExpire.managerNotFound", key));
             return;
         }
         Session session = null;
         try {
             session = manager.findSession(key.getSessionId());
         } catch (IOException e) {
-            containerLog.warn(sm.getString("singleSignOn.sessionExpire.managerError", key), e);
+            containerLog.warn(sm.getString(
+                    "singleSignOn.sessionExpire.managerError", key), e);
             return;
         }
         if (session == null) {
-            containerLog.warn(sm.getString("singleSignOn.sessionExpire.sessionNotFound", key));
+            containerLog.warn(sm.getString(
+                    "singleSignOn.sessionExpire.sessionNotFound", key));
             return;
         }
         session.expire();
     }
-
 
     /**
      * Attempts reauthentication to the given <code>Realm</code> using
@@ -458,17 +463,17 @@ public class SingleSignOn extends ValveBase {
      * {@link Request#setUserPrincipal Request.setUserPrincipal()}
      * </p>
      *
-     * @param ssoId     identifier of SingleSignOn session with which the
-     *                  caller is associated
-     * @param realm     Realm implementation against which the caller is to
-     *                  be authenticated
-     * @param request   the request that needs to be authenticated
+     * @param ssoId   identifier of SingleSignOn session with which the
+     *                caller is associated
+     * @param realm   Realm implementation against which the caller is to
+     *                be authenticated
+     * @param request the request that needs to be authenticated
      *
-     * @return  <code>true</code> if reauthentication was successful,
-     *          <code>false</code> otherwise.
+     * @return <code>true</code> if reauthentication was successful,
+     *         <code>false</code> otherwise.
      */
     protected boolean reauthenticate(String ssoId, Realm realm,
-                                     Request request) {
+            Request request) {
 
         if (ssoId == null || realm == null) {
             return false;
@@ -481,8 +486,8 @@ public class SingleSignOn extends ValveBase {
 
             String username = entry.getUsername();
             if (username != null) {
-                Principal reauthPrincipal =
-                        realm.authenticate(username, entry.getPassword());
+                Principal reauthPrincipal = realm.authenticate(username, entry
+                        .getPassword());
                 if (reauthPrincipal != null) {
                     reauthenticated = true;
                     // Bind the authorization credentials to the request
@@ -495,29 +500,29 @@ public class SingleSignOn extends ValveBase {
         return reauthenticated;
     }
 
-
     /**
      * Register the specified Principal as being associated with the specified
      * value for the single sign on identifier.
      *
-     * @param ssoId Single sign on identifier to register
+     * @param ssoId     Single sign on identifier to register
      * @param principal Associated user principal that is identified
-     * @param authType Authentication type used to authenticate this
-     *  user principal
-     * @param username Username used to authenticate this user
-     * @param password Password used to authenticate this user
+     * @param authType  Authentication type used to authenticate this
+     *                  user principal
+     * @param username  Username used to authenticate this user
+     * @param password  Password used to authenticate this user
      */
     protected void register(String ssoId, Principal principal, String authType,
-                  String username, String password) {
+            String username, String password) {
 
         if (containerLog.isDebugEnabled()) {
-            containerLog.debug(sm.getString("singleSignOn.debug.register", ssoId,
-                    principal != null ? principal.getName() : "", authType));
+            containerLog.debug(sm.getString("singleSignOn.debug.register",
+                    ssoId, principal != null ? principal.getName() : "",
+                    authType));
         }
 
-        cache.put(ssoId, new SingleSignOnEntry(principal, authType, username, password));
+        cache.put(ssoId, new SingleSignOnEntry(principal, authType, username,
+                password));
     }
-
 
     /**
      * Updates any <code>SingleSignOnEntry</code> found under key
@@ -527,7 +532,7 @@ public class SingleSignOn extends ValveBase {
      * established without a username/password combination (i.e. established
      * following DIGEST or CLIENT_CERT authentication) to be updated with
      * a username and password if one becomes available through a subsequent
-     * BASIC or FORM authentication.  The SSO entry will then be usable for
+     * BASIC or FORM authentication. The SSO entry will then be usable for
      * reauthentication.
      * <p>
      * <b>NOTE:</b> Only updates the SSO entry if a call to
@@ -548,12 +553,13 @@ public class SingleSignOn extends ValveBase {
      *         <code>false</code>
      */
     protected boolean update(String ssoId, Principal principal, String authType,
-                          String username, String password) {
+            String username, String password) {
 
         SingleSignOnEntry sso = cache.get(ssoId);
         if (sso != null && !sso.getCanReauthenticate()) {
             if (containerLog.isDebugEnabled()) {
-                containerLog.debug(sm.getString("singleSignOn.debug.update", ssoId, authType));
+                containerLog.debug(sm.getString("singleSignOn.debug.update",
+                        ssoId, authType));
             }
 
             sso.updateCredentials(principal, authType, username, password);
@@ -562,18 +568,19 @@ public class SingleSignOn extends ValveBase {
         return false;
     }
 
-
     /**
-     * Remove a single Session from a SingleSignOn.  Called when
+     * Remove a single Session from a SingleSignOn. Called when
      * a session is timed out and no longer active.
      *
-     * @param ssoId Single sign on identifier from which to remove the session.
+     * @param ssoId   Single sign on identifier from which to remove the
+     *                session.
      * @param session the session to be removed.
      */
     protected void removeSession(String ssoId, Session session) {
 
         if (containerLog.isDebugEnabled()) {
-            containerLog.debug(sm.getString("singleSignOn.debug.removeSession", session, ssoId));
+            containerLog.debug(sm.getString("singleSignOn.debug.removeSession",
+                    session, ssoId));
         }
 
         // Get a reference to the SingleSignOn
@@ -592,11 +599,9 @@ public class SingleSignOn extends ValveBase {
         }
     }
 
-
     protected SessionListener getSessionListener(String ssoId) {
         return new SingleSignOnListener(ssoId);
     }
-
 
     @Override
     protected synchronized void startInternal() throws LifecycleException {
@@ -609,7 +614,6 @@ public class SingleSignOn extends ValveBase {
         }
         super.startInternal();
     }
-
 
     @Override
     protected synchronized void stopInternal() throws LifecycleException {

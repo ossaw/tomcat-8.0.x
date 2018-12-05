@@ -1,18 +1,16 @@
 /*
- *  Licensed to the Apache Software Foundation (ASF) under one or more
- *  contributor license agreements.  See the NOTICE file distributed with
- *  this work for additional information regarding copyright ownership.
- *  The ASF licenses this file to You under the Apache License, Version 2.0
- *  (the "License"); you may not use this file except in compliance with
- *  the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements. See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.apache.coyote.http11;
 
@@ -40,18 +38,17 @@ import org.apache.tomcat.util.net.SecureNio2Channel;
 import org.apache.tomcat.util.net.SocketStatus;
 import org.apache.tomcat.util.net.SocketWrapper;
 
-
 /**
  * Processes HTTP requests.
  */
 public class Http11Nio2Processor extends AbstractHttp11Processor<Nio2Channel> {
 
     private static final Log log = LogFactory.getLog(Http11Nio2Processor.class);
+
     @Override
     protected Log getLog() {
         return log;
     }
-
 
     /**
      * SSL information.
@@ -60,21 +57,22 @@ public class Http11Nio2Processor extends AbstractHttp11Processor<Nio2Channel> {
 
     // ----------------------------------------------------------- Constructors
 
-
-    public Http11Nio2Processor(int maxHttpHeaderSize, Nio2Endpoint endpoint, int maxTrailerSize,
-            Set<String> allowedTrailerHeaders, int maxExtensionSize, int maxSwallowSize) {
+    public Http11Nio2Processor(int maxHttpHeaderSize, Nio2Endpoint endpoint,
+            int maxTrailerSize, Set<String> allowedTrailerHeaders,
+            int maxExtensionSize, int maxSwallowSize) {
 
         super(endpoint);
 
         inputBuffer = new InternalNio2InputBuffer(request, maxHttpHeaderSize);
         request.setInputBuffer(inputBuffer);
 
-        outputBuffer = new InternalNio2OutputBuffer(response, maxHttpHeaderSize);
+        outputBuffer = new InternalNio2OutputBuffer(response,
+                maxHttpHeaderSize);
         response.setOutputBuffer(outputBuffer);
 
-        initializeFilters(maxTrailerSize, allowedTrailerHeaders, maxExtensionSize, maxSwallowSize);
+        initializeFilters(maxTrailerSize, allowedTrailerHeaders,
+                maxExtensionSize, maxSwallowSize);
     }
-
 
     // ----------------------------------------------------- Instance Variables
 
@@ -83,12 +81,10 @@ public class Http11Nio2Processor extends AbstractHttp11Processor<Nio2Channel> {
      */
     protected Nio2Endpoint.SendfileData sendfileData = null;
 
-
     // --------------------------------------------------------- Public Methods
 
     @Override
-    public SocketState event(SocketStatus status)
-        throws IOException {
+    public SocketState event(SocketStatus status) throws IOException {
 
         long soTimeout = endpoint.getSoTimeout();
 
@@ -131,7 +127,7 @@ public class Http11Nio2Processor extends AbstractHttp11Processor<Nio2Channel> {
 
         rp.setStage(org.apache.coyote.Constants.STAGE_ENDED);
 
-        if (getErrorState().isError() || status==SocketStatus.STOP) {
+        if (getErrorState().isError() || status == SocketStatus.STOP) {
             return SocketState.CLOSED;
         } else if (!comet) {
             if (keepAlive) {
@@ -155,7 +151,8 @@ public class Http11Nio2Processor extends AbstractHttp11Processor<Nio2Channel> {
     @Override
     public SocketState asyncDispatch(SocketStatus status) {
         SocketState state = super.asyncDispatch(status);
-        if (state == SocketState.OPEN && ((InternalNio2InputBuffer) inputBuffer).isPending()) {
+        if (state == SocketState.OPEN && ((InternalNio2InputBuffer) inputBuffer)
+                .isPending()) {
             // Following async processing, a read is still pending, so
             // keep the processor associated
             return SocketState.LONG;
@@ -174,11 +171,10 @@ public class Http11Nio2Processor extends AbstractHttp11Processor<Nio2Channel> {
         }
     }
 
-
     @Override
     protected void resetTimeouts() {
-        if (!getErrorState().isError() && socketWrapper != null &&
-                asyncStateMachine.isAsyncDispatching()) {
+        if (!getErrorState().isError() && socketWrapper != null
+                && asyncStateMachine.isAsyncDispatching()) {
             long soTimeout = endpoint.getSoTimeout();
 
             //reset the timeout
@@ -190,12 +186,10 @@ public class Http11Nio2Processor extends AbstractHttp11Processor<Nio2Channel> {
         }
     }
 
-
     @Override
     protected boolean disableKeepAlive() {
         return false;
     }
-
 
     @Override
     protected void setRequestLineReadTimeout() throws IOException {
@@ -217,15 +211,14 @@ public class Http11Nio2Processor extends AbstractHttp11Processor<Nio2Channel> {
         // NO-OP
     }
 
-
     @Override
     protected boolean handleIncompleteRequestLineRead() {
         // Haven't finished reading the request so keep the socket
         // open
         openSocket = true;
         // Check to see if we have read any of the request line yet
-        if (((InternalNio2InputBuffer)
-                inputBuffer).getParsingRequestLinePhase() < 1) {
+        if (((InternalNio2InputBuffer) inputBuffer)
+                .getParsingRequestLinePhase() < 1) {
             if (socketWrapper.getLastAccess() > -1 || keptAlive) {
                 // Haven't read the request line and have previously processed a
                 // request. Must be keep-alive. Make sure poller uses keepAlive.
@@ -252,16 +245,14 @@ public class Http11Nio2Processor extends AbstractHttp11Processor<Nio2Channel> {
         return true;
     }
 
-
     @Override
     protected void setSocketTimeout(int timeout) throws IOException {
         socketWrapper.setTimeout(timeout);
     }
 
-
     @Override
     protected void setCometTimeouts(SocketWrapper<Nio2Channel> socketWrapper) {
-        if (socketWrapper != null)  {
+        if (socketWrapper != null) {
             socketWrapper.setComet(comet);
             if (comet) {
                 Integer comettimeout = (Integer) request.getAttribute(
@@ -273,33 +264,34 @@ public class Http11Nio2Processor extends AbstractHttp11Processor<Nio2Channel> {
         }
     }
 
-
     @Override
-    protected boolean breakKeepAliveLoop(SocketWrapper<Nio2Channel> socketWrapper) {
+    protected boolean breakKeepAliveLoop(
+            SocketWrapper<Nio2Channel> socketWrapper) {
         openSocket = keepAlive;
         // Do sendfile as needed: add socket to sendfile and end
         if (sendfileData != null && !getErrorState().isError()) {
-            ((Nio2Endpoint.Nio2SocketWrapper) socketWrapper).setSendfileData(sendfileData);
+            ((Nio2Endpoint.Nio2SocketWrapper) socketWrapper).setSendfileData(
+                    sendfileData);
             sendfileData.keepAlive = keepAlive;
             switch (((Nio2Endpoint) endpoint).processSendfile(
                     (Nio2Endpoint.Nio2SocketWrapper) socketWrapper)) {
-            case DONE:
-                return false;
-            case PENDING:
-                sendfileInProgress = true;
-                return true;
-            case ERROR:
-                // Write failed
-                if (log.isDebugEnabled()) {
-                    log.debug(sm.getString("http11processor.sendfile.error"));
-                }
-                setErrorState(ErrorState.CLOSE_NOW, null);
-                return true;
+                case DONE:
+                    return false;
+                case PENDING:
+                    sendfileInProgress = true;
+                    return true;
+                case ERROR:
+                    // Write failed
+                    if (log.isDebugEnabled()) {
+                        log.debug(sm.getString(
+                                "http11processor.sendfile.error"));
+                    }
+                    setErrorState(ErrorState.CLOSE_NOW, null);
+                    return true;
             }
         }
         return false;
     }
-
 
     @Override
     public void recycleInternal() {
@@ -307,243 +299,269 @@ public class Http11Nio2Processor extends AbstractHttp11Processor<Nio2Channel> {
         sendfileData = null;
     }
 
-
     // ----------------------------------------------------- ActionHook Methods
-
 
     /**
      * Send an action to the connector.
      *
      * @param actionCode Type of the action
-     * @param param Action parameter
+     * @param param      Action parameter
      */
     @Override
     @SuppressWarnings("incomplete-switch") // Other cases are handled by action()
     public void actionInternal(ActionCode actionCode, Object param) {
 
         switch (actionCode) {
-        case REQ_HOST_ADDR_ATTRIBUTE: {
-            if (socketWrapper == null || socketWrapper.getSocket() == null) {
-                request.remoteAddr().recycle();
-            } else {
-                if (socketWrapper.getRemoteAddr() == null) {
-                    InetAddress inetAddr = null;
-                    try {
-                        inetAddr = ((InetSocketAddress) socketWrapper.getSocket().getIOChannel().getRemoteAddress()).getAddress();
-                    } catch (IOException e) {
-                        // Ignore
+            case REQ_HOST_ADDR_ATTRIBUTE: {
+                if (socketWrapper == null || socketWrapper
+                        .getSocket() == null) {
+                    request.remoteAddr().recycle();
+                } else {
+                    if (socketWrapper.getRemoteAddr() == null) {
+                        InetAddress inetAddr = null;
+                        try {
+                            inetAddr = ((InetSocketAddress) socketWrapper
+                                    .getSocket().getIOChannel()
+                                    .getRemoteAddress()).getAddress();
+                        } catch (IOException e) {
+                            // Ignore
+                        }
+                        if (inetAddr != null) {
+                            socketWrapper.setRemoteAddr(inetAddr
+                                    .getHostAddress());
+                        }
                     }
-                    if (inetAddr != null) {
-                        socketWrapper.setRemoteAddr(inetAddr.getHostAddress());
-                    }
+                    request.remoteAddr().setString(socketWrapper
+                            .getRemoteAddr());
                 }
-                request.remoteAddr().setString(socketWrapper.getRemoteAddr());
+                break;
             }
-            break;
-        }
-        case REQ_LOCAL_NAME_ATTRIBUTE: {
-            if (socketWrapper == null || socketWrapper.getSocket() == null) {
-                request.localName().recycle();
-            } else {
-                if (socketWrapper.getLocalName() == null) {
-                    InetAddress inetAddr = null;
-                    try {
-                        inetAddr = ((InetSocketAddress) socketWrapper.getSocket().getIOChannel().getLocalAddress()).getAddress();
-                    } catch (IOException e) {
-                        // Ignore
+            case REQ_LOCAL_NAME_ATTRIBUTE: {
+                if (socketWrapper == null || socketWrapper
+                        .getSocket() == null) {
+                    request.localName().recycle();
+                } else {
+                    if (socketWrapper.getLocalName() == null) {
+                        InetAddress inetAddr = null;
+                        try {
+                            inetAddr = ((InetSocketAddress) socketWrapper
+                                    .getSocket().getIOChannel()
+                                    .getLocalAddress()).getAddress();
+                        } catch (IOException e) {
+                            // Ignore
+                        }
+                        if (inetAddr != null) {
+                            socketWrapper.setLocalName(inetAddr.getHostName());
+                        }
                     }
-                    if (inetAddr != null) {
-                        socketWrapper.setLocalName(inetAddr.getHostName());
-                    }
+                    request.localName().setString(socketWrapper.getLocalName());
                 }
-                request.localName().setString(socketWrapper.getLocalName());
+                break;
             }
-            break;
-        }
-        case REQ_HOST_ATTRIBUTE: {
-            if (socketWrapper == null || socketWrapper.getSocket() == null) {
-                request.remoteHost().recycle();
-            } else {
-                if (socketWrapper.getRemoteHost() == null) {
-                    InetAddress inetAddr = null;
-                    try {
-                        inetAddr = ((InetSocketAddress) socketWrapper.getSocket().getIOChannel().getRemoteAddress()).getAddress();
-                    } catch (IOException e) {
-                        // Ignore
-                    }
-                    if (inetAddr != null) {
-                        socketWrapper.setRemoteHost(inetAddr.getHostName());
-                    }
+            case REQ_HOST_ATTRIBUTE: {
+                if (socketWrapper == null || socketWrapper
+                        .getSocket() == null) {
+                    request.remoteHost().recycle();
+                } else {
                     if (socketWrapper.getRemoteHost() == null) {
-                        if (socketWrapper.getRemoteAddr() == null &&
-                                inetAddr != null) {
-                            socketWrapper.setRemoteAddr(inetAddr.getHostAddress());
+                        InetAddress inetAddr = null;
+                        try {
+                            inetAddr = ((InetSocketAddress) socketWrapper
+                                    .getSocket().getIOChannel()
+                                    .getRemoteAddress()).getAddress();
+                        } catch (IOException e) {
+                            // Ignore
                         }
-                        if (socketWrapper.getRemoteAddr() != null) {
-                            socketWrapper.setRemoteHost(socketWrapper.getRemoteAddr());
+                        if (inetAddr != null) {
+                            socketWrapper.setRemoteHost(inetAddr.getHostName());
+                        }
+                        if (socketWrapper.getRemoteHost() == null) {
+                            if (socketWrapper.getRemoteAddr() == null
+                                    && inetAddr != null) {
+                                socketWrapper.setRemoteAddr(inetAddr
+                                        .getHostAddress());
+                            }
+                            if (socketWrapper.getRemoteAddr() != null) {
+                                socketWrapper.setRemoteHost(socketWrapper
+                                        .getRemoteAddr());
+                            }
                         }
                     }
+                    request.remoteHost().setString(socketWrapper
+                            .getRemoteHost());
                 }
-                request.remoteHost().setString(socketWrapper.getRemoteHost());
+                break;
             }
-            break;
-        }
-        case REQ_LOCAL_ADDR_ATTRIBUTE: {
-            if (socketWrapper == null || socketWrapper.getSocket() == null) {
-                request.localAddr().recycle();
-            } else {
-                if (socketWrapper.getLocalAddr() == null) {
-                    try {
-                        socketWrapper.setLocalAddr(
-                                ((InetSocketAddress) socketWrapper.getSocket().getIOChannel().getLocalAddress()).getAddress().getHostAddress());
-                    } catch (IOException e) {
-                        // Ignore
+            case REQ_LOCAL_ADDR_ATTRIBUTE: {
+                if (socketWrapper == null || socketWrapper
+                        .getSocket() == null) {
+                    request.localAddr().recycle();
+                } else {
+                    if (socketWrapper.getLocalAddr() == null) {
+                        try {
+                            socketWrapper.setLocalAddr(
+                                    ((InetSocketAddress) socketWrapper
+                                            .getSocket().getIOChannel()
+                                            .getLocalAddress()).getAddress()
+                                                    .getHostAddress());
+                        } catch (IOException e) {
+                            // Ignore
+                        }
                     }
+                    request.localAddr().setString(socketWrapper.getLocalAddr());
                 }
-                request.localAddr().setString(socketWrapper.getLocalAddr());
+                break;
             }
-            break;
-        }
-        case REQ_REMOTEPORT_ATTRIBUTE: {
-            if (socketWrapper == null || socketWrapper.getSocket() == null) {
-                request.setRemotePort(0);
-            } else {
-                if (socketWrapper.getRemotePort() == -1) {
-                    try {
-                        socketWrapper.setRemotePort(((InetSocketAddress) socketWrapper.getSocket().getIOChannel().getRemoteAddress()).getPort());
-                    } catch (IOException e) {
-                        // Ignore
+            case REQ_REMOTEPORT_ATTRIBUTE: {
+                if (socketWrapper == null || socketWrapper
+                        .getSocket() == null) {
+                    request.setRemotePort(0);
+                } else {
+                    if (socketWrapper.getRemotePort() == -1) {
+                        try {
+                            socketWrapper.setRemotePort(
+                                    ((InetSocketAddress) socketWrapper
+                                            .getSocket().getIOChannel()
+                                            .getRemoteAddress()).getPort());
+                        } catch (IOException e) {
+                            // Ignore
+                        }
                     }
+                    request.setRemotePort(socketWrapper.getRemotePort());
                 }
-                request.setRemotePort(socketWrapper.getRemotePort());
+                break;
             }
-            break;
-        }
-        case REQ_LOCALPORT_ATTRIBUTE: {
-            if (socketWrapper == null || socketWrapper.getSocket() == null) {
-                request.setLocalPort(0);
-            } else {
-                if (socketWrapper.getLocalPort() == -1) {
-                    try {
-                        socketWrapper.setLocalPort(((InetSocketAddress) socketWrapper.getSocket().getIOChannel().getLocalAddress()).getPort());
-                    } catch (IOException e) {
-                        // Ignore
+            case REQ_LOCALPORT_ATTRIBUTE: {
+                if (socketWrapper == null || socketWrapper
+                        .getSocket() == null) {
+                    request.setLocalPort(0);
+                } else {
+                    if (socketWrapper.getLocalPort() == -1) {
+                        try {
+                            socketWrapper.setLocalPort(
+                                    ((InetSocketAddress) socketWrapper
+                                            .getSocket().getIOChannel()
+                                            .getLocalAddress()).getPort());
+                        } catch (IOException e) {
+                            // Ignore
+                        }
                     }
+                    request.setLocalPort(socketWrapper.getLocalPort());
                 }
-                request.setLocalPort(socketWrapper.getLocalPort());
+                break;
             }
-            break;
-        }
-        case REQ_SSL_ATTRIBUTE: {
-            try {
-                if (sslSupport != null) {
-                    Object sslO = sslSupport.getCipherSuite();
-                    if (sslO != null) {
-                        request.setAttribute
-                            (SSLSupport.CIPHER_SUITE_KEY, sslO);
-                    }
-                    sslO = sslSupport.getPeerCertificateChain(false);
-                    if (sslO != null) {
-                        request.setAttribute
-                            (SSLSupport.CERTIFICATE_KEY, sslO);
-                    }
-                    sslO = sslSupport.getKeySize();
-                    if (sslO != null) {
-                        request.setAttribute
-                            (SSLSupport.KEY_SIZE_KEY, sslO);
-                    }
-                    sslO = sslSupport.getSessionId();
-                    if (sslO != null) {
-                        request.setAttribute
-                            (SSLSupport.SESSION_ID_KEY, sslO);
-                    }
-                    request.setAttribute(SSLSupport.SESSION_MGR, sslSupport);
-                }
-            } catch (Exception e) {
-                log.warn(sm.getString("http11processor.socket.ssl"), e);
-            }
-            break;
-        }
-        case REQ_SSL_CERTIFICATE: {
-            if (sslSupport != null && socketWrapper.getSocket() != null) {
-                /*
-                 * Consume and buffer the request body, so that it does not
-                 * interfere with the client's handshake messages
-                 */
-                InputFilter[] inputFilters = inputBuffer.getFilters();
-                ((BufferedInputFilter) inputFilters[Constants.BUFFERED_FILTER])
-                    .setLimit(maxSavePostSize);
-                inputBuffer.addActiveFilter
-                    (inputFilters[Constants.BUFFERED_FILTER]);
-                SecureNio2Channel sslChannel = (SecureNio2Channel) socketWrapper.getSocket();
-                SSLEngine engine = sslChannel.getSslEngine();
-                if (!engine.getNeedClientAuth()) {
-                    // Need to re-negotiate SSL connection
-                    engine.setNeedClientAuth(true);
-                    try {
-                        sslChannel.rehandshake();
-                        sslSupport = ((Nio2Endpoint)endpoint).getHandler()
-                                .getSslImplementation().getSSLSupport(
-                                        engine.getSession());
-                    } catch (IOException ioe) {
-                        log.warn(sm.getString("http11processor.socket.sslreneg"), ioe);
-                    }
-                }
-
+            case REQ_SSL_ATTRIBUTE: {
                 try {
-                    // use force=false since re-negotiation is handled above
-                    // (and it is a NO-OP for NIO anyway)
-                    Object sslO = sslSupport.getPeerCertificateChain(false);
-                    if( sslO != null) {
-                        request.setAttribute
-                            (SSLSupport.CERTIFICATE_KEY, sslO);
+                    if (sslSupport != null) {
+                        Object sslO = sslSupport.getCipherSuite();
+                        if (sslO != null) {
+                            request.setAttribute(SSLSupport.CIPHER_SUITE_KEY,
+                                    sslO);
+                        }
+                        sslO = sslSupport.getPeerCertificateChain(false);
+                        if (sslO != null) {
+                            request.setAttribute(SSLSupport.CERTIFICATE_KEY,
+                                    sslO);
+                        }
+                        sslO = sslSupport.getKeySize();
+                        if (sslO != null) {
+                            request.setAttribute(SSLSupport.KEY_SIZE_KEY, sslO);
+                        }
+                        sslO = sslSupport.getSessionId();
+                        if (sslO != null) {
+                            request.setAttribute(SSLSupport.SESSION_ID_KEY,
+                                    sslO);
+                        }
+                        request.setAttribute(SSLSupport.SESSION_MGR,
+                                sslSupport);
                     }
                 } catch (Exception e) {
                     log.warn(sm.getString("http11processor.socket.ssl"), e);
                 }
+                break;
             }
-            break;
-        }
-        case COMET_BEGIN: {
-            comet = true;
-            break;
-        }
-        case COMET_END: {
-            comet = false;
-            break;
-        }
-        case COMET_CLOSE: {
-            if (socketWrapper == null || socketWrapper.getSocket() == null) {
-                return;
+            case REQ_SSL_CERTIFICATE: {
+                if (sslSupport != null && socketWrapper.getSocket() != null) {
+                    /*
+                     * Consume and buffer the request body, so that it does not
+                     * interfere with the client's handshake messages
+                     */
+                    InputFilter[] inputFilters = inputBuffer.getFilters();
+                    ((BufferedInputFilter) inputFilters[Constants.BUFFERED_FILTER])
+                            .setLimit(maxSavePostSize);
+                    inputBuffer.addActiveFilter(
+                            inputFilters[Constants.BUFFERED_FILTER]);
+                    SecureNio2Channel sslChannel = (SecureNio2Channel) socketWrapper
+                            .getSocket();
+                    SSLEngine engine = sslChannel.getSslEngine();
+                    if (!engine.getNeedClientAuth()) {
+                        // Need to re-negotiate SSL connection
+                        engine.setNeedClientAuth(true);
+                        try {
+                            sslChannel.rehandshake();
+                            sslSupport = ((Nio2Endpoint) endpoint).getHandler()
+                                    .getSslImplementation().getSSLSupport(engine
+                                            .getSession());
+                        } catch (IOException ioe) {
+                            log.warn(sm.getString(
+                                    "http11processor.socket.sslreneg"), ioe);
+                        }
+                    }
+
+                    try {
+                        // use force=false since re-negotiation is handled above
+                        // (and it is a NO-OP for NIO anyway)
+                        Object sslO = sslSupport.getPeerCertificateChain(false);
+                        if (sslO != null) {
+                            request.setAttribute(SSLSupport.CERTIFICATE_KEY,
+                                    sslO);
+                        }
+                    } catch (Exception e) {
+                        log.warn(sm.getString("http11processor.socket.ssl"), e);
+                    }
+                }
+                break;
             }
-            if (!ContainerThreadMarker.isContainerThread()) {
-                // Close event for this processor triggered by request
-                // processing in another processor, a non-Tomcat thread (i.e.
-                // an application controlled thread) or similar.
-                endpoint.processSocket(this.socketWrapper, SocketStatus.OPEN_READ, true);
+            case COMET_BEGIN: {
+                comet = true;
+                break;
             }
-            break;
-        }
-        case COMET_SETTIMEOUT: {
-            if (param == null) {
-                return;
+            case COMET_END: {
+                comet = false;
+                break;
             }
-            if (socketWrapper == null) {
-                return;
+            case COMET_CLOSE: {
+                if (socketWrapper == null || socketWrapper
+                        .getSocket() == null) {
+                    return;
+                }
+                if (!ContainerThreadMarker.isContainerThread()) {
+                    // Close event for this processor triggered by request
+                    // processing in another processor, a non-Tomcat thread (i.e.
+                    // an application controlled thread) or similar.
+                    endpoint.processSocket(this.socketWrapper,
+                            SocketStatus.OPEN_READ, true);
+                }
+                break;
             }
-            // If we are not piggy backing on a worker thread, set the timeout
-            if (!ContainerThreadMarker.isContainerThread()) {
-                long timeout = ((Long)param).longValue();
-                socketWrapper.setTimeout(timeout);
+            case COMET_SETTIMEOUT: {
+                if (param == null) {
+                    return;
+                }
+                if (socketWrapper == null) {
+                    return;
+                }
+                // If we are not piggy backing on a worker thread, set the timeout
+                if (!ContainerThreadMarker.isContainerThread()) {
+                    long timeout = ((Long) param).longValue();
+                    socketWrapper.setTimeout(timeout);
+                }
+                break;
             }
-            break;
-        }
         }
     }
 
-
     // ------------------------------------------------------ Protected Methods
-
 
     @Override
     protected void prepareRequestInternal() {
@@ -561,9 +579,11 @@ public class Http11Nio2Processor extends AbstractHttp11Processor<Nio2Channel> {
             sendfileData = new Nio2Endpoint.SendfileData();
             sendfileData.fileName = fileName;
             sendfileData.pos = ((Long) request.getAttribute(
-                    org.apache.coyote.Constants.SENDFILE_FILE_START_ATTR)).longValue();
+                    org.apache.coyote.Constants.SENDFILE_FILE_START_ATTR))
+                            .longValue();
             sendfileData.length = ((Long) request.getAttribute(
-                    org.apache.coyote.Constants.SENDFILE_FILE_END_ATTR)).longValue() - sendfileData.pos;
+                    org.apache.coyote.Constants.SENDFILE_FILE_END_ATTR))
+                            .longValue() - sendfileData.pos;
             return true;
         }
         return false;

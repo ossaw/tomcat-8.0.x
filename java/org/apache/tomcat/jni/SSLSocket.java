@@ -1,23 +1,22 @@
 /*
- *  Licensed to the Apache Software Foundation (ASF) under one or more
- *  contributor license agreements.  See the NOTICE file distributed with
- *  this work for additional information regarding copyright ownership.
- *  The ASF licenses this file to You under the Apache License, Version 2.0
- *  (the "License"); you may not use this file except in compliance with
- *  the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements. See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package org.apache.tomcat.jni;
 
-/** SSL Socket
+/**
+ * SSL Socket
  *
  * @author Mladen Turk
  */
@@ -25,15 +24,16 @@ public class SSLSocket {
 
     /**
      * Attach APR socket on a SSL connection.
-     * @param ctx SSLContext to use.
+     * 
+     * @param ctx  SSLContext to use.
      * @param sock APR Socket that already did physical connect or accept.
      * @return APR_STATUS code.
      */
-    public static native int attach(long ctx, long sock)
-        throws Exception;
+    public static native int attach(long ctx, long sock) throws Exception;
 
     /**
      * Do a SSL handshake.
+     * 
      * @param thesocket The socket to use
      */
     public static native int handshake(long thesocket);
@@ -62,6 +62,7 @@ public class SSLSocket {
      * starting a re-negotiation.
      * <br>
      * The following levels are available for level:
+     * 
      * <PRE>
      * SSL_CVERIFY_NONE           - No client Certificate is required at all
      * SSL_CVERIFY_OPTIONAL       - The client may present a valid Certificate
@@ -71,7 +72,9 @@ public class SSLSocket {
      *                              but it need not to be (successfully)
      *                              verifiable
      * </PRE>
+     * 
      * <br>
+     * 
      * @param sock  The socket to change.
      * @param level Type of Client Certificate verification.
      */
@@ -81,30 +84,27 @@ public class SSLSocket {
      * Return SSL Info parameter as byte array.
      *
      * @param sock The socket to read the data from.
-     * @param id Parameter id.
+     * @param id   Parameter id.
      * @return Byte array containing info id value.
      */
-    public static native byte[] getInfoB(long sock, int id)
-        throws Exception;
+    public static native byte[] getInfoB(long sock, int id) throws Exception;
 
     /**
      * Return SSL Info parameter as String.
      *
      * @param sock The socket to read the data from.
-     * @param id Parameter id.
+     * @param id   Parameter id.
      * @return String containing info id value.
      */
-    public static native String getInfoS(long sock, int id)
-        throws Exception;
+    public static native String getInfoS(long sock, int id) throws Exception;
 
     /**
      * Return SSL Info parameter as integer.
      *
      * @param sock The socket to read the data from.
-     * @param id Parameter id.
+     * @param id   Parameter id.
      * @return Integer containing info id value or -1 on error.
      */
-    public static native int getInfoI(long sock, int id)
-        throws Exception;
+    public static native int getInfoI(long sock, int id) throws Exception;
 
 }

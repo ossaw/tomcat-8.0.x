@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -54,7 +52,6 @@ public class TestCollectionOperations {
         beans = Collections.unmodifiableList(list);
     }
 
-
     @Test
     public void testToList01() {
         ELProcessor processor = new ELProcessor();
@@ -68,14 +65,12 @@ public class TestCollectionOperations {
         Assert.assertEquals(expected, result);
     }
 
-
     @Test
     public void testToList02() {
         ELProcessor processor = new ELProcessor();
         String[] src = new String[] { "a", "b", "c" };
         processor.defineBean("src", src);
-        Object result = processor.getValue("src.stream().toList()",
-                List.class);
+        Object result = processor.getValue("src.stream().toList()", List.class);
         List<String> expected = new ArrayList<>(3);
         expected.add("a");
         expected.add("b");
@@ -84,28 +79,24 @@ public class TestCollectionOperations {
         Assert.assertEquals(expected, result);
     }
 
-
     @Test
     public void testFilter01() {
         ELProcessor processor = new ELProcessor();
         processor.defineBean("beans", beans);
         Object result = processor.getValue(
-                "beans.stream().filter(b->b.valLong > 2).toList()",
-                List.class);
+                "beans.stream().filter(b->b.valLong > 2).toList()", List.class);
         List<TesterBeanA> expected = new ArrayList<>(1);
         expected.add(bean03);
 
         Assert.assertEquals(expected, result);
     }
 
-
     @Test
     public void testMap01() {
         ELProcessor processor = new ELProcessor();
         processor.defineBean("beans", beans);
         Object result = processor.getValue(
-                "beans.stream().map(b->b.name).toList()",
-                List.class);
+                "beans.stream().map(b->b.name).toList()", List.class);
         List<String> expected = new ArrayList<>(3);
         expected.add("bean01");
         expected.add("bean02");
@@ -113,7 +104,6 @@ public class TestCollectionOperations {
 
         Assert.assertEquals(expected, result);
     }
-
 
     @Test
     public void testMap02() {
@@ -134,7 +124,6 @@ public class TestCollectionOperations {
         Assert.assertEquals("bean03", list.get(1).get(0));
         Assert.assertEquals(Long.valueOf(3), list.get(1).get(1));
     }
-
 
     @Test
     public void testFlatMap01() {
@@ -167,7 +156,6 @@ public class TestCollectionOperations {
         Assert.assertEquals(expected, result);
     }
 
-
     @Test
     public void testDistinct01() {
         ELProcessor processor = new ELProcessor();
@@ -182,13 +170,11 @@ public class TestCollectionOperations {
         Assert.assertEquals(expected, result);
     }
 
-
     @Test
     public void testSorted01() {
         ELProcessor processor = new ELProcessor();
         Object result = processor.getValue(
-                "['c', 'd', 'b', 'a'].stream().sorted().toList()",
-                List.class);
+                "['c', 'd', 'b', 'a'].stream().sorted().toList()", List.class);
         List<String> expected = new ArrayList<>(4);
         expected.add("a");
         expected.add("b");
@@ -197,7 +183,6 @@ public class TestCollectionOperations {
 
         Assert.assertEquals(expected, result);
     }
-
 
     @Test
     public void testSortedLambdaExpression01() {
@@ -213,7 +198,6 @@ public class TestCollectionOperations {
 
         Assert.assertEquals(expected, result);
     }
-
 
     @Test
     public void testForEach01() {
@@ -237,7 +221,6 @@ public class TestCollectionOperations {
         Assert.assertEquals(3, bean03.getValLong());
     }
 
-
     @Test
     public void testPeek01() {
         ELProcessor processor = new ELProcessor();
@@ -246,8 +229,7 @@ public class TestCollectionOperations {
         processor.defineBean("debug", debug);
 
         Object result = processor.getValue(
-                "beans.stream().peek(b->debug.add(b)).toList()",
-                Object.class);
+                "beans.stream().peek(b->debug.add(b)).toList()", Object.class);
 
         List<TesterBeanA> expected = new ArrayList<>(3);
         expected.add(bean01);
@@ -258,14 +240,12 @@ public class TestCollectionOperations {
         Assert.assertEquals(expected, debug);
     }
 
-
     @Test
     public void testLimit01() {
         ELProcessor processor = new ELProcessor();
         processor.defineBean("beans", beans);
 
-        Object result = processor.getValue(
-                "beans.stream().limit(2).toList()",
+        Object result = processor.getValue("beans.stream().limit(2).toList()",
                 Object.class);
 
         List<TesterBeanA> expected = new ArrayList<>(2);
@@ -275,15 +255,13 @@ public class TestCollectionOperations {
         Assert.assertEquals(expected, result);
     }
 
-
     @Test
     public void testSubstreamStart01() {
         ELProcessor processor = new ELProcessor();
         processor.defineBean("beans", beans);
 
         Object result = processor.getValue(
-                "beans.stream().substream(1).toList()",
-                Object.class);
+                "beans.stream().substream(1).toList()", Object.class);
 
         List<TesterBeanA> expected = new ArrayList<>(2);
         expected.add(bean02);
@@ -292,15 +270,13 @@ public class TestCollectionOperations {
         Assert.assertEquals(expected, result);
     }
 
-
     @Test
     public void testSubstreamStartEnd01() {
         ELProcessor processor = new ELProcessor();
         processor.defineBean("beans", beans);
 
         Object result = processor.getValue(
-                "beans.stream().substream(1,2).toList()",
-                Object.class);
+                "beans.stream().substream(1,2).toList()", Object.class);
 
         List<TesterBeanA> expected = new ArrayList<>(2);
         expected.add(bean02);
@@ -308,14 +284,12 @@ public class TestCollectionOperations {
         Assert.assertEquals(expected, result);
     }
 
-
     @Test
     public void testToArray01() {
         ELProcessor processor = new ELProcessor();
         processor.defineBean("beans", beans);
 
-        Object result = processor.getValue(
-                "beans.stream().toArray()",
+        Object result = processor.getValue("beans.stream().toArray()",
                 Object.class);
 
         Object[] expected = new Object[3];
@@ -326,89 +300,72 @@ public class TestCollectionOperations {
         Assert.assertArrayEquals(expected, (Object[]) result);
     }
 
-
     @Test
     public void testReduceLambda01() {
         ELProcessor processor = new ELProcessor();
 
         Object result = processor.getValue(
-                "[1,2,3,4,5].stream().reduce((x,y)->x+y)",
-                Object.class);
+                "[1,2,3,4,5].stream().reduce((x,y)->x+y)", Object.class);
 
         Assert.assertEquals(Long.valueOf(15), ((Optional) result).get());
     }
 
-
-    @Test(expected=ELException.class)
+    @Test(expected = ELException.class)
     public void testReduceLambda02() {
         ELProcessor processor = new ELProcessor();
 
-        Object result = processor.getValue(
-                "[].stream().reduce((x,y)->x+y)",
+        Object result = processor.getValue("[].stream().reduce((x,y)->x+y)",
                 Object.class);
 
         ((Optional) result).get();
     }
-
 
     @Test
     public void testReduceLambdaSeed01() {
         ELProcessor processor = new ELProcessor();
 
         Object result = processor.getValue(
-                "[1,2,3,4,5].stream().reduce(10, (x,y)->x+y)",
-                Object.class);
+                "[1,2,3,4,5].stream().reduce(10, (x,y)->x+y)", Object.class);
 
         Assert.assertEquals(Long.valueOf(25), result);
     }
-
 
     @Test
     public void testMax01() {
         ELProcessor processor = new ELProcessor();
 
-        Object result = processor.getValue(
-                "[1,2,3,4,5].stream().max()",
+        Object result = processor.getValue("[1,2,3,4,5].stream().max()",
                 Object.class);
 
         Assert.assertEquals(Long.valueOf(5), ((Optional) result).get());
     }
-
 
     @Test
     public void testMax02() {
         ELProcessor processor = new ELProcessor();
 
-        Object result = processor.getValue(
-                "[5,4,3,2,1].stream().max()",
+        Object result = processor.getValue("[5,4,3,2,1].stream().max()",
                 Object.class);
 
         Assert.assertEquals(Long.valueOf(5), ((Optional) result).get());
     }
 
-
-    @Test(expected=ELException.class)
+    @Test(expected = ELException.class)
     public void testMax03() {
         ELProcessor processor = new ELProcessor();
 
-        Object result = processor.getValue(
-                "[].stream().max()",
-                Object.class);
+        Object result = processor.getValue("[].stream().max()", Object.class);
 
         ((Optional) result).get();
     }
 
-
-    @Test(expected=ELException.class)
+    @Test(expected = ELException.class)
     public void testMax04() {
         ELProcessor processor = new ELProcessor();
         processor.defineBean("beans", beans);
 
-        processor.getValue(
-                "beans.stream().max()",
-                Object.class);
+        processor.getValue("beans.stream().max()", Object.class);
     }
-
 
     @Test
     public void testMaxLambda01() {
@@ -422,7 +379,6 @@ public class TestCollectionOperations {
         Assert.assertEquals(bean03, ((Optional) result).get());
     }
 
-
     @Test
     public void testMaxLambda02() {
         ELProcessor processor = new ELProcessor();
@@ -430,57 +386,47 @@ public class TestCollectionOperations {
         processor.setVariable("comparison", "v->(x,y)->v(x).compareTo(v(y))");
 
         Object result = processor.getValue(
-                "beans.stream().max(comparison(x->x.name))",
-                Object.class);
+                "beans.stream().max(comparison(x->x.name))", Object.class);
 
         Assert.assertEquals(bean03, ((Optional) result).get());
     }
+
     @Test
     public void testMin01() {
         ELProcessor processor = new ELProcessor();
 
-        Object result = processor.getValue(
-                "[1,2,3,4,5].stream().min()",
+        Object result = processor.getValue("[1,2,3,4,5].stream().min()",
                 Object.class);
 
         Assert.assertEquals(Long.valueOf(1), ((Optional) result).get());
     }
-
 
     @Test
     public void testMin02() {
         ELProcessor processor = new ELProcessor();
 
-        Object result = processor.getValue(
-                "[5,4,3,2,1].stream().min()",
+        Object result = processor.getValue("[5,4,3,2,1].stream().min()",
                 Object.class);
 
         Assert.assertEquals(Long.valueOf(1), ((Optional) result).get());
     }
 
-
-    @Test(expected=ELException.class)
+    @Test(expected = ELException.class)
     public void testMin03() {
         ELProcessor processor = new ELProcessor();
 
-        Object result = processor.getValue(
-                "[].stream().min()",
-                Object.class);
+        Object result = processor.getValue("[].stream().min()", Object.class);
 
         ((Optional) result).get();
     }
 
-
-    @Test(expected=ELException.class)
+    @Test(expected = ELException.class)
     public void testMin04() {
         ELProcessor processor = new ELProcessor();
         processor.defineBean("beans", beans);
 
-        processor.getValue(
-                "beans.stream().min()",
-                Object.class);
+        processor.getValue("beans.stream().min()", Object.class);
     }
-
 
     @Test
     public void testMinLambda01() {
@@ -494,264 +440,218 @@ public class TestCollectionOperations {
         Assert.assertEquals(bean01, ((Optional) result).get());
     }
 
-
     @Test
     public void testAverage01() {
         ELProcessor processor = new ELProcessor();
 
-        Object result = processor.getValue(
-                "[1,2,3,4,5].stream().average()",
+        Object result = processor.getValue("[1,2,3,4,5].stream().average()",
                 Object.class);
 
         Number average = (Number) ((Optional) result).get();
-        Assert.assertTrue("Result: " + average.toString(),
-                ELSupport.equals(null, Long.valueOf(3), average));
+        Assert.assertTrue("Result: " + average.toString(), ELSupport.equals(
+                null, Long.valueOf(3), average));
     }
-
 
     @Test
     public void testAverage02() {
         ELProcessor processor = new ELProcessor();
 
-        Object result = processor.getValue(
-                "[1,2,3,4,5,6].stream().average()",
+        Object result = processor.getValue("[1,2,3,4,5,6].stream().average()",
                 Object.class);
 
         Number average = (Number) ((Optional) result).get();
-        Assert.assertTrue("Result: " + average.toString(),
-                ELSupport.equals(null, Double.valueOf(3.5), average));
+        Assert.assertTrue("Result: " + average.toString(), ELSupport.equals(
+                null, Double.valueOf(3.5), average));
     }
 
-
-    @Test(expected=ELException.class)
+    @Test(expected = ELException.class)
     public void testAverage03() {
         ELProcessor processor = new ELProcessor();
 
-        Object result = processor.getValue(
-                "[].stream().average()",
+        Object result = processor.getValue("[].stream().average()",
                 Object.class);
 
         ((Optional) result).get();
     }
-
 
     @Test
     public void testAverage04() {
         ELProcessor processor = new ELProcessor();
 
         Object result = processor.getValue(
-                "[].stream().average().orElseGet(()->10)",
-                Object.class);
+                "[].stream().average().orElseGet(()->10)", Object.class);
 
         Assert.assertEquals(Long.valueOf(10), result);
     }
-
 
     @Test
     public void testAverage05() {
         ELProcessor processor = new ELProcessor();
 
         Object result = processor.getValue(
-                "[].stream().average().orElseGet(()->()->10)",
-                Object.class);
+                "[].stream().average().orElseGet(()->()->10)", Object.class);
 
         Assert.assertEquals(Long.valueOf(10), result);
     }
 
-
-    @Test(expected=ELException.class)
+    @Test(expected = ELException.class)
     public void testAverage06() {
         ELProcessor processor = new ELProcessor();
 
-        processor.getValue(
-                "[].stream().average().orElseGet(10)",
-                Object.class);
+        processor.getValue("[].stream().average().orElseGet(10)", Object.class);
     }
-
 
     @Test
     public void testSum01() {
         ELProcessor processor = new ELProcessor();
 
-        Object result = processor.getValue(
-                "[1,2,3,4,5].stream().sum()",
+        Object result = processor.getValue("[1,2,3,4,5].stream().sum()",
                 Object.class);
 
-        Assert.assertTrue("Result: " + result.toString(),
-                ELSupport.equals(null, Long.valueOf(15), result));
+        Assert.assertTrue("Result: " + result.toString(), ELSupport.equals(null,
+                Long.valueOf(15), result));
     }
-
 
     @Test
     public void testSum02() {
         ELProcessor processor = new ELProcessor();
 
-        Object result = processor.getValue(
-                "[].stream().sum()",
-                Object.class);
+        Object result = processor.getValue("[].stream().sum()", Object.class);
 
-        Assert.assertTrue("Result: " + result.toString(),
-                ELSupport.equals(null, Long.valueOf(0), result));
+        Assert.assertTrue("Result: " + result.toString(), ELSupport.equals(null,
+                Long.valueOf(0), result));
     }
-
 
     @Test
     public void testCount01() {
         ELProcessor processor = new ELProcessor();
 
-        Object result = processor.getValue(
-                "[1,2,3,4,5].stream().count()",
+        Object result = processor.getValue("[1,2,3,4,5].stream().count()",
                 Object.class);
 
-        Assert.assertTrue("Result: " + result.toString(),
-                ELSupport.equals(null, Long.valueOf(5), result));
+        Assert.assertTrue("Result: " + result.toString(), ELSupport.equals(null,
+                Long.valueOf(5), result));
     }
-
 
     @Test
     public void testCount02() {
         ELProcessor processor = new ELProcessor();
 
-        Object result = processor.getValue(
-                "[].stream().count()",
-                Object.class);
+        Object result = processor.getValue("[].stream().count()", Object.class);
 
-        Assert.assertTrue("Result: " + result.toString(),
-                ELSupport.equals(null, Long.valueOf(0), result));
+        Assert.assertTrue("Result: " + result.toString(), ELSupport.equals(null,
+                Long.valueOf(0), result));
     }
-
 
     @Test
     public void testAnyMatch01() {
         ELProcessor processor = new ELProcessor();
 
         Optional result = (Optional) processor.getValue(
-                "[1,2,3,4,5].stream().anyMatch(x->x==7)",
-                Object.class);
+                "[1,2,3,4,5].stream().anyMatch(x->x==7)", Object.class);
 
         Assert.assertEquals(Boolean.FALSE, result.get());
     }
-
 
     @Test
     public void testAnyMatch02() {
         ELProcessor processor = new ELProcessor();
 
         Optional result = (Optional) processor.getValue(
-                "[1,2,3,4,5].stream().anyMatch(x->x==3)",
-                Object.class);
+                "[1,2,3,4,5].stream().anyMatch(x->x==3)", Object.class);
 
         Assert.assertEquals(Boolean.TRUE, result.get());
     }
 
-
-    @Test(expected=ELException.class)
+    @Test(expected = ELException.class)
     public void testAnyMatch03() {
         ELProcessor processor = new ELProcessor();
 
         Optional result = (Optional) processor.getValue(
-                "[].stream().anyMatch(x->x==7)",
-                Object.class);
+                "[].stream().anyMatch(x->x==7)", Object.class);
 
         result.get();
     }
-
 
     @Test
     public void testAllMatch01() {
         ELProcessor processor = new ELProcessor();
 
         Optional result = (Optional) processor.getValue(
-                "[1,2,3,4,5].stream().allMatch(x->x>3)",
-                Object.class);
+                "[1,2,3,4,5].stream().allMatch(x->x>3)", Object.class);
 
         Assert.assertEquals(Boolean.FALSE, result.get());
     }
-
 
     @Test
     public void testAllMatch02() {
         ELProcessor processor = new ELProcessor();
 
         Optional result = (Optional) processor.getValue(
-                "[1,2,3,4,5].stream().allMatch(x->x>0)",
-                Object.class);
+                "[1,2,3,4,5].stream().allMatch(x->x>0)", Object.class);
 
         Assert.assertEquals(Boolean.TRUE, result.get());
     }
-
 
     @Test
     public void testAllMatch03() {
         ELProcessor processor = new ELProcessor();
 
         Optional result = (Optional) processor.getValue(
-                "[1,2,3,4,5].stream().allMatch(x->x>10)",
-                Object.class);
+                "[1,2,3,4,5].stream().allMatch(x->x>10)", Object.class);
 
         Assert.assertEquals(Boolean.FALSE, result.get());
     }
 
-
-    @Test(expected=ELException.class)
+    @Test(expected = ELException.class)
     public void testAllMatch04() {
         ELProcessor processor = new ELProcessor();
 
         Optional result = (Optional) processor.getValue(
-                "[].stream().allMatch(x->x==7)",
-                Object.class);
+                "[].stream().allMatch(x->x==7)", Object.class);
 
         result.get();
     }
-
 
     @Test
     public void testNoneMatch01() {
         ELProcessor processor = new ELProcessor();
 
         Optional result = (Optional) processor.getValue(
-                "[1,2,3,4,5].stream().allMatch(x->x>3)",
-                Object.class);
+                "[1,2,3,4,5].stream().allMatch(x->x>3)", Object.class);
 
         Assert.assertEquals(Boolean.FALSE, result.get());
     }
-
 
     @Test
     public void testNoneMatch02() {
         ELProcessor processor = new ELProcessor();
 
         Optional result = (Optional) processor.getValue(
-                "[1,2,3,4,5].stream().noneMatch(x->x>0)",
-                Object.class);
+                "[1,2,3,4,5].stream().noneMatch(x->x>0)", Object.class);
 
         Assert.assertEquals(Boolean.FALSE, result.get());
     }
-
 
     @Test
     public void testNoneMatch03() {
         ELProcessor processor = new ELProcessor();
 
         Optional result = (Optional) processor.getValue(
-                "[1,2,3,4,5].stream().noneMatch(x->x>10)",
-                Object.class);
+                "[1,2,3,4,5].stream().noneMatch(x->x>10)", Object.class);
 
         Assert.assertEquals(Boolean.TRUE, result.get());
     }
 
-
-    @Test(expected=ELException.class)
+    @Test(expected = ELException.class)
     public void testNoneMatch04() {
         ELProcessor processor = new ELProcessor();
 
         Optional result = (Optional) processor.getValue(
-                "[].stream().noneMatch(x->x==7)",
-                Object.class);
+                "[].stream().noneMatch(x->x==7)", Object.class);
 
         result.get();
     }
-
 
     @Test
     public void testFindFirst01() {
@@ -759,20 +659,17 @@ public class TestCollectionOperations {
         processor.defineBean("beans", beans);
 
         Optional result = (Optional) processor.getValue(
-                "beans.stream().findFirst()",
-                Object.class);
+                "beans.stream().findFirst()", Object.class);
 
         Assert.assertEquals(bean01, result.get());
     }
 
-
-    @Test(expected=ELException.class)
+    @Test(expected = ELException.class)
     public void testFindFirst02() {
         ELProcessor processor = new ELProcessor();
 
         Optional result = (Optional) processor.getValue(
-                "[].stream().findFirst()",
-                Object.class);
+                "[].stream().findFirst()", Object.class);
 
         result.get();
     }

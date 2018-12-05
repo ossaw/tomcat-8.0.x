@@ -1,18 +1,16 @@
 /*
- *  Licensed to the Apache Software Foundation (ASF) under one or more
- *  contributor license agreements.  See the NOTICE file distributed with
- *  this work for additional information regarding copyright ownership.
- *  The ASF licenses this file to You under the Apache License, Version 2.0
- *  (the "License"); you may not use this file except in compliance with
- *  the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements. See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.apache.catalina.comet;
 
@@ -67,13 +65,13 @@ public class TestCometProcessor extends TomcatBaseTest {
         tomcat.start();
 
         // Create connection to Comet servlet
-        final Socket socket =
-            SocketFactory.getDefault().createSocket("localhost", getPort());
+        final Socket socket = SocketFactory.getDefault().createSocket(
+                "localhost", getPort());
         socket.setSoTimeout(5000);
 
         final OutputStream os = socket.getOutputStream();
-        String requestLine = "POST http://localhost:" + getPort() +
-                "/comet HTTP/1.1\r\n";
+        String requestLine = "POST http://localhost:" + getPort()
+                + "/comet HTTP/1.1\r\n";
         os.write(requestLine.getBytes());
         os.write("transfer-encoding: chunked\r\n".getBytes());
         os.write("\r\n".getBytes());
@@ -94,8 +92,8 @@ public class TestCometProcessor extends TomcatBaseTest {
         }
 
         // Send a standard HTTP request on the same connection
-        requestLine = "GET http://localhost:" + getPort() +
-                "/hello HTTP/1.1\r\n";
+        requestLine = "GET http://localhost:" + getPort()
+                + "/hello HTTP/1.1\r\n";
         os.write(requestLine.getBytes());
         os.write("\r\n".getBytes());
 
@@ -133,13 +131,13 @@ public class TestCometProcessor extends TomcatBaseTest {
         tomcat.start();
 
         // Create connection to Comet servlet
-        final Socket socket =
-            SocketFactory.getDefault().createSocket("localhost", getPort());
+        final Socket socket = SocketFactory.getDefault().createSocket(
+                "localhost", getPort());
         socket.setSoTimeout(5000);
 
         final OutputStream os = socket.getOutputStream();
-        String requestLine = "POST http://localhost:" + getPort() +
-                "/comet HTTP/1.1\r\n";
+        String requestLine = "POST http://localhost:" + getPort()
+                + "/comet HTTP/1.1\r\n";
         os.write(requestLine.getBytes());
         os.write("transfer-encoding: chunked\r\n".getBytes());
         os.write("\r\n".getBytes());
@@ -164,8 +162,8 @@ public class TestCometProcessor extends TomcatBaseTest {
         }
 
         // Send a standard HTTP request on the same connection
-        requestLine = "GET http://localhost:" + getPort() +
-                "/hello HTTP/1.1\r\n";
+        requestLine = "GET http://localhost:" + getPort()
+                + "/hello HTTP/1.1\r\n";
         os.write(requestLine.getBytes());
         os.write("connection: close\r\n".getBytes());
         os.write("\r\n".getBytes());
@@ -204,13 +202,13 @@ public class TestCometProcessor extends TomcatBaseTest {
         tomcat.start();
 
         // Create connection to Comet servlet
-        final Socket socket =
-            SocketFactory.getDefault().createSocket("localhost", getPort());
+        final Socket socket = SocketFactory.getDefault().createSocket(
+                "localhost", getPort());
         socket.setSoTimeout(5000);
 
         final OutputStream os = socket.getOutputStream();
-        String requestLine = "POST http://localhost:" + getPort() +
-                "/comet HTTP/1.1\r\n";
+        String requestLine = "POST http://localhost:" + getPort()
+                + "/comet HTTP/1.1\r\n";
         os.write(requestLine.getBytes());
         os.write("transfer-encoding: chunked\r\n".getBytes());
         os.write("\r\n".getBytes());
@@ -281,13 +279,13 @@ public class TestCometProcessor extends TomcatBaseTest {
         tomcat.start();
 
         // Create connection to Comet servlet
-        final Socket socket =
-            SocketFactory.getDefault().createSocket("localhost", getPort());
+        final Socket socket = SocketFactory.getDefault().createSocket(
+                "localhost", getPort());
         socket.setSoTimeout(60000);
 
         final OutputStream os = socket.getOutputStream();
-        String requestLine = "POST http://localhost:" + getPort() +
-                "/ HTTP/1.1\r\n";
+        String requestLine = "POST http://localhost:" + getPort()
+                + "/ HTTP/1.1\r\n";
         os.write(requestLine.getBytes());
         os.write("transfer-encoding: chunked\r\n".getBytes());
         os.write("\r\n".getBytes());
@@ -310,7 +308,8 @@ public class TestCometProcessor extends TomcatBaseTest {
             assertEquals("HTTP/1.1 200 OK", response[0]);
             assertEquals("Server: Apache-Coyote/1.1", response[1]);
             assertTrue(response[2].startsWith("Set-Cookie: JSESSIONID="));
-            assertEquals("Content-Type: text/plain;charset=ISO-8859-1", response[3]);
+            assertEquals("Content-Type: text/plain;charset=ISO-8859-1",
+                    response[3]);
             assertEquals("Transfer-Encoding: chunked", response[4]);
             assertTrue(response[5].startsWith("Date: "));
             assertEquals("", response[6]);
@@ -369,13 +368,13 @@ public class TestCometProcessor extends TomcatBaseTest {
         tomcat.start();
 
         // Create connection to Comet servlet
-        final Socket socket =
-            SocketFactory.getDefault().createSocket("localhost", getPort());
+        final Socket socket = SocketFactory.getDefault().createSocket(
+                "localhost", getPort());
         socket.setSoTimeout(10000);
 
         final OutputStream os = socket.getOutputStream();
-        String requestLine = "POST http://localhost:" + getPort() +
-                "/ HTTP/1.1\r\n";
+        String requestLine = "POST http://localhost:" + getPort()
+                + "/ HTTP/1.1\r\n";
         os.write(requestLine.getBytes());
         os.write("transfer-encoding: chunked\r\n".getBytes());
         os.write("\r\n".getBytes());
@@ -423,32 +422,35 @@ public class TestCometProcessor extends TomcatBaseTest {
         // Last comet event: [END]
         // END event occurred: [true]
         status.append("Status:");
-        status.append("\nWriterThread exception: " + writeThread.getException());
+        status.append("\nWriterThread exception: " + writeThread
+                .getException());
         status.append("\nReaderThread exception: " + readThread.getException());
         status.append("\nLast message: [" + lastMessage + "]");
         status.append("\nLast response line: [" + lastResponseLine + "]");
         status.append("\nLast comet event: [" + servlet.getLastEvent() + "]");
-        status.append("\nEND event occurred: [" + servlet.getEndEventOccurred() + "]");
-        if (writeThread.getException() == null
-                || !lastMessage.contains("Client: END")
-                || !EventType.END.equals(servlet.getLastEvent())) {
+        status.append("\nEND event occurred: [" + servlet.getEndEventOccurred()
+                + "]");
+        if (writeThread.getException() == null || !lastMessage.contains(
+                "Client: END") || !EventType.END.equals(servlet
+                        .getLastEvent())) {
             log.error(status);
         } else {
             log.info(status);
         }
-        assertTrue("Comet END event not received", servlet.getEndEventOccurred());
-        assertTrue("Comet END event not last event received",
-                EventType.END.equals(servlet.getLastEvent()));
+        assertTrue("Comet END event not received", servlet
+                .getEndEventOccurred());
+        assertTrue("Comet END event not last event received", EventType.END
+                .equals(servlet.getLastEvent()));
     }
 
     private boolean isCometSupported() {
-        String protocol =
-            getTomcatInstance().getConnector().getProtocolHandlerClassName();
+        String protocol = getTomcatInstance().getConnector()
+                .getProtocolHandlerClassName();
         return (protocol.contains("Nio") || protocol.contains("Apr"));
     }
 
-    private static class SimpleCometServlet extends HttpServlet
-            implements CometProcessor {
+    private static class SimpleCometServlet extends HttpServlet implements
+            CometProcessor {
 
         private static final long serialVersionUID = 1L;
 
@@ -474,14 +476,13 @@ public class TestCometProcessor extends TomcatBaseTest {
 
         @Override
         public void init() throws ServletException {
-            failOnBegin = Boolean.parseBoolean(getServletConfig().getInitParameter(
-                    FAIL_ON_BEGIN));
-            failOnRead = Boolean.parseBoolean(getServletConfig().getInitParameter(
-                    FAIL_ON_READ));
-            failOnEnd = Boolean.parseBoolean(getServletConfig().getInitParameter(
-                    FAIL_ON_END));
+            failOnBegin = Boolean.parseBoolean(getServletConfig()
+                    .getInitParameter(FAIL_ON_BEGIN));
+            failOnRead = Boolean.parseBoolean(getServletConfig()
+                    .getInitParameter(FAIL_ON_READ));
+            failOnEnd = Boolean.parseBoolean(getServletConfig()
+                    .getInitParameter(FAIL_ON_END));
         }
-
 
         @Override
         public void event(CometEvent event) throws IOException,
@@ -509,7 +510,7 @@ public class TestCometProcessor extends TomcatBaseTest {
                 int count = 0;
                 while (is.available() > 0) {
                     is.read();
-                    count ++;
+                    count++;
                 }
                 String msg = "READ: " + count + " bytes";
                 response.getWriter().print("Client: " + msg + "\r\n");
@@ -522,7 +523,8 @@ public class TestCometProcessor extends TomcatBaseTest {
                 response.getWriter().print("Client: " + msg + "\r\n");
                 event.close();
             } else {
-                String msg = event.getEventType() + ":" + event.getEventSubType() + "\r\n";
+                String msg = event.getEventType() + ":" + event
+                        .getEventSubType() + "\r\n";
                 System.out.print(msg);
                 response.getWriter().print(msg);
                 event.close();
@@ -531,8 +533,8 @@ public class TestCometProcessor extends TomcatBaseTest {
         }
     }
 
-    private static class CometCloseServlet extends HttpServlet
-            implements CometProcessor {
+    private static class CometCloseServlet extends HttpServlet implements
+            CometProcessor {
 
         private static final long serialVersionUID = 1L;
 
@@ -550,8 +552,8 @@ public class TestCometProcessor extends TomcatBaseTest {
 
     }
 
-    private static class ConnectionCloseServlet extends HttpServlet
-            implements CometProcessor {
+    private static class ConnectionCloseServlet extends HttpServlet implements
+            CometProcessor {
 
         private static final long serialVersionUID = 1L;
 

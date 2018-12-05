@@ -1,19 +1,17 @@
 /*
-* Licensed to the Apache Software Foundation (ASF) under one or more
-* contributor license agreements.  See the NOTICE file distributed with
-* this work for additional information regarding copyright ownership.
-* The ASF licenses this file to You under the Apache License, Version 2.0
-* (the "License"); you may not use this file except in compliance with
-* the License.  You may obtain a copy of the License at
-*
-*     http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*/
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements. See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package javax.servlet.http;
 
 import java.io.IOException;
@@ -80,14 +78,14 @@ public interface Part {
      * disk in a temporary location. They just want to write the uploaded part
      * to a file.
      *
-     *  This method is not guaranteed to succeed if called more than once for
-     *  the same part. This allows a particular implementation to use, for
-     *  example, file renaming, where possible, rather than copying all of the
-     *  underlying data, thus gaining a significant performance benefit.
+     * This method is not guaranteed to succeed if called more than once for
+     * the same part. This allows a particular implementation to use, for
+     * example, file renaming, where possible, rather than copying all of the
+     * underlying data, thus gaining a significant performance benefit.
      *
-     * @param fileName  The location into which the uploaded part should be
-     *                  stored. Relative locations are relative to {@link
-     *                  javax.servlet.MultipartConfigElement#getLocation()}
+     * @param fileName The location into which the uploaded part should be
+     *                 stored. Relative locations are relative to {@link
+     *                 javax.servlet.MultipartConfigElement#getLocation()}
      *
      * @throws IOException if an I/O occurs while attempting to write the part
      */
@@ -113,14 +111,15 @@ public interface Part {
      * multiple headers with the same name, this method returns the first header
      * in the part. The header name is case insensitive.
      *
-     * @param name  Header name
-     * @return      The header value or <code>null</code> if the header is not
-     *              present
+     * @param name Header name
+     * @return The header value or <code>null</code> if the header is not
+     *         present
      */
     public String getHeader(String name);
 
     /**
      * Obtain all the values of the specified part header.
+     * 
      * @param name The name of the header of interest. The header name is case
      *             insensitive.
      * @return All the values of the specified part header. If the part did not
@@ -131,6 +130,7 @@ public interface Part {
 
     /**
      * Get the header names provided for this part.
+     * 
      * @return a Collection of all the header names provided for this part.
      */
     public Collection<String> getHeaderNames();

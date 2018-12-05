@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -16,13 +14,13 @@
  */
 package org.apache.catalina.ssi;
 
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 
 import org.apache.catalina.util.IOTools;
+
 /**
  * Implements the Server-side #exec command
  *
@@ -35,7 +33,6 @@ import org.apache.catalina.util.IOTools;
 public class SSIExec implements SSICommand {
     protected final SSIInclude ssiInclude = new SSIInclude();
     protected static final int BUFFER_SIZE = 1024;
-
 
     /**
      * @see SSICommand
@@ -50,8 +47,8 @@ public class SSIExec implements SSICommand {
         String substitutedValue = ssiMediator.substituteVariables(paramValue);
         if (paramName.equalsIgnoreCase("cgi")) {
             lastModified = ssiInclude.process(ssiMediator, "include",
-                    new String[]{"virtual"}, new String[]{substitutedValue},
-                    writer);
+                    new String[] { "virtual" }, new String[] {
+                            substitutedValue }, writer);
         } else if (paramName.equalsIgnoreCase("cmd")) {
             boolean foundProgram = false;
             try {

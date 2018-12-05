@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -34,19 +32,17 @@ public class TestUriUtil {
         Assert.assertEquals(result, result.length() - 2, index);
     }
 
-
     @Test
     public void testBuildJarUrl02() throws MalformedURLException {
         File jarFile = new File("/patha/pathb*/pathc");
         String result = UriUtil.buildJarUrl(jarFile).toString();
 
         int index = result.indexOf("!/");
-        Assert.assertEquals(result,  result.length() - 2, index);
+        Assert.assertEquals(result, result.length() - 2, index);
 
         index = result.indexOf("*/");
         Assert.assertEquals(result, -1, index);
     }
-
 
     @Test
     public void testBuildJarUrl03() throws MalformedURLException {
@@ -59,7 +55,6 @@ public class TestUriUtil {
         index = result.indexOf("^/");
         Assert.assertEquals(result, -1, index);
     }
-
 
     // @Test /* Uncomment to test performance for different implementations. */
     public void performanceTestBuildJarUrl() throws MalformedURLException {
@@ -81,7 +76,7 @@ public class TestUriUtil {
         }
         long duration = System.nanoTime() - start;
 
-        System.out.println("[" + count + "] iterations took [" +
-                duration + "] ns for [" + url + "]");
+        System.out.println("[" + count + "] iterations took [" + duration
+                + "] ns for [" + url + "]");
     }
 }

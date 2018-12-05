@@ -1,18 +1,16 @@
 /*
- *  Licensed to the Apache Software Foundation (ASF) under one or more
- *  contributor license agreements.  See the NOTICE file distributed with
- *  this work for additional information regarding copyright ownership.
- *  The ASF licenses this file to You under the Apache License, Version 2.0
- *  (the "License"); you may not use this file except in compliance with
- *  the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements. See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.apache.coyote.http11;
 
@@ -32,7 +30,6 @@ import org.apache.tomcat.util.net.AprEndpoint.Poller;
 import org.apache.tomcat.util.net.SocketStatus;
 import org.apache.tomcat.util.net.SocketWrapper;
 
-
 /**
  * Abstract the protocol implementation, including threading, etc.
  * Processor is single threaded and specific to stream-based protocols,
@@ -46,14 +43,14 @@ public class Http11AprProtocol extends AbstractHttp11Protocol<Long> {
     private static final Log log = LogFactory.getLog(Http11AprProtocol.class);
 
     @Override
-    protected Log getLog() { return log; }
-
+    protected Log getLog() {
+        return log;
+    }
 
     @Override
     protected AbstractEndpoint.Handler getHandler() {
         return cHandler;
     }
-
 
     @Override
     public boolean isAprRequired() {
@@ -61,7 +58,6 @@ public class Http11AprProtocol extends AbstractHttp11Protocol<Long> {
         // library
         return true;
     }
-
 
     public Http11AprProtocol() {
         endpoint = new AprEndpoint();
@@ -74,47 +70,94 @@ public class Http11AprProtocol extends AbstractHttp11Protocol<Long> {
 
     private final Http11ConnectionHandler cHandler;
 
-    public boolean getUseSendfile() { return endpoint.getUseSendfile(); }
-    public void setUseSendfile(boolean useSendfile) { ((AprEndpoint)endpoint).setUseSendfile(useSendfile); }
+    public boolean getUseSendfile() {
+        return endpoint.getUseSendfile();
+    }
 
-    public int getPollTime() { return ((AprEndpoint)endpoint).getPollTime(); }
-    public void setPollTime(int pollTime) { ((AprEndpoint)endpoint).setPollTime(pollTime); }
+    public void setUseSendfile(boolean useSendfile) {
+        ((AprEndpoint) endpoint).setUseSendfile(useSendfile);
+    }
 
-    public void setPollerSize(int pollerSize) { endpoint.setMaxConnections(pollerSize); }
-    public int getPollerSize() { return endpoint.getMaxConnections(); }
+    public int getPollTime() {
+        return ((AprEndpoint) endpoint).getPollTime();
+    }
 
-    public int getSendfileSize() { return ((AprEndpoint)endpoint).getSendfileSize(); }
-    public void setSendfileSize(int sendfileSize) { ((AprEndpoint)endpoint).setSendfileSize(sendfileSize); }
+    public void setPollTime(int pollTime) {
+        ((AprEndpoint) endpoint).setPollTime(pollTime);
+    }
 
-    public void setSendfileThreadCount(int sendfileThreadCount) { ((AprEndpoint)endpoint).setSendfileThreadCount(sendfileThreadCount); }
-    public int getSendfileThreadCount() { return ((AprEndpoint)endpoint).getSendfileThreadCount(); }
+    public void setPollerSize(int pollerSize) {
+        endpoint.setMaxConnections(pollerSize);
+    }
 
-    public boolean getDeferAccept() { return ((AprEndpoint)endpoint).getDeferAccept(); }
-    public void setDeferAccept(boolean deferAccept) { ((AprEndpoint)endpoint).setDeferAccept(deferAccept); }
+    public int getPollerSize() {
+        return endpoint.getMaxConnections();
+    }
+
+    public int getSendfileSize() {
+        return ((AprEndpoint) endpoint).getSendfileSize();
+    }
+
+    public void setSendfileSize(int sendfileSize) {
+        ((AprEndpoint) endpoint).setSendfileSize(sendfileSize);
+    }
+
+    public void setSendfileThreadCount(int sendfileThreadCount) {
+        ((AprEndpoint) endpoint).setSendfileThreadCount(sendfileThreadCount);
+    }
+
+    public int getSendfileThreadCount() {
+        return ((AprEndpoint) endpoint).getSendfileThreadCount();
+    }
+
+    public boolean getDeferAccept() {
+        return ((AprEndpoint) endpoint).getDeferAccept();
+    }
+
+    public void setDeferAccept(boolean deferAccept) {
+        ((AprEndpoint) endpoint).setDeferAccept(deferAccept);
+    }
 
     // --------------------  SSL related properties --------------------
 
     /**
      * SSL protocol.
      */
-    public String getSSLProtocol() { return ((AprEndpoint)endpoint).getSSLProtocol(); }
-    public void setSSLProtocol(String SSLProtocol) { ((AprEndpoint)endpoint).setSSLProtocol(SSLProtocol); }
+    public String getSSLProtocol() {
+        return ((AprEndpoint) endpoint).getSSLProtocol();
+    }
 
+    public void setSSLProtocol(String SSLProtocol) {
+        ((AprEndpoint) endpoint).setSSLProtocol(SSLProtocol);
+    }
 
     /**
-     * SSL password (if a cert is encrypted, and no password has been provided, a callback
+     * SSL password (if a cert is encrypted, and no password has been provided,
+     * a callback
      * will ask for a password).
      */
-    public String getSSLPassword() { return ((AprEndpoint)endpoint).getSSLPassword(); }
-    public void setSSLPassword(String SSLPassword) { ((AprEndpoint)endpoint).setSSLPassword(SSLPassword); }
+    public String getSSLPassword() {
+        return ((AprEndpoint) endpoint).getSSLPassword();
+    }
 
+    public void setSSLPassword(String SSLPassword) {
+        ((AprEndpoint) endpoint).setSSLPassword(SSLPassword);
+    }
 
     /**
      * SSL cipher suite.
      */
-    public String getSSLCipherSuite() { return ((AprEndpoint)endpoint).getSSLCipherSuite(); }
-    public void setSSLCipherSuite(String SSLCipherSuite) { ((AprEndpoint)endpoint).setSSLCipherSuite(SSLCipherSuite); }
-    public String[] getCiphersUsed() { return endpoint.getCiphersUsed();}
+    public String getSSLCipherSuite() {
+        return ((AprEndpoint) endpoint).getSSLCipherSuite();
+    }
+
+    public void setSSLCipherSuite(String SSLCipherSuite) {
+        ((AprEndpoint) endpoint).setSSLCipherSuite(SSLCipherSuite);
+    }
+
+    public String[] getCiphersUsed() {
+        return endpoint.getCiphersUsed();
+    }
 
     /**
      * SSL honor cipher order.
@@ -123,84 +166,136 @@ public class Http11AprProtocol extends AbstractHttp11Protocol<Long> {
      * instead of the default which is to allow the client to choose a
      * preferred cipher.
      */
-    public boolean getSSLHonorCipherOrder() { return ((AprEndpoint)endpoint).getSSLHonorCipherOrder(); }
-    public void setSSLHonorCipherOrder(boolean SSLHonorCipherOrder) { ((AprEndpoint)endpoint).setSSLHonorCipherOrder(SSLHonorCipherOrder); }
+    public boolean getSSLHonorCipherOrder() {
+        return ((AprEndpoint) endpoint).getSSLHonorCipherOrder();
+    }
 
+    public void setSSLHonorCipherOrder(boolean SSLHonorCipherOrder) {
+        ((AprEndpoint) endpoint).setSSLHonorCipherOrder(SSLHonorCipherOrder);
+    }
 
     /**
      * SSL certificate file.
      */
-    public String getSSLCertificateFile() { return ((AprEndpoint)endpoint).getSSLCertificateFile(); }
-    public void setSSLCertificateFile(String SSLCertificateFile) { ((AprEndpoint)endpoint).setSSLCertificateFile(SSLCertificateFile); }
+    public String getSSLCertificateFile() {
+        return ((AprEndpoint) endpoint).getSSLCertificateFile();
+    }
 
+    public void setSSLCertificateFile(String SSLCertificateFile) {
+        ((AprEndpoint) endpoint).setSSLCertificateFile(SSLCertificateFile);
+    }
 
     /**
      * SSL certificate key file.
      */
-    public String getSSLCertificateKeyFile() { return ((AprEndpoint)endpoint).getSSLCertificateKeyFile(); }
-    public void setSSLCertificateKeyFile(String SSLCertificateKeyFile) { ((AprEndpoint)endpoint).setSSLCertificateKeyFile(SSLCertificateKeyFile); }
+    public String getSSLCertificateKeyFile() {
+        return ((AprEndpoint) endpoint).getSSLCertificateKeyFile();
+    }
 
+    public void setSSLCertificateKeyFile(String SSLCertificateKeyFile) {
+        ((AprEndpoint) endpoint).setSSLCertificateKeyFile(
+                SSLCertificateKeyFile);
+    }
 
     /**
      * SSL certificate chain file.
      */
-    public String getSSLCertificateChainFile() { return ((AprEndpoint)endpoint).getSSLCertificateChainFile(); }
-    public void setSSLCertificateChainFile(String SSLCertificateChainFile) { ((AprEndpoint)endpoint).setSSLCertificateChainFile(SSLCertificateChainFile); }
+    public String getSSLCertificateChainFile() {
+        return ((AprEndpoint) endpoint).getSSLCertificateChainFile();
+    }
 
+    public void setSSLCertificateChainFile(String SSLCertificateChainFile) {
+        ((AprEndpoint) endpoint).setSSLCertificateChainFile(
+                SSLCertificateChainFile);
+    }
 
     /**
      * SSL CA certificate path.
      */
-    public String getSSLCACertificatePath() { return ((AprEndpoint)endpoint).getSSLCACertificatePath(); }
-    public void setSSLCACertificatePath(String SSLCACertificatePath) { ((AprEndpoint)endpoint).setSSLCACertificatePath(SSLCACertificatePath); }
+    public String getSSLCACertificatePath() {
+        return ((AprEndpoint) endpoint).getSSLCACertificatePath();
+    }
 
+    public void setSSLCACertificatePath(String SSLCACertificatePath) {
+        ((AprEndpoint) endpoint).setSSLCACertificatePath(SSLCACertificatePath);
+    }
 
     /**
      * SSL CA certificate file.
      */
-    public String getSSLCACertificateFile() { return ((AprEndpoint)endpoint).getSSLCACertificateFile(); }
-    public void setSSLCACertificateFile(String SSLCACertificateFile) { ((AprEndpoint)endpoint).setSSLCACertificateFile(SSLCACertificateFile); }
+    public String getSSLCACertificateFile() {
+        return ((AprEndpoint) endpoint).getSSLCACertificateFile();
+    }
 
+    public void setSSLCACertificateFile(String SSLCACertificateFile) {
+        ((AprEndpoint) endpoint).setSSLCACertificateFile(SSLCACertificateFile);
+    }
 
     /**
      * SSL CA revocation path.
      */
-    public String getSSLCARevocationPath() { return ((AprEndpoint)endpoint).getSSLCARevocationPath(); }
-    public void setSSLCARevocationPath(String SSLCARevocationPath) { ((AprEndpoint)endpoint).setSSLCARevocationPath(SSLCARevocationPath); }
+    public String getSSLCARevocationPath() {
+        return ((AprEndpoint) endpoint).getSSLCARevocationPath();
+    }
 
+    public void setSSLCARevocationPath(String SSLCARevocationPath) {
+        ((AprEndpoint) endpoint).setSSLCARevocationPath(SSLCARevocationPath);
+    }
 
     /**
      * SSL CA revocation file.
      */
-    public String getSSLCARevocationFile() { return ((AprEndpoint)endpoint).getSSLCARevocationFile(); }
-    public void setSSLCARevocationFile(String SSLCARevocationFile) { ((AprEndpoint)endpoint).setSSLCARevocationFile(SSLCARevocationFile); }
+    public String getSSLCARevocationFile() {
+        return ((AprEndpoint) endpoint).getSSLCARevocationFile();
+    }
 
+    public void setSSLCARevocationFile(String SSLCARevocationFile) {
+        ((AprEndpoint) endpoint).setSSLCARevocationFile(SSLCARevocationFile);
+    }
 
     /**
      * SSL verify client.
      */
-    public String getSSLVerifyClient() { return ((AprEndpoint)endpoint).getSSLVerifyClient(); }
-    public void setSSLVerifyClient(String SSLVerifyClient) { ((AprEndpoint)endpoint).setSSLVerifyClient(SSLVerifyClient); }
+    public String getSSLVerifyClient() {
+        return ((AprEndpoint) endpoint).getSSLVerifyClient();
+    }
 
+    public void setSSLVerifyClient(String SSLVerifyClient) {
+        ((AprEndpoint) endpoint).setSSLVerifyClient(SSLVerifyClient);
+    }
 
     /**
      * SSL verify depth.
      */
-    public int getSSLVerifyDepth() { return ((AprEndpoint)endpoint).getSSLVerifyDepth(); }
-    public void setSSLVerifyDepth(int SSLVerifyDepth) { ((AprEndpoint)endpoint).setSSLVerifyDepth(SSLVerifyDepth); }
+    public int getSSLVerifyDepth() {
+        return ((AprEndpoint) endpoint).getSSLVerifyDepth();
+    }
+
+    public void setSSLVerifyDepth(int SSLVerifyDepth) {
+        ((AprEndpoint) endpoint).setSSLVerifyDepth(SSLVerifyDepth);
+    }
 
     /**
      * Disable SSL compression.
      */
-    public boolean getSSLDisableCompression() { return ((AprEndpoint)endpoint).getSSLDisableCompression(); }
-    public void setSSLDisableCompression(boolean disable) { ((AprEndpoint)endpoint).setSSLDisableCompression(disable); }
+    public boolean getSSLDisableCompression() {
+        return ((AprEndpoint) endpoint).getSSLDisableCompression();
+    }
+
+    public void setSSLDisableCompression(boolean disable) {
+        ((AprEndpoint) endpoint).setSSLDisableCompression(disable);
+    }
 
     /**
      * Disable TLS Session Tickets (RFC 4507).
      */
-    public boolean getSSLDisableSessionTickets() { return ((AprEndpoint)endpoint).getSSLDisableSessionTickets(); }
-    public void setSSLDisableSessionTickets(boolean enable) { ((AprEndpoint)endpoint).setSSLDisableSessionTickets(enable); }
+    public boolean getSSLDisableSessionTickets() {
+        return ((AprEndpoint) endpoint).getSSLDisableSessionTickets();
+    }
 
+    public void setSSLDisableSessionTickets(boolean enable) {
+        ((AprEndpoint) endpoint).setSSLDisableSessionTickets(enable);
+    }
 
     // ----------------------------------------------------- JMX related methods
 
@@ -209,11 +304,11 @@ public class Http11AprProtocol extends AbstractHttp11Protocol<Long> {
         return ("http-apr");
     }
 
-
     // --------------------  Connection handler --------------------
 
-    protected static class Http11ConnectionHandler
-            extends AbstractConnectionHandler<Long,Http11AprProcessor> implements Handler {
+    protected static class Http11ConnectionHandler extends
+            AbstractConnectionHandler<Long, Http11AprProcessor> implements
+            Handler {
 
         protected Http11AprProtocol proto;
 
@@ -237,7 +332,7 @@ public class Http11AprProtocol extends AbstractHttp11Protocol<Long> {
          *
          * @param socket
          * @param processor
-         * @param isSocketClosing   Not used in HTTP
+         * @param isSocketClosing Not used in HTTP
          * @param addToPoller
          */
         @Override
@@ -247,7 +342,8 @@ public class Http11AprProtocol extends AbstractHttp11Protocol<Long> {
             processor.recycle(isSocketClosing);
             recycledProcessors.push(processor);
             if (addToPoller && proto.endpoint.isRunning()) {
-                socket.registerforEvent(proto.endpoint.getKeepAliveTimeout(), true, false);
+                socket.registerforEvent(proto.endpoint.getKeepAliveTimeout(),
+                        true, false);
             }
         }
 
@@ -268,12 +364,12 @@ public class Http11AprProtocol extends AbstractHttp11Protocol<Long> {
                 // Comet
                 if (proto.endpoint.isRunning()) {
                     socket.setComet(true);
-                    socket.registerforEvent(proto.endpoint.getSoTimeout(), true, false);
+                    socket.registerforEvent(proto.endpoint.getSoTimeout(), true,
+                            false);
                 } else {
                     // Process a STOP directly
-                    ((AprEndpoint) proto.endpoint).processSocket(
-                            socket.getSocket().longValue(),
-                            SocketStatus.STOP);
+                    ((AprEndpoint) proto.endpoint).processSocket(socket
+                            .getSocket().longValue(), SocketStatus.STOP);
                 }
             } else {
                 // Upgraded
@@ -289,10 +385,12 @@ public class Http11AprProtocol extends AbstractHttp11Protocol<Long> {
 
         @Override
         protected Http11AprProcessor createProcessor() {
-            Http11AprProcessor processor = new Http11AprProcessor(
-                    proto.getMaxHttpHeaderSize(), (AprEndpoint)proto.endpoint,
-                    proto.getMaxTrailerSize(), proto.getAllowedTrailerHeadersAsSet(),
-                    proto.getMaxExtensionSize(), proto.getMaxSwallowSize());
+            Http11AprProcessor processor = new Http11AprProcessor(proto
+                    .getMaxHttpHeaderSize(), (AprEndpoint) proto.endpoint, proto
+                            .getMaxTrailerSize(), proto
+                                    .getAllowedTrailerHeadersAsSet(), proto
+                                            .getMaxExtensionSize(), proto
+                                                    .getMaxSwallowSize());
             proto.configureProcessor(processor);
             // APR specific configuration
             processor.setClientCertProvider(proto.getClientCertProvider());
@@ -303,11 +401,10 @@ public class Http11AprProtocol extends AbstractHttp11Protocol<Long> {
         @Override
         protected Processor<Long> createUpgradeProcessor(
                 SocketWrapper<Long> socket, ByteBuffer leftoverInput,
-                UpgradeToken upgradeToken)
-                throws IOException {
-            return new AprProcessor(socket, leftoverInput,
-                    upgradeToken, (AprEndpoint) proto.endpoint,
-                    proto.getUpgradeAsyncWriteBufferSize());
+                UpgradeToken upgradeToken) throws IOException {
+            return new AprProcessor(socket, leftoverInput, upgradeToken,
+                    (AprEndpoint) proto.endpoint, proto
+                            .getUpgradeAsyncWriteBufferSize());
         }
     }
 }

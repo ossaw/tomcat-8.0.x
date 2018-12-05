@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -55,29 +53,37 @@ public class TaskQueue extends LinkedBlockingQueue<Runnable> {
     }
 
     public boolean force(Runnable o) {
-        if ( parent==null || parent.isShutdown() ) throw new RejectedExecutionException("Executor not running, can't force a command into the queue");
+        if (parent == null || parent.isShutdown())
+            throw new RejectedExecutionException(
+                    "Executor not running, can't force a command into the queue");
         return super.offer(o); //forces the item onto the queue, to be used if the task is rejected
     }
 
-    public boolean force(Runnable o, long timeout, TimeUnit unit) throws InterruptedException {
-        if ( parent==null || parent.isShutdown() ) throw new RejectedExecutionException("Executor not running, can't force a command into the queue");
-        return super.offer(o,timeout,unit); //forces the item onto the queue, to be used if the task is rejected
+    public boolean force(Runnable o, long timeout, TimeUnit unit)
+            throws InterruptedException {
+        if (parent == null || parent.isShutdown())
+            throw new RejectedExecutionException(
+                    "Executor not running, can't force a command into the queue");
+        return super.offer(o, timeout, unit); //forces the item onto the queue, to be used if the task is rejected
     }
 
     @Override
     public boolean offer(Runnable o) {
-      //we can't do any checks
-        if (parent==null) return super.offer(o);
+        //we can't do any checks
+        if (parent == null)
+            return super.offer(o);
         //we are maxed out on threads, simply queue the object
-        if (parent.getPoolSize() == parent.getMaximumPoolSize()) return super.offer(o);
+        if (parent.getPoolSize() == parent.getMaximumPoolSize())
+            return super.offer(o);
         //we have idle threads, just add it to the queue
-        if (parent.getSubmittedCount()<(parent.getPoolSize())) return super.offer(o);
+        if (parent.getSubmittedCount() < (parent.getPoolSize()))
+            return super.offer(o);
         //if we have less threads than maximum force creation of a new thread
-        if (parent.getPoolSize()<parent.getMaximumPoolSize()) return false;
+        if (parent.getPoolSize() < parent.getMaximumPoolSize())
+            return false;
         //if we reached here, we need to add it to the queue
         return super.offer(o);
     }
-
 
     @Override
     public Runnable poll(long timeout, TimeUnit unit)

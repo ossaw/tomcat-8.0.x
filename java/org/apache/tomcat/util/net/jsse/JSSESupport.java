@@ -1,18 +1,16 @@
 /*
- *  Licensed to the Apache Software Foundation (ASF) under one or more
- *  contributor license agreements.  See the NOTICE file distributed with
- *  this work for additional information regarding copyright ownership.
- *  The ASF licenses this file to You under the Apache License, Version 2.0
- *  (the "License"); you may not use this file except in compliance with
- *  the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements. See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package org.apache.tomcat.util.net.jsse;
@@ -38,34 +36,36 @@ import org.apache.tomcat.util.net.SSLSupport;
 import org.apache.tomcat.util.net.jsse.openssl.Cipher;
 import org.apache.tomcat.util.res.StringManager;
 
-/** JSSESupport
-
-   Concrete implementation class for JSSE
-   Support classes.
-
-   This will only work with JDK 1.2 and up since it
-   depends on JDK 1.2's certificate support
-
-   @author EKR
-   @author Craig R. McClanahan
-   Parts cribbed from JSSECertCompat
-   Parts cribbed from CertificatesValve
-*/
+/**
+ * JSSESupport
+ * 
+ * Concrete implementation class for JSSE
+ * Support classes.
+ * 
+ * This will only work with JDK 1.2 and up since it
+ * depends on JDK 1.2's certificate support
+ * 
+ * @author EKR
+ * @author Craig R. McClanahan
+ *         Parts cribbed from JSSECertCompat
+ *         Parts cribbed from CertificatesValve
+ */
 
 class JSSESupport implements SSLSupport, SSLSessionManager {
 
-    private static final org.apache.juli.logging.Log log =
-        org.apache.juli.logging.LogFactory.getLog(JSSESupport.class);
+    private static final org.apache.juli.logging.Log log = org.apache.juli.logging.LogFactory
+            .getLog(JSSESupport.class);
 
-    private static final StringManager sm =
-        StringManager.getManager("org.apache.tomcat.util.net.jsse.res");
+    private static final StringManager sm = StringManager.getManager(
+            "org.apache.tomcat.util.net.jsse.res");
 
-    private static final Map<String,Integer> keySizeCache = new HashMap<>();
+    private static final Map<String, Integer> keySizeCache = new HashMap<>();
 
     static {
         for (Cipher cipher : Cipher.values()) {
             for (String jsseName : cipher.getJsseNames()) {
-                keySizeCache.put(jsseName, Integer.valueOf(cipher.getStrength_bits()));
+                keySizeCache.put(jsseName, Integer.valueOf(cipher
+                        .getStrength_bits()));
             }
         }
     }
@@ -84,8 +84,8 @@ class JSSESupport implements SSLSupport, SSLSessionManager {
 
     Listener listener = new Listener();
 
-    JSSESupport(SSLSocket sock){
-        ssl=sock;
+    JSSESupport(SSLSocket sock) {
+        ssl = sock;
         session = sock.getSession();
         sock.addHandshakeCompletedListener(listener);
     }
@@ -102,63 +102,63 @@ class JSSESupport implements SSLSupport, SSLSessionManager {
         return session.getCipherSuite();
     }
 
-    protected java.security.cert.X509Certificate [] getX509Certificates(
+    protected java.security.cert.X509Certificate[] getX509Certificates(
             SSLSession session) {
-        Certificate [] certs=null;
+        Certificate[] certs = null;
         try {
             certs = session.getPeerCertificates();
-        } catch( Throwable t ) {
+        } catch (Throwable t) {
             log.debug(sm.getString("jsseSupport.clientCertError"), t);
             return null;
         }
-        if( certs==null ) return null;
+        if (certs == null)
+            return null;
 
-        java.security.cert.X509Certificate [] x509Certs =
-            new java.security.cert.X509Certificate[certs.length];
-        for(int i=0; i < certs.length; i++) {
-            if (certs[i] instanceof java.security.cert.X509Certificate ) {
+        java.security.cert.X509Certificate[] x509Certs = new java.security.cert.X509Certificate[certs.length];
+        for (int i = 0; i < certs.length; i++) {
+            if (certs[i] instanceof java.security.cert.X509Certificate) {
                 // always currently true with the JSSE 1.1.x
                 x509Certs[i] = (java.security.cert.X509Certificate) certs[i];
             } else {
                 try {
-                    byte [] buffer = certs[i].getEncoded();
-                    CertificateFactory cf =
-                        CertificateFactory.getInstance("X.509");
-                    ByteArrayInputStream stream =
-                        new ByteArrayInputStream(buffer);
-                    x509Certs[i] = (java.security.cert.X509Certificate)
-                            cf.generateCertificate(stream);
-                } catch(Exception ex) {
-                    log.info(sm.getString(
-                            "jseeSupport.certTranslationError", certs[i]), ex);
+                    byte[] buffer = certs[i].getEncoded();
+                    CertificateFactory cf = CertificateFactory.getInstance(
+                            "X.509");
+                    ByteArrayInputStream stream = new ByteArrayInputStream(
+                            buffer);
+                    x509Certs[i] = (java.security.cert.X509Certificate) cf
+                            .generateCertificate(stream);
+                } catch (Exception ex) {
+                    log.info(sm.getString("jseeSupport.certTranslationError",
+                            certs[i]), ex);
                     return null;
                 }
             }
-            if(log.isTraceEnabled())
+            if (log.isTraceEnabled())
                 log.trace("Cert #" + i + " = " + x509Certs[i]);
         }
-        if(x509Certs.length < 1)
+        if (x509Certs.length < 1)
             return null;
         return x509Certs;
     }
 
     @Override
-    public java.security.cert.X509Certificate[] getPeerCertificateChain(boolean force)
-        throws IOException {
+    public java.security.cert.X509Certificate[] getPeerCertificateChain(
+            boolean force) throws IOException {
         // Look up the current SSLSession
         if (session == null)
             return null;
 
         // Convert JSSE's certificate format to the ones we need
-        X509Certificate [] jsseCerts = null;
+        X509Certificate[] jsseCerts = null;
         try {
             jsseCerts = session.getPeerCertificateChain();
-        } catch(Exception bex) {
+        } catch (Exception bex) {
             // ignore.
         }
         if (jsseCerts == null)
             jsseCerts = new X509Certificate[0];
-        if(jsseCerts.length <= 0 && force && ssl != null) {
+        if (jsseCerts.length <= 0 && force && ssl != null) {
             session.invalidate();
             handShake();
             session = ssl.getSession();
@@ -167,7 +167,7 @@ class JSSESupport implements SSLSupport, SSLSessionManager {
     }
 
     protected void handShake() throws IOException {
-        if( ssl.getWantClientAuth() ) {
+        if (ssl.getWantClientAuth()) {
             log.debug(sm.getString("jsseSupport.noCertWant"));
         } else {
             ssl.setNeedClientAuth(true);
@@ -198,10 +198,10 @@ class JSSESupport implements SSLSupport, SSLSessionManager {
                     // Shouldn't happen as all input should have been swallowed
                     // before trying to do the handshake. If it does, something
                     // went wrong so lets bomb out now.
-                    throw new SSLException(
-                            sm.getString("jsseSupport.unexpectedData"));
+                    throw new SSLException(sm.getString(
+                            "jsseSupport.unexpectedData"));
                 }
-            } catch(SSLException sslex) {
+            } catch (SSLException sslex) {
                 log.info(sm.getString("jsseSupport.clientCertError"), sslex);
                 throw sslex;
             } catch (IOException e) {
@@ -232,32 +232,34 @@ class JSSESupport implements SSLSupport, SSLSessionManager {
     }
 
     @Override
-    public String getSessionId()
-        throws IOException {
+    public String getSessionId() throws IOException {
         // Look up the current SSLSession
         if (session == null)
             return null;
         // Expose ssl_session (getId)
-        byte [] ssl_session = session.getId();
-        if ( ssl_session == null)
+        byte[] ssl_session = session.getId();
+        if (ssl_session == null)
             return null;
-        StringBuilder buf=new StringBuilder();
-        for(int x=0; x<ssl_session.length; x++) {
-            String digit=Integer.toHexString(ssl_session[x]);
-            if (digit.length()<2) buf.append('0');
-            if (digit.length()>2) digit=digit.substring(digit.length()-2);
+        StringBuilder buf = new StringBuilder();
+        for (int x = 0; x < ssl_session.length; x++) {
+            String digit = Integer.toHexString(ssl_session[x]);
+            if (digit.length() < 2)
+                buf.append('0');
+            if (digit.length() > 2)
+                digit = digit.substring(digit.length() - 2);
             buf.append(digit);
         }
         return buf.toString();
     }
 
-
     private static class Listener implements HandshakeCompletedListener {
         volatile boolean completed = false;
+
         @Override
         public void handshakeCompleted(HandshakeCompletedEvent event) {
             completed = true;
         }
+
         void reset() {
             completed = false;
         }
@@ -274,9 +276,8 @@ class JSSESupport implements SSLSupport, SSLSessionManager {
     @Override
     public String getProtocol() throws IOException {
         if (session == null) {
-           return null;
+            return null;
         }
-       return session.getProtocol();
-   }
+        return session.getProtocol();
+    }
 }
-

@@ -1,18 +1,16 @@
 /*
- *  Licensed to the Apache Software Foundation (ASF) under one or more
- *  contributor license agreements.  See the NOTICE file distributed with
- *  this work for additional information regarding copyright ownership.
- *  The ASF licenses this file to You under the Apache License, Version 2.0
- *  (the "License"); you may not use this file except in compliance with
- *  the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements. See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package org.apache.tomcat.util.buf;
@@ -40,7 +38,6 @@ public class TestByteChunk {
 
     /*
      * Test for {@code findByte} vs. {@code indexOf} methods difference.
-     *
      * <p>
      * As discussed in the "Re: r944918" thread on dev@, {@code
      * ByteChunk.indexOf()} works for 0-127 ASCII chars only, and cannot find
@@ -128,8 +125,8 @@ public class TestByteChunk {
         assertEquals(0, ByteChunk.findBytes(bytes, 0, len, new byte[] { 'H' }));
         assertEquals(5, ByteChunk.findBytes(bytes, 0, len, new byte[] {
                 (byte) '\u00a0', 'x' }));
-        assertEquals(5, ByteChunk.findBytes(bytes, 0, len - 4, new byte[] {
-                'x', (byte) '\u00a0' }));
+        assertEquals(5, ByteChunk.findBytes(bytes, 0, len - 4, new byte[] { 'x',
+                (byte) '\u00a0' }));
         assertEquals(len - 1, ByteChunk.findBytes(bytes, 2, len, new byte[] {
                 'x', 'd' }));
         assertEquals(1, ByteChunk.findBytes(bytes, 0, len, new byte[] { 'o',

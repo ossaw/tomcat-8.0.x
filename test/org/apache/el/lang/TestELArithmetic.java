@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -28,13 +26,13 @@ import org.junit.Test;
 
 public class TestELArithmetic {
     private static final String a = "1.1";
-    private static final BigInteger b =
-        new BigInteger("1000000000000000000000");
+    private static final BigInteger b = new BigInteger(
+            "1000000000000000000000");
 
     @Test
     public void testAdd01() throws Exception {
-        assertEquals("1000000000000000000001.1",
-                String.valueOf(ELArithmetic.add(a, b)));
+        assertEquals("1000000000000000000001.1", String.valueOf(ELArithmetic
+                .add(a, b)));
     }
 
     @Test
@@ -46,8 +44,8 @@ public class TestELArithmetic {
 
     @Test
     public void testSubtract01() throws Exception {
-        assertEquals("-999999999999999999998.9",
-                String.valueOf(ELArithmetic.subtract(a, b)));
+        assertEquals("-999999999999999999998.9", String.valueOf(ELArithmetic
+                .subtract(a, b)));
     }
 
     @Test
@@ -59,8 +57,8 @@ public class TestELArithmetic {
 
     @Test
     public void testMultiply01() throws Exception {
-        assertEquals("1100000000000000000000.0",
-                String.valueOf(ELArithmetic.multiply(a, b)));
+        assertEquals("1100000000000000000000.0", String.valueOf(ELArithmetic
+                .multiply(a, b)));
     }
 
     @Test
@@ -72,8 +70,7 @@ public class TestELArithmetic {
 
     @Test
     public void testDivide01() throws Exception {
-        assertEquals("0.0",
-                String.valueOf(ELArithmetic.divide(a, b)));
+        assertEquals("0.0", String.valueOf(ELArithmetic.divide(a, b)));
     }
 
     @Test
@@ -85,8 +82,7 @@ public class TestELArithmetic {
 
     @Test
     public void testMod01() throws Exception {
-        assertEquals("1.1",
-                String.valueOf(ELArithmetic.mod(a, b)));
+        assertEquals("1.1", String.valueOf(ELArithmetic.mod(a, b)));
     }
 
     @Test
@@ -105,13 +101,14 @@ public class TestELArithmetic {
 
     @Test
     public void testBug47371bigDecimal() throws Exception {
-        assertEquals(BigDecimal.valueOf(1),
-                ELArithmetic.add("", BigDecimal.valueOf(1)));
+        assertEquals(BigDecimal.valueOf(1), ELArithmetic.add("", BigDecimal
+                .valueOf(1)));
     }
 
     @Test
     public void testBug47371double() throws Exception {
-        assertEquals(Double.valueOf(7), ELArithmetic.add("", Double.valueOf(7)));
+        assertEquals(Double.valueOf(7), ELArithmetic.add("", Double.valueOf(
+                7)));
     }
 
     @Test
@@ -121,8 +118,8 @@ public class TestELArithmetic {
 
     @Test
     public void testBug47371bigInteger() throws Exception {
-        assertEquals(BigInteger.valueOf(0),
-                ELArithmetic.multiply("", BigInteger.valueOf(1)));
+        assertEquals(BigInteger.valueOf(0), ELArithmetic.multiply("", BigInteger
+                .valueOf(1)));
     }
 
     @Test

@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -74,7 +72,8 @@ public class ResolverImpl extends Resolver {
         } else if (key.equals("REQUEST_METHOD")) {
             return request.getMethod();
         } else if (key.equals("SCRIPT_FILENAME")) {
-            return request.getServletContext().getRealPath(request.getServletPath());
+            return request.getServletContext().getRealPath(request
+                    .getServletPath());
         } else if (key.equals("REQUEST_PATH")) {
             return request.getRequestPathMB().toString();
         } else if (key.equals("CONTEXT_PATH")) {
@@ -100,8 +99,8 @@ public class ResolverImpl extends Resolver {
         } else if (key.equals("SERVER_SOFTWARE")) {
             return "tomcat";
         } else if (key.equals("THE_REQUEST")) {
-            return request.getMethod() + " " + request.getRequestURI()
-            + " " + request.getProtocol();
+            return request.getMethod() + " " + request.getRequestURI() + " "
+                    + request.getProtocol();
         } else if (key.equals("REQUEST_URI")) {
             return request.getRequestURI();
         } else if (key.equals("REQUEST_FILENAME")) {
@@ -113,15 +112,18 @@ public class ResolverImpl extends Resolver {
         } else if (key.equals("TIME_MON")) {
             return String.valueOf(Calendar.getInstance().get(Calendar.MONTH));
         } else if (key.equals("TIME_DAY")) {
-            return String.valueOf(Calendar.getInstance().get(Calendar.DAY_OF_MONTH));
+            return String.valueOf(Calendar.getInstance().get(
+                    Calendar.DAY_OF_MONTH));
         } else if (key.equals("TIME_HOUR")) {
-            return String.valueOf(Calendar.getInstance().get(Calendar.HOUR_OF_DAY));
+            return String.valueOf(Calendar.getInstance().get(
+                    Calendar.HOUR_OF_DAY));
         } else if (key.equals("TIME_MIN")) {
             return String.valueOf(Calendar.getInstance().get(Calendar.MINUTE));
         } else if (key.equals("TIME_SEC")) {
             return String.valueOf(Calendar.getInstance().get(Calendar.SECOND));
         } else if (key.equals("TIME_WDAY")) {
-            return String.valueOf(Calendar.getInstance().get(Calendar.DAY_OF_WEEK));
+            return String.valueOf(Calendar.getInstance().get(
+                    Calendar.DAY_OF_WEEK));
         } else if (key.equals("TIME")) {
             return FastHttpDateFormat.getCurrentDate();
         }
@@ -158,14 +160,15 @@ public class ResolverImpl extends Resolver {
             return false;
         } else {
             switch (type) {
-            case 0:
-                return (resource.isDirectory());
-            case 1:
-                return (resource.isFile());
-            case 2:
-                return (resource.isFile() && resource.getContentLength() > 0);
-            default:
-                return false;
+                case 0:
+                    return (resource.isDirectory());
+                case 1:
+                    return (resource.isFile());
+                case 2:
+                    return (resource.isFile() && resource
+                            .getContentLength() > 0);
+                default:
+                    return false;
             }
         }
     }

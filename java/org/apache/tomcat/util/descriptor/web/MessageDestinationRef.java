@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -16,11 +14,12 @@
  */
 package org.apache.tomcat.util.descriptor.web;
 
-
 /**
- * <p>Representation of a message destination reference for a web application,
+ * <p>
+ * Representation of a message destination reference for a web application,
  * as represented in a <code>&lt;message-destination-ref&gt;</code> element
- * in the deployment descriptor.</p>
+ * in the deployment descriptor.
+ * </p>
  *
  * @author Craig R. McClanahan
  * @since Tomcat 5.0
@@ -30,7 +29,6 @@ public class MessageDestinationRef extends ResourceBase {
     private static final long serialVersionUID = 1L;
 
     // ------------------------------------------------------------- Properties
-
 
     /**
      * The link of this destination ref.
@@ -44,7 +42,6 @@ public class MessageDestinationRef extends ResourceBase {
     public void setLink(String link) {
         this.link = link;
     }
-
 
     /**
      * The usage of this destination ref.
@@ -60,7 +57,6 @@ public class MessageDestinationRef extends ResourceBase {
     }
 
     // --------------------------------------------------------- Public Methods
-
 
     /**
      * Return a String representation of this object.
@@ -91,7 +87,6 @@ public class MessageDestinationRef extends ResourceBase {
         return (sb.toString());
     }
 
-
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -100,7 +95,6 @@ public class MessageDestinationRef extends ResourceBase {
         result = prime * result + ((usage == null) ? 0 : usage.hashCode());
         return result;
     }
-
 
     @Override
     public boolean equals(Object obj) {

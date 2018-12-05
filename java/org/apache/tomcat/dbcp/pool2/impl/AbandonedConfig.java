@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -32,14 +30,20 @@ public class AbandonedConfig {
     private boolean removeAbandonedOnBorrow = false;
 
     /**
-     * <p>Flag to remove abandoned objects if they exceed the
-     * removeAbandonedTimeout when borrowObject is invoked.</p>
+     * <p>
+     * Flag to remove abandoned objects if they exceed the
+     * removeAbandonedTimeout when borrowObject is invoked.
+     * </p>
      *
-     * <p>The default value is false.</p>
+     * <p>
+     * The default value is false.
+     * </p>
      *
-     * <p>If set to true, abandoned objects are removed by borrowObject if
+     * <p>
+     * If set to true, abandoned objects are removed by borrowObject if
      * there are fewer than 2 idle objects available in the pool and
-     * <code>getNumActive() &gt; getMaxTotal() - 3</code></p>
+     * <code>getNumActive() &gt; getMaxTotal() - 3</code>
+     * </p>
      *
      * @return true if abandoned objects are to be removed by borrowObject
      */
@@ -48,14 +52,17 @@ public class AbandonedConfig {
     }
 
     /**
-     * <p>Flag to remove abandoned objects if they exceed the
-     * removeAbandonedTimeout when borrowObject is invoked.</p>
+     * <p>
+     * Flag to remove abandoned objects if they exceed the
+     * removeAbandonedTimeout when borrowObject is invoked.
+     * </p>
      *
      * @param removeAbandonedOnBorrow true means abandoned objects will be
-     *   removed by borrowObject
+     *                                removed by borrowObject
      * @see #getRemoveAbandonedOnBorrow()
      */
-    public void setRemoveAbandonedOnBorrow(final boolean removeAbandonedOnBorrow) {
+    public void setRemoveAbandonedOnBorrow(
+            final boolean removeAbandonedOnBorrow) {
         this.removeAbandonedOnBorrow = removeAbandonedOnBorrow;
     }
 
@@ -66,17 +73,24 @@ public class AbandonedConfig {
     private boolean removeAbandonedOnMaintenance = false;
 
     /**
-     * <p>Flag to remove abandoned objects if they exceed the
+     * <p>
+     * Flag to remove abandoned objects if they exceed the
      * removeAbandonedTimeout when pool maintenance (the "evictor")
-     * runs.</p>
+     * runs.
+     * </p>
      *
-     * <p>The default value is false.</p>
+     * <p>
+     * The default value is false.
+     * </p>
      *
-     * <p>If set to true, abandoned objects are removed by the pool
-     * maintenance thread when it runs.  This setting has no effect
+     * <p>
+     * If set to true, abandoned objects are removed by the pool
+     * maintenance thread when it runs. This setting has no effect
      * unless maintenance is enabled by setting
-     *{@link GenericObjectPool#getTimeBetweenEvictionRunsMillis() timeBetweenEvictionRunsMillis}
-     * to a positive number.</p>
+     * {@link GenericObjectPool#getTimeBetweenEvictionRunsMillis()
+     * timeBetweenEvictionRunsMillis}
+     * to a positive number.
+     * </p>
      *
      * @return true if abandoned objects are to be removed by the evictor
      */
@@ -85,14 +99,17 @@ public class AbandonedConfig {
     }
 
     /**
-     * <p>Flag to remove abandoned objects if they exceed the
-     * removeAbandonedTimeout when pool maintenance runs.</p>
+     * <p>
+     * Flag to remove abandoned objects if they exceed the
+     * removeAbandonedTimeout when pool maintenance runs.
+     * </p>
      *
      * @param removeAbandonedOnMaintenance true means abandoned objects will be
-     *   removed by pool maintenance
+     *                                     removed by pool maintenance
      * @see #getRemoveAbandonedOnMaintenance
      */
-    public void setRemoveAbandonedOnMaintenance(final boolean removeAbandonedOnMaintenance) {
+    public void setRemoveAbandonedOnMaintenance(
+            final boolean removeAbandonedOnMaintenance) {
         this.removeAbandonedOnMaintenance = removeAbandonedOnMaintenance;
     }
 
@@ -102,14 +119,20 @@ public class AbandonedConfig {
     private int removeAbandonedTimeout = 300;
 
     /**
-     * <p>Timeout in seconds before an abandoned object can be removed.</p>
+     * <p>
+     * Timeout in seconds before an abandoned object can be removed.
+     * </p>
      *
-     * <p>The time of most recent use of an object is the maximum (latest) of
+     * <p>
+     * The time of most recent use of an object is the maximum (latest) of
      * {@link org.apache.tomcat.dbcp.pool2.TrackedUse#getLastUsed()}
      * (if this class of the object implements
-     * TrackedUse) and the time when the object was borrowed from the pool.</p>
+     * TrackedUse) and the time when the object was borrowed from the pool.
+     * </p>
      *
-     * <p>The default value is 300 seconds.</p>
+     * <p>
+     * The default value is 300 seconds.
+     * </p>
      *
      * @return the abandoned object timeout in seconds
      */
@@ -118,13 +141,17 @@ public class AbandonedConfig {
     }
 
     /**
-     * <p>Sets the timeout in seconds before an abandoned object can be
-     * removed</p>
+     * <p>
+     * Sets the timeout in seconds before an abandoned object can be
+     * removed
+     * </p>
      *
-     * <p>Setting this property has no effect if
+     * <p>
+     * Setting this property has no effect if
      * {@link #getRemoveAbandonedOnBorrow() removeAbandonedOnBorrow} and
      * {@link #getRemoveAbandonedOnMaintenance() removeAbandonedOnMaintenance}
-     * are both false.</p>
+     * are both false.
+     * </p>
      *
      * @param removeAbandonedTimeout new abandoned timeout in seconds
      * @see #getRemoveAbandonedTimeout()
@@ -148,7 +175,7 @@ public class AbandonedConfig {
      * because a stack trace has to be generated.
      *
      * @return boolean true if stack trace logging is turned on for abandoned
-     * objects
+     *         objects
      *
      */
     public boolean getLogAbandoned() {
@@ -222,9 +249,9 @@ public class AbandonedConfig {
      * object and retain the most recent stack trace to aid debugging of
      * abandoned objects.
      *
-     * @param   useUsageTracking    A value of <code>true</code> will enable
-     *                              the recording of a stack trace on every use
-     *                              of a pooled object
+     * @param useUsageTracking A value of <code>true</code> will enable
+     *                         the recording of a stack trace on every use
+     *                         of a pooled object
      */
     public void setUseUsageTracking(final boolean useUsageTracking) {
         this.useUsageTracking = useUsageTracking;

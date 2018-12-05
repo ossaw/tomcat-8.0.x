@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -50,24 +48,23 @@ public class TestErrorReportValve extends TomcatBaseTest {
 
         ByteChunk res = getUrl("http://localhost:" + getPort());
 
-        Assert.assertTrue(res.toString().contains("<p><b>message</b> <u>" +
-                ErrorServlet.ERROR_TEXT + "</u></p>"));
+        Assert.assertTrue(res.toString().contains("<p><b>message</b> <u>"
+                + ErrorServlet.ERROR_TEXT + "</u></p>"));
     }
-
 
     private static final class ErrorServlet extends HttpServlet {
 
         private static final long serialVersionUID = 1L;
         private static final String ERROR_TEXT = "The wheels fell off.";
+
         @Override
         protected void doGet(HttpServletRequest req, HttpServletResponse resp)
                 throws ServletException, IOException {
-            req.setAttribute(RequestDispatcher.ERROR_EXCEPTION,
-                    new Throwable(ERROR_TEXT));
+            req.setAttribute(RequestDispatcher.ERROR_EXCEPTION, new Throwable(
+                    ERROR_TEXT));
             resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         }
     }
-
 
     @Test
     public void testBug54220DoNotSetNotFound() throws Exception {
@@ -88,7 +85,6 @@ public class TestErrorReportValve extends TomcatBaseTest {
         Assert.assertEquals(HttpServletResponse.SC_OK, rc);
     }
 
-
     @Test
     public void testBug54220SetNotFound() throws Exception {
         Tomcat tomcat = getTomcatInstance();
@@ -107,7 +103,6 @@ public class TestErrorReportValve extends TomcatBaseTest {
         Assert.assertNull(res.toString());
         Assert.assertEquals(HttpServletResponse.SC_NOT_FOUND, rc);
     }
-
 
     private static final class Bug54220Servlet extends HttpServlet {
 
@@ -128,7 +123,6 @@ public class TestErrorReportValve extends TomcatBaseTest {
             }
         }
     }
-
 
     /*
      * Custom error/status codes should not result in a blank response.
@@ -154,7 +148,6 @@ public class TestErrorReportValve extends TomcatBaseTest {
         Assert.assertTrue(body, body.contains(Bug54536Servlet.ERROR_MESSAGE));
     }
 
-
     private static final class Bug54536Servlet extends HttpServlet {
 
         private static final long serialVersionUID = 1L;
@@ -177,8 +170,8 @@ public class TestErrorReportValve extends TomcatBaseTest {
         Context ctx = tomcat.addContext("", null);
 
         Bug56042Servlet bug56042Servlet = new Bug56042Servlet();
-        Wrapper wrapper =
-            Tomcat.addServlet(ctx, "bug56042Servlet", bug56042Servlet);
+        Wrapper wrapper = Tomcat.addServlet(ctx, "bug56042Servlet",
+                bug56042Servlet);
         wrapper.setAsyncSupported(true);
         ctx.addServletMappingDecoded("/bug56042Servlet", "bug56042Servlet");
 

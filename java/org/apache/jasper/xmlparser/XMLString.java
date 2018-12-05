@@ -1,24 +1,21 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
  * ====================================================================
- *
  * This software consists of voluntary contributions made by many
  * individuals on behalf of the Apache Software Foundation and was
  * originally based on software copyright (c) 1999, International
- * Business Machines, Inc., http://www.apache.org.  For more
+ * Business Machines, Inc., http://www.apache.org. For more
  * information on the Apache Software Foundation, please see
  * <http://www.apache.org/>.
  */
@@ -67,8 +64,7 @@ public class XMLString {
     //
 
     /** Default constructor. */
-    public XMLString() {
-    } // <init>()
+    public XMLString() {} // <init>()
 
     //
     // Public methods
@@ -108,7 +104,6 @@ public class XMLString {
         this.length = -1;
     } // clear()
 
-
     /**
      * Returns true if the contents of this XMLString structure and
      * the specified string are equal.
@@ -119,15 +114,15 @@ public class XMLString {
         if (s == null) {
             return false;
         }
-        if ( length != s.length() ) {
+        if (length != s.length()) {
             return false;
         }
 
         // is this faster than call s.toCharArray first and compare the
         // two arrays directly, which will possibly involve creating a
         // new char array object.
-        for (int i=0; i<length; i++) {
-            if (ch[offset+i] != s.charAt(i)) {
+        for (int i = 0; i < length; i++) {
+            if (ch[offset + i] != s.charAt(i)) {
                 return false;
             }
         }

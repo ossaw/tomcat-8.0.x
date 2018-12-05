@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -33,28 +31,23 @@ public class ErrorPage implements Serializable {
 
     // ----------------------------------------------------- Instance Variables
 
-
     /**
      * The error (status) code for which this error page is active. Note that
      * status code 0 is used for the default error page.
      */
     private int errorCode = 0;
 
-
     /**
      * The exception type for which this error page is active.
      */
     private String exceptionType = null;
-
 
     /**
      * The context-relative location to handle this error or exception.
      */
     private String location = null;
 
-
     // ------------------------------------------------------------- Properties
-
 
     /**
      * Return the error code.
@@ -64,7 +57,6 @@ public class ErrorPage implements Serializable {
         return (this.errorCode);
 
     }
-
 
     /**
      * Set the error code.
@@ -76,7 +68,6 @@ public class ErrorPage implements Serializable {
         this.errorCode = errorCode;
 
     }
-
 
     /**
      * Set the error code (hack for default XmlMapper data type).
@@ -92,7 +83,6 @@ public class ErrorPage implements Serializable {
         }
     }
 
-
     /**
      * Return the exception type.
      */
@@ -101,7 +91,6 @@ public class ErrorPage implements Serializable {
         return (this.exceptionType);
 
     }
-
 
     /**
      * Set the exception type.
@@ -114,7 +103,6 @@ public class ErrorPage implements Serializable {
 
     }
 
-
     /**
      * Return the location.
      */
@@ -123,7 +111,6 @@ public class ErrorPage implements Serializable {
         return (this.location);
 
     }
-
 
     /**
      * Set the location.
@@ -139,9 +126,7 @@ public class ErrorPage implements Serializable {
 
     }
 
-
     // --------------------------------------------------------- Public Methods
-
 
     /**
      * Render a String representation of this object.

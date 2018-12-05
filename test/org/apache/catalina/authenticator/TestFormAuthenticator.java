@@ -1,18 +1,16 @@
 /*
- *  Licensed to the Apache Software Foundation (ASF) under one or more
- *  contributor license agreements.  See the NOTICE file distributed with
- *  this work for additional information regarding copyright ownership.
- *  The ASF licenses this file to You under the Apache License, Version 2.0
- *  (the "License"); you may not use this file except in compliance with
- *  the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements. See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.apache.catalina.authenticator;
 
@@ -46,34 +44,28 @@ import org.apache.tomcat.websocket.server.WsContextListener;
 
 /*
  * Test FORM authentication for sessions that do and do not use cookies.
- *
  * 1. A client that can accept and respond to a Set-Cookie for JSESSIONID
- *    will be able to maintain its authenticated session, no matter whether
- *    the session ID is changed once, many times, or not at all.
- *
+ * will be able to maintain its authenticated session, no matter whether
+ * the session ID is changed once, many times, or not at all.
  * 2. A client that cannot accept cookies will only be able to maintain a
- *    persistent session IF the server sends the correct (current) jsessionid
- *    as a path parameter appended to ALL urls within its response. That is
- *    achievable with servlets, jsps, jstl (all of which which can ask for an
- *    encoded url to be inserted into the dynamic web page). It cannot work
- *    with static html.
- *    note: this test class uses the Tomcat sample jsps, which conform.
- *
+ * persistent session IF the server sends the correct (current) jsessionid
+ * as a path parameter appended to ALL urls within its response. That is
+ * achievable with servlets, jsps, jstl (all of which which can ask for an
+ * encoded url to be inserted into the dynamic web page). It cannot work
+ * with static html.
+ * note: this test class uses the Tomcat sample jsps, which conform.
  * 3. Therefore, any webapp that MIGHT need to authenticate a client that
- *    does not accept cookies MUST generate EVERY protected resource url
- *    dynamically (so that it will include the current session ID).
- *
+ * does not accept cookies MUST generate EVERY protected resource url
+ * dynamically (so that it will include the current session ID).
  * 4. Any webapp that cannot satisfy case 3 MUST turn off
- *    changeSessionIdOnAuthentication for its Context and thus degrade the
- *    session fixation protection for ALL of its clients.
- *    note from MarkT: Not sure I agree with this. If the URLs aren't
- *      being encoded, then the session is going to break regardless of
- *      whether or not the session ID changes.
- *
+ * changeSessionIdOnAuthentication for its Context and thus degrade the
+ * session fixation protection for ALL of its clients.
+ * note from MarkT: Not sure I agree with this. If the URLs aren't
+ * being encoded, then the session is going to break regardless of
+ * whether or not the session ID changes.
  * Unlike a "proper browser", this unit test class does a quite lot of
  * screen-scraping and cheating of headers and urls (not very elegant,
  * but it makes no claims to generality).
- *
  */
 public class TestFormAuthenticator extends TomcatBaseTest {
 
@@ -96,8 +88,8 @@ public class TestFormAuthenticator extends TomcatBaseTest {
 
     // minimum session timeout
     private static final int TIMEOUT_MINS = 1;
-    private static final long TIMEOUT_DELAY_MSECS =
-                            (((TIMEOUT_MINS * 60) + 10) * 1000);
+    private static final long TIMEOUT_DELAY_MSECS = (((TIMEOUT_MINS * 60) + 10)
+            * 1000);
 
     private FormAuthClient client;
 
@@ -107,36 +99,35 @@ public class TestFormAuthenticator extends TomcatBaseTest {
 
     @Test
     public void testGetWithCookies() throws Exception {
-        doTest("GET", "GET", NO_100_CONTINUE,
-                CLIENT_USE_COOKIES, SERVER_USE_COOKIES, SERVER_CHANGE_SESSID);
+        doTest("GET", "GET", NO_100_CONTINUE, CLIENT_USE_COOKIES,
+                SERVER_USE_COOKIES, SERVER_CHANGE_SESSID);
     }
 
     @Test
     public void testPostNoContinueWithCookies() throws Exception {
-        doTest("POST", "GET", NO_100_CONTINUE,
-                CLIENT_USE_COOKIES, SERVER_USE_COOKIES, SERVER_CHANGE_SESSID);
+        doTest("POST", "GET", NO_100_CONTINUE, CLIENT_USE_COOKIES,
+                SERVER_USE_COOKIES, SERVER_CHANGE_SESSID);
     }
 
     @Test
     public void testPostWithContinueAndCookies() throws Exception {
-        doTest("POST", "GET", USE_100_CONTINUE,
-               CLIENT_USE_COOKIES, SERVER_USE_COOKIES, SERVER_CHANGE_SESSID);
+        doTest("POST", "GET", USE_100_CONTINUE, CLIENT_USE_COOKIES,
+                SERVER_USE_COOKIES, SERVER_CHANGE_SESSID);
     }
 
     // Bug 49779
     @Test
     public void testPostNoContinuePostRedirectWithCookies() throws Exception {
-        doTest("POST", "POST", NO_100_CONTINUE,
-                CLIENT_USE_COOKIES, SERVER_USE_COOKIES, SERVER_CHANGE_SESSID);
+        doTest("POST", "POST", NO_100_CONTINUE, CLIENT_USE_COOKIES,
+                SERVER_USE_COOKIES, SERVER_CHANGE_SESSID);
     }
 
     // Bug 49779
     @Test
     public void testPostWithContinuePostRedirectWithCookies() throws Exception {
-        doTest("POST", "POST", USE_100_CONTINUE,
-                CLIENT_USE_COOKIES, SERVER_USE_COOKIES, SERVER_CHANGE_SESSID);
+        doTest("POST", "POST", USE_100_CONTINUE, CLIENT_USE_COOKIES,
+                SERVER_USE_COOKIES, SERVER_CHANGE_SESSID);
     }
-
 
     // next, a set of tests where the server Context is configured to never
     // use cookies and the session ID is only carried as a url path parameter
@@ -144,38 +135,37 @@ public class TestFormAuthenticator extends TomcatBaseTest {
     // Bug 53584
     @Test
     public void testGetNoServerCookies() throws Exception {
-        doTest("GET", "GET", NO_100_CONTINUE,
-                CLIENT_NO_COOKIES, SERVER_NO_COOKIES, SERVER_CHANGE_SESSID);
+        doTest("GET", "GET", NO_100_CONTINUE, CLIENT_NO_COOKIES,
+                SERVER_NO_COOKIES, SERVER_CHANGE_SESSID);
     }
 
     @Test
     public void testPostNoContinueNoServerCookies() throws Exception {
-        doTest("POST", "GET", NO_100_CONTINUE,
-                CLIENT_USE_COOKIES, SERVER_NO_COOKIES, SERVER_CHANGE_SESSID);
+        doTest("POST", "GET", NO_100_CONTINUE, CLIENT_USE_COOKIES,
+                SERVER_NO_COOKIES, SERVER_CHANGE_SESSID);
     }
 
     @Test
     public void testPostWithContinueNoServerCookies() throws Exception {
-        doTest("POST", "GET", USE_100_CONTINUE,
-                CLIENT_USE_COOKIES, SERVER_NO_COOKIES, SERVER_CHANGE_SESSID);
+        doTest("POST", "GET", USE_100_CONTINUE, CLIENT_USE_COOKIES,
+                SERVER_NO_COOKIES, SERVER_CHANGE_SESSID);
     }
 
     // variant of Bug 49779
     @Test
     public void testPostNoContinuePostRedirectNoServerCookies()
             throws Exception {
-        doTest("POST", "POST", NO_100_CONTINUE,
-                CLIENT_USE_COOKIES, SERVER_NO_COOKIES, SERVER_CHANGE_SESSID);
+        doTest("POST", "POST", NO_100_CONTINUE, CLIENT_USE_COOKIES,
+                SERVER_NO_COOKIES, SERVER_CHANGE_SESSID);
     }
 
     // variant of Bug 49779
     @Test
     public void testPostWithContinuePostRedirectNoServerCookies()
             throws Exception {
-        doTest("POST", "POST", USE_100_CONTINUE,
-                CLIENT_USE_COOKIES, SERVER_NO_COOKIES, SERVER_CHANGE_SESSID);
+        doTest("POST", "POST", USE_100_CONTINUE, CLIENT_USE_COOKIES,
+                SERVER_NO_COOKIES, SERVER_CHANGE_SESSID);
     }
-
 
     // next, a set of tests where the server Context uses cookies,
     // but the client refuses to return them and tries to use
@@ -183,61 +173,57 @@ public class TestFormAuthenticator extends TomcatBaseTest {
 
     @Test
     public void testGetNoClientCookies() throws Exception {
-        doTest("GET", "GET", NO_100_CONTINUE,
-                CLIENT_NO_COOKIES, SERVER_USE_COOKIES, SERVER_CHANGE_SESSID);
+        doTest("GET", "GET", NO_100_CONTINUE, CLIENT_NO_COOKIES,
+                SERVER_USE_COOKIES, SERVER_CHANGE_SESSID);
     }
 
     @Test
     public void testPostNoContinueNoClientCookies() throws Exception {
-        doTest("POST", "GET", NO_100_CONTINUE,
-                CLIENT_NO_COOKIES, SERVER_USE_COOKIES, SERVER_CHANGE_SESSID);
+        doTest("POST", "GET", NO_100_CONTINUE, CLIENT_NO_COOKIES,
+                SERVER_USE_COOKIES, SERVER_CHANGE_SESSID);
     }
 
     @Test
     public void testPostWithContinueNoClientCookies() throws Exception {
-        doTest("POST", "GET", USE_100_CONTINUE,
-                CLIENT_NO_COOKIES, SERVER_USE_COOKIES, SERVER_CHANGE_SESSID);
+        doTest("POST", "GET", USE_100_CONTINUE, CLIENT_NO_COOKIES,
+                SERVER_USE_COOKIES, SERVER_CHANGE_SESSID);
     }
 
     // variant of Bug 49779
     @Test
     public void testPostNoContinuePostRedirectNoClientCookies()
             throws Exception {
-        doTest("POST", "POST", NO_100_CONTINUE,
-                CLIENT_NO_COOKIES, SERVER_USE_COOKIES, SERVER_CHANGE_SESSID);
+        doTest("POST", "POST", NO_100_CONTINUE, CLIENT_NO_COOKIES,
+                SERVER_USE_COOKIES, SERVER_CHANGE_SESSID);
     }
 
     // variant of Bug 49779
     @Test
     public void testPostWithContinuePostRedirectNoClientCookies()
             throws Exception {
-        doTest("POST", "POST", USE_100_CONTINUE,
-                CLIENT_NO_COOKIES, SERVER_USE_COOKIES, SERVER_CHANGE_SESSID);
+        doTest("POST", "POST", USE_100_CONTINUE, CLIENT_NO_COOKIES,
+                SERVER_USE_COOKIES, SERVER_CHANGE_SESSID);
     }
-
 
     // finally, a set of tests to explore quirky situations
     // but there is not need to replicate all the scenarios above.
 
     @Test
     public void testNoChangedSessidWithCookies() throws Exception {
-        doTest("GET", "GET", NO_100_CONTINUE,
-                CLIENT_USE_COOKIES, SERVER_USE_COOKIES,
-                SERVER_FREEZE_SESSID);
+        doTest("GET", "GET", NO_100_CONTINUE, CLIENT_USE_COOKIES,
+                SERVER_USE_COOKIES, SERVER_FREEZE_SESSID);
     }
 
     @Test
     public void testNoChangedSessidWithoutCookies() throws Exception {
-        doTest("GET", "GET", NO_100_CONTINUE,
-                CLIENT_NO_COOKIES, SERVER_USE_COOKIES,
-                SERVER_FREEZE_SESSID);
+        doTest("GET", "GET", NO_100_CONTINUE, CLIENT_NO_COOKIES,
+                SERVER_USE_COOKIES, SERVER_FREEZE_SESSID);
     }
 
     @Test
     public void testTimeoutWithoutCookies() throws Exception {
         String protectedUri = doTest("GET", "GET", NO_100_CONTINUE,
-                CLIENT_NO_COOKIES, SERVER_USE_COOKIES,
-                SERVER_FREEZE_SESSID);
+                CLIENT_NO_COOKIES, SERVER_USE_COOKIES, SERVER_FREEZE_SESSID);
 
         // wait long enough for my session to expire
         Thread.sleep(TIMEOUT_DELAY_MSECS);
@@ -252,22 +238,20 @@ public class TestFormAuthenticator extends TomcatBaseTest {
     // HTTP 1.0 test
     @Test
     public void testGetWithCookiesHttp10() throws Exception {
-        doTest("GET", "GET", NO_100_CONTINUE,
-                CLIENT_USE_COOKIES, SERVER_USE_COOKIES, SERVER_CHANGE_SESSID,
-                CLIENT_USE_HTTP_10);
+        doTest("GET", "GET", NO_100_CONTINUE, CLIENT_USE_COOKIES,
+                SERVER_USE_COOKIES, SERVER_CHANGE_SESSID, CLIENT_USE_HTTP_10);
     }
-
 
     @Test
     public void doTestSelectedMethods() throws Exception {
 
-        FormAuthClientSelectedMethods client =
-                new FormAuthClientSelectedMethods(true, true, true, true);
+        FormAuthClientSelectedMethods client = new FormAuthClientSelectedMethods(
+                true, true, true, true);
 
         // First request for protected resource gets the login page
-        client.doResourceRequest("PUT", true, "/test?" +
-                SelectedMethodsServlet.PARAM + "=" +
-                SelectedMethodsServlet.VALUE, null);
+        client.doResourceRequest("PUT", true, "/test?"
+                + SelectedMethodsServlet.PARAM + "="
+                + SelectedMethodsServlet.VALUE, null);
         assertTrue(client.getResponseLine(), client.isResponse200());
         assertTrue(client.isResponseBodyOK());
         String originalSessionId = client.getSessionId();
@@ -276,8 +260,8 @@ public class TestFormAuthenticator extends TomcatBaseTest {
         // Second request replies to the login challenge
         client.doResourceRequest("POST", true, "/test/j_security_check",
                 FormAuthClientBase.LOGIN_REPLY);
-        assertTrue("login failed " + client.getResponseLine(),
-                client.isResponse303());
+        assertTrue("login failed " + client.getResponseLine(), client
+                .isResponse303());
         assertTrue(client.isResponseBodyOK());
         String redirectUri = client.getRedirectUri();
         client.reset();
@@ -293,21 +277,18 @@ public class TestFormAuthenticator extends TomcatBaseTest {
         client.reset();
     }
 
-
     /*
      * Choreograph the steps of the test dialogue with the server
-     *  1. while not authenticated, try to access a protected resource
-     *  2. respond to the login challenge with good credentials
-     *  3. after successful login, follow the redirect to the original page
-     *  4. repeatedly access the protected resource to demonstrate
-     *     persistence of the authenticated session
-     *
+     * 1. while not authenticated, try to access a protected resource
+     * 2. respond to the login challenge with good credentials
+     * 3. after successful login, follow the redirect to the original page
+     * 4. repeatedly access the protected resource to demonstrate
+     * persistence of the authenticated session
      * @param resourceMethod HTTP method for accessing the protected resource
      * @param redirectMethod HTTP method for the login FORM reply
      * @param useContinue whether the HTTP client should expect a 100 Continue
      * @param clientShouldUseCookies whether the client should send cookies
      * @param serverWillUseCookies whether the server should send cookies
-     *
      */
     private String doTest(String resourceMethod, String redirectMethod,
             boolean useContinue, boolean clientShouldUseCookies,
@@ -332,14 +313,12 @@ public class TestFormAuthenticator extends TomcatBaseTest {
         client.doResourceRequest(resourceMethod, false, null, null);
         assertTrue(client.isResponse200());
         assertTrue(client.isResponseBodyOK());
-        String loginUri = client.extractBodyUri(
-                FormAuthClient.LOGIN_PARAM_TAG,
+        String loginUri = client.extractBodyUri(FormAuthClient.LOGIN_PARAM_TAG,
                 FormAuthClient.LOGIN_RESOURCE);
         String originalSessionId = null;
         if (serverWillUseCookies && clientShouldUseCookies) {
             originalSessionId = client.getSessionId();
-        }
-        else {
+        } else {
             originalSessionId = client.extractPathSessionId(loginUri);
         }
         client.reset();
@@ -348,11 +327,11 @@ public class TestFormAuthenticator extends TomcatBaseTest {
         client.setUseContinue(useContinue);
         client.doLoginRequest(loginUri);
         if (clientShouldUseHttp11) {
-            assertTrue("login failed " + client.getResponseLine(),
-                    client.isResponse303());
+            assertTrue("login failed " + client.getResponseLine(), client
+                    .isResponse303());
         } else {
-            assertTrue("login failed " + client.getResponseLine(),
-                    client.isResponse302());
+            assertTrue("login failed " + client.getResponseLine(), client
+                    .isResponse302());
         }
         assertTrue(client.isResponseBodyOK());
         String redirectUri = client.getRedirectUri();
@@ -372,8 +351,7 @@ public class TestFormAuthenticator extends TomcatBaseTest {
         String newSessionId = null;
         if (serverWillUseCookies && clientShouldUseCookies) {
             newSessionId = client.getSessionId();
-        }
-        else {
+        } else {
             newSessionId = client.extractPathSessionId(protectedUri);
         }
         boolean sessionIdIsChanged = !(originalSessionId.equals(newSessionId));
@@ -384,27 +362,24 @@ public class TestFormAuthenticator extends TomcatBaseTest {
         doTestProtected(resourceMethod, protectedUri, useContinue,
                 FormAuthClient.LOGIN_SUCCESSFUL, 5);
 
-        return protectedUri;        // in case more requests will be issued
+        return protectedUri; // in case more requests will be issued
     }
 
     /*
      * Repeatedly access the protected resource after the client has
      * successfully logged-in to the webapp. The current session attributes
      * will be used and cannot be changed.
-     *  3. after successful login, follow the redirect to the original page
-     *  4. repeatedly access the protected resource to demonstrate
-     *     persistence of the authenticated session
-     *
+     * 3. after successful login, follow the redirect to the original page
+     * 4. repeatedly access the protected resource to demonstrate
+     * persistence of the authenticated session
      * @param resourceMethod HTTP method for accessing the protected resource
      * @param protectedUri to access (with or without sessionid)
      * @param useContinue whether the HTTP client should expect a 100 Continue
      * @param clientShouldUseCookies whether the client should send cookies
      * @param serverWillUseCookies whether the server should send cookies
-     *
      */
     private void doTestProtected(String resourceMethod, String protectedUri,
-            boolean useContinue, int phase, int repeatCount)
-            throws Exception {
+            boolean useContinue, int phase, int repeatCount) throws Exception {
 
         // Subsequent requests - keep accessing the protected resource
         for (int i = 0; i < repeatCount; i++) {
@@ -424,14 +399,12 @@ public class TestFormAuthenticator extends TomcatBaseTest {
 
         protected static final String LOGIN_PARAM_TAG = "action=";
         protected static final String LOGIN_RESOURCE = "j_security_check";
-        protected static final String LOGIN_REPLY =
-                "j_username=tomcat&j_password=tomcat";
+        protected static final String LOGIN_REPLY = "j_username=tomcat&j_password=tomcat";
 
-        protected static final String PROTECTED_RELATIVE_PATH =
-                "/examples/jsp/security/protected/";
+        protected static final String PROTECTED_RELATIVE_PATH = "/examples/jsp/security/protected/";
         protected static final String PROTECTED_RESOURCE = "index.jsp";
-        private static final String PROTECTED_RESOURCE_URL =
-                PROTECTED_RELATIVE_PATH + PROTECTED_RESOURCE;
+        private static final String PROTECTED_RESOURCE_URL = PROTECTED_RELATIVE_PATH
+                + PROTECTED_RESOURCE;
         protected static final String RESOURCE_PARAM_TAG = "href=";
         private static final char PARAM_DELIM = '?';
 
@@ -442,24 +415,25 @@ public class TestFormAuthenticator extends TomcatBaseTest {
         private int requestCount = 0;
 
         // todo: forgot this change and making it up again!
-        protected final String SESSION_PARAMETER_START =
-            SESSION_PARAMETER_NAME + "=";
+        protected final String SESSION_PARAMETER_START = SESSION_PARAMETER_NAME
+                + "=";
 
         protected boolean clientShouldUseHttp11;
 
         protected void doLoginRequest(String loginUri) throws Exception {
 
-            doResourceRequest("POST", true,
-                    PROTECTED_RELATIVE_PATH + loginUri, LOGIN_REPLY);
+            doResourceRequest("POST", true, PROTECTED_RELATIVE_PATH + loginUri,
+                    LOGIN_REPLY);
         }
 
         /*
          * Prepare the resource request HTTP headers and issue the request.
          * Three kinds of uri are supported:
-         *   1. fully qualified uri.
-         *   2. minimal uri without webapp path.
-         *   3. null - use the default protected resource
-         * Cookies are sent if available and supported by the test. Otherwise, the
+         * 1. fully qualified uri.
+         * 2. minimal uri without webapp path.
+         * 3. null - use the default protected resource
+         * Cookies are sent if available and supported by the test. Otherwise,
+         * the
          * caller is expected to have provided a session id as a path parameter.
          */
         protected void doResourceRequest(String method, boolean isFullQualUri,
@@ -470,15 +444,13 @@ public class TestFormAuthenticator extends TomcatBaseTest {
             requestHead.append(method).append(" ");
             if (isFullQualUri) {
                 requestHead.append(resourceUri);
-            }
-            else {
+            } else {
                 if (resourceUri == null) {
                     // the default relative url
                     requestHead.append(PROTECTED_RESOURCE_URL);
-                }
-                else {
-                    requestHead.append(PROTECTED_RELATIVE_PATH)
-                            .append(resourceUri);
+                } else {
+                    requestHead.append(PROTECTED_RELATIVE_PATH).append(
+                            resourceUri);
                 }
                 if ("GET".equals(method)) {
                     requestHead.append("?role=bar");
@@ -501,8 +473,7 @@ public class TestFormAuthenticator extends TomcatBaseTest {
             if (getUseCookies()) {
                 String sessionId = getSessionId();
                 if (sessionId != null) {
-                    requestHead.append("Cookie: ")
-                            .append(SESSION_COOKIE_NAME)
+                    requestHead.append("Cookie: ").append(SESSION_COOKIE_NAME)
                             .append("=").append(sessionId).append(CRLF);
                 }
             }
@@ -614,8 +585,7 @@ public class TestFormAuthenticator extends TomcatBaseTest {
                         SESSION_PATH_PARAMETER_TAILS);
                 if (parser.hasMoreElements()) {
                     sessionId = parser.nextToken();
-                }
-                else {
+                } else {
                     sessionId = url.substring(iStart);
                 }
             }
@@ -632,19 +602,18 @@ public class TestFormAuthenticator extends TomcatBaseTest {
         }
     }
 
-
     private class FormAuthClient extends FormAuthClientBase {
         private FormAuthClient(boolean clientShouldUseCookies,
-                boolean clientShouldUseHttp11,
-                boolean serverShouldUseCookies,
+                boolean clientShouldUseHttp11, boolean serverShouldUseCookies,
                 boolean serverShouldChangeSessid) throws Exception {
 
             this.clientShouldUseHttp11 = clientShouldUseHttp11;
 
             Tomcat tomcat = getTomcatInstance();
-            File appDir = new File(System.getProperty("tomcat.test.basedir"), "webapps/examples");
-            Context ctx = tomcat.addWebapp(null, "/examples",
-                    appDir.getAbsolutePath());
+            File appDir = new File(System.getProperty("tomcat.test.basedir"),
+                    "webapps/examples");
+            Context ctx = tomcat.addWebapp(null, "/examples", appDir
+                    .getAbsolutePath());
             setUseCookies(clientShouldUseCookies);
             ctx.setCookies(serverShouldUseCookies);
             ctx.addApplicationListener(WsContextListener.class.getName());
@@ -663,9 +632,9 @@ public class TestFormAuthenticator extends TomcatBaseTest {
             Valve[] valves = ctx.getPipeline().getValves();
             for (Valve valve : valves) {
                 if (valve instanceof AuthenticatorBase) {
-                    ((AuthenticatorBase)valve)
+                    ((AuthenticatorBase) valve)
                             .setChangeSessionIdOnAuthentication(
-                                                serverShouldChangeSessid);
+                                    serverShouldChangeSessid);
                     break;
                 }
             }
@@ -674,7 +643,6 @@ public class TestFormAuthenticator extends TomcatBaseTest {
             setPort(getPort());
         }
     }
-
 
     /**
      * Encapsulate the logic needed to run a suitably-configured Tomcat
@@ -688,23 +656,21 @@ public class TestFormAuthenticator extends TomcatBaseTest {
     private class FormAuthClientSelectedMethods extends FormAuthClientBase {
 
         private FormAuthClientSelectedMethods(boolean clientShouldUseCookies,
-                boolean clientShouldUseHttp11,
-                boolean serverShouldUseCookies,
+                boolean clientShouldUseHttp11, boolean serverShouldUseCookies,
                 boolean serverShouldChangeSessid) throws Exception {
 
             this.clientShouldUseHttp11 = clientShouldUseHttp11;
 
             Tomcat tomcat = getTomcatInstance();
 
-            Context ctx = tomcat.addContext(
-                    "", System.getProperty("java.io.tmpdir"));
+            Context ctx = tomcat.addContext("", System.getProperty(
+                    "java.io.tmpdir"));
             Tomcat.addServlet(ctx, "SelectedMethods",
                     new SelectedMethodsServlet());
             ctx.addServletMappingDecoded("/test", "SelectedMethods");
             // Login servlet just needs to respond "OK". Client will handle
             // creating a valid response. No need for a form.
-            Tomcat.addServlet(ctx, "Login",
-                    new TesterServlet());
+            Tomcat.addServlet(ctx, "Login", new TesterServlet());
             ctx.addServletMappingDecoded("/login", "Login");
 
             // Configure the security constraints
@@ -741,9 +707,9 @@ public class TestFormAuthenticator extends TomcatBaseTest {
             Valve[] valves = ctx.getPipeline().getValves();
             for (Valve valve : valves) {
                 if (valve instanceof AuthenticatorBase) {
-                    ((AuthenticatorBase)valve)
+                    ((AuthenticatorBase) valve)
                             .setChangeSessionIdOnAuthentication(
-                                                serverShouldChangeSessid);
+                                    serverShouldChangeSessid);
                     break;
                 }
             }
@@ -763,7 +729,6 @@ public class TestFormAuthenticator extends TomcatBaseTest {
         }
     }
 
-
     private static final class SelectedMethodsServlet extends HttpServlet {
 
         private static final long serialVersionUID = 1L;
@@ -775,8 +740,8 @@ public class TestFormAuthenticator extends TomcatBaseTest {
                 throws ServletException, IOException {
             resp.setContentType("text/plain;charset=UTF-8");
 
-            if (VALUE.equals(req.getParameter(PARAM)) &&
-                    req.isUserInRole("tomcat")) {
+            if (VALUE.equals(req.getParameter(PARAM)) && req.isUserInRole(
+                    "tomcat")) {
                 resp.getWriter().print("OK");
             } else {
                 resp.getWriter().print("FAIL");

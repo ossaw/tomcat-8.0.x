@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -45,8 +43,8 @@ public class TestArrayELResolver {
     @Test
     public void testGetType03() {
         ArrayELResolver resolver = new ArrayELResolver();
-        ELContext context = new StandardELContext(
-                ELManager.getExpressionFactory());
+        ELContext context = new StandardELContext(ELManager
+                .getExpressionFactory());
 
         String[] base = new String[] { "element" };
         Class<?> result = resolver.getType(context, base, new Integer(0));
@@ -61,8 +59,8 @@ public class TestArrayELResolver {
     @Test(expected = PropertyNotFoundException.class)
     public void testGetType04() {
         ArrayELResolver resolver = new ArrayELResolver();
-        ELContext context = new StandardELContext(
-                ELManager.getExpressionFactory());
+        ELContext context = new StandardELContext(ELManager
+                .getExpressionFactory());
 
         String[] base = new String[] { "element" };
         resolver.getType(context, base, new Integer(1));
@@ -74,8 +72,8 @@ public class TestArrayELResolver {
     @Test
     public void testGetType05() {
         ArrayELResolver resolver = new ArrayELResolver();
-        ELContext context = new StandardELContext(
-                ELManager.getExpressionFactory());
+        ELContext context = new StandardELContext(ELManager
+                .getExpressionFactory());
 
         String[] base = new String[] { "element" };
         Class<?> result = resolver.getType(context, base, "index");
@@ -108,8 +106,8 @@ public class TestArrayELResolver {
     @Test
     public void testGetValue03() {
         ArrayELResolver resolver = new ArrayELResolver();
-        ELContext context = new StandardELContext(
-                ELManager.getExpressionFactory());
+        ELContext context = new StandardELContext(ELManager
+                .getExpressionFactory());
 
         String[] base = new String[] { "element" };
         Object result = resolver.getValue(context, base, new Integer(0));
@@ -124,8 +122,8 @@ public class TestArrayELResolver {
     @Test(expected = IllegalArgumentException.class)
     public void testGetValue04() {
         ArrayELResolver resolver = new ArrayELResolver();
-        ELContext context = new StandardELContext(
-                ELManager.getExpressionFactory());
+        ELContext context = new StandardELContext(ELManager
+                .getExpressionFactory());
 
         String[] base = new String[] { "element" };
         resolver.getValue(context, base, "key");
@@ -137,8 +135,8 @@ public class TestArrayELResolver {
     @Test
     public void testGetValue05() {
         ArrayELResolver resolver = new ArrayELResolver();
-        ELContext context = new StandardELContext(
-                ELManager.getExpressionFactory());
+        ELContext context = new StandardELContext(ELManager
+                .getExpressionFactory());
 
         String[] base = new String[] { "element" };
         Object result = resolver.getValue(context, base, new Integer(1));
@@ -176,8 +174,8 @@ public class TestArrayELResolver {
     @Test(expected = PropertyNotWritableException.class)
     public void testSetValue03() {
         ArrayELResolver resolver = new ArrayELResolver(true);
-        ELContext context = new StandardELContext(
-                ELManager.getExpressionFactory());
+        ELContext context = new StandardELContext(ELManager
+                .getExpressionFactory());
 
         resolver.setValue(context, new String[] {}, new Object(), new Object());
     }
@@ -188,20 +186,20 @@ public class TestArrayELResolver {
     @Test
     public void testSetValue04() {
         ArrayELResolver resolver = new ArrayELResolver();
-        ELContext context = new StandardELContext(
-                ELManager.getExpressionFactory());
+        ELContext context = new StandardELContext(ELManager
+                .getExpressionFactory());
 
         String[] base = new String[] { "element" };
         resolver.setValue(context, base, new Integer(0), "new-element");
 
-        Assert.assertEquals("new-element",
-                resolver.getValue(context, base, new Integer(0)));
+        Assert.assertEquals("new-element", resolver.getValue(context, base,
+                new Integer(0)));
         Assert.assertTrue(context.isPropertyResolved());
 
         resolver.setValue(context, base, new Integer(0), null);
 
-        Assert.assertEquals(null,
-                resolver.getValue(context, base, new Integer(0)));
+        Assert.assertEquals(null, resolver.getValue(context, base, new Integer(
+                0)));
         Assert.assertTrue(context.isPropertyResolved());
     }
 
@@ -211,8 +209,8 @@ public class TestArrayELResolver {
     @Test(expected = IllegalArgumentException.class)
     public void testSetValue05() {
         ArrayELResolver resolver = new ArrayELResolver();
-        ELContext context = new StandardELContext(
-                ELManager.getExpressionFactory());
+        ELContext context = new StandardELContext(ELManager
+                .getExpressionFactory());
 
         String[] base = new String[] { "element" };
         resolver.setValue(context, base, "key", "new-element");
@@ -224,8 +222,8 @@ public class TestArrayELResolver {
     @Test(expected = PropertyNotFoundException.class)
     public void testSetValue06() {
         ArrayELResolver resolver = new ArrayELResolver();
-        ELContext context = new StandardELContext(
-                ELManager.getExpressionFactory());
+        ELContext context = new StandardELContext(ELManager
+                .getExpressionFactory());
 
         String[] base = new String[] { "element" };
         resolver.setValue(context, base, new Integer(1), "new-element");
@@ -238,8 +236,8 @@ public class TestArrayELResolver {
     @Test(expected = ClassCastException.class)
     public void testSetValue07() {
         ArrayELResolver resolver = new ArrayELResolver();
-        ELContext context = new StandardELContext(
-                ELManager.getExpressionFactory());
+        ELContext context = new StandardELContext(ELManager
+                .getExpressionFactory());
 
         String[] base = new String[] { "element" };
         resolver.setValue(context, base, new Integer(0), new Integer(1));
@@ -252,8 +250,8 @@ public class TestArrayELResolver {
     @Test
     public void testSetValue08() {
         ArrayELResolver resolver = new ArrayELResolver();
-        ELContext context = new StandardELContext(
-                ELManager.getExpressionFactory());
+        ELContext context = new StandardELContext(ELManager
+                .getExpressionFactory());
 
         int[] base = new int[] { 1, 2, 3 };
         resolver.setValue(context, base, new Integer(1), Integer.valueOf(4));
@@ -276,8 +274,8 @@ public class TestArrayELResolver {
     @Test
     public void testIsReadOnly02() {
         ArrayELResolver resolver = new ArrayELResolver();
-        ELContext context = new StandardELContext(
-                ELManager.getExpressionFactory());
+        ELContext context = new StandardELContext(ELManager
+                .getExpressionFactory());
 
         boolean result = resolver.isReadOnly(context, new Object(),
                 new Object());
@@ -300,8 +298,8 @@ public class TestArrayELResolver {
     @Test
     public void testIsReadOnly03() {
         ArrayELResolver resolver = new ArrayELResolver();
-        ELContext context = new StandardELContext(
-                ELManager.getExpressionFactory());
+        ELContext context = new StandardELContext(ELManager
+                .getExpressionFactory());
 
         String[] base = new String[] { "element" };
         boolean result = resolver.isReadOnly(context, base, new Integer(0));
@@ -323,8 +321,8 @@ public class TestArrayELResolver {
     @Test(expected = PropertyNotFoundException.class)
     public void testIsReadOnly04() {
         ArrayELResolver resolver = new ArrayELResolver();
-        ELContext context = new StandardELContext(
-                ELManager.getExpressionFactory());
+        ELContext context = new StandardELContext(ELManager
+                .getExpressionFactory());
 
         String[] base = new String[] { "element" };
         resolver.isReadOnly(context, base, new Integer(1));
@@ -336,8 +334,8 @@ public class TestArrayELResolver {
     @Test
     public void testIsReadOnly05() {
         ArrayELResolver resolver = new ArrayELResolver();
-        ELContext context = new StandardELContext(
-                ELManager.getExpressionFactory());
+        ELContext context = new StandardELContext(ELManager
+                .getExpressionFactory());
 
         String[] base = new String[] { "element" };
         boolean result = resolver.isReadOnly(context, base, "key");
@@ -356,27 +354,27 @@ public class TestArrayELResolver {
     private void doNegativeTest(Object base, Object trigger,
             MethodUnderTest method, boolean checkResult) {
         ArrayELResolver resolver = new ArrayELResolver();
-        ELContext context = new StandardELContext(
-                ELManager.getExpressionFactory());
+        ELContext context = new StandardELContext(ELManager
+                .getExpressionFactory());
 
         Object result = null;
         switch (method) {
-        case GET_VALUE: {
-            result = resolver.getValue(context, base, trigger);
-            break;
-        }
-        case SET_VALUE: {
-            resolver.setValue(context, base, trigger, new Object());
-            break;
-        }
-        case GET_TYPE: {
-            result = resolver.getType(context, base, trigger);
-            break;
-        }
-        default: {
-            // Should never happen
-            Assert.fail("Missing case for method");
-        }
+            case GET_VALUE: {
+                result = resolver.getValue(context, base, trigger);
+                break;
+            }
+            case SET_VALUE: {
+                resolver.setValue(context, base, trigger, new Object());
+                break;
+            }
+            case GET_TYPE: {
+                result = resolver.getType(context, base, trigger);
+                break;
+            }
+            default: {
+                // Should never happen
+                Assert.fail("Missing case for method");
+            }
         }
 
         if (checkResult) {

@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -23,8 +21,8 @@ import javax.servlet.http.HttpServletRequest;
 public class Entries {
 
     private final Hashtable<String, Entry> entries;
-    private static final String[] time = { "8am", "9am", "10am", "11am",
-            "12pm", "1pm", "2pm", "3pm", "4pm", "5pm", "6pm", "7pm", "8pm" };
+    private static final String[] time = { "8am", "9am", "10am", "11am", "12pm",
+            "1pm", "2pm", "3pm", "4pm", "5pm", "6pm", "7pm", "8pm" };
     public static final int rows = 12;
 
     public Entries() {

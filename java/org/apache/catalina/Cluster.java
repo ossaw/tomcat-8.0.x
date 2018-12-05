@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -63,7 +61,6 @@ public interface Cluster {
      */
     public Container getContainer();
 
-
     // --------------------------------------------------------- Public Methods
 
     /**
@@ -71,7 +68,7 @@ public interface Cluster {
      * sessions.
      *
      * @param name Name (key) of the application with which the manager is
-     * associated
+     *             associated
      *
      * @return The newly created Manager instance
      */
@@ -81,18 +78,19 @@ public interface Cluster {
      * Register a manager with the cluster. If the cluster is not responsible
      * for creating a manager, then the container will at least notify the
      * cluster that this manager is participating in the cluster.
+     * 
      * @param manager Manager
      */
     public void registerManager(Manager manager);
 
     /**
      * Removes a manager from the cluster
+     * 
      * @param manager Manager
      */
     public void removeManager(Manager manager);
 
     // --------------------------------------------------------- Cluster Wide Deployments
-
 
     /**
      * Execute a periodic task, such as reloading, etc. This method will be

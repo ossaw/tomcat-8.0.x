@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -65,80 +63,67 @@ public class TestRegistration extends TomcatBaseTest {
         ADDRESS = address;
     }
 
-
     private static String[] basicMBeanNames() {
-        return new String[] {
-            "Tomcat:type=Engine",
-            "Tomcat:type=Realm,realmPath=/realm0",
-            "Tomcat:type=Mapper",
-            "Tomcat:type=MBeanFactory",
-            "Tomcat:type=NamingResources",
-            "Tomcat:type=Server",
-            "Tomcat:type=Service",
-            "Tomcat:type=StringCache",
-            "Tomcat:type=Valve,name=StandardEngineValve",
-        };
+        return new String[] { "Tomcat:type=Engine",
+                "Tomcat:type=Realm,realmPath=/realm0", "Tomcat:type=Mapper",
+                "Tomcat:type=MBeanFactory", "Tomcat:type=NamingResources",
+                "Tomcat:type=Server", "Tomcat:type=Service",
+                "Tomcat:type=StringCache",
+                "Tomcat:type=Valve,name=StandardEngineValve", };
     }
 
     private static String[] hostMBeanNames(String host) {
-        return new String[] {
-            "Tomcat:type=Host,host=" + host,
-            "Tomcat:type=Valve,host=" + host + ",name=ErrorReportValve",
-            "Tomcat:type=Valve,host=" + host + ",name=StandardHostValve",
-        };
+        return new String[] { "Tomcat:type=Host,host=" + host,
+                "Tomcat:type=Valve,host=" + host + ",name=ErrorReportValve",
+                "Tomcat:type=Valve,host=" + host + ",name=StandardHostValve", };
     }
 
     private String[] optionalMBeanNames(String host) {
         if (isAccessLogEnabled()) {
-            return new String[] {
-                "Tomcat:type=Valve,host=" + host + ",name=AccessLogValve",
-            };
+            return new String[] { "Tomcat:type=Valve,host=" + host
+                    + ",name=AccessLogValve", };
         } else {
-            return new String[] { };
+            return new String[] {};
         }
     }
 
     private static String[] requestMBeanNames(String port, String type) {
-        return new String[] {
-            "Tomcat:type=RequestProcessor,worker=" +
-                    ObjectName.quote("http-" + type + "-" + ADDRESS + "-" + port) +
-                    ",name=HttpRequest1",
-        };
+        return new String[] { "Tomcat:type=RequestProcessor,worker="
+                + ObjectName.quote("http-" + type + "-" + ADDRESS + "-" + port)
+                + ",name=HttpRequest1", };
     }
 
     private static String[] contextMBeanNames(String host, String context) {
-        return new String[] {
-            "Tomcat:j2eeType=WebModule,name=//" + host + context +
-                ",J2EEApplication=none,J2EEServer=none",
-            "Tomcat:type=Loader,host=" + host + ",context=" + context,
-            "Tomcat:type=Manager,host=" + host + ",context=" + context,
-            "Tomcat:type=NamingResources,host=" + host + ",context=" + context,
-            "Tomcat:type=Valve,host=" + host + ",context=" + context +
-                    ",name=NonLoginAuthenticator",
-            "Tomcat:type=Valve,host=" + host + ",context=" + context +
-                    ",name=StandardContextValve",
-            "Tomcat:type=WebappClassLoader,host=" + host + ",context=" + context,
-            "Tomcat:type=WebResourceRoot,host=" + host + ",context=" + context,
-            "Tomcat:type=WebResourceRoot,host=" + host + ",context=" + context +
-                    ",name=Cache",
-            "Tomcat:type=Realm,realmPath=/realm0,host=" + host +
-            ",context=" + context,
-            "Tomcat:type=Realm,realmPath=/realm0/realm0,host=" + host +
-            ",context=" + context
-        };
+        return new String[] { "Tomcat:j2eeType=WebModule,name=//" + host
+                + context + ",J2EEApplication=none,J2EEServer=none",
+                "Tomcat:type=Loader,host=" + host + ",context=" + context,
+                "Tomcat:type=Manager,host=" + host + ",context=" + context,
+                "Tomcat:type=NamingResources,host=" + host + ",context="
+                        + context, "Tomcat:type=Valve,host=" + host
+                                + ",context=" + context
+                                + ",name=NonLoginAuthenticator",
+                "Tomcat:type=Valve,host=" + host + ",context=" + context
+                        + ",name=StandardContextValve",
+                "Tomcat:type=WebappClassLoader,host=" + host + ",context="
+                        + context, "Tomcat:type=WebResourceRoot,host=" + host
+                                + ",context=" + context,
+                "Tomcat:type=WebResourceRoot,host=" + host + ",context="
+                        + context + ",name=Cache",
+                "Tomcat:type=Realm,realmPath=/realm0,host=" + host + ",context="
+                        + context,
+                "Tomcat:type=Realm,realmPath=/realm0/realm0,host=" + host
+                        + ",context=" + context };
     }
 
     private static String[] connectorMBeanNames(String port, String type) {
-        return new String[] {
-        "Tomcat:type=Connector,port=" + port + ",address="
+        return new String[] { "Tomcat:type=Connector,port=" + port + ",address="
                 + ObjectName.quote(ADDRESS),
-        "Tomcat:type=GlobalRequestProcessor,name="
-                + ObjectName.quote("http-" + type + "-" + ADDRESS + "-" + port),
-        "Tomcat:type=ProtocolHandler,port=" + port + ",address="
-                + ObjectName.quote(ADDRESS),
-        "Tomcat:type=ThreadPool,name="
-                + ObjectName.quote("http-" + type + "-" + ADDRESS + "-" + port),
-        };
+                "Tomcat:type=GlobalRequestProcessor,name=" + ObjectName.quote(
+                        "http-" + type + "-" + ADDRESS + "-" + port),
+                "Tomcat:type=ProtocolHandler,port=" + port + ",address="
+                        + ObjectName.quote(ADDRESS),
+                "Tomcat:type=ThreadPool,name=" + ObjectName.quote("http-" + type
+                        + "-" + ADDRESS + "-" + port), };
     }
 
     /*
@@ -148,9 +133,11 @@ public class TestRegistration extends TomcatBaseTest {
      */
     @Test
     public void testMBeanDeregistration() throws Exception {
-        final MBeanServer mbeanServer = Registry.getRegistry(null, null).getMBeanServer();
+        final MBeanServer mbeanServer = Registry.getRegistry(null, null)
+                .getMBeanServer();
         // Verify there are no Catalina or Tomcat MBeans
-        Set<ObjectName> onames = mbeanServer.queryNames(new ObjectName("Catalina:*"), null);
+        Set<ObjectName> onames = mbeanServer.queryNames(new ObjectName(
+                "Catalina:*"), null);
         log.info(MBeanDumper.dumpBeans(mbeanServer, onames));
         assertEquals("Unexpected: " + onames, 0, onames.size());
         onames = mbeanServer.queryNames(new ObjectName("Tomcat:*"), null);
@@ -163,7 +150,8 @@ public class TestRegistration extends TomcatBaseTest {
         if (!contextDir.mkdirs() && !contextDir.isDirectory()) {
             fail("Failed to create: [" + contextDir.toString() + "]");
         }
-        Context ctx = tomcat.addContext(contextName, contextDir.getAbsolutePath());
+        Context ctx = tomcat.addContext(contextName, contextDir
+                .getAbsolutePath());
 
         CombinedRealm combinedRealm = new CombinedRealm();
         Realm nullRealm = new NullRealm();
@@ -173,7 +161,8 @@ public class TestRegistration extends TomcatBaseTest {
         // Disable keep-alive otherwise request processing threads in keep-alive
         // won't shut down fast enough with BIO to de-register the processor
         // triggering a test failure
-        tomcat.getConnector().setAttribute("maxKeepAliveRequests", Integer.valueOf(1));
+        tomcat.getConnector().setAttribute("maxKeepAliveRequests", Integer
+                .valueOf(1));
 
         tomcat.start();
 
@@ -187,7 +176,7 @@ public class TestRegistration extends TomcatBaseTest {
         // Verify there are the correct Tomcat MBeans
         onames = mbeanServer.queryNames(new ObjectName("Tomcat:*"), null);
         ArrayList<String> found = new ArrayList<>(onames.size());
-        for (ObjectName on: onames) {
+        for (ObjectName on : onames) {
             found.add(on.toString());
         }
 
@@ -202,14 +191,18 @@ public class TestRegistration extends TomcatBaseTest {
         } else {
             protocol = "bio";
         }
-        String index = tomcat.getConnector().getProperty("nameIndex").toString();
-        ArrayList<String> expected = new ArrayList<>(Arrays.asList(basicMBeanNames()));
+        String index = tomcat.getConnector().getProperty("nameIndex")
+                .toString();
+        ArrayList<String> expected = new ArrayList<>(Arrays.asList(
+                basicMBeanNames()));
         expected.addAll(Arrays.asList(hostMBeanNames("localhost")));
-        expected.addAll(Arrays.asList(contextMBeanNames("localhost", contextName)));
-        expected.addAll(Arrays.asList(connectorMBeanNames("auto-" + index, protocol)));
+        expected.addAll(Arrays.asList(contextMBeanNames("localhost",
+                contextName)));
+        expected.addAll(Arrays.asList(connectorMBeanNames("auto-" + index,
+                protocol)));
         expected.addAll(Arrays.asList(optionalMBeanNames("localhost")));
-        expected.addAll(Arrays.asList(requestMBeanNames(
-                "auto-" + index + "-" + getPort(), protocol)));
+        expected.addAll(Arrays.asList(requestMBeanNames("auto-" + index + "-"
+                + getPort(), protocol)));
 
         // Did we find all expected MBeans?
         ArrayList<String> missing = new ArrayList<>(expected);
@@ -219,7 +212,8 @@ public class TestRegistration extends TomcatBaseTest {
         // Did we find any unexpected MBeans?
         List<String> additional = found;
         additional.removeAll(expected);
-        assertTrue("Unexpected Tomcat MBeans: " + additional, additional.isEmpty());
+        assertTrue("Unexpected Tomcat MBeans: " + additional, additional
+                .isEmpty());
 
         tomcat.stop();
 
@@ -232,12 +226,14 @@ public class TestRegistration extends TomcatBaseTest {
         host.setName("otherhost");
         tomcat.getEngine().addChild(host);
 
-        final File contextDir2 = new File(getTemporaryDirectory(), "webappFoo2");
+        final File contextDir2 = new File(getTemporaryDirectory(),
+                "webappFoo2");
         addDeleteOnTearDown(contextDir2);
         if (!contextDir2.mkdirs() && !contextDir2.isDirectory()) {
             fail("Failed to create: [" + contextDir2.toString() + "]");
         }
-        tomcat.addContext(host, contextName + "2", contextDir2.getAbsolutePath());
+        tomcat.addContext(host, contextName + "2", contextDir2
+                .getAbsolutePath());
 
         tomcat.start();
         tomcat.stop();

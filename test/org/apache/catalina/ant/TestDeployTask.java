@@ -1,18 +1,16 @@
 /*
- *  Licensed to the Apache Software Foundation (ASF) under one or more
- *  contributor license agreements.  See the NOTICE file distributed with
- *  this work for additional information regarding copyright ownership.
- *  The ASF licenses this file to You under the Apache License, Version 2.0
- *  (the "License"); you may not use this file except in compliance with
- *  the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements. See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.apache.catalina.ant;
 
@@ -35,7 +33,8 @@ public class TestDeployTask extends TomcatBaseTest {
         DeployTask deployTask = new DeployTask() {
 
             @Override
-            public void execute(String command, InputStream istream, String contentType, long contentLength)
+            public void execute(String command, InputStream istream,
+                    String contentType, long contentLength)
                     throws BuildException {
                 assertEquals("/deploy?path=somepath", command);
                 assertEquals("application/octet-stream", contentType);
@@ -50,15 +49,25 @@ public class TestDeployTask extends TomcatBaseTest {
         setDefaults(deployTask);
 
         testExecute(deployTask, "file:./test/deployment/context.war");
-        testExecute(deployTask, new File("test/deployment/context.war").toURI().toString());
-        testExecute(deployTask, new File("test/deployment/context.war").getAbsolutePath());
-        testExecute(deployTask, "jar:" + new File("test/deployment/context.jar").toURI().toString() + "!/context.war");
-        testExecute(deployTask, "file:./test/deployment/dir with spaces/context.war");
-        testExecute(deployTask, new File("test/deployment/dir with spaces/context.war").toURI().toString());
-        testExecute(deployTask, new File("test/deployment/dir with spaces/context.war").getAbsolutePath());
-        testExecute(deployTask, "jar:" + new File("test/deployment/dir with spaces/context.jar").toURI().toString()
-                + "!/context.war");
-        testExecute(deployTask, "file:./test/deployment/dir%20with%20spaces/context.war");
+        testExecute(deployTask, new File("test/deployment/context.war").toURI()
+                .toString());
+        testExecute(deployTask, new File("test/deployment/context.war")
+                .getAbsolutePath());
+        testExecute(deployTask, "jar:" + new File("test/deployment/context.jar")
+                .toURI().toString() + "!/context.war");
+        testExecute(deployTask,
+                "file:./test/deployment/dir with spaces/context.war");
+        testExecute(deployTask, new File(
+                "test/deployment/dir with spaces/context.war").toURI()
+                        .toString());
+        testExecute(deployTask, new File(
+                "test/deployment/dir with spaces/context.war")
+                        .getAbsolutePath());
+        testExecute(deployTask, "jar:" + new File(
+                "test/deployment/dir with spaces/context.jar").toURI()
+                        .toString() + "!/context.war");
+        testExecute(deployTask,
+                "file:./test/deployment/dir%20with%20spaces/context.war");
     }
 
     @Test(expected = BuildException.class)
@@ -87,7 +96,8 @@ public class TestDeployTask extends TomcatBaseTest {
         DeployTask deployTask = new DeployTask() {
 
             @Override
-            public void execute(String command, InputStream istream, String contentType, long contentLength)
+            public void execute(String command, InputStream istream,
+                    String contentType, long contentLength)
                     throws BuildException {
                 assertEquals("/deploy?path=somepath", command);
                 assertEquals("application/octet-stream", contentType);
@@ -101,7 +111,8 @@ public class TestDeployTask extends TomcatBaseTest {
 
         setDefaults(deployTask);
 
-        testExecute(deployTask, "http://localhost:" + getPort() + "/context.war");
+        testExecute(deployTask, "http://localhost:" + getPort()
+                + "/context.war");
     }
 
     private void setDefaults(DeployTask deployTask) {

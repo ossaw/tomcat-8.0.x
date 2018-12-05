@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -32,7 +30,6 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 
-
 /**
  * Provides an abstract class to be subclassed to create
  * an HTTP servlet suitable for a Web site. A subclass of
@@ -40,26 +37,29 @@ import javax.servlet.ServletResponse;
  * one method, usually one of these:
  *
  * <ul>
- * <li> <code>doGet</code>, if the servlet supports HTTP GET requests
- * <li> <code>doPost</code>, for HTTP POST requests
- * <li> <code>doPut</code>, for HTTP PUT requests
- * <li> <code>doDelete</code>, for HTTP DELETE requests
- * <li> <code>init</code> and <code>destroy</code>,
+ * <li><code>doGet</code>, if the servlet supports HTTP GET requests
+ * <li><code>doPost</code>, for HTTP POST requests
+ * <li><code>doPut</code>, for HTTP PUT requests
+ * <li><code>doDelete</code>, for HTTP DELETE requests
+ * <li><code>init</code> and <code>destroy</code>,
  * to manage resources that are held for the life of the servlet
- * <li> <code>getServletInfo</code>, which the servlet uses to
+ * <li><code>getServletInfo</code>, which the servlet uses to
  * provide information about itself
  * </ul>
  *
- * <p>There's almost no reason to override the <code>service</code>
+ * <p>
+ * There's almost no reason to override the <code>service</code>
  * method. <code>service</code> handles standard HTTP
  * requests by dispatching them to the handler methods
  * for each HTTP request type (the <code>do</code><i>Method</i>
  * methods listed above).
  *
- * <p>Likewise, there's almost no reason to override the
+ * <p>
+ * Likewise, there's almost no reason to override the
  * <code>doOptions</code> and <code>doTrace</code> methods.
  *
- * <p>Servlets typically run on multithreaded servers,
+ * <p>
+ * Servlets typically run on multithreaded servers,
  * so be aware that a servlet must handle concurrent
  * requests and be careful to synchronize access to shared resources.
  * Shared resources include in-memory data such as
@@ -67,7 +67,8 @@ import javax.servlet.ServletResponse;
  * such as files, database connections, and network
  * connections.
  * See the
- * <a href="http://java.sun.com/Series/Tutorial/java/threads/multithreaded.html">
+ * <a href=
+ * "http://java.sun.com/Series/Tutorial/java/threads/multithreaded.html">
  * Java Tutorial on Multithreaded Programming</a> for more
  * information on handling multiple threads in a Java program.
  */
@@ -86,11 +87,9 @@ public abstract class HttpServlet extends GenericServlet {
     private static final String HEADER_IFMODSINCE = "If-Modified-Since";
     private static final String HEADER_LASTMOD = "Last-Modified";
 
-    private static final String LSTRING_FILE =
-        "javax.servlet.http.LocalStrings";
-    private static final ResourceBundle lStrings =
-        ResourceBundle.getBundle(LSTRING_FILE);
-
+    private static final String LSTRING_FILE = "javax.servlet.http.LocalStrings";
+    private static final ResourceBundle lStrings = ResourceBundle.getBundle(
+            LSTRING_FILE);
 
     /**
      * Does nothing, because this is an abstract class.
@@ -99,17 +98,18 @@ public abstract class HttpServlet extends GenericServlet {
         // NOOP
     }
 
-
     /**
      * Called by the server (via the <code>service</code> method) to
      * allow a servlet to handle a GET request.
      *
-     * <p>Overriding this method to support a GET request also
+     * <p>
+     * Overriding this method to support a GET request also
      * automatically supports an HTTP HEAD request. A HEAD
      * request is a GET request that returns no body in the
      * response, only the request header fields.
      *
-     * <p>When overriding this method, read the request data,
+     * <p>
+     * When overriding this method, read the request data,
      * write the response headers, get the response's writer or
      * output stream object, and finally, write the response data.
      * It's best to include content type and encoding. When using
@@ -117,56 +117,61 @@ public abstract class HttpServlet extends GenericServlet {
      * set the content type before accessing the
      * <code>PrintWriter</code> object.
      *
-     * <p>The servlet container must write the headers before
+     * <p>
+     * The servlet container must write the headers before
      * committing the response, because in HTTP the headers must be sent
      * before the response body.
      *
-     * <p>Where possible, set the Content-Length header (with the
+     * <p>
+     * Where possible, set the Content-Length header (with the
      * {@link javax.servlet.ServletResponse#setContentLength} method),
      * to allow the servlet container to use a persistent connection
      * to return its response to the client, improving performance.
      * The content length is automatically set if the entire response fits
      * inside the response buffer.
      *
-     * <p>When using HTTP 1.1 chunked encoding (which means that the response
+     * <p>
+     * When using HTTP 1.1 chunked encoding (which means that the response
      * has a Transfer-Encoding header), do not set the Content-Length header.
      *
-     * <p>The GET method should be safe, that is, without
+     * <p>
+     * The GET method should be safe, that is, without
      * any side effects for which users are held responsible.
      * For example, most form queries have no side effects.
      * If a client request is intended to change stored data,
      * the request should use some other HTTP method.
      *
-     * <p>The GET method should also be idempotent, meaning
+     * <p>
+     * The GET method should also be idempotent, meaning
      * that it can be safely repeated. Sometimes making a
      * method safe also makes it idempotent. For example,
      * repeating queries is both safe and idempotent, but
      * buying a product online or modifying data is neither
      * safe nor idempotent.
      *
-     * <p>If the request is incorrectly formatted, <code>doGet</code>
+     * <p>
+     * If the request is incorrectly formatted, <code>doGet</code>
      * returns an HTTP "Bad Request" message.
      *
-     * @param req   an {@link HttpServletRequest} object that
-     *                  contains the request the client has made
-     *                  of the servlet
+     * @param req  an {@link HttpServletRequest} object that
+     *             contains the request the client has made
+     *             of the servlet
      *
-     * @param resp  an {@link HttpServletResponse} object that
-     *                  contains the response the servlet sends
-     *                  to the client
+     * @param resp an {@link HttpServletResponse} object that
+     *             contains the response the servlet sends
+     *             to the client
      *
-     * @exception IOException   if an input or output error is
-     *                              detected when the servlet handles
-     *                              the GET request
+     * @exception IOException      if an input or output error is
+     *                             detected when the servlet handles
+     *                             the GET request
      *
-     * @exception ServletException  if the request for the GET
-     *                                  could not be handled
+     * @exception ServletException if the request for the GET
+     *                             could not be handled
      *
      * @see javax.servlet.ServletResponse#setContentType
      */
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
-        throws ServletException, IOException
-    {
+            throws ServletException, IOException {
         String protocol = req.getProtocol();
         String msg = lStrings.getString("http.method_get_not_supported");
         if (protocol.endsWith("1.1")) {
@@ -176,7 +181,6 @@ public abstract class HttpServlet extends GenericServlet {
         }
     }
 
-
     /**
      * Returns the time the <code>HttpServletRequest</code>
      * object was last modified,
@@ -184,27 +188,28 @@ public abstract class HttpServlet extends GenericServlet {
      * If the time is unknown, this method returns a negative
      * number (the default).
      *
-     * <p>Servlets that support HTTP GET requests and can quickly determine
+     * <p>
+     * Servlets that support HTTP GET requests and can quickly determine
      * their last modification time should override this method.
      * This makes browser and proxy caches work more effectively,
      * reducing the load on server and network resources.
      *
-     * @param req   the <code>HttpServletRequest</code>
-     *                  object that is sent to the servlet
+     * @param req the <code>HttpServletRequest</code>
+     *            object that is sent to the servlet
      *
-     * @return  a <code>long</code> integer specifying
-     *              the time the <code>HttpServletRequest</code>
-     *              object was last modified, in milliseconds
-     *              since midnight, January 1, 1970 GMT, or
-     *              -1 if the time is not known
+     * @return a <code>long</code> integer specifying
+     *         the time the <code>HttpServletRequest</code>
+     *         object was last modified, in milliseconds
+     *         since midnight, January 1, 1970 GMT, or
+     *         -1 if the time is not known
      */
     protected long getLastModified(HttpServletRequest req) {
         return -1;
     }
 
-
     /**
-     * <p>Receives an HTTP HEAD request from the protected
+     * <p>
+     * Receives an HTTP HEAD request from the protected
      * <code>service</code> method and handles the
      * request.
      * The client sends a HEAD request when it wants
@@ -213,29 +218,31 @@ public abstract class HttpServlet extends GenericServlet {
      * method counts the output bytes in the response
      * to set the Content-Length header accurately.
      *
-     * <p>If you override this method, you can avoid computing
+     * <p>
+     * If you override this method, you can avoid computing
      * the response body and just set the response headers
      * directly to improve performance. Make sure that the
      * <code>doHead</code> method you write is both safe
      * and idempotent (that is, protects itself from being
      * called multiple times for one HTTP HEAD request).
      *
-     * <p>If the HTTP HEAD request is incorrectly formatted,
+     * <p>
+     * If the HTTP HEAD request is incorrectly formatted,
      * <code>doHead</code> returns an HTTP "Bad Request"
      * message.
      *
-     * @param req   the request object that is passed to the servlet
+     * @param req  the request object that is passed to the servlet
      *
-     * @param resp  the response object that the servlet
-     *                  uses to return the headers to the client
+     * @param resp the response object that the servlet
+     *             uses to return the headers to the client
      *
-     * @exception IOException   if an input or output error occurs
+     * @exception IOException      if an input or output error occurs
      *
-     * @exception ServletException  if the request for the HEAD
-     *                                  could not be handled
+     * @exception ServletException if the request for the HEAD
+     *                             could not be handled
      */
     protected void doHead(HttpServletRequest req, HttpServletResponse resp)
-        throws ServletException, IOException {
+            throws ServletException, IOException {
 
         if (DispatcherType.INCLUDE.equals(req.getDispatcherType())) {
             doGet(req, resp);
@@ -246,7 +253,6 @@ public abstract class HttpServlet extends GenericServlet {
         }
     }
 
-
     /**
      * Called by the server (via the <code>service</code> method)
      * to allow a servlet to handle a POST request.
@@ -256,56 +262,62 @@ public abstract class HttpServlet extends GenericServlet {
      * and is useful when posting information such as
      * credit card numbers.
      *
-     * <p>When overriding this method, read the request data,
+     * <p>
+     * When overriding this method, read the request data,
      * write the response headers, get the response's writer or output
      * stream object, and finally, write the response data. It's best
      * to include content type and encoding. When using a
      * <code>PrintWriter</code> object to return the response, set the
      * content type before accessing the <code>PrintWriter</code> object.
      *
-     * <p>The servlet container must write the headers before committing the
+     * <p>
+     * The servlet container must write the headers before committing the
      * response, because in HTTP the headers must be sent before the
      * response body.
      *
-     * <p>Where possible, set the Content-Length header (with the
+     * <p>
+     * Where possible, set the Content-Length header (with the
      * {@link javax.servlet.ServletResponse#setContentLength} method),
      * to allow the servlet container to use a persistent connection
      * to return its response to the client, improving performance.
      * The content length is automatically set if the entire response fits
      * inside the response buffer.
      *
-     * <p>When using HTTP 1.1 chunked encoding (which means that the response
+     * <p>
+     * When using HTTP 1.1 chunked encoding (which means that the response
      * has a Transfer-Encoding header), do not set the Content-Length header.
      *
-     * <p>This method does not need to be either safe or idempotent.
+     * <p>
+     * This method does not need to be either safe or idempotent.
      * Operations requested through POST can have side effects for
      * which the user can be held accountable, for example,
      * updating stored data or buying items online.
      *
-     * <p>If the HTTP POST request is incorrectly formatted,
+     * <p>
+     * If the HTTP POST request is incorrectly formatted,
      * <code>doPost</code> returns an HTTP "Bad Request" message.
      *
      *
-     * @param req   an {@link HttpServletRequest} object that
-     *                  contains the request the client has made
-     *                  of the servlet
+     * @param req  an {@link HttpServletRequest} object that
+     *             contains the request the client has made
+     *             of the servlet
      *
-     * @param resp  an {@link HttpServletResponse} object that
-     *                  contains the response the servlet sends
-     *                  to the client
+     * @param resp an {@link HttpServletResponse} object that
+     *             contains the response the servlet sends
+     *             to the client
      *
-     * @exception IOException   if an input or output error is
-     *                              detected when the servlet handles
-     *                              the request
+     * @exception IOException      if an input or output error is
+     *                             detected when the servlet handles
+     *                             the request
      *
-     * @exception ServletException  if the request for the POST
-     *                                  could not be handled
+     * @exception ServletException if the request for the POST
+     *                             could not be handled
      *
      * @see javax.servlet.ServletOutputStream
      * @see javax.servlet.ServletResponse#setContentType
      */
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
-        throws ServletException, IOException {
+            throws ServletException, IOException {
 
         String protocol = req.getProtocol();
         String msg = lStrings.getString("http.method_post_not_supported");
@@ -316,7 +328,6 @@ public abstract class HttpServlet extends GenericServlet {
         }
     }
 
-
     /**
      * Called by the server (via the <code>service</code> method)
      * to allow a servlet to handle a PUT request.
@@ -325,7 +336,8 @@ public abstract class HttpServlet extends GenericServlet {
      * place a file on the server and is similar to
      * sending a file by FTP.
      *
-     * <p>When overriding this method, leave intact
+     * <p>
+     * When overriding this method, leave intact
      * any content headers sent with the request (including
      * Content-Length, Content-Type, Content-Transfer-Encoding,
      * Content-Encoding, Content-Base, Content-Language, Content-Location,
@@ -335,32 +347,34 @@ public abstract class HttpServlet extends GenericServlet {
      * For more information on HTTP 1.1, see RFC 2616
      * <a href="http://www.ietf.org/rfc/rfc2616.txt"></a>.
      *
-     * <p>This method does not need to be either safe or idempotent.
+     * <p>
+     * This method does not need to be either safe or idempotent.
      * Operations that <code>doPut</code> performs can have side
      * effects for which the user can be held accountable. When using
      * this method, it may be useful to save a copy of the
      * affected URL in temporary storage.
      *
-     * <p>If the HTTP PUT request is incorrectly formatted,
+     * <p>
+     * If the HTTP PUT request is incorrectly formatted,
      * <code>doPut</code> returns an HTTP "Bad Request" message.
      *
-     * @param req   the {@link HttpServletRequest} object that
-     *                  contains the request the client made of
-     *                  the servlet
+     * @param req  the {@link HttpServletRequest} object that
+     *             contains the request the client made of
+     *             the servlet
      *
-     * @param resp  the {@link HttpServletResponse} object that
-     *                  contains the response the servlet returns
-     *                  to the client
+     * @param resp the {@link HttpServletResponse} object that
+     *             contains the response the servlet returns
+     *             to the client
      *
-     * @exception IOException   if an input or output error occurs
-     *                              while the servlet is handling the
-     *                              PUT request
+     * @exception IOException      if an input or output error occurs
+     *                             while the servlet is handling the
+     *                             PUT request
      *
-     * @exception ServletException  if the request for the PUT
-     *                                  cannot be handled
+     * @exception ServletException if the request for the PUT
+     *                             cannot be handled
      */
     protected void doPut(HttpServletRequest req, HttpServletResponse resp)
-        throws ServletException, IOException {
+            throws ServletException, IOException {
 
         String protocol = req.getProtocol();
         String msg = lStrings.getString("http.method_put_not_supported");
@@ -371,7 +385,6 @@ public abstract class HttpServlet extends GenericServlet {
         }
     }
 
-
     /**
      * Called by the server (via the <code>service</code> method)
      * to allow a servlet to handle a DELETE request.
@@ -379,36 +392,37 @@ public abstract class HttpServlet extends GenericServlet {
      * The DELETE operation allows a client to remove a document
      * or Web page from the server.
      *
-     * <p>This method does not need to be either safe
+     * <p>
+     * This method does not need to be either safe
      * or idempotent. Operations requested through
      * DELETE can have side effects for which users
      * can be held accountable. When using
      * this method, it may be useful to save a copy of the
      * affected URL in temporary storage.
      *
-     * <p>If the HTTP DELETE request is incorrectly formatted,
+     * <p>
+     * If the HTTP DELETE request is incorrectly formatted,
      * <code>doDelete</code> returns an HTTP "Bad Request"
      * message.
      *
-     * @param req   the {@link HttpServletRequest} object that
-     *                  contains the request the client made of
-     *                  the servlet
+     * @param req  the {@link HttpServletRequest} object that
+     *             contains the request the client made of
+     *             the servlet
      *
      *
-     * @param resp  the {@link HttpServletResponse} object that
-     *                  contains the response the servlet returns
-     *                  to the client
+     * @param resp the {@link HttpServletResponse} object that
+     *             contains the response the servlet returns
+     *             to the client
      *
-     * @exception IOException   if an input or output error occurs
-     *                              while the servlet is handling the
-     *                              DELETE request
+     * @exception IOException      if an input or output error occurs
+     *                             while the servlet is handling the
+     *                             DELETE request
      *
-     * @exception ServletException  if the request for the
-     *                                  DELETE cannot be handled
+     * @exception ServletException if the request for the
+     *                             DELETE cannot be handled
      */
-    protected void doDelete(HttpServletRequest req,
-                            HttpServletResponse resp)
-        throws ServletException, IOException {
+    protected void doDelete(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException {
 
         String protocol = req.getProtocol();
         String msg = lStrings.getString("http.method_delete_not_supported");
@@ -418,7 +432,6 @@ public abstract class HttpServlet extends GenericServlet {
             resp.sendError(HttpServletResponse.SC_BAD_REQUEST, msg);
         }
     }
-
 
     private static Method[] getAllDeclaredMethods(Class<?> c) {
 
@@ -430,19 +443,18 @@ public abstract class HttpServlet extends GenericServlet {
         Method[] thisMethods = c.getDeclaredMethods();
 
         if ((parentMethods != null) && (parentMethods.length > 0)) {
-            Method[] allMethods =
-                new Method[parentMethods.length + thisMethods.length];
+            Method[] allMethods = new Method[parentMethods.length
+                    + thisMethods.length];
             System.arraycopy(parentMethods, 0, allMethods, 0,
-                             parentMethods.length);
+                    parentMethods.length);
             System.arraycopy(thisMethods, 0, allMethods, parentMethods.length,
-                             thisMethods.length);
+                    thisMethods.length);
 
             thisMethods = allMethods;
         }
 
         return thisMethods;
     }
-
 
     /**
      * Called by the server (via the <code>service</code> method)
@@ -454,30 +466,31 @@ public abstract class HttpServlet extends GenericServlet {
      * overrides <code>doGet</code>, this method returns the
      * following header:
      *
-     * <p><code>Allow: GET, HEAD, TRACE, OPTIONS</code>
+     * <p>
+     * <code>Allow: GET, HEAD, TRACE, OPTIONS</code>
      *
-     * <p>There's no need to override this method unless the
+     * <p>
+     * There's no need to override this method unless the
      * servlet implements new HTTP methods, beyond those
      * implemented by HTTP 1.1.
      *
-     * @param req   the {@link HttpServletRequest} object that
-     *                  contains the request the client made of
-     *                  the servlet
+     * @param req  the {@link HttpServletRequest} object that
+     *             contains the request the client made of
+     *             the servlet
      *
-     * @param resp  the {@link HttpServletResponse} object that
-     *                  contains the response the servlet returns
-     *                  to the client
+     * @param resp the {@link HttpServletResponse} object that
+     *             contains the response the servlet returns
+     *             to the client
      *
-     * @exception IOException   if an input or output error occurs
-     *                              while the servlet is handling the
-     *                              OPTIONS request
+     * @exception IOException      if an input or output error occurs
+     *                             while the servlet is handling the
+     *                             OPTIONS request
      *
-     * @exception ServletException  if the request for the
-     *                                  OPTIONS cannot be handled
+     * @exception ServletException if the request for the
+     *                             OPTIONS cannot be handled
      */
-    protected void doOptions(HttpServletRequest req,
-            HttpServletResponse resp)
-        throws ServletException, IOException {
+    protected void doOptions(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException {
 
         Method[] methods = getAllDeclaredMethods(this.getClass());
 
@@ -489,7 +502,7 @@ public abstract class HttpServlet extends GenericServlet {
         boolean ALLOW_TRACE = true;
         boolean ALLOW_OPTIONS = true;
 
-        for (int i=0; i<methods.length; i++) {
+        for (int i = 0; i < methods.length; i++) {
             Method m = methods[i];
 
             if (m.getName().equals("doGet")) {
@@ -506,29 +519,40 @@ public abstract class HttpServlet extends GenericServlet {
 
         String allow = null;
         if (ALLOW_GET)
-            allow=METHOD_GET;
+            allow = METHOD_GET;
         if (ALLOW_HEAD)
-            if (allow==null) allow=METHOD_HEAD;
-            else allow += ", " + METHOD_HEAD;
+            if (allow == null)
+                allow = METHOD_HEAD;
+            else
+                allow += ", " + METHOD_HEAD;
         if (ALLOW_POST)
-            if (allow==null) allow=METHOD_POST;
-            else allow += ", " + METHOD_POST;
+            if (allow == null)
+                allow = METHOD_POST;
+            else
+                allow += ", " + METHOD_POST;
         if (ALLOW_PUT)
-            if (allow==null) allow=METHOD_PUT;
-            else allow += ", " + METHOD_PUT;
+            if (allow == null)
+                allow = METHOD_PUT;
+            else
+                allow += ", " + METHOD_PUT;
         if (ALLOW_DELETE)
-            if (allow==null) allow=METHOD_DELETE;
-            else allow += ", " + METHOD_DELETE;
+            if (allow == null)
+                allow = METHOD_DELETE;
+            else
+                allow += ", " + METHOD_DELETE;
         if (ALLOW_TRACE)
-            if (allow==null) allow=METHOD_TRACE;
-            else allow += ", " + METHOD_TRACE;
+            if (allow == null)
+                allow = METHOD_TRACE;
+            else
+                allow += ", " + METHOD_TRACE;
         if (ALLOW_OPTIONS)
-            if (allow==null) allow=METHOD_OPTIONS;
-            else allow += ", " + METHOD_OPTIONS;
+            if (allow == null)
+                allow = METHOD_OPTIONS;
+            else
+                allow += ", " + METHOD_OPTIONS;
 
         resp.setHeader("Allow", allow);
     }
-
 
     /**
      * Called by the server (via the <code>service</code> method)
@@ -538,37 +562,36 @@ public abstract class HttpServlet extends GenericServlet {
      * request to the client, so that they can be used in
      * debugging. There's no need to override this method.
      *
-     * @param req   the {@link HttpServletRequest} object that
-     *                  contains the request the client made of
-     *                  the servlet
+     * @param req  the {@link HttpServletRequest} object that
+     *             contains the request the client made of
+     *             the servlet
      *
-     * @param resp  the {@link HttpServletResponse} object that
-     *                  contains the response the servlet returns
-     *                  to the client
+     * @param resp the {@link HttpServletResponse} object that
+     *             contains the response the servlet returns
+     *             to the client
      *
-     * @exception IOException   if an input or output error occurs
-     *                              while the servlet is handling the
-     *                              TRACE request
+     * @exception IOException      if an input or output error occurs
+     *                             while the servlet is handling the
+     *                             TRACE request
      *
-     * @exception ServletException  if the request for the
-     *                                  TRACE cannot be handled
+     * @exception ServletException if the request for the
+     *                             TRACE cannot be handled
      */
     protected void doTrace(HttpServletRequest req, HttpServletResponse resp)
-        throws ServletException, IOException
-    {
+            throws ServletException, IOException {
 
         int responseLength;
 
         String CRLF = "\r\n";
-        StringBuilder buffer = new StringBuilder("TRACE ").append(req.getRequestURI())
-            .append(" ").append(req.getProtocol());
+        StringBuilder buffer = new StringBuilder("TRACE ").append(req
+                .getRequestURI()).append(" ").append(req.getProtocol());
 
         Enumeration<String> reqHeaderEnum = req.getHeaderNames();
 
-        while( reqHeaderEnum.hasMoreElements() ) {
+        while (reqHeaderEnum.hasMoreElements()) {
             String headerName = reqHeaderEnum.nextElement();
-            buffer.append(CRLF).append(headerName).append(": ")
-                .append(req.getHeader(headerName));
+            buffer.append(CRLF).append(headerName).append(": ").append(req
+                    .getHeader(headerName));
         }
 
         buffer.append(CRLF);
@@ -583,7 +606,6 @@ public abstract class HttpServlet extends GenericServlet {
         return;
     }
 
-
     /**
      * Receives standard HTTP requests from the public
      * <code>service</code> method and dispatches
@@ -592,25 +614,25 @@ public abstract class HttpServlet extends GenericServlet {
      * {@link javax.servlet.Servlet#service} method. There's no
      * need to override this method.
      *
-     * @param req   the {@link HttpServletRequest} object that
-     *                  contains the request the client made of
-     *                  the servlet
+     * @param req  the {@link HttpServletRequest} object that
+     *             contains the request the client made of
+     *             the servlet
      *
-     * @param resp  the {@link HttpServletResponse} object that
-     *                  contains the response the servlet returns
-     *                  to the client
+     * @param resp the {@link HttpServletResponse} object that
+     *             contains the response the servlet returns
+     *             to the client
      *
-     * @exception IOException   if an input or output error occurs
-     *                              while the servlet is handling the
-     *                              HTTP request
+     * @exception IOException      if an input or output error occurs
+     *                             while the servlet is handling the
+     *                             HTTP request
      *
-     * @exception ServletException  if the HTTP request
-     *                                  cannot be handled
+     * @exception ServletException if the HTTP request
+     *                             cannot be handled
      *
      * @see javax.servlet.Servlet#service
      */
     protected void service(HttpServletRequest req, HttpServletResponse resp)
-        throws ServletException, IOException {
+            throws ServletException, IOException {
 
         String method = req.getMethod();
 
@@ -654,10 +676,10 @@ public abstract class HttpServlet extends GenericServlet {
             doDelete(req, resp);
 
         } else if (method.equals(METHOD_OPTIONS)) {
-            doOptions(req,resp);
+            doOptions(req, resp);
 
         } else if (method.equals(METHOD_TRACE)) {
-            doTrace(req,resp);
+            doTrace(req, resp);
 
         } else {
             //
@@ -674,50 +696,48 @@ public abstract class HttpServlet extends GenericServlet {
         }
     }
 
-
     /*
      * Sets the Last-Modified entity header field, if it has not
-     * already been set and if the value is meaningful.  Called before
+     * already been set and if the value is meaningful. Called before
      * doGet, to ensure that headers are set before response data is
-     * written.  A subclass might have set this header already, so we
+     * written. A subclass might have set this header already, so we
      * check.
      */
     private void maybeSetLastModified(HttpServletResponse resp,
-                                      long lastModified) {
+            long lastModified) {
         if (resp.containsHeader(HEADER_LASTMOD))
             return;
         if (lastModified >= 0)
             resp.setDateHeader(HEADER_LASTMOD, lastModified);
     }
 
-
     /**
      * Dispatches client requests to the protected
      * <code>service</code> method. There's no need to
      * override this method.
      *
-     * @param req   the {@link HttpServletRequest} object that
-     *                  contains the request the client made of
-     *                  the servlet
+     * @param req the {@link HttpServletRequest} object that
+     *            contains the request the client made of
+     *            the servlet
      *
-     * @param res   the {@link HttpServletResponse} object that
-     *                  contains the response the servlet returns
-     *                  to the client
+     * @param res the {@link HttpServletResponse} object that
+     *            contains the response the servlet returns
+     *            to the client
      *
-     * @exception IOException   if an input or output error occurs
-     *                              while the servlet is handling the
-     *                              HTTP request
+     * @exception IOException      if an input or output error occurs
+     *                             while the servlet is handling the
+     *                             HTTP request
      *
-     * @exception ServletException  if the HTTP request cannot
-     *                                  be handled
+     * @exception ServletException if the HTTP request cannot
+     *                             be handled
      *
      * @see javax.servlet.Servlet#service
      */
     @Override
     public void service(ServletRequest req, ServletResponse res)
-        throws ServletException, IOException {
+            throws ServletException, IOException {
 
-        HttpServletRequest  request;
+        HttpServletRequest request;
         HttpServletResponse response;
 
         try {
@@ -730,11 +750,10 @@ public abstract class HttpServlet extends GenericServlet {
     }
 }
 
-
 /*
  * A response wrapper for use in (dumb) "HEAD" support.
  * This just swallows that body, counting the bytes in order to set
- * the content length appropriately.  All other methods delegate to the
+ * the content length appropriately. All other methods delegate to the
  * wrapped HTTP Servlet Response object.
  */
 // file private
@@ -758,7 +777,6 @@ class NoBodyResponse extends HttpServletResponseWrapper {
             super.setContentLength(noBody.getContentLength());
         }
     }
-
 
     // SERVLET RESPONSE interface methods
 
@@ -822,7 +840,6 @@ class NoBodyResponse extends HttpServletResponseWrapper {
     }
 }
 
-
 /*
  * Servlet output stream that gobbles up all its data.
  */
@@ -830,10 +847,9 @@ class NoBodyResponse extends HttpServletResponseWrapper {
 // file private
 class NoBodyOutputStream extends ServletOutputStream {
 
-    private static final String LSTRING_FILE =
-        "javax.servlet.http.LocalStrings";
-    private static final ResourceBundle lStrings =
-        ResourceBundle.getBundle(LSTRING_FILE);
+    private static final String LSTRING_FILE = "javax.servlet.http.LocalStrings";
+    private static final ResourceBundle lStrings = ResourceBundle.getBundle(
+            LSTRING_FILE);
 
     private int contentLength = 0;
 
@@ -855,11 +871,11 @@ class NoBodyOutputStream extends ServletOutputStream {
     @Override
     public void write(byte buf[], int offset, int len) throws IOException {
         if (buf == null) {
-            throw new NullPointerException(
-                    lStrings.getString("err.io.nullArray"));
+            throw new NullPointerException(lStrings.getString(
+                    "err.io.nullArray"));
         }
 
-        if (offset < 0 || len < 0 || offset+len > buf.length) {
+        if (offset < 0 || len < 0 || offset + len > buf.length) {
             String msg = lStrings.getString("err.io.indexOutOfBounds");
             Object[] msgArgs = new Object[3];
             msgArgs[0] = Integer.valueOf(offset);

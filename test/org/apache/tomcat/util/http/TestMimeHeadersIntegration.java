@@ -1,18 +1,16 @@
 /*
- *  Licensed to the Apache Software Foundation (ASF) under one or more
- *  contributor license agreements.  See the NOTICE file distributed with
- *  this work for additional information regarding copyright ownership.
- *  The ASF licenses this file to You under the Apache License, Version 2.0
- *  (the "License"); you may not use this file except in compliance with
- *  the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements. See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.apache.tomcat.util.http;
 
@@ -93,14 +91,14 @@ public class TestMimeHeadersIntegration extends TomcatBaseTest {
         if (successExpected) {
             alv.validateAccessLog(1, 200, 0, 3000);
             // Response 200
-            assertTrue("Response line is: " + client.getResponseLine(),
-                    client.getResponseLine() != null && client.isResponse200());
+            assertTrue("Response line is: " + client.getResponseLine(), client
+                    .getResponseLine() != null && client.isResponse200());
             assertEquals("OK", client.getResponseBody());
         } else {
             alv.validateAccessLog(1, 400, 0, 0);
             // Connection aborted or response 400
-            assertTrue("Response line is: " + client.getResponseLine(),
-                    client.getResponseLine() == null || client.isResponse400());
+            assertTrue("Response line is: " + client.getResponseLine(), client
+                    .getResponseLine() == null || client.isResponse400());
         }
         int maxHeaderCount = tomcat.getConnector().getMaxHeaderCount();
         assertEquals(expectedMaxHeaderCount, maxHeaderCount);
@@ -109,8 +107,8 @@ public class TestMimeHeadersIntegration extends TomcatBaseTest {
         } else if (maxHeaderCount < 0) {
             int maxHttpHeaderSize = ((Integer) tomcat.getConnector()
                     .getAttribute("maxHttpHeaderSize")).intValue();
-            int headerCount = Math.min(count,
-                    maxHttpHeaderSize / header.length() + 1);
+            int headerCount = Math.min(count, maxHttpHeaderSize / header
+                    .length() + 1);
             int arraySize = 1;
             while (arraySize < headerCount) {
                 arraySize <<= 1;
@@ -153,7 +151,8 @@ public class TestMimeHeadersIntegration extends TomcatBaseTest {
         runHeadersTest(true, tomcat, 300, -1);
     }
 
-    private static final class HeaderCountLogValve extends TesterAccessLogValve {
+    private static final class HeaderCountLogValve extends
+            TesterAccessLogValve {
         public volatile int arraySize = -1;
 
         @Override
@@ -161,8 +160,8 @@ public class TestMimeHeadersIntegration extends TomcatBaseTest {
             super.log(request, response, time);
             try {
                 MimeHeaders mh = request.getCoyoteRequest().getMimeHeaders();
-                Field headersArrayField = MimeHeaders.class
-                        .getDeclaredField("headers");
+                Field headersArrayField = MimeHeaders.class.getDeclaredField(
+                        "headers");
                 headersArrayField.setAccessible(true);
                 arraySize = ((Object[]) headersArrayField.get(mh)).length;
             } catch (Exception ex) {

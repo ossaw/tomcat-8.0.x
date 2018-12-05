@@ -1,18 +1,16 @@
 /*
- *  Licensed to the Apache Software Foundation (ASF) under one or more
- *  contributor license agreements.  See the NOTICE file distributed with
- *  this work for additional information regarding copyright ownership.
- *  The ASF licenses this file to You under the Apache License, Version 2.0
- *  (the "License"); you may not use this file except in compliance with
- *  the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements. See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.apache.tomcat.websocket.server;
 
@@ -34,19 +32,18 @@ import org.apache.tomcat.util.res.StringManager;
  */
 public class UriTemplate {
 
-    private static final StringManager sm =
-            StringManager.getManager(Constants.PACKAGE_NAME);
+    private static final StringManager sm = StringManager.getManager(
+            Constants.PACKAGE_NAME);
 
     private final String normalized;
     private final List<Segment> segments = new ArrayList<>();
     private final boolean hasParameters;
 
-
     public UriTemplate(String path) throws DeploymentException {
 
-        if (path == null || path.length() ==0 || !path.startsWith("/")) {
-            throw new DeploymentException(
-                    sm.getString("uriTemplate.invalidPath", path));
+        if (path == null || path.length() == 0 || !path.startsWith("/")) {
+            throw new DeploymentException(sm.getString(
+                    "uriTemplate.invalidPath", path));
         }
 
         StringBuilder normalized = new StringBuilder(path.length());
@@ -100,18 +97,17 @@ public class UriTemplate {
         this.hasParameters = paramCount > 0;
     }
 
+    public Map<String, String> match(UriTemplate candidate) {
 
-    public Map<String,String> match(UriTemplate candidate) {
-
-        Map<String,String> result = new HashMap<>();
+        Map<String, String> result = new HashMap<>();
 
         // Should not happen but for safety
         if (candidate.getSegmentCount() != getSegmentCount()) {
             return null;
         }
 
-        Iterator<Segment> candidateSegments =
-                candidate.getSegments().iterator();
+        Iterator<Segment> candidateSegments = candidate.getSegments()
+                .iterator();
         Iterator<Segment> targetSegments = segments.iterator();
 
         while (candidateSegments.hasNext()) {
@@ -120,41 +116,36 @@ public class UriTemplate {
 
             if (targetSegment.getParameterIndex() == -1) {
                 // Not a parameter - values must match
-                if (!targetSegment.getValue().equals(
-                        candidateSegment.getValue())) {
+                if (!targetSegment.getValue().equals(candidateSegment
+                        .getValue())) {
                     // Not a match. Stop here
                     return null;
                 }
             } else {
                 // Parameter
-                result.put(targetSegment.getValue(),
-                        candidateSegment.getValue());
+                result.put(targetSegment.getValue(), candidateSegment
+                        .getValue());
             }
         }
 
         return result;
     }
 
-
     public boolean hasParameters() {
         return hasParameters;
     }
-
 
     public int getSegmentCount() {
         return segments.size();
     }
 
-
     public String getNormalizedPath() {
         return normalized;
     }
 
-
     private List<Segment> getSegments() {
         return segments;
     }
-
 
     private static class Segment {
         private final int parameterIndex;
@@ -165,11 +156,9 @@ public class UriTemplate {
             this.value = value;
         }
 
-
         public int getParameterIndex() {
             return parameterIndex;
         }
-
 
         public String getValue() {
             return value;

@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -96,8 +94,8 @@ public class TestResourceBundleELResolver {
     @Test
     public void testGetValue03() {
         ResourceBundleELResolver resolver = new ResourceBundleELResolver();
-        ELContext context = new StandardELContext(
-                ELManager.getExpressionFactory());
+        ELContext context = new StandardELContext(ELManager
+                .getExpressionFactory());
 
         ResourceBundle resourceBundle = new TesterResourceBundle();
         Object result = resolver.getValue(context, resourceBundle, "key1");
@@ -142,8 +140,8 @@ public class TestResourceBundleELResolver {
     @Test
     public void testGetType03() {
         ResourceBundleELResolver resolver = new ResourceBundleELResolver();
-        ELContext context = new StandardELContext(
-                ELManager.getExpressionFactory());
+        ELContext context = new StandardELContext(ELManager
+                .getExpressionFactory());
 
         ResourceBundle resourceBundle = new TesterResourceBundle();
         Class<?> result = resolver.getType(context, resourceBundle, "key1");
@@ -176,8 +174,8 @@ public class TestResourceBundleELResolver {
     @Test(expected = PropertyNotWritableException.class)
     public void testSetValue03() {
         ResourceBundleELResolver resolver = new ResourceBundleELResolver();
-        ELContext context = new StandardELContext(
-                ELManager.getExpressionFactory());
+        ELContext context = new StandardELContext(ELManager
+                .getExpressionFactory());
 
         ResourceBundle resourceBundle = new TesterResourceBundle();
         resolver.setValue(context, resourceBundle, new Object(), new Object());
@@ -199,8 +197,8 @@ public class TestResourceBundleELResolver {
     @Test
     public void testIsReadOnly02() {
         ResourceBundleELResolver resolver = new ResourceBundleELResolver();
-        ELContext context = new StandardELContext(
-                ELManager.getExpressionFactory());
+        ELContext context = new StandardELContext(ELManager
+                .getExpressionFactory());
 
         boolean result = resolver.isReadOnly(context, new Object(),
                 new Object());
@@ -215,8 +213,8 @@ public class TestResourceBundleELResolver {
     @Test
     public void testIsReadOnly03() {
         ResourceBundleELResolver resolver = new ResourceBundleELResolver();
-        ELContext context = new StandardELContext(
-                ELManager.getExpressionFactory());
+        ELContext context = new StandardELContext(ELManager
+                .getExpressionFactory());
 
         ResourceBundle resourceBundle = new TesterResourceBundle();
         boolean result = resolver.isReadOnly(context, resourceBundle,
@@ -233,8 +231,8 @@ public class TestResourceBundleELResolver {
     @Test
     public void testGetFeatureDescriptors01() {
         ResourceBundleELResolver resolver = new ResourceBundleELResolver();
-        ELContext context = new StandardELContext(
-                ELManager.getExpressionFactory());
+        ELContext context = new StandardELContext(ELManager
+                .getExpressionFactory());
 
         Iterator<FeatureDescriptor> result = resolver.getFeatureDescriptors(
                 context, new Object());
@@ -248,8 +246,8 @@ public class TestResourceBundleELResolver {
     @Test
     public void testGetFeatureDescriptors02() {
         ResourceBundleELResolver resolver = new ResourceBundleELResolver();
-        ELContext context = new StandardELContext(
-                ELManager.getExpressionFactory());
+        ELContext context = new StandardELContext(ELManager
+                .getExpressionFactory());
 
         ResourceBundle resourceBundle = new TesterResourceBundle(
                 new Object[][] { { "key", "value" } });
@@ -264,10 +262,10 @@ public class TestResourceBundleELResolver {
             Assert.assertFalse(featureDescriptor.isExpert());
             Assert.assertFalse(featureDescriptor.isHidden());
             Assert.assertTrue(featureDescriptor.isPreferred());
-            Assert.assertEquals(String.class,
-                    featureDescriptor.getValue(ELResolver.TYPE));
-            Assert.assertEquals(Boolean.TRUE, featureDescriptor
-                    .getValue(ELResolver.RESOLVABLE_AT_DESIGN_TIME));
+            Assert.assertEquals(String.class, featureDescriptor.getValue(
+                    ELResolver.TYPE));
+            Assert.assertEquals(Boolean.TRUE, featureDescriptor.getValue(
+                    ELResolver.RESOLVABLE_AT_DESIGN_TIME));
         }
     }
 
@@ -292,27 +290,27 @@ public class TestResourceBundleELResolver {
     private void doNegativeTest(Object base, Object trigger,
             MethodUnderTest method, boolean checkResult) {
         ResourceBundleELResolver resolver = new ResourceBundleELResolver();
-        ELContext context = new StandardELContext(
-                ELManager.getExpressionFactory());
+        ELContext context = new StandardELContext(ELManager
+                .getExpressionFactory());
 
         Object result = null;
         switch (method) {
-        case GET_VALUE: {
-            result = resolver.getValue(context, base, trigger);
-            break;
-        }
-        case SET_VALUE: {
-            resolver.setValue(context, base, trigger, new Object());
-            break;
-        }
-        case GET_TYPE: {
-            result = resolver.getType(context, base, trigger);
-            break;
-        }
-        default: {
-            // Should never happen
-            Assert.fail("Missing case for method");
-        }
+            case GET_VALUE: {
+                result = resolver.getValue(context, base, trigger);
+                break;
+            }
+            case SET_VALUE: {
+                resolver.setValue(context, base, trigger, new Object());
+                break;
+            }
+            case GET_TYPE: {
+                result = resolver.getType(context, base, trigger);
+                break;
+            }
+            default: {
+                // Should never happen
+                Assert.fail("Missing case for method");
+            }
         }
 
         if (checkResult) {

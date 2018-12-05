@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -28,15 +26,15 @@ public class TagVariableInfo {
      * Constructor for TagVariableInfo.
      *
      * @param nameGiven
-     *            value of &lt;name-given&gt;
+     *                          value of &lt;name-given&gt;
      * @param nameFromAttribute
-     *            value of &lt;name-from-attribute&gt;
+     *                          value of &lt;name-from-attribute&gt;
      * @param className
-     *            value of &lt;variable-class&gt;
+     *                          value of &lt;variable-class&gt;
      * @param declare
-     *            value of &lt;declare&gt;
+     *                          value of &lt;declare&gt;
      * @param scope
-     *            value of &lt;scope&gt;
+     *                          value of &lt;scope&gt;
      */
     public TagVariableInfo(String nameGiven, String nameFromAttribute,
             String className, boolean declare, int scope) {

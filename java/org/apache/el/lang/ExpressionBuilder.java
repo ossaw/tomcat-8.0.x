@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -50,8 +48,7 @@ import org.apache.el.util.MessageFactory;
 public final class ExpressionBuilder implements NodeVisitor {
 
     private static final int CACHE_SIZE;
-    private static final String CACHE_SIZE_PROP =
-        "org.apache.el.ExpressionBuilder.CACHE_SIZE";
+    private static final String CACHE_SIZE_PROP = "org.apache.el.ExpressionBuilder.CACHE_SIZE";
 
     static {
         String cacheSizeStr;
@@ -61,17 +58,17 @@ public final class ExpressionBuilder implements NodeVisitor {
             cacheSizeStr = AccessController.doPrivileged(
                     new PrivilegedAction<String>() {
 
-                    @Override
-                    public String run() {
-                        return System.getProperty(CACHE_SIZE_PROP, "5000");
-                    }
-                });
+                        @Override
+                        public String run() {
+                            return System.getProperty(CACHE_SIZE_PROP, "5000");
+                        }
+                    });
         }
         CACHE_SIZE = Integer.parseInt(cacheSizeStr);
     }
 
-    private static final ConcurrentCache<String, Node> cache =
-            new ConcurrentCache<>(CACHE_SIZE);
+    private static final ConcurrentCache<String, Node> cache = new ConcurrentCache<>(
+            CACHE_SIZE);
 
     private FunctionMapper fnMapper;
 
@@ -139,8 +136,8 @@ public final class ExpressionBuilder implements NodeVisitor {
                 }
                 cache.put(expr, n);
             } catch (Exception e) {
-                throw new ELException(
-                        MessageFactory.get("error.parseFail", expr), e);
+                throw new ELException(MessageFactory.get("error.parseFail",
+                        expr), e);
             }
         }
         return n;
@@ -176,7 +173,6 @@ public final class ExpressionBuilder implements NodeVisitor {
 
     /*
      * (non-Javadoc)
-     *
      * @see com.sun.el.parser.NodeVisitor#visit(com.sun.el.parser.Node)
      */
     @Override
@@ -195,14 +191,15 @@ public final class ExpressionBuilder implements NodeVisitor {
             // References to variables that refer to lambda expressions will be
             // parsed as functions. This is handled at runtime but at this point
             // need to treat it as a variable rather than a function.
-            if (m == null && this.varMapper != null &&
-                    funcNode.getPrefix().length() == 0) {
+            if (m == null && this.varMapper != null && funcNode.getPrefix()
+                    .length() == 0) {
                 this.varMapper.resolveVariable(funcNode.getLocalName());
                 return;
             }
 
             if (this.fnMapper == null) {
-                throw new ELException(MessageFactory.get("error.fnMapper.null"));
+                throw new ELException(MessageFactory.get(
+                        "error.fnMapper.null"));
             }
 
             if (m == null) {
@@ -213,11 +210,13 @@ public final class ExpressionBuilder implements NodeVisitor {
             int methodParameterCount = m.getParameterTypes().length;
             // AstFunction->MethodParameters->Parameters()
             int inputParameterCount = node.jjtGetChild(0).jjtGetNumChildren();
-            if (m.isVarArgs() && inputParameterCount < methodParameterCount - 1 ||
-                    !m.isVarArgs() && inputParameterCount != methodParameterCount) {
+            if (m.isVarArgs() && inputParameterCount < methodParameterCount - 1
+                    || !m.isVarArgs()
+                            && inputParameterCount != methodParameterCount) {
                 throw new ELException(MessageFactory.get(
                         "error.fnMapper.paramcount", funcNode.getOutputName(),
-                        "" + methodParameterCount, "" + node.jjtGetChild(0).jjtGetNumChildren()));
+                        "" + methodParameterCount, "" + node.jjtGetChild(0)
+                                .jjtGetNumChildren()));
             }
         } else if (node instanceof AstIdentifier && this.varMapper != null) {
             String variable = ((AstIdentifier) node).getImage();
@@ -238,8 +237,8 @@ public final class ExpressionBuilder implements NodeVisitor {
             Class<?>[] expectedParamTypes) throws ELException {
         Node n = this.build();
         if (!n.isParametersProvided() && expectedParamTypes == null) {
-            throw new NullPointerException(MessageFactory
-                    .get("error.method.nullParms"));
+            throw new NullPointerException(MessageFactory.get(
+                    "error.method.nullParms"));
         }
         if (n instanceof AstValue || n instanceof AstIdentifier) {
             return new MethodExpressionImpl(expression, n, this.fnMapper,

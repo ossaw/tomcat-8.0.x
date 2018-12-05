@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -47,13 +45,12 @@ public class JavacErrorDetail {
      * Constructor.
      *
      * @param javaFileName The name of the Java file in which the
-     * compilation error occurred
-     * @param javaLineNum The compilation error line number
-     * @param errMsg The compilation error message
+     *                     compilation error occurred
+     * @param javaLineNum  The compilation error line number
+     * @param errMsg       The compilation error message
      */
-    public JavacErrorDetail(String javaFileName,
-                            int javaLineNum,
-                            StringBuilder errMsg) {
+    public JavacErrorDetail(String javaFileName, int javaLineNum,
+            StringBuilder errMsg) {
 
         this(javaFileName, javaLineNum, null, -1, errMsg, null);
     }
@@ -61,21 +58,19 @@ public class JavacErrorDetail {
     /**
      * Constructor.
      *
-     * @param javaFileName The name of the Java file in which the
-     * compilation error occurred
-     * @param javaLineNum The compilation error line number
-     * @param jspFileName The name of the JSP file from which the Java source
-     * file was generated
+     * @param javaFileName    The name of the Java file in which the
+     *                        compilation error occurred
+     * @param javaLineNum     The compilation error line number
+     * @param jspFileName     The name of the JSP file from which the Java
+     *                        source
+     *                        file was generated
      * @param jspBeginLineNum The start line number of the JSP element
-     * responsible for the compilation error
-     * @param errMsg The compilation error message
-     * @param ctxt The compilation context
+     *                        responsible for the compilation error
+     * @param errMsg          The compilation error message
+     * @param ctxt            The compilation context
      */
-    public JavacErrorDetail(String javaFileName,
-            int javaLineNum,
-            String jspFileName,
-            int jspBeginLineNum,
-            StringBuilder errMsg,
+    public JavacErrorDetail(String javaFileName, int javaLineNum,
+            String jspFileName, int jspBeginLineNum, StringBuilder errMsg,
             JspCompilationContext ctxt) {
 
         this.javaFileName = javaFileName;
@@ -100,7 +95,8 @@ public class JavacErrorDetail {
                 // Read both files in, so we can inspect them
                 String[] jspLines = readFile(is);
 
-                try (FileInputStream fis = new FileInputStream(ctxt.getServletJavaFileName())) {
+                try (FileInputStream fis = new FileInputStream(ctxt
+                        .getServletJavaFileName())) {
                     String[] javaLines = readFile(fis);
 
                     if (jspLines.length < jspBeginLineNum) {
@@ -113,14 +109,16 @@ public class JavacErrorDetail {
                     // If the line contains the opening of a multi-line scriptlet
                     // block, then the JSP line number we got back is probably
                     // faulty.  Scan forward to match the java line...
-                    if (jspLines[jspBeginLineNum-1].lastIndexOf("<%") >
-                        jspLines[jspBeginLineNum-1].lastIndexOf("%>")) {
-                        String javaLine = javaLines[javaLineNum-1].trim();
+                    if (jspLines[jspBeginLineNum - 1].lastIndexOf(
+                            "<%") > jspLines[jspBeginLineNum - 1].lastIndexOf(
+                                    "%>")) {
+                        String javaLine = javaLines[javaLineNum - 1].trim();
 
-                        for (int i=jspBeginLineNum-1; i<jspLines.length; i++) {
+                        for (int i = jspBeginLineNum
+                                - 1; i < jspLines.length; i++) {
                             if (jspLines[i].indexOf(javaLine) != -1) {
                                 // Update jsp line number
-                                jspBeginLineNum = i+1;
+                                jspBeginLineNum = i + 1;
                                 break;
                             }
                         }
@@ -128,12 +126,12 @@ public class JavacErrorDetail {
 
                     // copy out a fragment of JSP to display to the user
                     StringBuilder fragment = new StringBuilder(1024);
-                    int startIndex = Math.max(0, jspBeginLineNum-1-3);
-                    int endIndex = Math.min(
-                            jspLines.length-1, jspBeginLineNum-1+3);
+                    int startIndex = Math.max(0, jspBeginLineNum - 1 - 3);
+                    int endIndex = Math.min(jspLines.length - 1, jspBeginLineNum
+                            - 1 + 3);
 
-                    for (int i=startIndex;i<=endIndex; ++i) {
-                        fragment.append(i+1);
+                    for (int i = startIndex; i <= endIndex; ++i) {
+                        fragment.append(i + 1);
                         fragment.append(": ");
                         fragment.append(jspLines[i]);
                         fragment.append(System.lineSeparator());
@@ -189,7 +187,7 @@ public class JavacErrorDetail {
      * responsible for the compilation error.
      *
      * @return Start line number of the JSP element responsible for the
-     * compilation error
+     *         compilation error
      */
     public int getJspBeginLineNumber() {
         return this.jspBeginLineNum;
@@ -222,10 +220,10 @@ public class JavacErrorDetail {
         List<String> lines = new ArrayList<>();
         String line;
 
-        while ( (line = reader.readLine()) != null ) {
+        while ((line = reader.readLine()) != null) {
             lines.add(line);
         }
 
-        return lines.toArray( new String[lines.size()] );
+        return lines.toArray(new String[lines.size()]);
     }
 }

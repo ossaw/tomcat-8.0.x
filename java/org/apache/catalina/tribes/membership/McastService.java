@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -37,18 +35,21 @@ import org.apache.catalina.tribes.util.UUIDGenerator;
 /**
  * A <b>membership</b> implementation using simple multicast.
  * This is the representation of a multicast membership service.
- * This class is responsible for maintaining a list of active cluster nodes in the cluster.
+ * This class is responsible for maintaining a list of active cluster nodes in
+ * the cluster.
  * If a node fails to send out a heartbeat, the node will be dismissed.
  */
-public class McastService implements MembershipService,MembershipListener,MessageListener {
+public class McastService implements MembershipService, MembershipListener,
+        MessageListener {
 
-    private static final org.apache.juli.logging.Log log =
-        org.apache.juli.logging.LogFactory.getLog( McastService.class );
+    private static final org.apache.juli.logging.Log log = org.apache.juli.logging.LogFactory
+            .getLog(McastService.class);
 
     /**
      * The string manager for this package.
      */
-    protected static final StringManager sm = StringManager.getManager(Constants.Package);
+    protected static final StringManager sm = StringManager.getManager(
+            Constants.Package);
 
     /**
      * The implementation specific properties
@@ -69,7 +70,7 @@ public class McastService implements MembershipService,MembershipListener,Messag
     /**
      * The local member
      */
-    protected MemberImpl localMember ;
+    protected MemberImpl localMember;
     private int mcastSoTimeout;
     private int mcastTTL;
 
@@ -84,34 +85,38 @@ public class McastService implements MembershipService,MembershipListener,Messag
      */
     public McastService() {
         //default values
-        properties.setProperty("mcastPort","45564");
-        properties.setProperty("mcastAddress","228.0.0.4");
-        properties.setProperty("memberDropTime","3000");
-        properties.setProperty("mcastFrequency","500");
+        properties.setProperty("mcastPort", "45564");
+        properties.setProperty("mcastAddress", "228.0.0.4");
+        properties.setProperty("memberDropTime", "3000");
+        properties.setProperty("mcastFrequency", "500");
 
     }
 
     /**
      *
      * @param properties
-     * <br>All are required<br>
-     * 1. mcastPort - the port to listen to<BR>
-     * 2. mcastAddress - the mcast group address<BR>
-     * 4. bindAddress - the bind address if any - only one that can be null<BR>
-     * 5. memberDropTime - the time a member is gone before it is considered gone.<BR>
-     * 6. mcastFrequency - the frequency of sending messages<BR>
-     * 7. tcpListenPort - the port this member listens to<BR>
-     * 8. tcpListenHost - the bind address of this member<BR>
+     *                   <br>
+     *                   All are required<br>
+     *                   1. mcastPort - the port to listen to<BR>
+     *                   2. mcastAddress - the mcast group address<BR>
+     *                   4. bindAddress - the bind address if any - only one
+     *                   that can be null<BR>
+     *                   5. memberDropTime - the time a member is gone before it
+     *                   is considered gone.<BR>
+     *                   6. mcastFrequency - the frequency of sending
+     *                   messages<BR>
+     *                   7. tcpListenPort - the port this member listens to<BR>
+     *                   8. tcpListenHost - the bind address of this member<BR>
      * @exception java.lang.IllegalArgumentException if a property is missing.
      */
     @Override
     public void setProperties(Properties properties) {
-        hasProperty(properties,"mcastPort");
-        hasProperty(properties,"mcastAddress");
-        hasProperty(properties,"memberDropTime");
-        hasProperty(properties,"mcastFrequency");
-        hasProperty(properties,"tcpListenPort");
-        hasProperty(properties,"tcpListenHost");
+        hasProperty(properties, "mcastPort");
+        hasProperty(properties, "mcastAddress");
+        hasProperty(properties, "memberDropTime");
+        hasProperty(properties, "mcastFrequency");
+        hasProperty(properties, "tcpListenPort");
+        hasProperty(properties, "tcpListenHost");
         this.properties = properties;
     }
 
@@ -127,7 +132,7 @@ public class McastService implements MembershipService,MembershipListener,Messag
      * Return the local member name
      */
     public String getLocalMemberName() {
-        return localMember.toString() ;
+        return localMember.toString();
     }
 
     /**
@@ -135,7 +140,9 @@ public class McastService implements MembershipService,MembershipListener,Messag
      */
     @Override
     public Member getLocalMember(boolean alive) {
-        if ( alive && localMember != null && impl != null) localMember.setMemberAliveTime(System.currentTimeMillis()-impl.getServiceStartTime());
+        if (alive && localMember != null && impl != null)
+            localMember.setMemberAliveTime(System.currentTimeMillis() - impl
+                    .getServiceStartTime());
         return localMember;
     }
 
@@ -143,11 +150,12 @@ public class McastService implements MembershipService,MembershipListener,Messag
      * Sets the local member properties for broadcasting
      */
     @Override
-    public void setLocalMemberProperties(String listenHost, int listenPort, int securePort, int udpPort) {
-        properties.setProperty("tcpListenHost",listenHost);
-        properties.setProperty("tcpListenPort",String.valueOf(listenPort));
-        properties.setProperty("udpListenPort",String.valueOf(udpPort));
-        properties.setProperty("tcpSecurePort",String.valueOf(securePort));
+    public void setLocalMemberProperties(String listenHost, int listenPort,
+            int securePort, int udpPort) {
+        properties.setProperty("tcpListenHost", listenHost);
+        properties.setProperty("tcpListenPort", String.valueOf(listenPort));
+        properties.setProperty("udpListenPort", String.valueOf(udpPort));
+        properties.setProperty("tcpSecurePort", String.valueOf(securePort));
         try {
             if (localMember != null) {
                 localMember.setHostname(listenHost);
@@ -162,7 +170,7 @@ public class McastService implements MembershipService,MembershipListener,Messag
             localMember.setSecurePort(securePort);
             localMember.setUdpPort(udpPort);
             localMember.getData(true, true);
-        }catch ( IOException x ) {
+        } catch (IOException x) {
             throw new IllegalArgumentException(x);
         }
     }
@@ -192,48 +200,52 @@ public class McastService implements MembershipService,MembershipListener,Messag
     }
 
     public void setRecoveryCounter(int recoveryCounter) {
-        properties.setProperty("recoveryCounter", String.valueOf(recoveryCounter));
+        properties.setProperty("recoveryCounter", String.valueOf(
+                recoveryCounter));
     }
 
-    public int getRecoveryCounter(){
+    public int getRecoveryCounter() {
         String p = properties.getProperty("recoveryCounter");
-        if(p != null){
+        if (p != null) {
             return Integer.parseInt(p);
         }
         return -1;
     }
 
     public void setRecoveryEnabled(boolean recoveryEnabled) {
-        properties.setProperty("recoveryEnabled", String.valueOf(recoveryEnabled));
+        properties.setProperty("recoveryEnabled", String.valueOf(
+                recoveryEnabled));
     }
 
     public boolean getRecoveryEnabled() {
         String p = properties.getProperty("recoveryEnabled");
-        if(p != null){
+        if (p != null) {
             return Boolean.parseBoolean(p);
         }
         return false;
     }
 
     public void setRecoverySleepTime(long recoverySleepTime) {
-        properties.setProperty("recoverySleepTime", String.valueOf(recoverySleepTime));
+        properties.setProperty("recoverySleepTime", String.valueOf(
+                recoverySleepTime));
     }
 
-    public long getRecoverySleepTime(){
+    public long getRecoverySleepTime() {
         String p = properties.getProperty("recoverySleepTime");
-        if(p != null){
+        if (p != null) {
             return Long.parseLong(p);
         }
         return -1;
     }
 
     public void setLocalLoopbackDisabled(boolean localLoopbackDisabled) {
-        properties.setProperty("localLoopbackDisabled",String.valueOf(localLoopbackDisabled));
+        properties.setProperty("localLoopbackDisabled", String.valueOf(
+                localLoopbackDisabled));
     }
 
     public boolean getLocalLoopbackDisabled() {
         String p = properties.getProperty("localLoopbackDisabled");
-        if(p != null){
+        if (p != null) {
             return Boolean.parseBoolean(p);
         }
         return false;
@@ -256,6 +268,7 @@ public class McastService implements MembershipService,MembershipListener,Messag
     public void setMcastDropTime(long time) {
         setDropTime(time);
     }
+
     public void setDropTime(long time) {
         properties.setProperty("memberDropTime", String.valueOf(time));
     }
@@ -267,15 +280,19 @@ public class McastService implements MembershipService,MembershipListener,Messag
 
     /**
      * Check if a required property is available.
+     * 
      * @param properties The set of properties
-     * @param name The property to check for
+     * @param name       The property to check for
      */
-    protected void hasProperty(Properties properties, String name){
-        if ( properties.getProperty(name)==null) throw new IllegalArgumentException(sm.getString("mcastService.missing.property", name));
+    protected void hasProperty(Properties properties, String name) {
+        if (properties.getProperty(name) == null)
+            throw new IllegalArgumentException(sm.getString(
+                    "mcastService.missing.property", name));
     }
 
     /**
      * Start broadcasting and listening to membership pings
+     * 
      * @throws java.lang.Exception if a IO error occurs
      */
     @Override
@@ -286,26 +303,28 @@ public class McastService implements MembershipService,MembershipListener,Messag
 
     @Override
     public void start(int level) throws java.lang.Exception {
-        hasProperty(properties,"mcastPort");
-        hasProperty(properties,"mcastAddress");
-        hasProperty(properties,"memberDropTime");
-        hasProperty(properties,"mcastFrequency");
-        hasProperty(properties,"tcpListenPort");
-        hasProperty(properties,"tcpListenHost");
-        hasProperty(properties,"tcpSecurePort");
-        hasProperty(properties,"udpListenPort");
+        hasProperty(properties, "mcastPort");
+        hasProperty(properties, "mcastAddress");
+        hasProperty(properties, "memberDropTime");
+        hasProperty(properties, "mcastFrequency");
+        hasProperty(properties, "tcpListenPort");
+        hasProperty(properties, "tcpListenHost");
+        hasProperty(properties, "tcpSecurePort");
+        hasProperty(properties, "udpListenPort");
 
-
-        if ( impl != null ) {
+        if (impl != null) {
             impl.start(level);
             return;
         }
         String host = getProperties().getProperty("tcpListenHost");
-        int port = Integer.parseInt(getProperties().getProperty("tcpListenPort"));
-        int securePort = Integer.parseInt(getProperties().getProperty("tcpSecurePort"));
-        int udpPort = Integer.parseInt(getProperties().getProperty("udpListenPort"));
+        int port = Integer.parseInt(getProperties().getProperty(
+                "tcpListenPort"));
+        int securePort = Integer.parseInt(getProperties().getProperty(
+                "tcpSecurePort"));
+        int udpPort = Integer.parseInt(getProperties().getProperty(
+                "udpListenPort"));
 
-        if ( localMember == null ) {
+        if (localMember == null) {
             localMember = new MemberImpl(host, port, 100);
             localMember.setUniqueId(UUIDGenerator.randomUUID(true));
             localMember.setLocal(true);
@@ -316,74 +335,75 @@ public class McastService implements MembershipService,MembershipListener,Messag
         }
         localMember.setSecurePort(securePort);
         localMember.setUdpPort(udpPort);
-        if ( this.payload != null ) localMember.setPayload(payload);
-        if ( this.domain != null ) localMember.setDomain(domain);
+        if (this.payload != null)
+            localMember.setPayload(payload);
+        if (this.domain != null)
+            localMember.setDomain(domain);
         localMember.setServiceStartTime(System.currentTimeMillis());
         java.net.InetAddress bind = null;
-        if ( properties.getProperty("mcastBindAddress")!= null ) {
-            bind = java.net.InetAddress.getByName(properties.getProperty("mcastBindAddress"));
+        if (properties.getProperty("mcastBindAddress") != null) {
+            bind = java.net.InetAddress.getByName(properties.getProperty(
+                    "mcastBindAddress"));
         }
         int ttl = -1;
         int soTimeout = -1;
-        if ( properties.getProperty("mcastTTL") != null ) {
+        if (properties.getProperty("mcastTTL") != null) {
             try {
                 ttl = Integer.parseInt(properties.getProperty("mcastTTL"));
-            } catch ( Exception x ) {
-                log.error(sm.getString("McastService.parseTTL",
-                        properties.getProperty("mcastTTL")), x);
+            } catch (Exception x) {
+                log.error(sm.getString("McastService.parseTTL", properties
+                        .getProperty("mcastTTL")), x);
             }
         }
-        if ( properties.getProperty("mcastSoTimeout") != null ) {
+        if (properties.getProperty("mcastSoTimeout") != null) {
             try {
-                soTimeout = Integer.parseInt(properties.getProperty("mcastSoTimeout"));
-            } catch ( Exception x ) {
-                log.error(sm.getString("McastService.parseSoTimeout",
-                        properties.getProperty("mcastSoTimeout")), x);
+                soTimeout = Integer.parseInt(properties.getProperty(
+                        "mcastSoTimeout"));
+            } catch (Exception x) {
+                log.error(sm.getString("McastService.parseSoTimeout", properties
+                        .getProperty("mcastSoTimeout")), x);
             }
         }
 
-        impl = new McastServiceImpl(localMember,Long.parseLong(properties.getProperty("mcastFrequency")),
-                                    Long.parseLong(properties.getProperty("memberDropTime")),
-                                    Integer.parseInt(properties.getProperty("mcastPort")),
-                                    bind,
-                                    java.net.InetAddress.getByName(properties.getProperty("mcastAddress")),
-                                    ttl,
-                                    soTimeout,
-                                    this,
-                                    this,
-                                    Boolean.parseBoolean(properties.getProperty("localLoopbackDisabled","false")));
-        String value = properties.getProperty("recoveryEnabled","true");
+        impl = new McastServiceImpl(localMember, Long.parseLong(properties
+                .getProperty("mcastFrequency")), Long.parseLong(properties
+                        .getProperty("memberDropTime")), Integer.parseInt(
+                                properties.getProperty("mcastPort")), bind,
+                java.net.InetAddress.getByName(properties.getProperty(
+                        "mcastAddress")), ttl, soTimeout, this, this, Boolean
+                                .parseBoolean(properties.getProperty(
+                                        "localLoopbackDisabled", "false")));
+        String value = properties.getProperty("recoveryEnabled", "true");
         boolean recEnabled = Boolean.parseBoolean(value);
         impl.setRecoveryEnabled(recEnabled);
-        int recCnt = Integer.parseInt(properties.getProperty("recoveryCounter","10"));
+        int recCnt = Integer.parseInt(properties.getProperty("recoveryCounter",
+                "10"));
         impl.setRecoveryCounter(recCnt);
-        long recSlpTime = Long.parseLong(properties.getProperty("recoverySleepTime","5000"));
+        long recSlpTime = Long.parseLong(properties.getProperty(
+                "recoverySleepTime", "5000"));
         impl.setRecoverySleepTime(recSlpTime);
         impl.setChannel(channel);
 
         impl.start(level);
 
-
     }
-
 
     /**
      * Stop broadcasting and listening to membership pings
      */
     @Override
     public void stop(int svc) {
-        try  {
-            if ( impl != null && impl.stop(svc) ) {
+        try {
+            if (impl != null && impl.stop(svc)) {
                 impl.setChannel(null);
                 impl = null;
                 channel = null;
             }
-        } catch ( Exception x)  {
-            log.error(sm.getString(
-                    "McastService.stopFail", Integer.valueOf(svc)), x);
+        } catch (Exception x) {
+            log.error(sm.getString("McastService.stopFail", Integer.valueOf(
+                    svc)), x);
         }
     }
-
 
     /**
      * Return all the members by name
@@ -391,15 +411,15 @@ public class McastService implements MembershipService,MembershipListener,Messag
     @Override
     public String[] getMembersByName() {
         Member[] currentMembers = getMembers();
-        String [] membernames ;
-        if(currentMembers != null) {
+        String[] membernames;
+        if (currentMembers != null) {
             membernames = new String[currentMembers.length];
             for (int i = 0; i < currentMembers.length; i++) {
-                membernames[i] = currentMembers[i].toString() ;
+                membernames[i] = currentMembers[i].toString();
             }
         } else
-            membernames = new String[0] ;
-        return membernames ;
+            membernames = new String[0];
+        return membernames;
     }
 
     /**
@@ -420,28 +440,36 @@ public class McastService implements MembershipService,MembershipListener,Messag
      */
     @Override
     public boolean hasMembers() {
-       if ( impl == null || impl.membership == null ) return false;
-       return impl.membership.hasMembers();
+        if (impl == null || impl.membership == null)
+            return false;
+        return impl.membership.hasMembers();
     }
 
     @Override
     public Member getMember(Member mbr) {
-        if ( impl == null || impl.membership == null ) return null;
+        if (impl == null || impl.membership == null)
+            return null;
         return impl.membership.getMember(mbr);
     }
 
     /**
      * Return all the members
      */
-    protected static final Member[]EMPTY_MEMBERS = new Member[0];
+    protected static final Member[] EMPTY_MEMBERS = new Member[0];
+
     @Override
     public Member[] getMembers() {
-        if ( impl == null || impl.membership == null ) return EMPTY_MEMBERS;
+        if (impl == null || impl.membership == null)
+            return EMPTY_MEMBERS;
         return impl.membership.getMembers();
     }
+
     /**
-     * Add a membership listener, this version only supports one listener per service,
-     * so calling this method twice will result in only the second listener being active.
+     * Add a membership listener, this version only supports one listener per
+     * service,
+     * so calling this method twice will result in only the second listener
+     * being active.
+     * 
      * @param listener The listener
      */
     @Override
@@ -456,11 +484,12 @@ public class McastService implements MembershipService,MembershipListener,Messag
     public void removeMessageListener() {
         this.msglistener = null;
     }
+
     /**
      * Remove the membership listener
      */
     @Override
-    public void removeMembershipListener(){
+    public void removeMembershipListener() {
         listener = null;
     }
 
@@ -474,6 +503,7 @@ public class McastService implements MembershipService,MembershipListener,Messag
 
     /**
      * Callback from the impl when a new member has been received
+     * 
      * @param member The member
      */
     @Override
@@ -486,25 +516,29 @@ public class McastService implements MembershipService,MembershipListener,Messag
 
     @Override
     public void messageReceived(ChannelMessage msg) {
-        if (msglistener!=null && msglistener.accept(msg)) msglistener.messageReceived(msg);
+        if (msglistener != null && msglistener.accept(msg))
+            msglistener.messageReceived(msg);
     }
 
     @Override
     public boolean accept(ChannelMessage msg) {
         return true;
     }
+
     @Override
     public void broadcast(ChannelMessage message) throws ChannelException {
-        if (impl==null || (impl.startLevel & Channel.MBR_TX_SEQ)!=Channel.MBR_TX_SEQ )
+        if (impl == null || (impl.startLevel
+                & Channel.MBR_TX_SEQ) != Channel.MBR_TX_SEQ)
             throw new ChannelException(sm.getString("mcastService.noStart"));
 
-        byte[] data = XByteBuffer.createDataPackage((ChannelData)message);
-        if (data.length>McastServiceImpl.MAX_PACKET_SIZE) {
-            throw new ChannelException(sm.getString("mcastService.exceed.maxPacketSize",
-                    Integer.toString(data.length) ,
-                    Integer.toString(McastServiceImpl.MAX_PACKET_SIZE)));
+        byte[] data = XByteBuffer.createDataPackage((ChannelData) message);
+        if (data.length > McastServiceImpl.MAX_PACKET_SIZE) {
+            throw new ChannelException(sm.getString(
+                    "mcastService.exceed.maxPacketSize", Integer.toString(
+                            data.length), Integer.toString(
+                                    McastServiceImpl.MAX_PACKET_SIZE)));
         }
-        DatagramPacket packet = new DatagramPacket(data,0,data.length);
+        DatagramPacket packet = new DatagramPacket(data, 0, data.length);
         try {
             impl.send(false, packet);
         } catch (Exception x) {
@@ -518,7 +552,8 @@ public class McastService implements MembershipService,MembershipListener,Messag
 
     public void setSoTimeout(int mcastSoTimeout) {
         this.mcastSoTimeout = mcastSoTimeout;
-        properties.setProperty("mcastSoTimeout", String.valueOf(mcastSoTimeout));
+        properties.setProperty("mcastSoTimeout", String.valueOf(
+                mcastSoTimeout));
     }
 
     public int getTtl() {
@@ -541,11 +576,12 @@ public class McastService implements MembershipService,MembershipListener,Messag
     @Override
     public void setPayload(byte[] payload) {
         this.payload = payload;
-        if ( localMember != null ) {
+        if (localMember != null) {
             localMember.setPayload(payload);
             try {
-                if (impl != null) impl.send(false);
-            }catch ( Exception x ) {
+                if (impl != null)
+                    impl.send(false);
+            } catch (Exception x) {
                 log.error(sm.getString("McastService.payload"), x);
             }
         }
@@ -554,20 +590,24 @@ public class McastService implements MembershipService,MembershipListener,Messag
     @Override
     public void setDomain(byte[] domain) {
         this.domain = domain;
-        if ( localMember != null ) {
+        if (localMember != null) {
             localMember.setDomain(domain);
             try {
-                if (impl != null) impl.send(false);
-            }catch ( Exception x ) {
+                if (impl != null)
+                    impl.send(false);
+            } catch (Exception x) {
                 log.error(sm.getString("McastService.domain"), x);
             }
         }
     }
 
     public void setDomain(String domain) {
-        if ( domain == null ) return;
-        if ( domain.startsWith("{") ) setDomain(Arrays.fromString(domain));
-        else setDomain(Arrays.convert(domain));
+        if (domain == null)
+            return;
+        if (domain.startsWith("{"))
+            setDomain(Arrays.fromString(domain));
+        else
+            setDomain(Arrays.convert(domain));
     }
 
     public Channel getChannel() {
@@ -580,24 +620,25 @@ public class McastService implements MembershipService,MembershipListener,Messag
 
     /**
      * Simple test program
+     * 
      * @param args Command-line arguments
      * @throws Exception If an error occurs
      */
     public static void main(String args[]) throws Exception {
         McastService service = new McastService();
         java.util.Properties p = new java.util.Properties();
-        p.setProperty("mcastPort","5555");
-        p.setProperty("mcastAddress","224.10.10.10");
-        p.setProperty("mcastClusterDomain","catalina");
-        p.setProperty("bindAddress","localhost");
-        p.setProperty("memberDropTime","3000");
-        p.setProperty("mcastFrequency","500");
-        p.setProperty("tcpListenPort","4000");
-        p.setProperty("tcpListenHost","127.0.0.1");
-        p.setProperty("tcpSecurePort","4100");
-        p.setProperty("udpListenPort","4200");
+        p.setProperty("mcastPort", "5555");
+        p.setProperty("mcastAddress", "224.10.10.10");
+        p.setProperty("mcastClusterDomain", "catalina");
+        p.setProperty("bindAddress", "localhost");
+        p.setProperty("memberDropTime", "3000");
+        p.setProperty("mcastFrequency", "500");
+        p.setProperty("tcpListenPort", "4000");
+        p.setProperty("tcpListenHost", "127.0.0.1");
+        p.setProperty("tcpSecurePort", "4100");
+        p.setProperty("udpListenPort", "4200");
         service.setProperties(p);
         service.start();
-        Thread.sleep(60*1000*60);
+        Thread.sleep(60 * 1000 * 60);
     }
 }

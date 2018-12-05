@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -53,10 +51,12 @@ public abstract class AbstractSender implements DataSender {
 
     /**
      * transfers sender properties from one sender to another
+     * 
      * @param from AbstractSender
-     * @param to AbstractSender
+     * @param to   AbstractSender
      */
-    public static void transferProperties(AbstractSender from, AbstractSender to) {
+    public static void transferProperties(AbstractSender from,
+            AbstractSender to) {
         to.rxBufSize = from.rxBufSize;
         to.txBufSize = from.txBufSize;
         to.directBuffer = from.directBuffer;
@@ -79,7 +79,6 @@ public abstract class AbstractSender implements DataSender {
         to.udpPort = from.udpPort;
     }
 
-
     public AbstractSender() {
 
     }
@@ -88,7 +87,9 @@ public abstract class AbstractSender implements DataSender {
      * connect
      *
      * @throws IOException
-     * TODO Implement this org.apache.catalina.tribes.transport.DataSender method
+     *                     TODO Implement this
+     *                     org.apache.catalina.tribes.transport.DataSender
+     *                     method
      */
     @Override
     public abstract void connect() throws IOException;
@@ -96,7 +97,8 @@ public abstract class AbstractSender implements DataSender {
     /**
      * disconnect
      *
-     * TODO Implement this org.apache.catalina.tribes.transport.DataSender method
+     * TODO Implement this org.apache.catalina.tribes.transport.DataSender
+     * method
      */
     @Override
     public abstract void disconnect();
@@ -105,19 +107,25 @@ public abstract class AbstractSender implements DataSender {
      * keepalive
      *
      * @return boolean
-     * TODO Implement this org.apache.catalina.tribes.transport.DataSender method
+     *         TODO Implement this
+     *         org.apache.catalina.tribes.transport.DataSender method
      */
     @Override
     public boolean keepalive() {
         boolean disconnect = false;
-        if (isUdpBased()) disconnect = true; //always disconnect UDP, TODO optimize the keepalive handling
-        else if ( keepAliveCount >= 0 && requestCount>keepAliveCount ) disconnect = true;
-        else if ( keepAliveTime >= 0 && (System.currentTimeMillis()-connectTime)>keepAliveTime ) disconnect = true;
-        if ( disconnect ) disconnect();
+        if (isUdpBased())
+            disconnect = true; //always disconnect UDP, TODO optimize the keepalive handling
+        else if (keepAliveCount >= 0 && requestCount > keepAliveCount)
+            disconnect = true;
+        else if (keepAliveTime >= 0 && (System.currentTimeMillis()
+                - connectTime) > keepAliveTime)
+            disconnect = true;
+        if (disconnect)
+            disconnect();
         return disconnect;
     }
 
-    protected void setConnected(boolean connected){
+    protected void setConnected(boolean connected) {
         this.connected = connected;
     }
 
@@ -134,7 +142,6 @@ public abstract class AbstractSender implements DataSender {
     public Member getDestination() {
         return destination;
     }
-
 
     public int getKeepAliveCount() {
         return keepAliveCount;
@@ -306,41 +313,33 @@ public abstract class AbstractSender implements DataSender {
         this.address = address;
     }
 
-
     public boolean isUdpBased() {
         return udpBased;
     }
-
 
     public void setUdpBased(boolean udpBased) {
         this.udpBased = udpBased;
     }
 
-
     public int getUdpPort() {
         return udpPort;
     }
-
 
     public void setUdpPort(int udpPort) {
         this.udpPort = udpPort;
     }
 
-
     public int getUdpRxBufSize() {
         return udpRxBufSize;
     }
-
 
     public void setUdpRxBufSize(int udpRxBufSize) {
         this.udpRxBufSize = udpRxBufSize;
     }
 
-
     public int getUdpTxBufSize() {
         return udpTxBufSize;
     }
-
 
     public void setUdpTxBufSize(int udpTxBufSize) {
         this.udpTxBufSize = udpTxBufSize;

@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -80,7 +78,7 @@ public interface PooledObject<T> extends Comparable<PooledObject<T>> {
     long getLastReturnTime();
 
     /**
-     * Return an estimate of the last time this object was used.  If the class
+     * Return an estimate of the last time this object was used. If the class
      * of the pooled object implements {@link TrackedUse}, what is returned is
      * the maximum of {@link TrackedUse#getLastUsed()} and
      * {@link #getLastBorrowTime()}; otherwise this method gives the same
@@ -93,9 +91,9 @@ public interface PooledObject<T> extends Comparable<PooledObject<T>> {
     /**
      * Orders instances based on idle time - i.e. the length of time since the
      * instance was returned to the pool. Used by the GKOP idle object evictor.
-     *<p>
+     * <p>
      * Note: This class has a natural ordering that is inconsistent with
-     *       equals if distinct objects have the same identity hash code.
+     * equals if distinct objects have the same identity hash code.
      * <p>
      * {@inheritDoc}
      */
@@ -133,14 +131,15 @@ public interface PooledObject<T> extends Comparable<PooledObject<T>> {
      * @param idleQueue The queue of idle objects to which the object should be
      *                  returned
      *
-     * @return  Currently not used
+     * @return Currently not used
      */
     boolean endEvictionTest(Deque<PooledObject<T>> idleQueue);
 
     /**
      * Allocates the object.
      *
-     * @return {@code true} if the original state was {@link PooledObjectState#IDLE IDLE}
+     * @return {@code true} if the original state was
+     *         {@link PooledObjectState#IDLE IDLE}
      */
     boolean allocate();
 
@@ -148,7 +147,8 @@ public interface PooledObject<T> extends Comparable<PooledObject<T>> {
      * Deallocates the object and sets it {@link PooledObjectState#IDLE IDLE}
      * if it is currently {@link PooledObjectState#ALLOCATED ALLOCATED}.
      *
-     * @return {@code true} if the state was {@link PooledObjectState#ALLOCATED ALLOCATED}
+     * @return {@code true} if the state was {@link PooledObjectState#ALLOCATED
+     *         ALLOCATED}
      */
     boolean deallocate();
 
@@ -162,8 +162,8 @@ public interface PooledObject<T> extends Comparable<PooledObject<T>> {
      * implementation will need to record the stack trace of the last caller to
      * borrow this object.
      *
-     * @param   logAbandoned    The new configuration setting for abandoned
-     *                          object tracking
+     * @param logAbandoned The new configuration setting for abandoned
+     *                     object tracking
      */
     void setLogAbandoned(boolean logAbandoned);
 
@@ -177,12 +177,13 @@ public interface PooledObject<T> extends Comparable<PooledObject<T>> {
      * the stack trace of the last code to use this object (if available) to
      * the supplied writer.
      *
-     * @param   writer  The destination for the debug output
+     * @param writer The destination for the debug output
      */
     void printStackTrace(PrintWriter writer);
 
     /**
      * Returns the state of this object.
+     * 
      * @return state
      */
     PooledObjectState getState();

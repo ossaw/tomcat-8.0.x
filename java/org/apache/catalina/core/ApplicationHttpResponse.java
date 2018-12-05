@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -23,7 +21,6 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpServletResponseWrapper;
 
-
 /**
  * Wrapper around a <code>javax.servlet.http.HttpServletResponse</code>
  * that transforms an application response object (which might be the original
@@ -31,9 +28,9 @@ import javax.servlet.http.HttpServletResponseWrapper;
  * <code>javax.servlet.http.HttpServletResponseWrapper</code> class)
  * back into an internal <code>org.apache.catalina.HttpResponse</code>.
  * <p>
- * <strong>WARNING</strong>:  Due to Java's lack of support for multiple
+ * <strong>WARNING</strong>: Due to Java's lack of support for multiple
  * inheritance, all of the logic in <code>ApplicationResponse</code> is
- * duplicated in <code>ApplicationHttpResponse</code>.  Make sure that you
+ * duplicated in <code>ApplicationHttpResponse</code>. Make sure that you
  * keep these two classes in synchronization when making changes!
  *
  * @author Craig R. McClanahan
@@ -47,19 +44,17 @@ class ApplicationHttpResponse extends HttpServletResponseWrapper {
      *
      * @param response The servlet response being wrapped
      * @param included <code>true</code> if this response is being processed
-     *  by a <code>RequestDispatcher.include()</code> call
+     *                 by a <code>RequestDispatcher.include()</code> call
      */
     public ApplicationHttpResponse(HttpServletResponse response,
-                                   boolean included) {
+            boolean included) {
 
         super(response);
         setIncluded(included);
 
     }
 
-
     // ----------------------------------------------------- Instance Variables
-
 
     /**
      * Is this wrapped response the subject of an <code>include()</code>
@@ -67,14 +62,13 @@ class ApplicationHttpResponse extends HttpServletResponseWrapper {
      */
     protected boolean included = false;
 
-
     // ------------------------------------------------ ServletResponse Methods
 
     /**
      * Disallow <code>reset()</code> calls on a included response.
      *
      * @exception IllegalStateException if the response has already
-     *  been committed
+     *                                  been committed
      */
     @Override
     public void reset() {
@@ -84,7 +78,6 @@ class ApplicationHttpResponse extends HttpServletResponseWrapper {
             getResponse().reset();
 
     }
-
 
     /**
      * Disallow <code>setContentLength(int)</code> calls on an included
@@ -100,7 +93,6 @@ class ApplicationHttpResponse extends HttpServletResponseWrapper {
 
     }
 
-
     /**
      * Disallow <code>setContentLengthLong(long)</code> calls on an included
      * response.
@@ -115,7 +107,6 @@ class ApplicationHttpResponse extends HttpServletResponseWrapper {
 
     }
 
-
     /**
      * Disallow <code>setContentType()</code> calls on an included response.
      *
@@ -128,7 +119,6 @@ class ApplicationHttpResponse extends HttpServletResponseWrapper {
             getResponse().setContentType(type);
 
     }
-
 
     /**
      * Disallow <code>setLocale()</code> calls on an included response.
@@ -143,7 +133,6 @@ class ApplicationHttpResponse extends HttpServletResponseWrapper {
 
     }
 
-
     /**
      * Ignore <code>setBufferSize()</code> calls on an included response.
      *
@@ -155,9 +144,7 @@ class ApplicationHttpResponse extends HttpServletResponseWrapper {
             getResponse().setBufferSize(size);
     }
 
-
     // -------------------------------------------- HttpServletResponse Methods
-
 
     /**
      * Disallow <code>addCookie()</code> calls on an included response.
@@ -172,11 +159,10 @@ class ApplicationHttpResponse extends HttpServletResponseWrapper {
 
     }
 
-
     /**
      * Disallow <code>addDateHeader()</code> calls on an included response.
      *
-     * @param name The new header name
+     * @param name  The new header name
      * @param value The new header value
      */
     @Override
@@ -187,11 +173,10 @@ class ApplicationHttpResponse extends HttpServletResponseWrapper {
 
     }
 
-
     /**
      * Disallow <code>addHeader()</code> calls on an included response.
      *
-     * @param name The new header name
+     * @param name  The new header name
      * @param value The new header value
      */
     @Override
@@ -202,11 +187,10 @@ class ApplicationHttpResponse extends HttpServletResponseWrapper {
 
     }
 
-
     /**
      * Disallow <code>addIntHeader()</code> calls on an included response.
      *
-     * @param name The new header name
+     * @param name  The new header name
      * @param value The new header value
      */
     @Override
@@ -216,7 +200,6 @@ class ApplicationHttpResponse extends HttpServletResponseWrapper {
             ((HttpServletResponse) getResponse()).addIntHeader(name, value);
 
     }
-
 
     /**
      * Disallow <code>sendError()</code> calls on an included response.
@@ -233,11 +216,10 @@ class ApplicationHttpResponse extends HttpServletResponseWrapper {
 
     }
 
-
     /**
      * Disallow <code>sendError()</code> calls on an included response.
      *
-     * @param sc The new status code
+     * @param sc  The new status code
      * @param msg The new message
      *
      * @exception IOException if an input/output error occurs
@@ -249,7 +231,6 @@ class ApplicationHttpResponse extends HttpServletResponseWrapper {
             ((HttpServletResponse) getResponse()).sendError(sc, msg);
 
     }
-
 
     /**
      * Disallow <code>sendRedirect()</code> calls on an included response.
@@ -266,11 +247,10 @@ class ApplicationHttpResponse extends HttpServletResponseWrapper {
 
     }
 
-
     /**
      * Disallow <code>setDateHeader()</code> calls on an included response.
      *
-     * @param name The new header name
+     * @param name  The new header name
      * @param value The new header value
      */
     @Override
@@ -281,11 +261,10 @@ class ApplicationHttpResponse extends HttpServletResponseWrapper {
 
     }
 
-
     /**
      * Disallow <code>setHeader()</code> calls on an included response.
      *
-     * @param name The new header name
+     * @param name  The new header name
      * @param value The new header value
      */
     @Override
@@ -296,11 +275,10 @@ class ApplicationHttpResponse extends HttpServletResponseWrapper {
 
     }
 
-
     /**
      * Disallow <code>setIntHeader()</code> calls on an included response.
      *
-     * @param name The new header name
+     * @param name  The new header name
      * @param value The new header value
      */
     @Override
@@ -310,7 +288,6 @@ class ApplicationHttpResponse extends HttpServletResponseWrapper {
             ((HttpServletResponse) getResponse()).setIntHeader(name, value);
 
     }
-
 
     /**
      * Disallow <code>setStatus()</code> calls on an included response.
@@ -325,11 +302,10 @@ class ApplicationHttpResponse extends HttpServletResponseWrapper {
 
     }
 
-
     /**
      * Disallow <code>setStatus()</code> calls on an included response.
      *
-     * @param sc The new status code
+     * @param sc  The new status code
      * @param msg The new message
      * @deprecated As of version 2.1, due to ambiguous meaning of the message
      *             parameter. To set a status code use
@@ -345,7 +321,6 @@ class ApplicationHttpResponse extends HttpServletResponseWrapper {
 
     }
 
-
     // -------------------------------------------------------- Package Methods
 
     /**
@@ -358,7 +333,6 @@ class ApplicationHttpResponse extends HttpServletResponseWrapper {
         this.included = included;
 
     }
-
 
     /**
      * Set the response that we are wrapping.

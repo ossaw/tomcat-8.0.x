@@ -1,20 +1,17 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 
 package org.apache.catalina.tribes.io;
 
@@ -29,7 +26,7 @@ import org.apache.catalina.tribes.util.StringManager;
 
 /**
  * Custom subclass of <code>ObjectInputStream</code> that loads from the
- * class loader for this web application.  This allows classes defined only
+ * class loader for this web application. This allows classes defined only
  * with the web application to be found correctly.
  *
  * @author Craig R. McClanahan
@@ -37,8 +34,8 @@ import org.apache.catalina.tribes.util.StringManager;
  */
 public final class ReplicationStream extends ObjectInputStream {
 
-    static final StringManager sm =
-            StringManager.getManager(ReplicationStream.class.getPackage().getName());
+    static final StringManager sm = StringManager.getManager(
+            ReplicationStream.class.getPackage().getName());
 
     /**
      * The class loader we will use to resolve classes.
@@ -48,14 +45,13 @@ public final class ReplicationStream extends ObjectInputStream {
     /**
      * Construct a new instance of CustomObjectInputStream
      *
-     * @param stream The input stream we will read from
+     * @param stream       The input stream we will read from
      * @param classLoaders The class loader array used to instantiate objects
      *
      * @exception IOException if an input/output error occurs
      */
-    public ReplicationStream(InputStream stream,
-                             ClassLoader[] classLoaders)
-        throws IOException {
+    public ReplicationStream(InputStream stream, ClassLoader[] classLoaders)
+            throws IOException {
 
         super(stream);
         this.classLoaders = classLoaders;
@@ -68,11 +64,11 @@ public final class ReplicationStream extends ObjectInputStream {
      * @param classDesc Class description from the input stream
      *
      * @exception ClassNotFoundException if this class cannot be found
-     * @exception IOException if an input/output error occurs
+     * @exception IOException            if an input/output error occurs
      */
     @Override
     public Class<?> resolveClass(ObjectStreamClass classDesc)
-        throws ClassNotFoundException, IOException {
+            throws ClassNotFoundException, IOException {
         String name = classDesc.getName();
         try {
             return resolveClass(name);
@@ -84,7 +80,7 @@ public final class ReplicationStream extends ObjectInputStream {
     public Class<?> resolveClass(String name) throws ClassNotFoundException {
 
         boolean tryRepFirst = name.startsWith("org.apache.catalina.tribes");
-            try {
+        try {
             if (tryRepFirst)
                 return findReplicationClass(name);
             else
@@ -99,7 +95,8 @@ public final class ReplicationStream extends ObjectInputStream {
 
     /**
      * ObjectInputStream.resolveProxyClass has some funky way of using
-     * the incorrect class loader to resolve proxy classes, let's do it our way instead
+     * the incorrect class loader to resolve proxy classes, let's do it our way
+     * instead
      */
     @Override
     protected Class<?> resolveProxyClass(String[] interfaces)
@@ -118,12 +115,13 @@ public final class ReplicationStream extends ObjectInputStream {
         Class<?>[] classObjs = new Class[interfaces.length];
         for (int i = 0; i < interfaces.length; i++) {
             Class<?> cl = this.resolveClass(interfaces[i]);
-            if (latestLoader==null) latestLoader = cl.getClassLoader();
+            if (latestLoader == null)
+                latestLoader = cl.getClassLoader();
             if ((cl.getModifiers() & Modifier.PUBLIC) == 0) {
                 if (hasNonPublicInterface) {
                     if (nonPublicLoader != cl.getClassLoader()) {
-                        throw new IllegalAccessError(
-                                sm.getString("replicationStream.conflict"));
+                        throw new IllegalAccessError(sm.getString(
+                                "replicationStream.conflict"));
                     }
                 } else {
                     nonPublicLoader = cl.getClassLoader();
@@ -140,32 +138,34 @@ public final class ReplicationStream extends ObjectInputStream {
         }
     }
 
-
     public Class<?> findReplicationClass(String name)
             throws ClassNotFoundException {
-        Class<?> clazz = Class.forName(name, false, getClass().getClassLoader());
+        Class<?> clazz = Class.forName(name, false, getClass()
+                .getClassLoader());
         return clazz;
     }
 
-    public Class<?> findExternalClass(String name) throws ClassNotFoundException  {
+    public Class<?> findExternalClass(String name)
+            throws ClassNotFoundException {
         ClassNotFoundException cnfe = null;
-        for (int i=0; i<classLoaders.length; i++ ) {
+        for (int i = 0; i < classLoaders.length; i++) {
             try {
                 Class<?> clazz = Class.forName(name, false, classLoaders[i]);
                 return clazz;
-            } catch ( ClassNotFoundException x ) {
+            } catch (ClassNotFoundException x) {
                 cnfe = x;
             }
         }
-        if ( cnfe != null ) throw cnfe;
-        else throw new ClassNotFoundException(name);
+        if (cnfe != null)
+            throw cnfe;
+        else
+            throw new ClassNotFoundException(name);
     }
 
     @Override
-    public void close() throws IOException  {
+    public void close() throws IOException {
         this.classLoaders = null;
         super.close();
     }
-
 
 }

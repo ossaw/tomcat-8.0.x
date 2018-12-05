@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -39,14 +37,14 @@ public class StandardEngineSF extends StoreFactoryBase {
      * Store the specified Engine properties.
      *
      * @param aWriter
-     *            PrintWriter to which we are storing
+     *                PrintWriter to which we are storing
      * @param indent
-     *            Number of spaces to indent this element
+     *                Number of spaces to indent this element
      * @param aEngine
-     *            Object whose properties are being stored
+     *                Object whose properties are being stored
      *
      * @exception Exception
-     *                if an exception occurs while storing
+     *                      if an exception occurs while storing
      */
     @Override
     public void storeChildren(PrintWriter aWriter, int indent, Object aEngine,
@@ -72,10 +70,10 @@ public class StandardEngineSF extends StoreFactoryBase {
 
             // Store nested <Valve> elements
             Valve valves[] = engine.getPipeline().getValves();
-            if(valves != null && valves.length > 0 ) {
-                List<Valve> engineValves = new ArrayList<>() ;
-                for(int i = 0 ; i < valves.length ; i++ ) {
-                    if(!( valves[i] instanceof ClusterValve))
+            if (valves != null && valves.length > 0) {
+                List<Valve> engineValves = new ArrayList<>();
+                for (int i = 0; i < valves.length; i++) {
+                    if (!(valves[i] instanceof ClusterValve))
                         engineValves.add(valves[i]);
                 }
                 storeElementArray(aWriter, indent, engineValves.toArray());
@@ -90,6 +88,6 @@ public class StandardEngineSF extends StoreFactoryBase {
             Container children[] = engine.findChildren();
             storeElementArray(aWriter, indent, children);
 
-       }
+        }
     }
 }

@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -15,9 +13,7 @@
  * limitations under the License.
  */
 
-
 package org.apache.catalina.users;
-
 
 import java.util.Iterator;
 
@@ -25,39 +21,34 @@ import org.apache.catalina.Group;
 import org.apache.catalina.Role;
 import org.apache.catalina.User;
 
-
 /**
- * <p>Convenience base class for {@link User} implementations.</p>
+ * <p>
+ * Convenience base class for {@link User} implementations.
+ * </p>
  *
  * @author Craig R. McClanahan
  * @since 4.1
  */
 public abstract class AbstractUser implements User {
 
-
     // ----------------------------------------------------- Instance Variables
-
 
     /**
      * The full name of this user.
      */
     protected String fullName = null;
 
-
     /**
      * The logon password of this user.
      */
     protected String password = null;
-
 
     /**
      * The logon username of this user.
      */
     protected String username = null;
 
-
     // ------------------------------------------------------------- Properties
-
 
     /**
      * Return the full name of this user.
@@ -68,7 +59,6 @@ public abstract class AbstractUser implements User {
         return (this.fullName);
 
     }
-
 
     /**
      * Set the full name of this user.
@@ -82,13 +72,11 @@ public abstract class AbstractUser implements User {
 
     }
 
-
     /**
      * Return the set of {@link Group}s to which this user belongs.
      */
     @Override
     public abstract Iterator<Group> getGroups();
-
 
     /**
      * Return the logon password of this user, optionally prefixed with the
@@ -101,7 +89,6 @@ public abstract class AbstractUser implements User {
         return (this.password);
 
     }
-
 
     /**
      * Set the logon password of this user, optionally prefixed with the
@@ -117,13 +104,11 @@ public abstract class AbstractUser implements User {
 
     }
 
-
     /**
      * Return the set of {@link Role}s assigned specifically to this user.
      */
     @Override
     public abstract Iterator<Role> getRoles();
-
 
     /**
      * Return the logon username of this user, which must be unique
@@ -135,7 +120,6 @@ public abstract class AbstractUser implements User {
         return (this.username);
 
     }
-
 
     /**
      * Set the logon username of this user, which must be unique within
@@ -150,9 +134,7 @@ public abstract class AbstractUser implements User {
 
     }
 
-
     // --------------------------------------------------------- Public Methods
-
 
     /**
      * Add a new {@link Group} to those this user belongs to.
@@ -162,7 +144,6 @@ public abstract class AbstractUser implements User {
     @Override
     public abstract void addGroup(Group group);
 
-
     /**
      * Add a new {@link Role} to those assigned specifically to this user.
      *
@@ -170,7 +151,6 @@ public abstract class AbstractUser implements User {
      */
     @Override
     public abstract void addRole(Role role);
-
 
     /**
      * Is this user in the specified {@link Group}?
@@ -180,9 +160,8 @@ public abstract class AbstractUser implements User {
     @Override
     public abstract boolean isInGroup(Group group);
 
-
     /**
-     * Is this user specifically assigned the specified {@link Role}?  This
+     * Is this user specifically assigned the specified {@link Role}? This
      * method does <strong>NOT</strong> check for roles inherited based on
      * {@link Group} membership.
      *
@@ -190,7 +169,6 @@ public abstract class AbstractUser implements User {
      */
     @Override
     public abstract boolean isInRole(Role role);
-
 
     /**
      * Remove a {@link Group} from those this user belongs to.
@@ -200,13 +178,11 @@ public abstract class AbstractUser implements User {
     @Override
     public abstract void removeGroup(Group group);
 
-
     /**
      * Remove all {@link Group}s from those this user belongs to.
      */
     @Override
     public abstract void removeGroups();
-
 
     /**
      * Remove a {@link Role} from those assigned to this user.
@@ -216,16 +192,13 @@ public abstract class AbstractUser implements User {
     @Override
     public abstract void removeRole(Role role);
 
-
     /**
      * Remove all {@link Role}s from those assigned to this user.
      */
     @Override
     public abstract void removeRoles();
 
-
     // ------------------------------------------------------ Principal Methods
-
 
     /**
      * Make the principal name the same as the group name.
@@ -236,6 +209,5 @@ public abstract class AbstractUser implements User {
         return (getUsername());
 
     }
-
 
 }

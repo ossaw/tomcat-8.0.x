@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -24,17 +22,17 @@ public class Validation {
 
     // Java keywords, boolean literals & the null literal in alphabetical order
     private static final String invalidIdentifiers[] = { "abstract", "assert",
-        "boolean", "break", "byte", "case", "catch", "char", "class", "const",
-        "continue", "default", "do", "double", "else", "enum", "extends",
-        "false", "final", "finally", "float", "for", "goto", "if", "implements",
-        "import", "instanceof", "int", "interface", "long", "native", "new",
-        "null", "package", "private", "protected", "public", "return", "short",
-        "static", "strictfp", "super", "switch", "synchronized", "this",
-        "throw", "throws", "transient", "true", "try", "void", "volatile",
-        "while" };
+            "boolean", "break", "byte", "case", "catch", "char", "class",
+            "const", "continue", "default", "do", "double", "else", "enum",
+            "extends", "false", "final", "finally", "float", "for", "goto",
+            "if", "implements", "import", "instanceof", "int", "interface",
+            "long", "native", "new", "null", "package", "private", "protected",
+            "public", "return", "short", "static", "strictfp", "super",
+            "switch", "synchronized", "this", "throw", "throws", "transient",
+            "true", "try", "void", "volatile", "while" };
 
-    private static final boolean IS_SECURITY_ENABLED =
-            (System.getSecurityManager() != null);
+    private static final boolean IS_SECURITY_ENABLED = (System
+            .getSecurityManager() != null);
 
     private static final boolean SKIP_IDENTIFIER_CHECK;
 
@@ -42,22 +40,20 @@ public class Validation {
         String skipIdentifierCheckStr;
         if (IS_SECURITY_ENABLED) {
             skipIdentifierCheckStr = AccessController.doPrivileged(
-                    new PrivilegedAction<String>(){
+                    new PrivilegedAction<String>() {
                         @Override
                         public String run() {
                             return System.getProperty(
                                     "org.apache.el.parser.SKIP_IDENTIFIER_CHECK",
                                     "false");
                         }
-                    }
-            );
+                    });
         } else {
             skipIdentifierCheckStr = System.getProperty(
                     "org.apache.el.parser.SKIP_IDENTIFIER_CHECK", "false");
         }
         SKIP_IDENTIFIER_CHECK = Boolean.parseBoolean(skipIdentifierCheckStr);
     }
-
 
     private Validation() {
         // Utility class. Hide default constructor

@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -17,21 +15,27 @@
 package org.apache.tomcat.util.http.fileupload;
 
 /**
- * <p>High level API for processing file uploads.</p>
+ * <p>
+ * High level API for processing file uploads.
+ * </p>
  *
- * <p>This class handles multiple files per single HTML widget, sent using
+ * <p>
+ * This class handles multiple files per single HTML widget, sent using
  * <code>multipart/mixed</code> encoding type, as specified by
- * <a href="http://www.ietf.org/rfc/rfc1867.txt">RFC 1867</a>.  Use {@link
+ * <a href="http://www.ietf.org/rfc/rfc1867.txt">RFC 1867</a>. Use {@link
  * #parseRequest(RequestContext)} to acquire a list
- * of {@link org.apache.tomcat.util.http.fileupload.FileItem FileItems} associated
- * with a given HTML widget.</p>
+ * of {@link org.apache.tomcat.util.http.fileupload.FileItem FileItems}
+ * associated
+ * with a given HTML widget.
+ * </p>
  *
- * <p>How the data for individual parts is stored is determined by the factory
+ * <p>
+ * How the data for individual parts is stored is determined by the factory
  * used to create them; a given part may be in memory, on disk, or somewhere
- * else.</p>
+ * else.
+ * </p>
  */
-public class FileUpload
-    extends FileUploadBase {
+public class FileUpload extends FileUploadBase {
 
     // ----------------------------------------------------------- Data members
 

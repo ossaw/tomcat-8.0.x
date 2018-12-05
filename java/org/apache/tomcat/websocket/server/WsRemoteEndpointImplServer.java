@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -41,12 +39,12 @@ import org.apache.tomcat.websocket.WsRemoteEndpointImplBase;
  */
 public class WsRemoteEndpointImplServer extends WsRemoteEndpointImplBase {
 
-    private static final StringManager sm =
-            StringManager.getManager(Constants.PACKAGE_NAME);
-    private static final Log log = LogFactory.getLog(WsRemoteEndpointImplServer.class);
+    private static final StringManager sm = StringManager.getManager(
+            Constants.PACKAGE_NAME);
+    private static final Log log = LogFactory.getLog(
+            WsRemoteEndpointImplServer.class);
 
-    private static final Queue<OnResultRunnable> onResultRunnables =
-            new ConcurrentLinkedQueue<>();
+    private static final Queue<OnResultRunnable> onResultRunnables = new ConcurrentLinkedQueue<>();
 
     private final ServletOutputStream sos;
     private final WsWriteTimeout wsWriteTimeout;
@@ -56,19 +54,17 @@ public class WsRemoteEndpointImplServer extends WsRemoteEndpointImplBase {
 
     private volatile long timeoutExpiry = -1;
 
-
-    public WsRemoteEndpointImplServer(ServletOutputStream sos, WsServerContainer serverContainer) {
+    public WsRemoteEndpointImplServer(ServletOutputStream sos,
+            WsServerContainer serverContainer) {
         this.sos = sos;
         this.wsWriteTimeout = serverContainer.getTimeout();
         this.executorService = serverContainer.getExecutorService();
     }
 
-
     @Override
     protected final boolean isMasked() {
         return false;
     }
-
 
     @Override
     protected void doWrite(SendHandler handler, ByteBuffer... buffers) {
@@ -78,7 +74,6 @@ public class WsRemoteEndpointImplServer extends WsRemoteEndpointImplBase {
         // dispatch will be required.
         onWritePossible(true);
     }
-
 
     public void onWritePossible(boolean useDispatch) {
         ByteBuffer[] buffers = this.buffers;
@@ -95,8 +90,8 @@ public class WsRemoteEndpointImplServer extends WsRemoteEndpointImplBase {
                 for (ByteBuffer buffer : buffers) {
                     if (buffer.hasRemaining()) {
                         complete = false;
-                        sos.write(buffer.array(), buffer.arrayOffset(),
-                                buffer.limit());
+                        sos.write(buffer.array(), buffer.arrayOffset(), buffer
+                                .limit());
                         buffer.position(buffer.limit());
                         break;
                     }
@@ -125,7 +120,6 @@ public class WsRemoteEndpointImplServer extends WsRemoteEndpointImplBase {
         }
     }
 
-
     @Override
     protected void doClose() {
         if (handler != null) {
@@ -145,11 +139,9 @@ public class WsRemoteEndpointImplServer extends WsRemoteEndpointImplBase {
         wsWriteTimeout.unregister(this);
     }
 
-
     protected long getTimeoutExpiry() {
         return timeoutExpiry;
     }
-
 
     /*
      * Currently this is only called from the background thread so we could just
@@ -165,22 +157,20 @@ public class WsRemoteEndpointImplServer extends WsRemoteEndpointImplBase {
         close();
     }
 
-
     @Override
     protected void setTransformation(Transformation transformation) {
         // Overridden purely so it is visible to other classes in this package
         super.setTransformation(transformation);
     }
 
-
     /**
      *
-     * @param t             The throwable associated with any error that
-     *                      occurred
-     * @param useDispatch   Should {@link SendHandler#onResult(SendResult)} be
-     *                      called from a new thread, keeping in mind the
-     *                      requirements of
-     *                      {@link javax.websocket.RemoteEndpoint.Async}
+     * @param t           The throwable associated with any error that
+     *                    occurred
+     * @param useDispatch Should {@link SendHandler#onResult(SendResult)} be
+     *                    called from a new thread, keeping in mind the
+     *                    requirements of
+     *                    {@link javax.websocket.RemoteEndpoint.Async}
      */
     private void clearHandler(Throwable t, boolean useDispatch) {
         // Setting the result marks this (partial) message as
@@ -219,7 +209,6 @@ public class WsRemoteEndpointImplServer extends WsRemoteEndpointImplBase {
             }
         }
     }
-
 
     private static class OnResultRunnable implements Runnable {
 

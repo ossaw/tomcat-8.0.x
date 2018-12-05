@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -33,13 +31,12 @@ public class TestAccessLogValve {
 
         final int cacheSize = 10;
 
-        SimpleDateFormat sdf =
-                new SimpleDateFormat("[dd/MMM/yyyy:HH:mm:ss Z]", Locale.US);
+        SimpleDateFormat sdf = new SimpleDateFormat("[dd/MMM/yyyy:HH:mm:ss Z]",
+                Locale.US);
         sdf.setTimeZone(TimeZone.getDefault());
 
-        AccessLogValve.DateFormatCache dfc =
-                new AccessLogValve.DateFormatCache(
-                        cacheSize, Locale.US, null);
+        AccessLogValve.DateFormatCache dfc = new AccessLogValve.DateFormatCache(
+                cacheSize, Locale.US, null);
 
         // Create an array to hold the expected values
         String[] expected = new String[cacheSize];
@@ -51,20 +48,19 @@ public class TestAccessLogValve {
         }
         Assert.assertArrayEquals(expected, dfc.cLFCache.cache);
 
-
         // Cause the cache to roll-around by one and then confirm
         dfc.getFormat(cacheSize * 1000);
         expected[0] = generateExpected(sdf, cacheSize);
         Assert.assertArrayEquals(expected, dfc.cLFCache.cache);
 
         // Jump 2 ahead and then confirm (skipped value should be null)
-        dfc.getFormat((cacheSize + 2)* 1000);
+        dfc.getFormat((cacheSize + 2) * 1000);
         expected[1] = null;
         expected[2] = generateExpected(sdf, cacheSize + 2);
         Assert.assertArrayEquals(expected, dfc.cLFCache.cache);
 
         // Back 1 to fill in the gap
-        dfc.getFormat((cacheSize + 1)* 1000);
+        dfc.getFormat((cacheSize + 1) * 1000);
         expected[1] = generateExpected(sdf, cacheSize + 1);
         Assert.assertArrayEquals(expected, dfc.cLFCache.cache);
 

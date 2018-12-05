@@ -1,18 +1,16 @@
 /*
- *  Licensed to the Apache Software Foundation (ASF) under one or more
- *  contributor license agreements.  See the NOTICE file distributed with
- *  this work for additional information regarding copyright ownership.
- *  The ASF licenses this file to You under the Apache License, Version 2.0
- *  (the "License"); you may not use this file except in compliance with
- *  the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements. See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package org.apache.tomcat.util.http;
@@ -37,8 +35,10 @@ import org.apache.catalina.startup.Tomcat;
 import org.apache.tomcat.util.buf.ByteChunk;
 
 /**
- * Test case for {@link LegacyCookieProcessor}. <b>Note</b> because of the use of <code>final
- * static</code> constants in {@link LegacyCookieProcessor}, each of these tests must be
+ * Test case for {@link LegacyCookieProcessor}. <b>Note</b> because of the use
+ * of <code>final
+ * static</code> constants in {@link LegacyCookieProcessor}, each of these tests
+ * must be
  * executed in a new JVM instance. The tests have been place in separate classes
  * to facilitate this when running the unit tests via Ant.
  */
@@ -51,9 +51,9 @@ public class TestBug49158 extends CookiesBaseTest {
         Tomcat tomcat = getTomcatInstance();
         addServlets(tomcat);
         tomcat.start();
-        Map<String,List<String>> headers = new HashMap<>();
+        Map<String, List<String>> headers = new HashMap<>();
         ByteChunk res = new ByteChunk();
-        getUrl("http://localhost:" + getPort() + "/"+path, res, headers);
+        getUrl("http://localhost:" + getPort() + "/" + path, res, headers);
         List<String> cookieHeaders = headers.get("Set-Cookie");
         assertEquals("There should only be one Set-Cookie header in this test",
                 1, cookieHeaders.size());
@@ -64,7 +64,7 @@ public class TestBug49158 extends CookiesBaseTest {
         Context ctx = tomcat.addContext("", null);
 
         Tomcat.addServlet(ctx, path, new TestBug49158Servlet());
-        ctx.addServletMappingDecoded("/"+path, path);
+        ctx.addServletMappingDecoded("/" + path, path);
     }
 
     public static class TestBug49158Servlet extends HttpServlet {

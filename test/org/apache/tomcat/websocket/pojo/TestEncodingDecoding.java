@@ -1,18 +1,16 @@
 /*
- *  Licensed to the Apache Software Foundation (ASF) under one or more
- *  contributor license agreements.  See the NOTICE file distributed with
- *  this work for additional information regarding copyright ownership.
- *  The ASF licenses this file to You under the Apache License, Version 2.0
- *  (the "License"); you may not use this file except in compliance with
- *  the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements. See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.apache.tomcat.websocket.pojo;
 
@@ -64,17 +62,18 @@ public class TestEncodingDecoding extends TomcatBaseTest {
     private static final String PATH_ANNOTATED_EP = "/echoAnnotatedEP";
     private static final String PATH_GENERICS_EP = "/echoGenericsEP";
 
-
     @Test
-    public void testProgrammaticEndPoints() throws Exception{
+    public void testProgrammaticEndPoints() throws Exception {
         Tomcat tomcat = getTomcatInstance();
         // No file system docBase required
         Context ctx = tomcat.addContext("", null);
-        ctx.addApplicationListener(ProgramaticServerEndpointConfig.class.getName());
+        ctx.addApplicationListener(ProgramaticServerEndpointConfig.class
+                .getName());
         Tomcat.addServlet(ctx, "default", new DefaultServlet());
         ctx.addServletMappingDecoded("/", "default");
 
-        WebSocketContainer wsContainer = ContainerProvider.getWebSocketContainer();
+        WebSocketContainer wsContainer = ContainerProvider
+                .getWebSocketContainer();
 
         tomcat.start();
 
@@ -88,8 +87,8 @@ public class TestEncodingDecoding extends TomcatBaseTest {
         // Should not take very long
         int i = 0;
         while (i < 20) {
-            if (MsgStringMessageHandler.received.size() > 0 &&
-                    client.received.size() > 0) {
+            if (MsgStringMessageHandler.received.size() > 0 && client.received
+                    .size() > 0) {
                 break;
             }
             Thread.sleep(100);
@@ -102,12 +101,12 @@ public class TestEncodingDecoding extends TomcatBaseTest {
 
         // Check correct messages were received
         Assert.assertEquals(MESSAGE_ONE,
-                ((MsgString) MsgStringMessageHandler.received.peek()).getData());
-        Assert.assertEquals(MESSAGE_ONE,
-                new String(((MsgByte) client.received.peek()).getData()));
+                ((MsgString) MsgStringMessageHandler.received.peek())
+                        .getData());
+        Assert.assertEquals(MESSAGE_ONE, new String(((MsgByte) client.received
+                .peek()).getData()));
         session.close();
     }
-
 
     @Test
     public void testAnnotatedEndPoints() throws Exception {
@@ -123,8 +122,8 @@ public class TestEncodingDecoding extends TomcatBaseTest {
         Tomcat.addServlet(ctx, "default", new DefaultServlet());
         ctx.addServletMappingDecoded("/", "default");
 
-        WebSocketContainer wsContainer =
-                ContainerProvider.getWebSocketContainer();
+        WebSocketContainer wsContainer = ContainerProvider
+                .getWebSocketContainer();
 
         tomcat.start();
 
@@ -150,23 +149,22 @@ public class TestEncodingDecoding extends TomcatBaseTest {
         Assert.assertEquals(1, client.received.size());
 
         // Check correct messages were received
-        Assert.assertEquals(MESSAGE_ONE,
-                ((MsgString) server.received.peek()).getData());
-        Assert.assertEquals(MESSAGE_ONE,
-                ((MsgString) client.received.peek()).getData());
+        Assert.assertEquals(MESSAGE_ONE, ((MsgString) server.received.peek())
+                .getData());
+        Assert.assertEquals(MESSAGE_ONE, ((MsgString) client.received.peek())
+                .getData());
         session.close();
 
         // Should not take very long but some failures have been seen
-        i = testEvent(MsgStringEncoder.class.getName()+":init", 0);
-        i = testEvent(MsgStringDecoder.class.getName()+":init", i);
-        i = testEvent(MsgByteEncoder.class.getName()+":init", i);
-        i = testEvent(MsgByteDecoder.class.getName()+":init", i);
-        i = testEvent(MsgStringEncoder.class.getName()+":destroy", i);
-        i = testEvent(MsgStringDecoder.class.getName()+":destroy", i);
-        i = testEvent(MsgByteEncoder.class.getName()+":destroy", i);
-        i = testEvent(MsgByteDecoder.class.getName()+":destroy", i);
+        i = testEvent(MsgStringEncoder.class.getName() + ":init", 0);
+        i = testEvent(MsgStringDecoder.class.getName() + ":init", i);
+        i = testEvent(MsgByteEncoder.class.getName() + ":init", i);
+        i = testEvent(MsgByteDecoder.class.getName() + ":init", i);
+        i = testEvent(MsgStringEncoder.class.getName() + ":destroy", i);
+        i = testEvent(MsgStringDecoder.class.getName() + ":destroy", i);
+        i = testEvent(MsgByteEncoder.class.getName() + ":destroy", i);
+        i = testEvent(MsgByteDecoder.class.getName() + ":destroy", i);
     }
-
 
     @Test
     public void testGenericsCoders() throws Exception {
@@ -182,8 +180,8 @@ public class TestEncodingDecoding extends TomcatBaseTest {
         Tomcat.addServlet(ctx, "default", new DefaultServlet());
         ctx.addServletMappingDecoded("/", "default");
 
-        WebSocketContainer wsContainer =
-                ContainerProvider.getWebSocketContainer();
+        WebSocketContainer wsContainer = ContainerProvider
+                .getWebSocketContainer();
 
         tomcat.start();
 
@@ -215,7 +213,6 @@ public class TestEncodingDecoding extends TomcatBaseTest {
         session.close();
     }
 
-
     private int testEvent(String name, int count) throws InterruptedException {
         int i = count;
         while (i < 50) {
@@ -229,9 +226,8 @@ public class TestEncodingDecoding extends TomcatBaseTest {
         return i;
     }
 
-
-    @ClientEndpoint(decoders={ListStringDecoder.class},
-            encoders={ListStringEncoder.class})
+    @ClientEndpoint(decoders = { ListStringDecoder.class }, encoders = {
+            ListStringEncoder.class })
     public static class GenericsClient {
         private Queue<Object> received = new ConcurrentLinkedQueue<>();
 
@@ -241,9 +237,9 @@ public class TestEncodingDecoding extends TomcatBaseTest {
         }
     }
 
-
-    @ClientEndpoint(decoders={MsgStringDecoder.class, MsgByteDecoder.class},
-            encoders={MsgStringEncoder.class, MsgByteEncoder.class})
+    @ClientEndpoint(decoders = { MsgStringDecoder.class,
+            MsgByteDecoder.class }, encoders = { MsgStringEncoder.class,
+                    MsgByteEncoder.class })
     public static class Client {
 
         private Queue<Object> received = new ConcurrentLinkedQueue<>();
@@ -254,20 +250,17 @@ public class TestEncodingDecoding extends TomcatBaseTest {
         }
 
         @OnMessage
-        public void  rx(MsgByte in) {
+        public void rx(MsgByte in) {
             received.add(in);
         }
     }
 
-
-    @ServerEndpoint(value=PATH_GENERICS_EP,
-            decoders={ListStringDecoder.class},
-            encoders={ListStringEncoder.class},
-            configurator=SingletonConfigurator.class)
+    @ServerEndpoint(value = PATH_GENERICS_EP, decoders = {
+            ListStringDecoder.class }, encoders = {
+                    ListStringEncoder.class }, configurator = SingletonConfigurator.class)
     public static class GenericsServer {
 
         private Queue<Object> received = new ConcurrentLinkedQueue<>();
-
 
         @OnMessage
         public List<String> rx(List<String> in) {
@@ -277,15 +270,15 @@ public class TestEncodingDecoding extends TomcatBaseTest {
         }
     }
 
-
-    @ServerEndpoint(value=PATH_ANNOTATED_EP,
-            decoders={MsgStringDecoder.class, MsgByteDecoder.class},
-            encoders={MsgStringEncoder.class, MsgByteEncoder.class},
-            configurator=SingletonConfigurator.class)
+    @ServerEndpoint(value = PATH_ANNOTATED_EP, decoders = {
+            MsgStringDecoder.class, MsgByteDecoder.class }, encoders = {
+                    MsgStringEncoder.class,
+                    MsgByteEncoder.class }, configurator = SingletonConfigurator.class)
     public static class Server {
 
         private Queue<Object> received = new ConcurrentLinkedQueue<>();
-        static Map<String, Boolean> lifeCyclesCalled = new ConcurrentHashMap<>(8);
+        static Map<String, Boolean> lifeCyclesCalled = new ConcurrentHashMap<>(
+                8);
 
         @OnMessage
         public MsgString rx(MsgString in) {
@@ -301,16 +294,15 @@ public class TestEncodingDecoding extends TomcatBaseTest {
             return in;
         }
 
-        public static void addLifeCycleEvent(String event){
+        public static void addLifeCycleEvent(String event) {
             lifeCyclesCalled.put(event, Boolean.TRUE);
         }
 
-        public static boolean isLifeCycleEventCalled(String event){
+        public static boolean isLifeCycleEventCalled(String event) {
             Boolean called = lifeCyclesCalled.get(event);
             return called == null ? false : called.booleanValue();
         }
     }
-
 
     public static class MsgByteMessageHandler implements
             MessageHandler.Whole<MsgByte> {
@@ -336,8 +328,8 @@ public class TestEncodingDecoding extends TomcatBaseTest {
         }
     }
 
-
-    public static class MsgStringMessageHandler implements MessageHandler.Whole<MsgString> {
+    public static class MsgStringMessageHandler implements
+            MessageHandler.Whole<MsgString> {
 
         public static Queue<Object> received = new ConcurrentLinkedQueue<>();
         private final Session session;
@@ -359,21 +351,24 @@ public class TestEncodingDecoding extends TomcatBaseTest {
         }
     }
 
-
     public static class ProgrammaticEndpoint extends Endpoint {
-       @Override
-       public void onOpen(Session session, EndpointConfig config) {
-           session.addMessageHandler(new MsgStringMessageHandler(session));
-       }
+        @Override
+        public void onOpen(Session session, EndpointConfig config) {
+            session.addMessageHandler(new MsgStringMessageHandler(session));
+        }
     }
-
 
     public static class MsgString {
         private String data;
-        public String getData() { return data; }
-        public void setData(String data) { this.data = data; }
-    }
 
+        public String getData() {
+            return data;
+        }
+
+        public void setData(String data) {
+            this.data = data;
+        }
+    }
 
     public static class MsgStringEncoder implements Encoder.Text<MsgString> {
 
@@ -392,7 +387,6 @@ public class TestEncodingDecoding extends TomcatBaseTest {
             return "MsgString:" + msg.getData();
         }
     }
-
 
     public static class MsgStringDecoder implements Decoder.Text<MsgString> {
 
@@ -419,13 +413,17 @@ public class TestEncodingDecoding extends TomcatBaseTest {
         }
     }
 
-
     public static class MsgByte {
         private byte[] data;
-        public byte[] getData() { return data; }
-        public void setData(byte[] data) { this.data = data; }
-    }
 
+        public byte[] getData() {
+            return data;
+        }
+
+        public void setData(byte[] data) {
+            this.data = data;
+        }
+    }
 
     public static class MsgByteEncoder implements Encoder.Binary<MsgByte> {
 
@@ -451,12 +449,11 @@ public class TestEncodingDecoding extends TomcatBaseTest {
         }
     }
 
-
     public static class MsgByteDecoder implements Decoder.Binary<MsgByte> {
 
         @Override
         public void init(EndpointConfig endpointConfig) {
-             Server.addLifeCycleEvent(getClass().getName() + ":init");
+            Server.addLifeCycleEvent(getClass().getName() + ":init");
         }
 
         @Override
@@ -484,8 +481,8 @@ public class TestEncodingDecoding extends TomcatBaseTest {
         }
     }
 
-
-    public static class ListStringEncoder implements Encoder.Text<List<String>> {
+    public static class ListStringEncoder implements
+            Encoder.Text<List<String>> {
 
         @Override
         public void init(EndpointConfig endpointConfig) {
@@ -501,7 +498,7 @@ public class TestEncodingDecoding extends TomcatBaseTest {
         public String encode(List<String> str) throws EncodeException {
             StringBuffer sbuf = new StringBuffer();
             sbuf.append("[");
-            for (String s: str){
+            for (String s : str) {
                 sbuf.append(s).append(",");
             }
             sbuf.deleteCharAt(sbuf.lastIndexOf(",")).append("]");
@@ -509,12 +506,12 @@ public class TestEncodingDecoding extends TomcatBaseTest {
         }
     }
 
-
-    public static class ListStringDecoder implements Decoder.Text<List<String>> {
+    public static class ListStringDecoder implements
+            Decoder.Text<List<String>> {
 
         @Override
         public void init(EndpointConfig endpointConfig) {
-             Server.addLifeCycleEvent(getClass().getName() + ":init");
+            Server.addLifeCycleEvent(getClass().getName() + ":init");
         }
 
         @Override
@@ -525,9 +522,9 @@ public class TestEncodingDecoding extends TomcatBaseTest {
         @Override
         public List<String> decode(String str) throws DecodeException {
             List<String> lst = new ArrayList<>(1);
-            str = str.substring(1,str.length()-1);
+            str = str.substring(1, str.length() - 1);
             String[] strings = str.split(",");
-            for (String t : strings){
+            for (String t : strings) {
                 lst.add(t);
             }
             return lst;
@@ -539,56 +536,63 @@ public class TestEncodingDecoding extends TomcatBaseTest {
         }
     }
 
-
-    public static class ProgramaticServerEndpointConfig extends WsContextListener {
+    public static class ProgramaticServerEndpointConfig extends
+            WsContextListener {
 
         @Override
         public void contextInitialized(ServletContextEvent sce) {
             super.contextInitialized(sce);
-            ServerContainer sc =
-                    (ServerContainer) sce.getServletContext().getAttribute(
-                            org.apache.tomcat.websocket.server.Constants.
-                            SERVER_CONTAINER_SERVLET_CONTEXT_ATTRIBUTE);
+            ServerContainer sc = (ServerContainer) sce.getServletContext()
+                    .getAttribute(
+                            org.apache.tomcat.websocket.server.Constants.SERVER_CONTAINER_SERVLET_CONTEXT_ATTRIBUTE);
             try {
                 sc.addEndpoint(new ServerEndpointConfig() {
                     @Override
                     public Map<String, Object> getUserProperties() {
                         return Collections.emptyMap();
                     }
+
                     @Override
                     public List<Class<? extends Encoder>> getEncoders() {
-                        List<Class<? extends Encoder>> encoders = new ArrayList<>(2);
+                        List<Class<? extends Encoder>> encoders = new ArrayList<>(
+                                2);
                         encoders.add(MsgStringEncoder.class);
                         encoders.add(MsgByteEncoder.class);
                         return encoders;
                     }
+
                     @Override
                     public List<Class<? extends Decoder>> getDecoders() {
-                        List<Class<? extends Decoder>> decoders = new ArrayList<>(2);
+                        List<Class<? extends Decoder>> decoders = new ArrayList<>(
+                                2);
                         decoders.add(MsgStringDecoder.class);
                         decoders.add(MsgByteDecoder.class);
                         return decoders;
                     }
+
                     @Override
                     public List<String> getSubprotocols() {
                         return Collections.emptyList();
                     }
+
                     @Override
                     public String getPath() {
                         return PATH_PROGRAMMATIC_EP;
                     }
+
                     @Override
                     public List<Extension> getExtensions() {
                         return Collections.emptyList();
                     }
+
                     @Override
                     public Class<?> getEndpointClass() {
                         return ProgrammaticEndpoint.class;
                     }
+
                     @Override
                     public Configurator getConfigurator() {
-                        return new ServerEndpointConfig.Configurator() {
-                        };
+                        return new ServerEndpointConfig.Configurator() {};
                     }
                 });
             } catch (DeploymentException e) {
@@ -597,17 +601,18 @@ public class TestEncodingDecoding extends TomcatBaseTest {
         }
     }
 
-
     @Test
-    public void testUnsupportedObject() throws Exception{
+    public void testUnsupportedObject() throws Exception {
         Tomcat tomcat = getTomcatInstance();
         // No file system docBase required
         Context ctx = tomcat.addContext("", null);
-        ctx.addApplicationListener(ProgramaticServerEndpointConfig.class.getName());
+        ctx.addApplicationListener(ProgramaticServerEndpointConfig.class
+                .getName());
         Tomcat.addServlet(ctx, "default", new DefaultServlet());
         ctx.addServletMappingDecoded("/", "default");
 
-        WebSocketContainer wsContainer = ContainerProvider.getWebSocketContainer();
+        WebSocketContainer wsContainer = ContainerProvider
+                .getWebSocketContainer();
 
         tomcat.start();
 

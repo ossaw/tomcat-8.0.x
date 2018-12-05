@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -22,9 +20,9 @@ import java.math.BigInteger;
 
 import org.apache.el.util.MessageFactory;
 
-
 /**
  * A helper class of Arithmetic defined by the EL Specification
+ * 
  * @author Jacob Hookom [jacob@hookom.net]
  */
 public abstract class ELArithmetic {
@@ -98,7 +96,8 @@ public abstract class ELArithmetic {
 
         @Override
         protected Number divide(Number num0, Number num1) {
-            return (new BigDecimal((BigInteger) num0)).divide(new BigDecimal((BigInteger) num1), BigDecimal.ROUND_HALF_UP);
+            return (new BigDecimal((BigInteger) num0)).divide(new BigDecimal(
+                    (BigInteger) num1), BigDecimal.ROUND_HALF_UP);
         }
 
         @Override
@@ -128,9 +127,11 @@ public abstract class ELArithmetic {
         protected Number add(Number num0, Number num1) {
             // could only be one of these
             if (num0 instanceof BigDecimal) {
-                return ((BigDecimal) num0).add(new BigDecimal(num1.doubleValue()));
+                return ((BigDecimal) num0).add(new BigDecimal(num1
+                        .doubleValue()));
             } else if (num1 instanceof BigDecimal) {
-                return ((new BigDecimal(num0.doubleValue()).add((BigDecimal) num1)));
+                return ((new BigDecimal(num0.doubleValue()).add(
+                        (BigDecimal) num1)));
             }
             return Double.valueOf(num0.doubleValue() + num1.doubleValue());
         }
@@ -163,9 +164,11 @@ public abstract class ELArithmetic {
         protected Number subtract(Number num0, Number num1) {
             // could only be one of these
             if (num0 instanceof BigDecimal) {
-                return ((BigDecimal) num0).subtract(new BigDecimal(num1.doubleValue()));
+                return ((BigDecimal) num0).subtract(new BigDecimal(num1
+                        .doubleValue()));
             } else if (num1 instanceof BigDecimal) {
-                return ((new BigDecimal(num0.doubleValue()).subtract((BigDecimal) num1)));
+                return ((new BigDecimal(num0.doubleValue()).subtract(
+                        (BigDecimal) num1)));
             }
             return Double.valueOf(num0.doubleValue() - num1.doubleValue());
         }
@@ -174,22 +177,22 @@ public abstract class ELArithmetic {
         protected Number multiply(Number num0, Number num1) {
             // could only be one of these
             if (num0 instanceof BigDecimal) {
-                return ((BigDecimal) num0).multiply(new BigDecimal(num1.doubleValue()));
+                return ((BigDecimal) num0).multiply(new BigDecimal(num1
+                        .doubleValue()));
             } else if (num1 instanceof BigDecimal) {
-                return ((new BigDecimal(num0.doubleValue()).multiply((BigDecimal) num1)));
+                return ((new BigDecimal(num0.doubleValue()).multiply(
+                        (BigDecimal) num1)));
             }
             return Double.valueOf(num0.doubleValue() * num1.doubleValue());
         }
 
         @Override
         public boolean matches(Object obj0, Object obj1) {
-            return (obj0 instanceof Double
-                    || obj1 instanceof Double
-                    || obj0 instanceof Float
-                    || obj1 instanceof Float
-                    || (obj0 instanceof String && ELSupport
-                            .isStringFloat((String) obj0)) || (obj1 instanceof String && ELSupport
-                    .isStringFloat((String) obj1)));
+            return (obj0 instanceof Double || obj1 instanceof Double
+                    || obj0 instanceof Float || obj1 instanceof Float
+                    || (obj0 instanceof String && ELSupport.isStringFloat(
+                            (String) obj0)) || (obj1 instanceof String
+                                    && ELSupport.isStringFloat((String) obj1)));
         }
     }
 
@@ -324,7 +327,8 @@ public abstract class ELArithmetic {
         return delegate.multiply(num0, num1);
     }
 
-    private static ELArithmetic findDelegate(final Object obj0, final Object obj1) {
+    private static ELArithmetic findDelegate(final Object obj0,
+            final Object obj1) {
         if (obj0 == null && obj1 == null) {
             return null;
         }
@@ -349,10 +353,9 @@ public abstract class ELArithmetic {
     }
 
     public static final boolean isNumberType(final Class<?> type) {
-        return type == Long.TYPE || type == Double.TYPE ||
-            type == Byte.TYPE || type == Short.TYPE ||
-            type == Integer.TYPE || type == Float.TYPE ||
-            Number.class.isAssignableFrom(type);
+        return type == Long.TYPE || type == Double.TYPE || type == Byte.TYPE
+                || type == Short.TYPE || type == Integer.TYPE
+                || type == Float.TYPE || Number.class.isAssignableFrom(type);
     }
 
     /**

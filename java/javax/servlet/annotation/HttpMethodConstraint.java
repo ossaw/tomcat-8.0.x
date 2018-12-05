@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -65,7 +63,8 @@ public @interface HttpMethodConstraint {
      * @return array of names. The array may be of zero length, in which case
      *         the EmptyRoleSemantic applies; the returned value determines
      *         whether access is to be permitted or denied regardless of the
-     *         identity and authentication state in either case, PERMIT or DENY.<br>
+     *         identity and authentication state in either case, PERMIT or
+     *         DENY.<br>
      *         Otherwise, when the array contains one or more role names access
      *         is permitted if the user a member of at least one of the named
      *         roles. The EmptyRoleSemantic is not applied in this case.

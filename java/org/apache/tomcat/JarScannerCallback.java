@@ -1,18 +1,16 @@
 /*
- *  Licensed to the Apache Software Foundation (ASF) under one or more
- *  contributor license agreements.  See the NOTICE file distributed with
- *  this work for additional information regarding copyright ownership.
- *  The ASF licenses this file to You under the Apache License, Version 2.0
- *  (the "License"); you may not use this file except in compliance with
- *  the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements. See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.apache.tomcat;
 
@@ -33,8 +31,8 @@ public interface JarScannerCallback {
      * @param urlConn    The connection to the identified JAR
      * @param webappPath The path, if any, to the JAR within the web application
      * @param isWebapp   Indicates if the JAR was found within a web
-     *                       application. If <code>false</code> the JAR should
-     *                       be treated as being provided by the container
+     *                   application. If <code>false</code> the JAR should
+     *                   be treated as being provided by the container
      *
      * @deprecated Use {@link #scan(Jar, String, boolean)} instead. Because the
      *             urlConn parameter could refer directly to a JAR or to a JAR
@@ -44,8 +42,8 @@ public interface JarScannerCallback {
      *             This method will be removed in Tomcat 8.5.x onwards.
      */
     @Deprecated
-    public void scan(JarURLConnection urlConn, String webappPath, boolean isWebapp)
-            throws IOException;
+    public void scan(JarURLConnection urlConn, String webappPath,
+            boolean isWebapp) throws IOException;
 
     /**
      * A JAR was found and may be accessed for further processing via the
@@ -54,8 +52,8 @@ public interface JarScannerCallback {
      * @param jar        The JAR to process
      * @param webappPath The path, if any, to the JAR within the web application
      * @param isWebapp   Indicates if the JAR was found within a web
-     *                       application. If <code>false</code> the JAR should
-     *                       be treated as being provided by the container
+     *                   application. If <code>false</code> the JAR should
+     *                   be treated as being provided by the container
      *
      * @throws IOException if an I/O error occurs while scanning the JAR
      */
@@ -68,12 +66,13 @@ public interface JarScannerCallback {
      *
      * @param file       The directory containing the unpacked JAR.
      * @param webappPath The path, if any, to the file within the web
-     *                       application
+     *                   application
      * @param isWebapp   Indicates if the JAR was found within a web
-     *                       application. If <code>false</code> the JAR should
-     *                       be treated as being provided by the container
+     *                   application. If <code>false</code> the JAR should
+     *                   be treated as being provided by the container
      */
-    public void scan(File file, String webappPath, boolean isWebapp) throws IOException;
+    public void scan(File file, String webappPath, boolean isWebapp)
+            throws IOException;
 
     /**
      * A directory structure was found within the web application at

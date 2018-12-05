@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -19,9 +17,11 @@ package org.apache.tomcat.util.http.fileupload;
 import java.util.Iterator;
 
 /**
- * <p> This class provides support for accessing the headers for a file or form
+ * <p>
+ * This class provides support for accessing the headers for a file or form
  * item that was received within a <code>multipart/form-data</code> POST
- * request.</p>
+ * request.
+ * </p>
  *
  * @since 1.2.1
  */
@@ -31,8 +31,8 @@ public interface FileItemHeaders {
      * Returns the value of the specified part header as a <code>String</code>.
      *
      * If the part did not include a header of the specified name, this method
-     * return <code>null</code>.  If there are multiple headers with the same
-     * name, this method returns the first header in the item.  The header
+     * return <code>null</code>. If there are multiple headers with the same
+     * name, this method returns the first header in the item. The header
      * name is case insensitive.
      *
      * @param name a <code>String</code> specifying the header name

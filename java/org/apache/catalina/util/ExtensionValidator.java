@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -32,7 +30,6 @@ import org.apache.catalina.WebResource;
 import org.apache.catalina.WebResourceRoot;
 import org.apache.tomcat.util.res.StringManager;
 
-
 /**
  * Ensures that all extension dependencies are resolved for a WEB application
  * are met. This class builds a master list of extensions available to an
@@ -46,31 +43,27 @@ import org.apache.tomcat.util.res.StringManager;
  */
 public final class ExtensionValidator {
 
-    private static final org.apache.juli.logging.Log log=
-        org.apache.juli.logging.LogFactory.getLog(ExtensionValidator.class);
+    private static final org.apache.juli.logging.Log log = org.apache.juli.logging.LogFactory
+            .getLog(ExtensionValidator.class);
 
     /**
      * The string resources for this package.
      */
-    private static final StringManager sm =
-            StringManager.getManager("org.apache.catalina.util");
+    private static final StringManager sm = StringManager.getManager(
+            "org.apache.catalina.util");
 
-    private static volatile ArrayList<Extension> containerAvailableExtensions =
-            null;
-    private static final ArrayList<ManifestResource> containerManifestResources =
-            new ArrayList<>();
-
+    private static volatile ArrayList<Extension> containerAvailableExtensions = null;
+    private static final ArrayList<ManifestResource> containerManifestResources = new ArrayList<>();
 
     // ----------------------------------------------------- Static Initializer
 
-
     /**
-     *  This static initializer loads the container level extensions that are
-     *  available to all web applications. This method scans all extension
-     *  directories available via the "java.ext.dirs" System property.
+     * This static initializer loads the container level extensions that are
+     * available to all web applications. This method scans all extension
+     * directories available via the "java.ext.dirs" System property.
      *
-     *  The System Class-Path is also scanned for jar files that may contain
-     *  available extensions.
+     * The System Class-Path is also scanned for jar files that may contain
+     * available extensions.
      */
     static {
 
@@ -78,7 +71,7 @@ public final class ExtensionValidator {
         String systemClasspath = System.getProperty("java.class.path");
 
         StringTokenizer strTok = new StringTokenizer(systemClasspath,
-                                                     File.pathSeparator);
+                File.pathSeparator);
 
         // build a list of jar files in the classpath
         while (strTok.hasMoreTokens()) {
@@ -89,8 +82,8 @@ public final class ExtensionValidator {
                     try {
                         addSystemResource(item);
                     } catch (IOException e) {
-                        log.error(sm.getString
-                                  ("extensionValidator.failload", item), e);
+                        log.error(sm.getString("extensionValidator.failload",
+                                item), e);
                     }
                 }
             }
@@ -100,9 +93,7 @@ public final class ExtensionValidator {
         addFolderList("java.ext.dirs");
     }
 
-
     // --------------------------------------------------------- Public Methods
-
 
     /**
      * Runtime validation of a Web Application.
@@ -122,9 +113,7 @@ public final class ExtensionValidator {
      * @return true if all required extensions satisfied
      */
     public static synchronized boolean validateApplication(
-                                           WebResourceRoot resources,
-                                           Context context)
-                    throws IOException {
+            WebResourceRoot resources, Context context) throws IOException {
 
         String appName = context.getName();
         ArrayList<ManifestResource> appManifestResources = new ArrayList<>();
@@ -134,16 +123,16 @@ public final class ExtensionValidator {
         if (resource.isFile()) {
             try (InputStream inputStream = resource.getInputStream()) {
                 Manifest manifest = new Manifest(inputStream);
-                ManifestResource mre = new ManifestResource
-                    (sm.getString("extensionValidator.web-application-manifest"),
-                    manifest, ManifestResource.WAR);
+                ManifestResource mre = new ManifestResource(sm.getString(
+                        "extensionValidator.web-application-manifest"),
+                        manifest, ManifestResource.WAR);
                 appManifestResources.add(mre);
             }
         }
 
         // Web application library manifests
-        WebResource[] manifestResources =
-                resources.getClassLoaderResources("/META-INF/MANIFEST.MF");
+        WebResource[] manifestResources = resources.getClassLoaderResources(
+                "/META-INF/MANIFEST.MF");
         for (WebResource manifestResource : manifestResources) {
             if (manifestResource.isFile()) {
                 // Primarily used for error reporting
@@ -161,7 +150,6 @@ public final class ExtensionValidator {
         return validateManifestResources(appName, appManifestResources);
     }
 
-
     /**
      * Checks to see if the given system JAR file contains a MANIFEST, and adds
      * it to the container's manifest resources.
@@ -172,16 +160,14 @@ public final class ExtensionValidator {
         try (InputStream is = new FileInputStream(jarFile)) {
             Manifest manifest = getManifest(is);
             if (manifest != null) {
-                ManifestResource mre = new ManifestResource(jarFile.getAbsolutePath(), manifest,
-                        ManifestResource.SYSTEM);
+                ManifestResource mre = new ManifestResource(jarFile
+                        .getAbsolutePath(), manifest, ManifestResource.SYSTEM);
                 containerManifestResources.add(mre);
             }
         }
     }
 
-
     // -------------------------------------------------------- Private Methods
-
 
     /**
      * Validates a <code>ArrayList</code> of <code>ManifestResource</code>
@@ -195,8 +181,8 @@ public final class ExtensionValidator {
      * This method should also provide static validation of a Web Application
      * if provided with the necessary parameters.
      *
-     * @param appName The name of the Application that will appear in the
-     *                error messages
+     * @param appName   The name of the Application that will appear in the
+     *                  error messages
      * @param resources A list of <code>ManifestResource</code> objects
      *                  to be validated.
      *
@@ -224,8 +210,8 @@ public final class ExtensionValidator {
             // load the container level resource map if it has not been built
             // yet
             if (containerAvailableExtensions == null) {
-                containerAvailableExtensions
-                    = buildAvailableExtensionsList(containerManifestResources);
+                containerAvailableExtensions = buildAvailableExtensionsList(
+                        containerManifestResources);
             }
 
             // iterate through the list of required extensions
@@ -247,8 +233,8 @@ public final class ExtensionValidator {
                 }
                 // check the container level list for the extension
                 if (!found && containerAvailableExtensions != null) {
-                    Iterator<Extension> cit =
-                        containerAvailableExtensions.iterator();
+                    Iterator<Extension> cit = containerAvailableExtensions
+                            .iterator();
                     while (cit.hasNext()) {
                         Extension targetExt = cit.next();
                         if (targetExt.isCompatibleWith(requiredExt)) {
@@ -261,9 +247,9 @@ public final class ExtensionValidator {
                 if (!found) {
                     // Failure
                     log.info(sm.getString(
-                        "extensionValidator.extension-not-found-error",
-                        appName, mre.getResourceName(),
-                        requiredExt.getExtensionName()));
+                            "extensionValidator.extension-not-found-error",
+                            appName, mre.getResourceName(), requiredExt
+                                    .getExtensionName()));
                     passes = false;
                     failureCount++;
                 }
@@ -272,30 +258,26 @@ public final class ExtensionValidator {
 
         if (!passes) {
             log.info(sm.getString(
-                     "extensionValidator.extension-validation-error", appName,
-                     failureCount + ""));
+                    "extensionValidator.extension-validation-error", appName,
+                    failureCount + ""));
         }
 
         return passes;
     }
 
-   /*
-    * Build this list of available extensions so that we do not have to
-    * re-build this list every time we iterate through the list of required
-    * extensions. All available extensions in all of the
-    * <code>MainfestResource</code> objects will be added to a
-    * <code>HashMap</code> which is returned on the first dependency list
-    * processing pass.
-    *
-    * The key is the name + implementation version.
-    *
-    * NOTE: A list is built only if there is a dependency that needs
-    * to be checked (performance optimization).
-    *
-    * @param resources A list of <code>ManifestResource</code> objects
-    *
-    * @return HashMap Map of available extensions
-    */
+    /*
+     * Build this list of available extensions so that we do not have to
+     * re-build this list every time we iterate through the list of required
+     * extensions. All available extensions in all of the
+     * <code>MainfestResource</code> objects will be added to a
+     * <code>HashMap</code> which is returned on the first dependency list
+     * processing pass.
+     * The key is the name + implementation version.
+     * NOTE: A list is built only if there is a dependency that needs
+     * to be checked (performance optimization).
+     * @param resources A list of <code>ManifestResource</code> objects
+     * @return HashMap Map of available extensions
+     */
     private static ArrayList<Extension> buildAvailableExtensionsList(
             ArrayList<ManifestResource> resources) {
 
@@ -328,14 +310,14 @@ public final class ExtensionValidator {
      * @param inStream Input stream to a WAR or JAR file
      * @return The WAR's or JAR's manifest
      */
-    private static Manifest getManifest(InputStream inStream) throws IOException {
+    private static Manifest getManifest(InputStream inStream)
+            throws IOException {
         Manifest manifest = null;
         try (JarInputStream jin = new JarInputStream(inStream)) {
             manifest = jin.getManifest();
         }
         return manifest;
     }
-
 
     /**
      * Add the JARs specified to the extension list.
@@ -345,8 +327,8 @@ public final class ExtensionValidator {
         // get the files in the extensions directory
         String extensionsDir = System.getProperty(property);
         if (extensionsDir != null) {
-            StringTokenizer extensionsTok
-                = new StringTokenizer(extensionsDir, File.pathSeparator);
+            StringTokenizer extensionsTok = new StringTokenizer(extensionsDir,
+                    File.pathSeparator);
             while (extensionsTok.hasMoreTokens()) {
                 File targetDir = new File(extensionsTok.nextToken());
                 if (!targetDir.isDirectory()) {
@@ -357,14 +339,14 @@ public final class ExtensionValidator {
                     continue;
                 }
                 for (int i = 0; i < files.length; i++) {
-                    if (files[i].getName().toLowerCase(Locale.ENGLISH).endsWith(".jar") &&
-                            files[i].isFile()) {
+                    if (files[i].getName().toLowerCase(Locale.ENGLISH).endsWith(
+                            ".jar") && files[i].isFile()) {
                         try {
                             addSystemResource(files[i]);
                         } catch (IOException e) {
-                            log.error
-                                (sm.getString
-                                 ("extensionValidator.failload", files[i]), e);
+                            log.error(sm.getString(
+                                    "extensionValidator.failload", files[i]),
+                                    e);
                         }
                     }
                 }
@@ -372,6 +354,5 @@ public final class ExtensionValidator {
         }
 
     }
-
 
 }

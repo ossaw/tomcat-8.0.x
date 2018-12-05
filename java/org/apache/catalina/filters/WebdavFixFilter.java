@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -32,17 +30,17 @@ import javax.servlet.http.HttpServletResponse;
  * a WebDAV client that actually works. Other workarounds that might help
  * include:
  * <ul>
- *   <li>Specifying the port, even if it is port 80, when trying to
- *       connect.</li>
- *   <li>Cancelling the first authentication dialog box and then trying to
- *       reconnect.</li>
+ * <li>Specifying the port, even if it is port 80, when trying to
+ * connect.</li>
+ * <li>Cancelling the first authentication dialog box and then trying to
+ * reconnect.</li>
  * </ul>
  *
  * Generally each different version of the MS client has a different set of
  * problems.
  * <p>
  * TODO: Update this filter to recognise specific MS clients and apply the
- *       appropriate workarounds for that particular client
+ * appropriate workarounds for that particular client
  * <p>
  * As a filter, this is configured in web.xml like any other Filter. You usually
  * want to map this filter to whatever your WebDAV servlet is mapped to.
@@ -53,25 +51,21 @@ import javax.servlet.http.HttpServletResponse;
  * <p>
  * XP x64 SP2 (MiniRedir Version 3790)
  * <ul>
- *   <li>Only connects to port 80</li>
- *   <li>Unknown issue means it doesn't work</li>
+ * <li>Only connects to port 80</li>
+ * <li>Unknown issue means it doesn't work</li>
  * </ul>
  */
 public class WebdavFixFilter implements Filter {
 
-    private static final String LOG_MESSAGE_PREAMBLE =
-        "WebdavFixFilter: Detected client problem: ";
+    private static final String LOG_MESSAGE_PREAMBLE = "WebdavFixFilter: Detected client problem: ";
 
     /* Start string for all versions */
-    private static final String UA_MINIDIR_START =
-        "Microsoft-WebDAV-MiniRedir";
+    private static final String UA_MINIDIR_START = "Microsoft-WebDAV-MiniRedir";
     /* XP 32-bit SP3 */
-    private static final String UA_MINIDIR_5_1_2600 =
-        "Microsoft-WebDAV-MiniRedir/5.1.2600";
+    private static final String UA_MINIDIR_5_1_2600 = "Microsoft-WebDAV-MiniRedir/5.1.2600";
 
     /* XP 64-bit SP2 */
-    private static final String UA_MINIDIR_5_2_3790 =
-        "Microsoft-WebDAV-MiniRedir/5.2.3790";
+    private static final String UA_MINIDIR_5_2_3790 = "Microsoft-WebDAV-MiniRedir/5.2.3790";
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
@@ -90,8 +84,8 @@ public class WebdavFixFilter implements Filter {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response,
             FilterChain chain) throws IOException, ServletException {
-        if (!(request instanceof HttpServletRequest) ||
-                !(response instanceof HttpServletResponse)) {
+        if (!(request instanceof HttpServletRequest)
+                || !(response instanceof HttpServletResponse)) {
             chain.doFilter(request, response);
             return;
         }
@@ -99,8 +93,8 @@ public class WebdavFixFilter implements Filter {
         HttpServletResponse httpResponse = ((HttpServletResponse) response);
         String ua = httpRequest.getHeader("User-Agent");
 
-        if (ua == null || ua.length() == 0 ||
-                !ua.startsWith(UA_MINIDIR_START)) {
+        if (ua == null || ua.length() == 0 || !ua.startsWith(
+                UA_MINIDIR_START)) {
             // No UA or starts with non MS value
             // Hope everything just works...
             chain.doFilter(request, response);
@@ -127,8 +121,8 @@ public class WebdavFixFilter implements Filter {
     }
 
     private String buildRedirect(HttpServletRequest request) {
-        StringBuilder location =
-            new StringBuilder(request.getRequestURL().length());
+        StringBuilder location = new StringBuilder(request.getRequestURL()
+                .length());
         location.append(request.getScheme());
         location.append("://");
         location.append(request.getServerName());

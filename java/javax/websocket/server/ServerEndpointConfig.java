@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -39,6 +37,7 @@ public interface ServerEndpointConfig extends EndpointConfig {
     /**
      * Returns the path at which this WebSocket server endpoint has been
      * registered. It may be a path or a level 0 URI template.
+     * 
      * @return The registered path
      */
     String getPath();
@@ -49,29 +48,24 @@ public interface ServerEndpointConfig extends EndpointConfig {
 
     Configurator getConfigurator();
 
-
     public final class Builder {
 
-        public static Builder create(
-                Class<?> endpointClass, String path) {
+        public static Builder create(Class<?> endpointClass, String path) {
             return new Builder(endpointClass, path);
         }
 
-
         private final Class<?> endpointClass;
         private final String path;
-        private List<Class<? extends Encoder>> encoders =
-                Collections.emptyList();
-        private List<Class<? extends Decoder>> decoders =
-                Collections.emptyList();
+        private List<Class<? extends Encoder>> encoders = Collections
+                .emptyList();
+        private List<Class<? extends Decoder>> decoders = Collections
+                .emptyList();
         private List<String> subprotocols = Collections.emptyList();
         private List<Extension> extensions = Collections.emptyList();
-        private Configurator configurator =
-                Configurator.fetchContainerDefaultConfigurator();
+        private Configurator configurator = Configurator
+                .fetchContainerDefaultConfigurator();
 
-
-        private Builder(Class<?> endpointClass,
-                String path) {
+        private Builder(Class<?> endpointClass, String path) {
             this.endpointClass = endpointClass;
             this.path = path;
         }
@@ -81,9 +75,7 @@ public interface ServerEndpointConfig extends EndpointConfig {
                     subprotocols, extensions, encoders, decoders, configurator);
         }
 
-
-        public Builder encoders(
-                List<Class<? extends Encoder>> encoders) {
+        public Builder encoders(List<Class<? extends Encoder>> encoders) {
             if (encoders == null || encoders.size() == 0) {
                 this.encoders = Collections.emptyList();
             } else {
@@ -92,9 +84,7 @@ public interface ServerEndpointConfig extends EndpointConfig {
             return this;
         }
 
-
-        public Builder decoders(
-                List<Class<? extends Decoder>> decoders) {
+        public Builder decoders(List<Class<? extends Decoder>> decoders) {
             if (decoders == null || decoders.size() == 0) {
                 this.decoders = Collections.emptyList();
             } else {
@@ -103,9 +93,7 @@ public interface ServerEndpointConfig extends EndpointConfig {
             return this;
         }
 
-
-        public Builder subprotocols(
-                List<String> subprotocols) {
+        public Builder subprotocols(List<String> subprotocols) {
             if (subprotocols == null || subprotocols.size() == 0) {
                 this.subprotocols = Collections.emptyList();
             } else {
@@ -114,9 +102,7 @@ public interface ServerEndpointConfig extends EndpointConfig {
             return this;
         }
 
-
-        public Builder extensions(
-                List<Extension> extensions) {
+        public Builder extensions(List<Extension> extensions) {
             if (extensions == null || extensions.size() == 0) {
                 this.extensions = Collections.emptyList();
             } else {
@@ -125,10 +111,10 @@ public interface ServerEndpointConfig extends EndpointConfig {
             return this;
         }
 
-
         public Builder configurator(Configurator serverEndpointConfigurator) {
             if (serverEndpointConfigurator == null) {
-                this.configurator = Configurator.fetchContainerDefaultConfigurator();
+                this.configurator = Configurator
+                        .fetchContainerDefaultConfigurator();
             } else {
                 this.configurator = serverEndpointConfigurator;
             }
@@ -136,14 +122,12 @@ public interface ServerEndpointConfig extends EndpointConfig {
         }
     }
 
-
     public class Configurator {
 
         private static volatile Configurator defaultImpl = null;
         private static final Object defaultImplLock = new Object();
 
-        private static final String DEFAULT_IMPL_CLASSNAME =
-                "org.apache.tomcat.websocket.server.DefaultServerEndpointConfigurator";
+        private static final String DEFAULT_IMPL_CLASSNAME = "org.apache.tomcat.websocket.server.DefaultServerEndpointConfigurator";
 
         static Configurator fetchContainerDefaultConfigurator() {
             if (defaultImpl == null) {
@@ -156,12 +140,11 @@ public interface ServerEndpointConfig extends EndpointConfig {
             return defaultImpl;
         }
 
-
         private static Configurator loadDefault() {
             Configurator result = null;
 
-            ServiceLoader<Configurator> serviceLoader =
-                    ServiceLoader.load(Configurator.class);
+            ServiceLoader<Configurator> serviceLoader = ServiceLoader.load(
+                    Configurator.class);
 
             Iterator<Configurator> iter = serviceLoader.iterator();
             while (result == null && iter.hasNext()) {
@@ -172,12 +155,11 @@ public interface ServerEndpointConfig extends EndpointConfig {
             if (result == null) {
                 try {
                     @SuppressWarnings("unchecked")
-                    Class<Configurator> clazz =
-                            (Class<Configurator>) Class.forName(
-                                    DEFAULT_IMPL_CLASSNAME);
+                    Class<Configurator> clazz = (Class<Configurator>) Class
+                            .forName(DEFAULT_IMPL_CLASSNAME);
                     result = clazz.newInstance();
-                } catch (ClassNotFoundException | InstantiationException |
-                        IllegalAccessException e) {
+                } catch (ClassNotFoundException | InstantiationException
+                        | IllegalAccessException e) {
                     // No options left. Just return null.
                 }
             }
@@ -186,21 +168,25 @@ public interface ServerEndpointConfig extends EndpointConfig {
 
         public String getNegotiatedSubprotocol(List<String> supported,
                 List<String> requested) {
-            return fetchContainerDefaultConfigurator().getNegotiatedSubprotocol(supported, requested);
+            return fetchContainerDefaultConfigurator().getNegotiatedSubprotocol(
+                    supported, requested);
         }
 
-        public List<Extension> getNegotiatedExtensions(List<Extension> installed,
-                List<Extension> requested) {
-            return fetchContainerDefaultConfigurator().getNegotiatedExtensions(installed, requested);
+        public List<Extension> getNegotiatedExtensions(
+                List<Extension> installed, List<Extension> requested) {
+            return fetchContainerDefaultConfigurator().getNegotiatedExtensions(
+                    installed, requested);
         }
 
         public boolean checkOrigin(String originHeaderValue) {
-            return fetchContainerDefaultConfigurator().checkOrigin(originHeaderValue);
+            return fetchContainerDefaultConfigurator().checkOrigin(
+                    originHeaderValue);
         }
 
         public void modifyHandshake(ServerEndpointConfig sec,
                 HandshakeRequest request, HandshakeResponse response) {
-            fetchContainerDefaultConfigurator().modifyHandshake(sec, request, response);
+            fetchContainerDefaultConfigurator().modifyHandshake(sec, request,
+                    response);
         }
 
         public <T extends Object> T getEndpointInstance(Class<T> clazz)

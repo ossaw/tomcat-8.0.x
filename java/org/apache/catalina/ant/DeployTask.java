@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -15,9 +13,7 @@
  * limitations under the License.
  */
 
-
 package org.apache.catalina.ant;
-
 
 import java.io.BufferedInputStream;
 import java.io.FileInputStream;
@@ -30,7 +26,6 @@ import java.util.regex.Pattern;
 
 import org.apache.tools.ant.BuildException;
 
-
 /**
  * Ant task that implements the <code>/deploy</code> command, supported by
  * the Tomcat manager application.
@@ -39,11 +34,10 @@ import org.apache.tools.ant.BuildException;
  * @since 4.1
  */
 public class DeployTask extends AbstractCatalinaCommandTask {
-    private static final Pattern PROTOCOL_PATTERN = Pattern.compile("\\w{3,5}\\:");
-
+    private static final Pattern PROTOCOL_PATTERN = Pattern.compile(
+            "\\w{3,5}\\:");
 
     // ------------------------------------------------------------- Properties
-
 
     /**
      * URL of the context configuration file for this application, if any.
@@ -57,7 +51,6 @@ public class DeployTask extends AbstractCatalinaCommandTask {
     public void setConfig(String config) {
         this.config = config;
     }
-
 
     /**
      * URL of the server local web application archive (WAR) file
@@ -73,7 +66,6 @@ public class DeployTask extends AbstractCatalinaCommandTask {
         this.localWar = localWar;
     }
 
-
     /**
      * Tag to associate with this to be deployed webapp.
      */
@@ -86,7 +78,6 @@ public class DeployTask extends AbstractCatalinaCommandTask {
     public void setTag(String tag) {
         this.tag = tag;
     }
-
 
     /**
      * Update existing webapps.
@@ -101,7 +92,6 @@ public class DeployTask extends AbstractCatalinaCommandTask {
         this.update = update;
     }
 
-
     /**
      * URL of the web application archive (WAR) file to be deployed.
      */
@@ -115,9 +105,7 @@ public class DeployTask extends AbstractCatalinaCommandTask {
         this.war = war;
     }
 
-
     // --------------------------------------------------------- Public Methods
-
 
     /**
      * Execute the requested operation.
@@ -129,12 +117,12 @@ public class DeployTask extends AbstractCatalinaCommandTask {
 
         super.execute();
         if (path == null) {
-            throw new BuildException
-                ("Must specify 'path' attribute");
+            throw new BuildException("Must specify 'path' attribute");
         }
-        if ((war == null) && (localWar == null) && (config == null) && (tag == null)) {
-            throw new BuildException
-                ("Must specify either 'war', 'localWar', 'config', or 'tag' attribute");
+        if ((war == null) && (localWar == null) && (config == null)
+                && (tag == null)) {
+            throw new BuildException(
+                    "Must specify either 'war', 'localWar', 'config', or 'tag' attribute");
         }
 
         // Building an input stream on the WAR to upload, if any
@@ -147,8 +135,8 @@ public class DeployTask extends AbstractCatalinaCommandTask {
                     URL url = new URL(war);
                     URLConnection conn = url.openConnection();
                     contentLength = conn.getContentLengthLong();
-                    stream = new BufferedInputStream
-                        (conn.getInputStream(), 1024);
+                    stream = new BufferedInputStream(conn.getInputStream(),
+                            1024);
                 } catch (IOException e) {
                     throw new BuildException(e);
                 }
@@ -193,7 +181,8 @@ public class DeployTask extends AbstractCatalinaCommandTask {
 
             execute(sb.toString(), stream, contentType, contentLength);
         } catch (UnsupportedEncodingException e) {
-            throw new BuildException("Invalid 'charset' attribute: " + getCharset());
+            throw new BuildException("Invalid 'charset' attribute: "
+                    + getCharset());
         } finally {
             if (stream != null) {
                 try {
@@ -205,6 +194,5 @@ public class DeployTask extends AbstractCatalinaCommandTask {
         }
 
     }
-
 
 }

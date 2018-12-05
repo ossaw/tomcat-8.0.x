@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -53,18 +51,15 @@ public class TestWsRemoteEndpointImplServer extends WebSocketBaseTest {
 
     /*
      * https://bz.apache.org/bugzilla/show_bug.cgi?id=58624
-     *
      * This test requires three breakpoints to be set. Two in this file (marked
      * A & B with comments) and one (C) at the start of
      * WsRemoteEndpointImplServer.doWrite().
-     *
      * With the breakpoints in place, run this test.
      * Once breakpoints A & B are reached, progress the thread at breakpoint A
      * one line to close the connection.
      * Once breakpoint C is reached, allow the thread at breakpoint B to
      * continue.
      * Then allow the thread at breakpoint C to continue.
-     *
      * In the failure mode, the thread at breakpoint B will not progress past
      * the call to sendObject(). If the issue is fixed, the thread at breakpoint
      * B will continue past sendObject() and terminate with a TimeoutException.
@@ -78,8 +73,8 @@ public class TestWsRemoteEndpointImplServer extends WebSocketBaseTest {
         Tomcat.addServlet(ctx, "default", new DefaultServlet());
         ctx.addServletMappingDecoded("/", "default");
 
-        WebSocketContainer wsContainer =
-                ContainerProvider.getWebSocketContainer();
+        WebSocketContainer wsContainer = ContainerProvider
+                .getWebSocketContainer();
 
         tomcat.start();
 
@@ -94,12 +89,14 @@ public class TestWsRemoteEndpointImplServer extends WebSocketBaseTest {
     public static class Bug58624Config extends WsContextListener {
 
         public static String PATH = "/bug58624";
+
         @Override
         public void contextInitialized(ServletContextEvent sce) {
             super.contextInitialized(sce);
 
-            ServerContainer sc = (ServerContainer) sce.getServletContext().getAttribute(
-                    Constants.SERVER_CONTAINER_SERVLET_CONTEXT_ATTRIBUTE);
+            ServerContainer sc = (ServerContainer) sce.getServletContext()
+                    .getAttribute(
+                            Constants.SERVER_CONTAINER_SERVLET_CONTEXT_ATTRIBUTE);
 
             List<Class<? extends Encoder>> encoders = new ArrayList<>();
             encoders.add(Bug58624Encoder.class);
@@ -116,7 +113,8 @@ public class TestWsRemoteEndpointImplServer extends WebSocketBaseTest {
 
     public static class Bug58624Endpoint {
 
-        private static final ExecutorService ex = Executors.newFixedThreadPool(1);
+        private static final ExecutorService ex = Executors.newFixedThreadPool(
+                1);
 
         @OnOpen
         public void onOpen(Session session) {
@@ -135,7 +133,8 @@ public class TestWsRemoteEndpointImplServer extends WebSocketBaseTest {
         }
 
         @OnClose
-        public void onClose(@SuppressWarnings("unused") Session session, CloseReason cr) {
+        public void onClose(@SuppressWarnings("unused") Session session,
+                CloseReason cr) {
             System.out.println("Closed " + cr);
         }
     }
@@ -161,12 +160,10 @@ public class TestWsRemoteEndpointImplServer extends WebSocketBaseTest {
     public static class Bug58624Encoder implements Encoder.Text<Object> {
 
         @Override
-        public void destroy() {
-        }
+        public void destroy() {}
 
         @Override
-        public void init(EndpointConfig endpointConfig) {
-        }
+        public void init(EndpointConfig endpointConfig) {}
 
         @Override
         public String encode(Object object) throws EncodeException {

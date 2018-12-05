@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -15,9 +13,7 @@
  * limitations under the License.
  */
 
-
 package org.apache.catalina.authenticator;
-
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -33,11 +29,9 @@ import org.apache.tomcat.util.buf.ByteChunk;
 import org.apache.tomcat.util.buf.MessageBytes;
 import org.apache.tomcat.util.codec.binary.Base64;
 
-
-
 /**
  * An <b>Authenticator</b> and <b>Valve</b> implementation of HTTP BASIC
- * Authentication, as outlined in RFC 2617:  "HTTP Authentication: Basic
+ * Authentication, as outlined in RFC 2617: "HTTP Authentication: Basic
  * and Digest Access Authentication."
  *
  * @author Craig R. McClanahan
@@ -45,16 +39,15 @@ import org.apache.tomcat.util.codec.binary.Base64;
 public class BasicAuthenticator extends AuthenticatorBase {
     private static final Log log = LogFactory.getLog(BasicAuthenticator.class);
 
-
     // --------------------------------------------------------- Public Methods
 
     /**
      * Authenticate the user making this request, based on the specified
-     * login configuration.  Return <code>true</code> if any specified
+     * login configuration. Return <code>true</code> if any specified
      * constraint has been satisfied, or <code>false</code> if we have
      * created a response challenge already.
      *
-     * @param request Request we are processing
+     * @param request  Request we are processing
      * @param response Response we are creating
      *
      * @exception IOException if an input/output error occurs
@@ -68,9 +61,8 @@ public class BasicAuthenticator extends AuthenticatorBase {
         }
 
         // Validate any credentials already included with this request
-        MessageBytes authorization =
-            request.getCoyoteRequest().getMimeHeaders()
-            .getValue("authorization");
+        MessageBytes authorization = request.getCoyoteRequest().getMimeHeaders()
+                .getValue("authorization");
 
         if (authorization != null) {
             authorization.toBytes();
@@ -81,14 +73,14 @@ public class BasicAuthenticator extends AuthenticatorBase {
                 String username = credentials.getUsername();
                 String password = credentials.getPassword();
 
-                Principal principal = context.getRealm().authenticate(username, password);
+                Principal principal = context.getRealm().authenticate(username,
+                        password);
                 if (principal != null) {
                     register(request, response, principal,
-                        HttpServletRequest.BASIC_AUTH, username, password);
+                            HttpServletRequest.BASIC_AUTH, username, password);
                     return (true);
                 }
-            }
-            catch (IllegalArgumentException iae) {
+            } catch (IllegalArgumentException iae) {
                 if (log.isDebugEnabled()) {
                     log.debug("Invalid Authorization" + iae.getMessage());
                 }
@@ -110,7 +102,6 @@ public class BasicAuthenticator extends AuthenticatorBase {
     protected String getAuthMethod() {
         return HttpServletRequest.BASIC_AUTH;
     }
-
 
     /**
      * Parser for an HTTP Authorization header for BASIC authentication
@@ -153,8 +144,8 @@ public class BasicAuthenticator extends AuthenticatorBase {
         /**
          * Trivial accessor.
          *
-         * @return  the decoded username token as a String, which is
-         *          never be <code>null</code>, but can be empty.
+         * @return the decoded username token as a String, which is
+         *         never be <code>null</code>, but can be empty.
          */
         public String getUsername() {
             return username;
@@ -163,8 +154,8 @@ public class BasicAuthenticator extends AuthenticatorBase {
         /**
          * Trivial accessor.
          *
-         * @return  the decoded password token as a String, or <code>null</code>
-         *          if no password was found in the credentials.
+         * @return the decoded password token as a String, or <code>null</code>
+         *         if no password was found in the credentials.
          */
         public String getPassword() {
             return password;
@@ -179,13 +170,13 @@ public class BasicAuthenticator extends AuthenticatorBase {
                 // step past the auth method name
                 base64blobOffset = initialOffset + METHOD.length();
                 base64blobLength = authorization.getLength() - METHOD.length();
-            }
-            else {
+            } else {
                 // is this possible, or permitted?
                 throw new IllegalArgumentException(
                         "Authorization header method is not \"Basic\"");
             }
         }
+
         /*
          * Decode the base64-user-pass token, which RFC 2617 states
          * can be longer than the 76 characters per line limit defined
@@ -193,9 +184,8 @@ public class BasicAuthenticator extends AuthenticatorBase {
          * break characters as well as surplus surrounding white space.
          */
         private byte[] parseBase64() throws IllegalArgumentException {
-            byte[] decoded = Base64.decodeBase64(
-                        authorization.getBuffer(),
-                        base64blobOffset, base64blobLength);
+            byte[] decoded = Base64.decodeBase64(authorization.getBuffer(),
+                    base64blobOffset, base64blobLength);
             //  restore original offset
             authorization.setOffset(initialOffset);
             if (decoded == null) {
@@ -223,13 +213,11 @@ public class BasicAuthenticator extends AuthenticatorBase {
             if (colon < 0) {
                 username = new String(decoded, StandardCharsets.ISO_8859_1);
                 // password will remain null!
-            }
-            else {
-                username = new String(
-                            decoded, 0, colon, StandardCharsets.ISO_8859_1);
-                password = new String(
-                            decoded, colon + 1, decoded.length - colon - 1,
-                            StandardCharsets.ISO_8859_1);
+            } else {
+                username = new String(decoded, 0, colon,
+                        StandardCharsets.ISO_8859_1);
+                password = new String(decoded, colon + 1, decoded.length - colon
+                        - 1, StandardCharsets.ISO_8859_1);
                 // tolerate surplus white space around credentials
                 if (password.length() > 1) {
                     password = password.trim();

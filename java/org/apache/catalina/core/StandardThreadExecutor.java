@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -29,8 +27,8 @@ import org.apache.tomcat.util.threads.TaskQueue;
 import org.apache.tomcat.util.threads.TaskThreadFactory;
 import org.apache.tomcat.util.threads.ThreadPoolExecutor;
 
-public class StandardThreadExecutor extends LifecycleMBeanBase
-        implements Executor, ResizableExecutor {
+public class StandardThreadExecutor extends LifecycleMBeanBase implements
+        Executor, ResizableExecutor {
 
     // ---------------------------------------------- Properties
     /**
@@ -88,15 +86,14 @@ public class StandardThreadExecutor extends LifecycleMBeanBase
      * renewing all threads at the same time, this delay is observed between 2
      * threads being renewed.
      */
-    protected long threadRenewalDelay =
-        org.apache.tomcat.util.threads.Constants.DEFAULT_THREAD_RENEWAL_DELAY;
+    protected long threadRenewalDelay = org.apache.tomcat.util.threads.Constants.DEFAULT_THREAD_RENEWAL_DELAY;
 
     private TaskQueue taskqueue = null;
+
     // ---------------------------------------------- Constructors
     public StandardThreadExecutor() {
         //empty constructor for the digester
     }
-
 
     // ---------------------------------------------- Public Methods
 
@@ -105,20 +102,22 @@ public class StandardThreadExecutor extends LifecycleMBeanBase
         super.initInternal();
     }
 
-
     /**
      * Start the component and implement the requirements
      * of {@link org.apache.catalina.util.LifecycleBase#startInternal()}.
      *
      * @exception LifecycleException if this component detects a fatal error
-     *  that prevents this component from being used
+     *                               that prevents this component from being
+     *                               used
      */
     @Override
     protected void startInternal() throws LifecycleException {
 
         taskqueue = new TaskQueue(maxQueueSize);
-        TaskThreadFactory tf = new TaskThreadFactory(namePrefix,daemon,getThreadPriority());
-        executor = new ThreadPoolExecutor(getMinSpareThreads(), getMaxThreads(), maxIdleTime, TimeUnit.MILLISECONDS,taskqueue, tf);
+        TaskThreadFactory tf = new TaskThreadFactory(namePrefix, daemon,
+                getThreadPriority());
+        executor = new ThreadPoolExecutor(getMinSpareThreads(), getMaxThreads(),
+                maxIdleTime, TimeUnit.MILLISECONDS, taskqueue, tf);
         executor.setThreadRenewalDelay(threadRenewalDelay);
         if (prestartminSpareThreads) {
             executor.prestartAllCoreThreads();
@@ -128,50 +127,50 @@ public class StandardThreadExecutor extends LifecycleMBeanBase
         setState(LifecycleState.STARTING);
     }
 
-
     /**
      * Stop the component and implement the requirements
      * of {@link org.apache.catalina.util.LifecycleBase#stopInternal()}.
      *
      * @exception LifecycleException if this component detects a fatal error
-     *  that needs to be reported
+     *                               that needs to be reported
      */
     @Override
     protected void stopInternal() throws LifecycleException {
 
         setState(LifecycleState.STOPPING);
-        if ( executor != null ) executor.shutdownNow();
+        if (executor != null)
+            executor.shutdownNow();
         executor = null;
         taskqueue = null;
     }
-
 
     @Override
     protected void destroyInternal() throws LifecycleException {
         super.destroyInternal();
     }
 
-
     @Override
     public void execute(Runnable command, long timeout, TimeUnit unit) {
-        if ( executor != null ) {
-            executor.execute(command,timeout,unit);
+        if (executor != null) {
+            executor.execute(command, timeout, unit);
         } else {
-            throw new IllegalStateException("StandardThreadExecutor not started.");
+            throw new IllegalStateException(
+                    "StandardThreadExecutor not started.");
         }
     }
 
-
     @Override
     public void execute(Runnable command) {
-        if ( executor != null ) {
+        if (executor != null) {
             try {
                 executor.execute(command);
             } catch (RejectedExecutionException rx) {
                 //there could have been contention around the queue
-                if ( !( (TaskQueue) executor.getQueue()).force(command) ) throw new RejectedExecutionException("Work queue full.");
+                if (!((TaskQueue) executor.getQueue()).force(command))
+                    throw new RejectedExecutionException("Work queue full.");
             }
-        } else throw new IllegalStateException("StandardThreadPool not started.");
+        } else
+            throw new IllegalStateException("StandardThreadPool not started.");
     }
 
     public void contextStopping() {
@@ -215,6 +214,7 @@ public class StandardThreadExecutor extends LifecycleMBeanBase
 
         return prestartminSpareThreads;
     }
+
     public void setThreadPriority(int threadPriority) {
         this.threadPriority = threadPriority;
     }
@@ -302,7 +302,6 @@ public class StandardThreadExecutor extends LifecycleMBeanBase
         return (executor != null) ? executor.getQueue().size() : -1;
     }
 
-
     @Override
     public boolean resizePool(int corePoolSize, int maximumPoolSize) {
         if (executor == null)
@@ -313,12 +312,10 @@ public class StandardThreadExecutor extends LifecycleMBeanBase
         return true;
     }
 
-
     @Override
     public boolean resizeQueue(int capacity) {
         return false;
     }
-
 
     @Override
     protected String getDomainInternal() {

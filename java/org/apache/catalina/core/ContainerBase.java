@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -66,60 +64,60 @@ import org.apache.juli.logging.LogFactory;
 import org.apache.tomcat.util.ExceptionUtils;
 import org.apache.tomcat.util.res.StringManager;
 
-
 /**
  * Abstract implementation of the <b>Container</b> interface, providing common
- * functionality required by nearly every implementation.  Classes extending
+ * functionality required by nearly every implementation. Classes extending
  * this base class must may implement a replacement for <code>invoke()</code>.
  * <p>
  * All subclasses of this abstract base class will include support for a
  * Pipeline object that defines the processing to be performed for each request
  * received by the <code>invoke()</code> method of this class, utilizing the
- * "Chain of Responsibility" design pattern.  A subclass should encapsulate its
+ * "Chain of Responsibility" design pattern. A subclass should encapsulate its
  * own processing functionality as a <code>Valve</code>, and configure this
  * Valve into the pipeline by calling <code>setBasic()</code>.
  * <p>
  * This implementation fires property change events, per the JavaBeans design
- * pattern, for changes in singleton properties.  In addition, it fires the
+ * pattern, for changes in singleton properties. In addition, it fires the
  * following <code>ContainerEvent</code> events to listeners who register
  * themselves with <code>addContainerListener()</code>:
  * <table border=1>
- *   <caption>ContainerEvents fired by this implementation</caption>
- *   <tr>
- *     <th>Type</th>
- *     <th>Data</th>
- *     <th>Description</th>
- *   </tr>
- *   <tr>
- *     <td align=center><code>addChild</code></td>
- *     <td align=center><code>Container</code></td>
- *     <td>Child container added to this Container.</td>
- *   </tr>
- *   <tr>
- *     <td align=center><code>{@link #getPipeline() pipeline}.addValve</code></td>
- *     <td align=center><code>Valve</code></td>
- *     <td>Valve added to this Container.</td>
- *   </tr>
- *   <tr>
- *     <td align=center><code>removeChild</code></td>
- *     <td align=center><code>Container</code></td>
- *     <td>Child container removed from this Container.</td>
- *   </tr>
- *   <tr>
- *     <td align=center><code>{@link #getPipeline() pipeline}.removeValve</code></td>
- *     <td align=center><code>Valve</code></td>
- *     <td>Valve removed from this Container.</td>
- *   </tr>
- *   <tr>
- *     <td align=center><code>start</code></td>
- *     <td align=center><code>null</code></td>
- *     <td>Container was started.</td>
- *   </tr>
- *   <tr>
- *     <td align=center><code>stop</code></td>
- *     <td align=center><code>null</code></td>
- *     <td>Container was stopped.</td>
- *   </tr>
+ * <caption>ContainerEvents fired by this implementation</caption>
+ * <tr>
+ * <th>Type</th>
+ * <th>Data</th>
+ * <th>Description</th>
+ * </tr>
+ * <tr>
+ * <td align=center><code>addChild</code></td>
+ * <td align=center><code>Container</code></td>
+ * <td>Child container added to this Container.</td>
+ * </tr>
+ * <tr>
+ * <td align=center><code>{@link #getPipeline() pipeline}.addValve</code></td>
+ * <td align=center><code>Valve</code></td>
+ * <td>Valve added to this Container.</td>
+ * </tr>
+ * <tr>
+ * <td align=center><code>removeChild</code></td>
+ * <td align=center><code>Container</code></td>
+ * <td>Child container removed from this Container.</td>
+ * </tr>
+ * <tr>
+ * <td align=
+ * center><code>{@link #getPipeline() pipeline}.removeValve</code></td>
+ * <td align=center><code>Valve</code></td>
+ * <td>Valve removed from this Container.</td>
+ * </tr>
+ * <tr>
+ * <td align=center><code>start</code></td>
+ * <td align=center><code>null</code></td>
+ * <td>Container was started.</td>
+ * </tr>
+ * <tr>
+ * <td align=center><code>stop</code></td>
+ * <td align=center><code>null</code></td>
+ * <td>Container was stopped.</td>
+ * </tr>
  * </table>
  * Subclasses that fire additional events should document them in the
  * class comments of the implementation class.
@@ -128,11 +126,11 @@ import org.apache.tomcat.util.res.StringManager;
  *
  * @author Craig R. McClanahan
  */
-public abstract class ContainerBase extends LifecycleMBeanBase
-        implements Container {
+public abstract class ContainerBase extends LifecycleMBeanBase implements
+        Container {
 
-    private static final org.apache.juli.logging.Log log=
-        org.apache.juli.logging.LogFactory.getLog( ContainerBase.class );
+    private static final org.apache.juli.logging.Log log = org.apache.juli.logging.LogFactory
+            .getLog(ContainerBase.class);
 
     /**
      * Perform addChild with the permissions of this class.
@@ -156,21 +154,17 @@ public abstract class ContainerBase extends LifecycleMBeanBase
 
     }
 
-
     // ----------------------------------------------------- Instance Variables
-
 
     /**
      * The child Containers belonging to this Container, keyed by name.
      */
     protected final HashMap<String, Container> children = new HashMap<>();
 
-
     /**
      * The processor delay for this component.
      */
     protected int backgroundProcessorDelay = -1;
-
 
     /**
      * The container event listeners for this Container. Implemented as a
@@ -185,12 +179,10 @@ public abstract class ContainerBase extends LifecycleMBeanBase
      */
     protected Log logger = null;
 
-
     /**
      * Associated logger name.
      */
     protected String logName = null;
-
 
     /**
      * The cluster with which this Container is associated.
@@ -198,49 +190,41 @@ public abstract class ContainerBase extends LifecycleMBeanBase
     protected Cluster cluster = null;
     private final ReadWriteLock clusterLock = new ReentrantReadWriteLock();
 
-
     /**
      * The human-readable name of this Container.
      */
     protected String name = null;
-
 
     /**
      * The parent Container to which this Container is a child.
      */
     protected Container parent = null;
 
-
     /**
      * The parent class loader to be configured when we install a Loader.
      */
     protected ClassLoader parentClassLoader = null;
-
 
     /**
      * The Pipeline object with which this Container is associated.
      */
     protected final Pipeline pipeline = new StandardPipeline(this);
 
-
     /**
      * The Realm with which this Container is associated.
      */
     private volatile Realm realm = null;
-
 
     /**
      * Lock used to control access to the Realm.
      */
     private final ReadWriteLock realmLock = new ReentrantReadWriteLock();
 
-
     /**
      * The string manager for this package.
      */
-    protected static final StringManager sm =
-        StringManager.getManager(Constants.Package);
-
+    protected static final StringManager sm = StringManager.getManager(
+            Constants.Package);
 
     /**
      * Will children be started automatically when they are added.
@@ -250,21 +234,18 @@ public abstract class ContainerBase extends LifecycleMBeanBase
     /**
      * The property change support for this component.
      */
-    protected final PropertyChangeSupport support =
-            new PropertyChangeSupport(this);
-
+    protected final PropertyChangeSupport support = new PropertyChangeSupport(
+            this);
 
     /**
      * The background thread.
      */
     private Thread thread = null;
 
-
     /**
      * The background thread completion semaphore.
      */
     private volatile boolean threadDone = false;
-
 
     /**
      * The access log to use for requests normally handled by this container
@@ -273,14 +254,12 @@ public abstract class ContainerBase extends LifecycleMBeanBase
     protected volatile AccessLog accessLog = null;
     private volatile boolean accessLogScanComplete = false;
 
-
     /**
      * The number of threads available to process start and stop events for any
      * children associated with this container.
      */
     private int startStopThreads = 1;
     protected ThreadPoolExecutor startStopExecutor;
-
 
     // ------------------------------------------------------------- Properties
 
@@ -323,7 +302,6 @@ public abstract class ContainerBase extends LifecycleMBeanBase
         }
     }
 
-
     /**
      * Get the delay between the invocation of the backgroundProcess method on
      * this container and its children. Child containers will not be invoked
@@ -338,7 +316,6 @@ public abstract class ContainerBase extends LifecycleMBeanBase
         return backgroundProcessorDelay;
     }
 
-
     /**
      * Set the delay between the invocation of the execute method on this
      * container and its children.
@@ -350,7 +327,6 @@ public abstract class ContainerBase extends LifecycleMBeanBase
     public void setBackgroundProcessorDelay(int delay) {
         backgroundProcessorDelay = delay;
     }
-
 
     /**
      * Return the Logger for this Container.
@@ -365,9 +341,8 @@ public abstract class ContainerBase extends LifecycleMBeanBase
 
     }
 
-
     /**
-     * Return the Cluster with which this Container is associated.  If there is
+     * Return the Cluster with which this Container is associated. If there is
      * no associated Cluster, return the Cluster associated with our parent
      * Container (if any); otherwise return <code>null</code>.
      */
@@ -388,7 +363,6 @@ public abstract class ContainerBase extends LifecycleMBeanBase
         }
     }
 
-
     /*
      * Provide access to just the cluster component attached to this container.
      */
@@ -401,7 +375,6 @@ public abstract class ContainerBase extends LifecycleMBeanBase
             readLock.unlock();
         }
     }
-
 
     /**
      * Set the Cluster with which this Container is associated.
@@ -422,8 +395,8 @@ public abstract class ContainerBase extends LifecycleMBeanBase
             this.cluster = cluster;
 
             // Stop the old component if necessary
-            if (getState().isAvailable() && (oldCluster != null) &&
-                (oldCluster instanceof Lifecycle)) {
+            if (getState().isAvailable() && (oldCluster != null)
+                    && (oldCluster instanceof Lifecycle)) {
                 try {
                     ((Lifecycle) oldCluster).stop();
                 } catch (LifecycleException e) {
@@ -435,8 +408,8 @@ public abstract class ContainerBase extends LifecycleMBeanBase
             if (cluster != null)
                 cluster.setContainer(this);
 
-            if (getState().isAvailable() && (cluster != null) &&
-                (cluster instanceof Lifecycle)) {
+            if (getState().isAvailable() && (cluster != null)
+                    && (cluster instanceof Lifecycle)) {
                 try {
                     ((Lifecycle) cluster).start();
                 } catch (LifecycleException e) {
@@ -451,10 +424,9 @@ public abstract class ContainerBase extends LifecycleMBeanBase
         support.firePropertyChange("cluster", oldCluster, cluster);
     }
 
-
     /**
      * Return a name string (suitable for use by humans) that describes this
-     * Container.  Within the set of child containers belonging to a particular
+     * Container. Within the set of child containers belonging to a particular
      * parent, Container names must be unique.
      */
     @Override
@@ -464,17 +436,17 @@ public abstract class ContainerBase extends LifecycleMBeanBase
 
     }
 
-
     /**
      * Set a name string (suitable for use by humans) that describes this
-     * Container.  Within the set of child containers belonging to a particular
+     * Container. Within the set of child containers belonging to a particular
      * parent, Container names must be unique.
      *
      * @param name New name of this container
      *
      * @exception IllegalStateException if this Container has already been
-     *  added to the children of a parent Container (after which the name
-     *  may not be changed)
+     *                                  added to the children of a parent
+     *                                  Container (after which the name
+     *                                  may not be changed)
      */
     @Override
     public void setName(String name) {
@@ -483,7 +455,6 @@ public abstract class ContainerBase extends LifecycleMBeanBase
         this.name = name;
         support.firePropertyChange("name", oldName, this.name);
     }
-
 
     /**
      * Return if children of this container will be started automatically when
@@ -495,7 +466,6 @@ public abstract class ContainerBase extends LifecycleMBeanBase
 
     }
 
-
     /**
      * Set if children of this container will be started automatically when
      * they are added to this container.
@@ -506,13 +476,13 @@ public abstract class ContainerBase extends LifecycleMBeanBase
 
         boolean oldStartChildren = this.startChildren;
         this.startChildren = startChildren;
-        support.firePropertyChange("startChildren", oldStartChildren, this.startChildren);
+        support.firePropertyChange("startChildren", oldStartChildren,
+                this.startChildren);
     }
-
 
     /**
      * Return the Container for which this Container is a child, if there is
-     * one.  If there is no defined parent, return <code>null</code>.
+     * one. If there is no defined parent, return <code>null</code>.
      */
     @Override
     public Container getParent() {
@@ -521,17 +491,16 @@ public abstract class ContainerBase extends LifecycleMBeanBase
 
     }
 
-
     /**
      * Set the parent Container to which this Container is being added as a
-     * child.  This Container may refuse to become attached to the specified
+     * child. This Container may refuse to become attached to the specified
      * Container by throwing an exception.
      *
      * @param container Container to which this Container is being added
-     *  as a child
+     *                  as a child
      *
      * @exception IllegalArgumentException if this Container refuses to become
-     *  attached to the specified Container
+     *                                     attached to the specified Container
      */
     @Override
     public void setParent(Container container) {
@@ -541,7 +510,6 @@ public abstract class ContainerBase extends LifecycleMBeanBase
         support.firePropertyChange("parent", oldParent, this.parent);
 
     }
-
 
     /**
      * Return the parent class loader (if any) for this web application.
@@ -559,7 +527,6 @@ public abstract class ContainerBase extends LifecycleMBeanBase
 
     }
 
-
     /**
      * Set the parent class loader (if any) for this web application.
      * This call is meaningful only <strong>before</strong> a Loader has
@@ -574,10 +541,9 @@ public abstract class ContainerBase extends LifecycleMBeanBase
         ClassLoader oldParentClassLoader = this.parentClassLoader;
         this.parentClassLoader = parent;
         support.firePropertyChange("parentClassLoader", oldParentClassLoader,
-                                   this.parentClassLoader);
+                this.parentClassLoader);
 
     }
-
 
     /**
      * Return the Pipeline object that manages the Valves associated with
@@ -590,9 +556,8 @@ public abstract class ContainerBase extends LifecycleMBeanBase
 
     }
 
-
     /**
-     * Return the Realm with which this Container is associated.  If there is
+     * Return the Realm with which this Container is associated. If there is
      * no associated Realm, return the Realm associated with our parent
      * Container (if any); otherwise return <code>null</code>.
      */
@@ -611,7 +576,6 @@ public abstract class ContainerBase extends LifecycleMBeanBase
             l.unlock();
         }
     }
-
 
     protected Realm getRealmInternal() {
         Lock l = realmLock.readLock();
@@ -641,8 +605,8 @@ public abstract class ContainerBase extends LifecycleMBeanBase
             this.realm = realm;
 
             // Stop the old component if necessary
-            if (getState().isAvailable() && (oldRealm != null) &&
-                (oldRealm instanceof Lifecycle)) {
+            if (getState().isAvailable() && (oldRealm != null)
+                    && (oldRealm instanceof Lifecycle)) {
                 try {
                     ((Lifecycle) oldRealm).stop();
                 } catch (LifecycleException e) {
@@ -653,8 +617,8 @@ public abstract class ContainerBase extends LifecycleMBeanBase
             // Start the new component if necessary
             if (realm != null)
                 realm.setContainer(this);
-            if (getState().isAvailable() && (realm != null) &&
-                (realm instanceof Lifecycle)) {
+            if (getState().isAvailable() && (realm != null)
+                    && (realm instanceof Lifecycle)) {
                 try {
                     ((Lifecycle) realm).start();
                 } catch (LifecycleException e) {
@@ -670,32 +634,31 @@ public abstract class ContainerBase extends LifecycleMBeanBase
 
     }
 
-
     // ------------------------------------------------------ Container Methods
-
 
     /**
      * Add a new child Container to those associated with this Container,
-     * if supported.  Prior to adding this Container to the set of children,
+     * if supported. Prior to adding this Container to the set of children,
      * the child's <code>setParent()</code> method must be called, with this
-     * Container as an argument.  This method may thrown an
+     * Container as an argument. This method may thrown an
      * <code>IllegalArgumentException</code> if this Container chooses not
      * to be attached to the specified Container, in which case it is not added
      *
      * @param child New child Container to be added
      *
      * @exception IllegalArgumentException if this exception is thrown by
-     *  the <code>setParent()</code> method of the child Container
+     *                                     the <code>setParent()</code> method
+     *                                     of the child Container
      * @exception IllegalArgumentException if the new child does not have
-     *  a name unique from that of existing children of this Container
-     * @exception IllegalStateException if this Container does not support
-     *  child Containers
+     *                                     a name unique from that of existing
+     *                                     children of this Container
+     * @exception IllegalStateException    if this Container does not support
+     *                                     child Containers
      */
     @Override
     public void addChild(Container child) {
         if (Globals.IS_SECURITY_ENABLED) {
-            PrivilegedAction<Void> dp =
-                new PrivilegedAddChild(child);
+            PrivilegedAction<Void> dp = new PrivilegedAddChild(child);
             AccessController.doPrivileged(dp);
         } else {
             addChildInternal(child);
@@ -704,14 +667,13 @@ public abstract class ContainerBase extends LifecycleMBeanBase
 
     private void addChildInternal(Container child) {
 
-        if( log.isDebugEnabled() )
+        if (log.isDebugEnabled())
             log.debug("Add child " + child + " " + this);
-        synchronized(children) {
+        synchronized (children) {
             if (children.get(child.getName()) != null)
-                throw new IllegalArgumentException("addChild:  Child name '" +
-                                                   child.getName() +
-                                                   "' is not unique");
-            child.setParent(this);  // May throw IAE
+                throw new IllegalArgumentException("addChild:  Child name '"
+                        + child.getName() + "' is not unique");
+            child.setParent(this); // May throw IAE
             children.put(child.getName(), child);
         }
 
@@ -719,19 +681,18 @@ public abstract class ContainerBase extends LifecycleMBeanBase
         // Don't do this inside sync block - start can be a slow process and
         // locking the children object can cause problems elsewhere
         try {
-            if ((getState().isAvailable() ||
-                    LifecycleState.STARTING_PREP.equals(getState())) &&
-                    startChildren) {
+            if ((getState().isAvailable() || LifecycleState.STARTING_PREP
+                    .equals(getState())) && startChildren) {
                 child.start();
             }
         } catch (LifecycleException e) {
             log.error("ContainerBase.addChild: start: ", e);
-            throw new IllegalStateException("ContainerBase.addChild: start: " + e);
+            throw new IllegalStateException("ContainerBase.addChild: start: "
+                    + e);
         } finally {
             fireContainerEvent(ADD_CHILD_EVENT, child);
         }
     }
-
 
     /**
      * Add a container event listener to this component.
@@ -742,7 +703,6 @@ public abstract class ContainerBase extends LifecycleMBeanBase
     public void addContainerListener(ContainerListener listener) {
         listeners.add(listener);
     }
-
 
     /**
      * Add a property change listener to this component.
@@ -755,7 +715,6 @@ public abstract class ContainerBase extends LifecycleMBeanBase
         support.addPropertyChangeListener(listener);
 
     }
-
 
     /**
      * Return the child Container, associated with this Container, with
@@ -774,7 +733,6 @@ public abstract class ContainerBase extends LifecycleMBeanBase
 
     }
 
-
     /**
      * Return the set of children Containers associated with this Container.
      * If this Container has no children, a zero-length array is returned.
@@ -789,7 +747,6 @@ public abstract class ContainerBase extends LifecycleMBeanBase
 
     }
 
-
     /**
      * Return the set of container listeners associated with this Container.
      * If this Container has no registered container listeners, a zero-length
@@ -797,11 +754,9 @@ public abstract class ContainerBase extends LifecycleMBeanBase
      */
     @Override
     public ContainerListener[] findContainerListeners() {
-        ContainerListener[] results =
-            new ContainerListener[0];
+        ContainerListener[] results = new ContainerListener[0];
         return listeners.toArray(results);
     }
-
 
     /**
      * Remove an existing child Container from association with this parent
@@ -835,7 +790,7 @@ public abstract class ContainerBase extends LifecycleMBeanBase
             log.error("ContainerBase.removeChild: destroy: ", e);
         }
 
-        synchronized(children) {
+        synchronized (children) {
             if (children.get(child.getName()) == null)
                 return;
             children.remove(child.getName());
@@ -843,7 +798,6 @@ public abstract class ContainerBase extends LifecycleMBeanBase
 
         fireContainerEvent(REMOVE_CHILD_EVENT, child);
     }
-
 
     /**
      * Remove a container event listener from this component.
@@ -854,7 +808,6 @@ public abstract class ContainerBase extends LifecycleMBeanBase
     public void removeContainerListener(ContainerListener listener) {
         listeners.remove(listener);
     }
-
 
     /**
      * Remove a property change listener from this component.
@@ -868,26 +821,24 @@ public abstract class ContainerBase extends LifecycleMBeanBase
 
     }
 
-
     @Override
     protected void initInternal() throws LifecycleException {
         BlockingQueue<Runnable> startStopQueue = new LinkedBlockingQueue<>();
         startStopExecutor = new ThreadPoolExecutor(
-                getStartStopThreadsInternal(),
-                getStartStopThreadsInternal(), 10, TimeUnit.SECONDS,
-                startStopQueue,
+                getStartStopThreadsInternal(), getStartStopThreadsInternal(),
+                10, TimeUnit.SECONDS, startStopQueue,
                 new StartStopThreadFactory(getName() + "-startStop-"));
         startStopExecutor.allowCoreThreadTimeOut(true);
         super.initInternal();
     }
-
 
     /**
      * Start this component and implement the requirements
      * of {@link org.apache.catalina.util.LifecycleBase#startInternal()}.
      *
      * @exception LifecycleException if this component detects a fatal error
-     *  that prevents this component from being used
+     *                               that prevents this component from being
+     *                               used
      */
     @Override
     protected synchronized void startInternal() throws LifecycleException {
@@ -920,14 +871,13 @@ public abstract class ContainerBase extends LifecycleMBeanBase
 
         }
         if (fail) {
-            throw new LifecycleException(
-                    sm.getString("containerBase.threadedStartFailed"));
+            throw new LifecycleException(sm.getString(
+                    "containerBase.threadedStartFailed"));
         }
 
         // Start the Valves in our pipeline (including the basic), if any
         if (pipeline instanceof Lifecycle)
             ((Lifecycle) pipeline).start();
-
 
         setState(LifecycleState.STARTING);
 
@@ -936,13 +886,13 @@ public abstract class ContainerBase extends LifecycleMBeanBase
 
     }
 
-
     /**
      * Stop this component and implement the requirements
      * of {@link org.apache.catalina.util.LifecycleBase#stopInternal()}.
      *
      * @exception LifecycleException if this component detects a fatal error
-     *  that prevents this component from being used
+     *                               that prevents this component from being
+     *                               used
      */
     @Override
     protected synchronized void stopInternal() throws LifecycleException {
@@ -953,8 +903,8 @@ public abstract class ContainerBase extends LifecycleMBeanBase
         setState(LifecycleState.STOPPING);
 
         // Stop the Valves in our pipeline (including the basic), if any
-        if (pipeline instanceof Lifecycle &&
-                ((Lifecycle) pipeline).getState().isAvailable()) {
+        if (pipeline instanceof Lifecycle && ((Lifecycle) pipeline).getState()
+                .isAvailable()) {
             ((Lifecycle) pipeline).stop();
         }
 
@@ -975,8 +925,8 @@ public abstract class ContainerBase extends LifecycleMBeanBase
             }
         }
         if (fail) {
-            throw new LifecycleException(
-                    sm.getString("containerBase.threadedStopFailed"));
+            throw new LifecycleException(sm.getString(
+                    "containerBase.threadedStopFailed"));
         }
 
         // Stop our subordinate components, if any
@@ -1025,7 +975,6 @@ public abstract class ContainerBase extends LifecycleMBeanBase
         super.destroyInternal();
     }
 
-
     /**
      * Check this container for an access log and if none is found, look to the
      * parent. If there is no parent and still none is found, use the NoOp
@@ -1045,7 +994,8 @@ public abstract class ContainerBase extends LifecycleMBeanBase
         if (getParent() != null) {
             // No need to use default logger once request/response has been logged
             // once
-            getParent().logAccess(request, response, time, (useDefault && !logged));
+            getParent().logAccess(request, response, time, (useDefault
+                    && !logged));
         }
     }
 
@@ -1076,29 +1026,28 @@ public abstract class ContainerBase extends LifecycleMBeanBase
 
     // ------------------------------------------------------- Pipeline Methods
 
-
     /**
      * Convenience method, intended for use by the digester to simplify the
      * process of adding Valves to containers. See
      * {@link Pipeline#addValve(Valve)} for full details. Components other than
-     * the digester should use {@link #getPipeline()}.{@link #addValve(Valve)} in case a
+     * the digester should use {@link #getPipeline()}.{@link #addValve(Valve)}
+     * in case a
      * future implementation provides an alternative method for the digester to
      * use.
      *
      * @param valve Valve to be added
      *
      * @exception IllegalArgumentException if this Container refused to
-     *  accept the specified Valve
+     *                                     accept the specified Valve
      * @exception IllegalArgumentException if the specified Valve refuses to be
-     *  associated with this Container
-     * @exception IllegalStateException if the specified Valve is already
-     *  associated with a different Container
+     *                                     associated with this Container
+     * @exception IllegalStateException    if the specified Valve is already
+     *                                     associated with a different Container
      */
     public synchronized void addValve(Valve valve) {
 
         pipeline.addValve(valve);
     }
-
 
     /**
      * Execute a periodic task, such as reloading, etc. This method will be
@@ -1125,7 +1074,8 @@ public abstract class ContainerBase extends LifecycleMBeanBase
             try {
                 realm.backgroundProcess();
             } catch (Exception e) {
-                log.warn(sm.getString("containerBase.backgroundProcess.realm", realm), e);
+                log.warn(sm.getString("containerBase.backgroundProcess.realm",
+                        realm), e);
             }
         }
         Valve current = pipeline.getFirst();
@@ -1133,13 +1083,13 @@ public abstract class ContainerBase extends LifecycleMBeanBase
             try {
                 current.backgroundProcess();
             } catch (Exception e) {
-                log.warn(sm.getString("containerBase.backgroundProcess.valve", current), e);
+                log.warn(sm.getString("containerBase.backgroundProcess.valve",
+                        current), e);
             }
             current = current.getNext();
         }
         fireLifecycleEvent(Lifecycle.PERIODIC_EVENT, null);
     }
-
 
     @Override
     public File getCatalinaBase() {
@@ -1151,7 +1101,6 @@ public abstract class ContainerBase extends LifecycleMBeanBase
         return parent.getCatalinaBase();
     }
 
-
     @Override
     public File getCatalinaHome() {
 
@@ -1162,12 +1111,11 @@ public abstract class ContainerBase extends LifecycleMBeanBase
         return parent.getCatalinaHome();
     }
 
-
     // ------------------------------------------------------ Protected Methods
 
     /**
      * Notify all container event listeners that a particular event has
-     * occurred for this Container.  The default implementation performs
+     * occurred for this Container. The default implementation performs
      * this notification synchronously using the calling thread.
      *
      * @param type Event type
@@ -1186,7 +1134,6 @@ public abstract class ContainerBase extends LifecycleMBeanBase
         }
     }
 
-
     /**
      * Return the abbreviated name of this container for logging messages
      */
@@ -1204,15 +1151,14 @@ public abstract class ContainerBase extends LifecycleMBeanBase
             } else if (name.startsWith("##")) {
                 name = "/" + name;
             }
-            loggerName = "[" + name + "]"
-                + ((loggerName != null) ? ("." + loggerName) : "");
+            loggerName = "[" + name + "]" + ((loggerName != null) ? ("."
+                    + loggerName) : "");
             current = current.getParent();
         }
         logName = ContainerBase.class.getName() + "." + loggerName;
         return logName;
 
     }
-
 
     // -------------------- JMX and Registration  --------------------
 
@@ -1226,7 +1172,6 @@ public abstract class ContainerBase extends LifecycleMBeanBase
             return p.getDomain();
         }
     }
-
 
     @Override
     public String getMBeanKeyProperties() {
@@ -1243,7 +1188,7 @@ public abstract class ContainerBase extends LifecycleMBeanBase
             } else if (c instanceof Context) {
                 keyProperties.insert(0, ",context=");
                 ContextName cn = new ContextName(c.getName(), false);
-                keyProperties.insert(9,cn.getDisplayName());
+                keyProperties.insert(9, cn.getDisplayName());
             } else if (c instanceof Host) {
                 keyProperties.insert(0, ",host=");
                 keyProperties.insert(6, c.getName());
@@ -1267,16 +1212,15 @@ public abstract class ContainerBase extends LifecycleMBeanBase
 
     public ObjectName[] getChildren() {
         List<ObjectName> names = new ArrayList<>(children.size());
-        Iterator<Container>  it = children.values().iterator();
+        Iterator<Container> it = children.values().iterator();
         while (it.hasNext()) {
             Object next = it.next();
             if (next instanceof ContainerBase) {
-                names.add(((ContainerBase)next).getObjectName());
+                names.add(((ContainerBase) next).getObjectName());
             }
         }
         return names.toArray(new ObjectName[names.size()]);
     }
-
 
     // -------------------- Background Thread --------------------
 
@@ -1299,7 +1243,6 @@ public abstract class ContainerBase extends LifecycleMBeanBase
 
     }
 
-
     /**
      * Stop the background thread that is periodically checking for
      * session timeouts.
@@ -1321,9 +1264,7 @@ public abstract class ContainerBase extends LifecycleMBeanBase
 
     }
 
-
     // -------------------------------------- ContainerExecuteDelay Inner Class
-
 
     /**
      * Private thread class to invoke the backgroundProcess method
@@ -1348,7 +1289,7 @@ public abstract class ContainerBase extends LifecycleMBeanBase
                         processChildren(ContainerBase.this);
                     }
                 }
-            } catch (RuntimeException|Error e) {
+            } catch (RuntimeException | Error e) {
                 t = e;
                 throw e;
             } finally {
@@ -1371,7 +1312,8 @@ public abstract class ContainerBase extends LifecycleMBeanBase
 
                     // Ensure background processing for Contexts and Wrappers
                     // is performed under the web app's class loader
-                    originalClassLoader = ((Context) container).bind(false, null);
+                    originalClassLoader = ((Context) container).bind(false,
+                            null);
                 }
                 container.backgroundProcess();
                 Container[] children = container.findChildren();
@@ -1386,11 +1328,10 @@ public abstract class ContainerBase extends LifecycleMBeanBase
             } finally {
                 if (container instanceof Context) {
                     ((Context) container).unbind(false, originalClassLoader);
-               }
+                }
             }
         }
     }
-
 
     // ----------------------------- Inner classes used with start/stop Executor
 
@@ -1433,13 +1374,15 @@ public abstract class ContainerBase extends LifecycleMBeanBase
 
         public StartStopThreadFactory(String namePrefix) {
             SecurityManager s = System.getSecurityManager();
-            group = (s != null) ? s.getThreadGroup() : Thread.currentThread().getThreadGroup();
+            group = (s != null) ? s.getThreadGroup()
+                    : Thread.currentThread().getThreadGroup();
             this.namePrefix = namePrefix;
         }
 
         @Override
         public Thread newThread(Runnable r) {
-            Thread thread = new Thread(group, r, namePrefix + threadNumber.getAndIncrement());
+            Thread thread = new Thread(group, r, namePrefix + threadNumber
+                    .getAndIncrement());
             thread.setDaemon(true);
             return thread;
         }

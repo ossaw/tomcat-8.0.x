@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -15,9 +13,7 @@
  * limitations under the License.
  */
 
-
 package org.apache.catalina.ant;
-
 
 import java.io.File;
 import java.io.IOException;
@@ -29,7 +25,6 @@ import org.apache.tools.ant.Project;
 import org.apache.tools.ant.Task;
 import org.apache.tools.ant.taskdefs.Redirector;
 import org.apache.tools.ant.types.RedirectorElement;
-
 
 /**
  * Abstract base class to add output redirection support for Catalina
@@ -67,7 +62,7 @@ public abstract class BaseRedirectorHelperTask extends Task {
     /** The print stream for error output */
     PrintStream redirectErrPrintStream = null;
 
-   /**
+    /**
      * Whether to fail (with a BuildException) if
      * ManagerServlet returns an error. The default behavior is
      * to do so.
@@ -80,15 +75,17 @@ public abstract class BaseRedirectorHelperTask extends Task {
     protected boolean failOnError = true;
 
     /**
-      * <code>true</code> true when output redirection is requested for this task .
-      * Default is to log on Ant log.
-      */
+     * <code>true</code> true when output redirection is requested for this task
+     * .
+     * Default is to log on Ant log.
+     */
     protected boolean redirectOutput = false;
 
     /**
-      * will be set to <code>true</code> when the configuration of the Redirector is
-      * complete.
-      */
+     * will be set to <code>true</code> when the configuration of the Redirector
+     * is
+     * complete.
+     */
     protected boolean redirectorConfigured = false;
 
     /**
@@ -100,7 +97,7 @@ public abstract class BaseRedirectorHelperTask extends Task {
 
     /**
      * Whether to fail (with a BuildException) if
-     * ManagerServlet returns an error.  The default behavior is
+     * ManagerServlet returns an error. The default behavior is
      * to do so.
      */
     public void setFailonerror(boolean fail) {
@@ -112,9 +109,8 @@ public abstract class BaseRedirectorHelperTask extends Task {
      * property.
      */
     public boolean isFailOnError() {
-      return failOnError;
+        return failOnError;
     }
-
 
     /**
      * File the output of the task is redirected to.
@@ -143,7 +139,7 @@ public abstract class BaseRedirectorHelperTask extends Task {
      * Ant log
      *
      * @param logError if true the standard error is sent to the Ant log system
-     *        and not sent to output stream.
+     *                 and not sent to output stream.
      */
     public void setLogError(boolean logError) {
         redirector.setLogError(logError);
@@ -188,10 +184,11 @@ public abstract class BaseRedirectorHelperTask extends Task {
     /**
      * If true, (error and non-error) output will be redirected
      * as specified while being sent to Ant's logging mechanism as if no
-     * redirection had taken place.  Defaults to false.
+     * redirection had taken place. Defaults to false.
      * <br>
      * Actually handled internally, with Ant 1.6.3 it will be handled by
      * the <code>Redirector</code> itself.
+     * 
      * @param alwaysLog <code>boolean</code>
      */
     public void setAlwaysLog(boolean alwaysLog) {
@@ -203,6 +200,7 @@ public abstract class BaseRedirectorHelperTask extends Task {
     /**
      * Whether output and error files should be created even when empty.
      * Defaults to true.
+     * 
      * @param createEmptyFiles <CODE>boolean</CODE>.
      */
     public void setCreateEmptyFiles(boolean createEmptyFiles) {
@@ -212,7 +210,8 @@ public abstract class BaseRedirectorHelperTask extends Task {
 
     /**
      * Add a <CODE>RedirectorElement</CODE> to this task.
-     * @param redirectorElement   <CODE>RedirectorElement</CODE>.
+     * 
+     * @param redirectorElement <CODE>RedirectorElement</CODE>.
      */
     public void addConfiguredRedirector(RedirectorElement redirectorElement) {
         if (this.redirectorElement != null) {
@@ -242,7 +241,7 @@ public abstract class BaseRedirectorHelperTask extends Task {
      * Set up properties on the Redirector and create output streams.
      */
     protected void openRedirector() {
-        if (! redirectorConfigured) {
+        if (!redirectorConfigured) {
             configureRedirector();
         }
         if (redirectOutput) {
@@ -252,12 +251,15 @@ public abstract class BaseRedirectorHelperTask extends Task {
             redirectErrStream = redirector.getErrorStream();
             redirectErrPrintStream = new PrintStream(redirectErrStream);
         }
-   }
+    }
 
     /**
-     * Ask redirector to close all the streams. It is necessary to call this method
-     * before leaving the Task to have the Streams flush their contents. If you are
-     * collecting output in a property, it will be created only if this method is
+     * Ask redirector to close all the streams. It is necessary to call this
+     * method
+     * before leaving the Task to have the Streams flush their contents. If you
+     * are
+     * collecting output in a property, it will be created only if this method
+     * is
      * called, otherwise you'll find it unset.
      */
     protected void closeRedirector() {
@@ -266,8 +268,8 @@ public abstract class BaseRedirectorHelperTask extends Task {
                 redirector.complete();
             }
         } catch (IOException ioe) {
-            log("Error closing redirector: "
-                + ioe.getMessage(), Project.MSG_ERR);
+            log("Error closing redirector: " + ioe.getMessage(),
+                    Project.MSG_ERR);
         }
         /*
          * Due to depends chain, Ant could call the Task more than once,

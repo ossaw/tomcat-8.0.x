@@ -1,18 +1,16 @@
 /*
- *  Licensed to the Apache Software Foundation (ASF) under one or more
- *  contributor license agreements.  See the NOTICE file distributed with
- *  this work for additional information regarding copyright ownership.
- *  The ASF licenses this file to You under the Apache License, Version 2.0
- *  (the "License"); you may not use this file except in compliance with
- *  the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements. See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.apache.catalina.authenticator;
 
@@ -65,11 +63,11 @@ public class TestSSOnonLoginAndDigestAuthenticator extends TomcatBaseTest {
     private static final String URI_PUBLIC = "/anyoneCanAccess";
 
     private static final int SHORT_TIMEOUT_SECS = 4;
-    private static final long SHORT_TIMEOUT_DELAY_MSECS =
-                                    ((SHORT_TIMEOUT_SECS + 3) * 1000);
+    private static final long SHORT_TIMEOUT_DELAY_MSECS = ((SHORT_TIMEOUT_SECS
+            + 3) * 1000);
     private static final int LONG_TIMEOUT_SECS = 10;
-    private static final long LONG_TIMEOUT_DELAY_MSECS =
-                                    ((LONG_TIMEOUT_SECS + 2) * 1000);
+    private static final long LONG_TIMEOUT_DELAY_MSECS = ((LONG_TIMEOUT_SECS
+            + 2) * 1000);
 
     private static final String CLIENT_AUTH_HEADER = "authorization";
     private static final String OPAQUE = "opaque";
@@ -93,8 +91,7 @@ public class TestSSOnonLoginAndDigestAuthenticator extends TomcatBaseTest {
      */
     @Test
     public void testAcceptPublicNonLogin() throws Exception {
-        doTestNonLogin(CONTEXT_PATH_NOLOGIN + URI_PUBLIC,
-                       true, false, 200);
+        doTestNonLogin(CONTEXT_PATH_NOLOGIN + URI_PUBLIC, true, false, 200);
     }
 
     /*
@@ -104,8 +101,7 @@ public class TestSSOnonLoginAndDigestAuthenticator extends TomcatBaseTest {
      */
     @Test
     public void testRejectProtectedNonLogin() throws Exception {
-        doTestNonLogin(CONTEXT_PATH_NOLOGIN + URI_PROTECTED,
-                       false, true, 403);
+        doTestNonLogin(CONTEXT_PATH_NOLOGIN + URI_PROTECTED, false, true, 403);
     }
 
     /*
@@ -118,14 +114,14 @@ public class TestSSOnonLoginAndDigestAuthenticator extends TomcatBaseTest {
      */
     @Test
     public void testDigestLoginSessionTimeout() throws Exception {
-        doTestDigest(USER, PWD, CONTEXT_PATH_DIGEST + URI_PROTECTED,
-                     true, 401, true, true, NC1, CNONCE, QOP, true);
+        doTestDigest(USER, PWD, CONTEXT_PATH_DIGEST + URI_PROTECTED, true, 401,
+                true, true, NC1, CNONCE, QOP, true);
         // wait long enough for my session to expire
         Thread.sleep(LONG_TIMEOUT_DELAY_MSECS);
         // must change the client nonce to succeed
-        doTestDigest(USER, PWD, CONTEXT_PATH_DIGEST + URI_PROTECTED,
-                     true, 401, true, true, NC2, CNONCE, QOP, true);
-   }
+        doTestDigest(USER, PWD, CONTEXT_PATH_DIGEST + URI_PROTECTED, true, 401,
+                true, true, NC2, CNONCE, QOP, true);
+    }
 
     /*
      * Logon to access a protected resource using DIGEST authentication,
@@ -135,11 +131,11 @@ public class TestSSOnonLoginAndDigestAuthenticator extends TomcatBaseTest {
      * This should be rejected with SC_FORBIDDEN 403 status.
      */
     @Test
-    public void testDigestLoginRejectProtectedWithoutCookies() throws Exception {
-        doTestDigest(USER, PWD, CONTEXT_PATH_DIGEST + URI_PROTECTED,
-                     true, 401, true, true, NC1, CNONCE, QOP, true);
-        doTestNonLogin(CONTEXT_PATH_NOLOGIN + URI_PROTECTED,
-                       false, true, 403);
+    public void testDigestLoginRejectProtectedWithoutCookies()
+            throws Exception {
+        doTestDigest(USER, PWD, CONTEXT_PATH_DIGEST + URI_PROTECTED, true, 401,
+                true, true, NC1, CNONCE, QOP, true);
+        doTestNonLogin(CONTEXT_PATH_NOLOGIN + URI_PROTECTED, false, true, 403);
     }
 
     /*
@@ -152,10 +148,9 @@ public class TestSSOnonLoginAndDigestAuthenticator extends TomcatBaseTest {
      */
     @Test
     public void testDigestLoginAcceptProtectedWithCookies() throws Exception {
-        doTestDigest(USER, PWD, CONTEXT_PATH_DIGEST + URI_PROTECTED,
-                true, 401, true, true, NC1, CNONCE, QOP, true);
-        doTestNonLogin(CONTEXT_PATH_NOLOGIN + URI_PROTECTED,
-                        true, false, 200);
+        doTestDigest(USER, PWD, CONTEXT_PATH_DIGEST + URI_PROTECTED, true, 401,
+                true, true, NC1, CNONCE, QOP, true);
+        doTestNonLogin(CONTEXT_PATH_NOLOGIN + URI_PROTECTED, true, false, 200);
     }
 
     /*
@@ -165,47 +160,38 @@ public class TestSSOnonLoginAndDigestAuthenticator extends TomcatBaseTest {
      * webapp while sending the SSO session cookie provided by the
      * first webapp.
      * This should be successful with SC_OK 200 status.
-     *
      * Then, wait long enough for the DIGEST session to expire. (The SSO
      * session should remain active because the NonLogin session has
      * not yet expired).
-     *
      * Try to access the protected resource again, before the SSO session
      * has expired.
      * This should be successful with SC_OK 200 status.
-     *
      * Finally, wait for the non-login session to expire and try again..
      * This should be rejected with SC_FORBIDDEN 403 status.
-     *
      * (see bugfix https://bz.apache.org/bugzilla/show_bug.cgi?id=52303)
      */
     @Test
     public void testDigestExpiredAcceptProtectedWithCookies() throws Exception {
-        doTestDigest(USER, PWD, CONTEXT_PATH_DIGEST + URI_PROTECTED,
-                true, 401, true, true, NC1, CNONCE, QOP, true);
-        doTestNonLogin(CONTEXT_PATH_NOLOGIN + URI_PROTECTED,
-                        true, false, 200);
+        doTestDigest(USER, PWD, CONTEXT_PATH_DIGEST + URI_PROTECTED, true, 401,
+                true, true, NC1, CNONCE, QOP, true);
+        doTestNonLogin(CONTEXT_PATH_NOLOGIN + URI_PROTECTED, true, false, 200);
 
         // wait long enough for the BASIC session to expire,
         // but not long enough for NonLogin session expiry
         Thread.sleep(SHORT_TIMEOUT_DELAY_MSECS);
-        doTestNonLogin(CONTEXT_PATH_NOLOGIN + URI_PROTECTED,
-                        true, false, 200);
+        doTestNonLogin(CONTEXT_PATH_NOLOGIN + URI_PROTECTED, true, false, 200);
 
         // wait long enough for my NonLogin session to expire
         // and tear down the SSO session at the same time.
         Thread.sleep(LONG_TIMEOUT_DELAY_MSECS);
-        doTestNonLogin(CONTEXT_PATH_NOLOGIN + URI_PROTECTED,
-                        false, true, 403);
+        doTestNonLogin(CONTEXT_PATH_NOLOGIN + URI_PROTECTED, false, true, 403);
     }
 
-
     public void doTestNonLogin(String uri, boolean addCookies,
-            boolean expectedReject, int expectedRC)
-            throws Exception {
+            boolean expectedReject, int expectedRC) throws Exception {
 
-        Map<String,List<String>> reqHeaders = new HashMap<>();
-        Map<String,List<String>> respHeaders = new HashMap<>();
+        Map<String, List<String>> reqHeaders = new HashMap<>();
+        Map<String, List<String>> respHeaders = new HashMap<>();
 
         ByteChunk bc = new ByteChunk();
         if (addCookies) {
@@ -217,26 +203,23 @@ public class TestSSOnonLoginAndDigestAuthenticator extends TomcatBaseTest {
         if (expectedReject) {
             assertEquals(expectedRC, rc);
             assertTrue(bc.getLength() > 0);
-        }
-        else {
+        } else {
             assertEquals(200, rc);
             assertEquals("OK", bc.toString());
             saveCookies(respHeaders);
         }
-}
+    }
 
     public void doTestDigest(String user, String pwd, String uri,
-            boolean expectedReject1, int expectedRC1,
-            boolean useServerNonce, boolean useServerOpaque,
-            String nc1, String cnonce,
-            String qop, boolean req2expect200)
-            throws Exception {
+            boolean expectedReject1, int expectedRC1, boolean useServerNonce,
+            boolean useServerOpaque, String nc1, String cnonce, String qop,
+            boolean req2expect200) throws Exception {
 
-        String digestUri= uri;
+        String digestUri = uri;
 
         List<String> auth = new ArrayList<>();
-        Map<String,List<String>> reqHeaders1 = new HashMap<>();
-        Map<String,List<String>> respHeaders1 = new HashMap<>();
+        Map<String, List<String>> reqHeaders1 = new HashMap<>();
+        Map<String, List<String>> respHeaders1 = new HashMap<>();
 
         // the first access attempt should be challenged
         auth.add(buildDigestResponse(user, pwd, digestUri, REALM, "null",
@@ -250,8 +233,7 @@ public class TestSSOnonLoginAndDigestAuthenticator extends TomcatBaseTest {
         if (expectedReject1) {
             assertEquals(expectedRC1, rc);
             assertTrue(bc.getLength() > 0);
-        }
-        else {
+        } else {
             assertEquals(200, rc);
             assertEquals("OK", bc.toString());
             saveCookies(respHeaders1);
@@ -259,28 +241,24 @@ public class TestSSOnonLoginAndDigestAuthenticator extends TomcatBaseTest {
         }
 
         // Second request should succeed (if we use the server nonce)
-        Map<String,List<String>> reqHeaders2 = new HashMap<>();
-        Map<String,List<String>> respHeaders2 = new HashMap<>();
+        Map<String, List<String>> reqHeaders2 = new HashMap<>();
+        Map<String, List<String>> respHeaders2 = new HashMap<>();
 
         auth.clear();
         if (useServerNonce) {
             if (useServerOpaque) {
-                auth.add(buildDigestResponse(user, pwd, digestUri,
-                        getAuthToken(respHeaders1, REALM),
-                        getAuthToken(respHeaders1, NONCE),
-                        getAuthToken(respHeaders1, OPAQUE),
-                        nc1, cnonce, qop));
+                auth.add(buildDigestResponse(user, pwd, digestUri, getAuthToken(
+                        respHeaders1, REALM), getAuthToken(respHeaders1, NONCE),
+                        getAuthToken(respHeaders1, OPAQUE), nc1, cnonce, qop));
             } else {
-                auth.add(buildDigestResponse(user, pwd, digestUri,
-                        getAuthToken(respHeaders1, REALM),
-                        getAuthToken(respHeaders1, NONCE),
+                auth.add(buildDigestResponse(user, pwd, digestUri, getAuthToken(
+                        respHeaders1, REALM), getAuthToken(respHeaders1, NONCE),
                         "null", nc1, cnonce, qop));
             }
         } else {
-            auth.add(buildDigestResponse(user, pwd, digestUri,
-                    getAuthToken(respHeaders2, REALM),
-                    "null", getAuthToken(respHeaders1, OPAQUE),
-                    nc1, cnonce, QOP));
+            auth.add(buildDigestResponse(user, pwd, digestUri, getAuthToken(
+                    respHeaders2, REALM), "null", getAuthToken(respHeaders1,
+                            OPAQUE), nc1, cnonce, QOP));
         }
         reqHeaders2.put(CLIENT_AUTH_HEADER, auth);
 
@@ -297,7 +275,6 @@ public class TestSSOnonLoginAndDigestAuthenticator extends TomcatBaseTest {
             assertTrue((bc.getLength() > 0));
         }
     }
-
 
     @Override
     public void setUp() throws Exception {
@@ -324,8 +301,8 @@ public class TestSSOnonLoginAndDigestAuthenticator extends TomcatBaseTest {
     private void setUpNonLogin(Tomcat tomcat) throws Exception {
 
         // Must have a real docBase for webapps - just use temp
-        Context ctxt = tomcat.addContext(CONTEXT_PATH_NOLOGIN,
-                System.getProperty("java.io.tmpdir"));
+        Context ctxt = tomcat.addContext(CONTEXT_PATH_NOLOGIN, System
+                .getProperty("java.io.tmpdir"));
         ctxt.setSessionTimeout(LONG_TIMEOUT_SECS);
 
         // Add protected servlet
@@ -358,8 +335,8 @@ public class TestSSOnonLoginAndDigestAuthenticator extends TomcatBaseTest {
     private void setUpDigest(Tomcat tomcat) throws Exception {
 
         // Must have a real docBase for webapps - just use temp
-        Context ctxt = tomcat.addContext(CONTEXT_PATH_DIGEST,
-                System.getProperty("java.io.tmpdir"));
+        Context ctxt = tomcat.addContext(CONTEXT_PATH_DIGEST, System
+                .getProperty("java.io.tmpdir"));
         ctxt.setSessionTimeout(SHORT_TIMEOUT_SECS);
 
         // Add protected servlet
@@ -379,13 +356,13 @@ public class TestSSOnonLoginAndDigestAuthenticator extends TomcatBaseTest {
         ctxt.getPipeline().addValve(new DigestAuthenticator());
     }
 
-    protected static String getAuthToken(
-            Map<String,List<String>> respHeaders, String token) {
+    protected static String getAuthToken(Map<String, List<String>> respHeaders,
+            String token) {
 
         final String AUTH_PREFIX = "=\"";
         final String AUTH_SUFFIX = "\"";
-        List<String> authHeaders =
-            respHeaders.get(AuthenticatorBase.AUTH_HEADER_NAME);
+        List<String> authHeaders = respHeaders.get(
+                AuthenticatorBase.AUTH_HEADER_NAME);
 
         // Assume there is only one
         String authHeader = authHeaders.iterator().next();
@@ -401,12 +378,12 @@ public class TestSSOnonLoginAndDigestAuthenticator extends TomcatBaseTest {
      * KD(secret, data) = H(concat(secret, ":", data))
      * A1 = unq(username-value) ":" unq(realm-value) ":" passwd
      * A2 = Method ":" digest-uri-value
-     * request-digest  = <"> < KD ( H(A1),     unq(nonce-value)
-                                    ":" nc-value
-                                    ":" unq(cnonce-value)
-                                    ":" unq(qop-value)
-                                    ":" H(A2)
-                                   ) <">
+     * request-digest = <"> < KD ( H(A1), unq(nonce-value)
+     * ":" nc-value
+     * ":" unq(cnonce-value)
+     * ":" unq(qop-value)
+     * ":" H(A2)
+     * ) <">
      */
     private static String buildDigestResponse(String user, String pwd,
             String uri, String realm, String nonce, String opaque, String nc,
@@ -422,8 +399,8 @@ public class TestSSOnonLoginAndDigestAuthenticator extends TomcatBaseTest {
         if (qop == null) {
             response = md5a1 + ":" + nonce + ":" + md5a2;
         } else {
-            response = md5a1 + ":" + nonce + ":" + nc + ":" + cnonce + ":" +
-                    qop + ":" + md5a2;
+            response = md5a1 + ":" + nonce + ":" + nc + ":" + cnonce + ":" + qop
+                    + ":" + md5a2;
         }
 
         String md5response = digest(response);
@@ -460,14 +437,14 @@ public class TestSSOnonLoginAndDigestAuthenticator extends TomcatBaseTest {
     }
 
     private static String digest(String input) {
-        return MD5Encoder.encode(
-                ConcurrentMessageDigest.digestMD5(input.getBytes()));
+        return MD5Encoder.encode(ConcurrentMessageDigest.digestMD5(input
+                .getBytes()));
     }
 
     /*
      * extract and save the server cookies from the incoming response
      */
-    protected void saveCookies(Map<String,List<String>> respHeaders) {
+    protected void saveCookies(Map<String, List<String>> respHeaders) {
 
         // we only save the Cookie values, not header prefix
         cookies = respHeaders.get(SERVER_COOKIES);
@@ -476,7 +453,7 @@ public class TestSSOnonLoginAndDigestAuthenticator extends TomcatBaseTest {
     /*
      * add all saved cookies to the outgoing request
      */
-    protected void addCookies(Map<String,List<String>> reqHeaders) {
+    protected void addCookies(Map<String, List<String>> reqHeaders) {
 
         if ((cookies != null) && (cookies.size() > 0)) {
             reqHeaders.put(BROWSER_COOKIES, cookies);

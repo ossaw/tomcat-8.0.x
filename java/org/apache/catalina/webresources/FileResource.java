@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -45,9 +43,9 @@ public class FileResource extends AbstractResource {
     private final boolean readOnly;
     private final Manifest manifest;
 
-    public FileResource(WebResourceRoot root, String webAppPath,
-            File resource, boolean readOnly, Manifest manifest) {
-        super(root,webAppPath);
+    public FileResource(WebResourceRoot root, String webAppPath, File resource,
+            boolean readOnly, Manifest manifest) {
+        super(root, webAppPath);
         this.resource = resource;
 
         if (webAppPath.charAt(webAppPath.length() - 1) == '/') {
@@ -58,9 +56,8 @@ public class FileResource extends AbstractResource {
                 // This is the root directory of a mounted ResourceSet
                 // Need to return the mounted name, not the real name
                 int endOfName = webAppPath.length() - 1;
-                name = webAppPath.substring(
-                        webAppPath.lastIndexOf('/', endOfName - 1) + 1,
-                        endOfName);
+                name = webAppPath.substring(webAppPath.lastIndexOf('/',
+                        endOfName - 1) + 1, endOfName);
             }
         } else {
             // Must be a file
@@ -149,8 +146,8 @@ public class FileResource extends AbstractResource {
         if (len > Integer.MAX_VALUE) {
             // Can't create an array that big
             throw new ArrayIndexOutOfBoundsException(sm.getString(
-                    "abstractResource.getContentTooLarge", getWebappPath(),
-                    Long.valueOf(len)));
+                    "abstractResource.getContentTooLarge", getWebappPath(), Long
+                            .valueOf(len)));
         }
 
         int size = (int) len;
@@ -175,7 +172,6 @@ public class FileResource extends AbstractResource {
         return result;
     }
 
-
     @Override
     public long getCreation() {
         try {
@@ -184,8 +180,8 @@ public class FileResource extends AbstractResource {
             return attrs.creationTime().toMillis();
         } catch (IOException e) {
             if (log.isDebugEnabled()) {
-                log.debug(sm.getString("fileResource.getCreationFail",
-                        resource.getPath()), e);
+                log.debug(sm.getString("fileResource.getCreationFail", resource
+                        .getPath()), e);
             }
             return 0;
         }
@@ -198,8 +194,8 @@ public class FileResource extends AbstractResource {
                 return resource.toURI().toURL();
             } catch (MalformedURLException e) {
                 if (log.isDebugEnabled()) {
-                    log.debug(sm.getString("fileResource.getUrlFail",
-                            resource.getPath()), e);
+                    log.debug(sm.getString("fileResource.getUrlFail", resource
+                            .getPath()), e);
                 }
                 return null;
             }
@@ -210,8 +206,10 @@ public class FileResource extends AbstractResource {
 
     @Override
     public URL getCodeBase() {
-        if (getWebappPath().startsWith("/WEB-INF/classes/") && name.endsWith(".class")) {
-            return getWebResourceRoot().getResource("/WEB-INF/classes/").getURL();
+        if (getWebappPath().startsWith("/WEB-INF/classes/") && name.endsWith(
+                ".class")) {
+            return getWebResourceRoot().getResource("/WEB-INF/classes/")
+                    .getURL();
         } else {
             return getURL();
         }

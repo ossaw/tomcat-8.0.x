@@ -1,18 +1,16 @@
 /*
- *  Licensed to the Apache Software Foundation (ASF) under one or more
- *  contributor license agreements.  See the NOTICE file distributed with
- *  this work for additional information regarding copyright ownership.
- *  The ASF licenses this file to You under the Apache License, Version 2.0
- *  (the "License"); you may not use this file except in compliance with
- *  the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements. See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package org.apache.catalina.core;
@@ -68,7 +66,8 @@ public class TestNamingContextListener extends TomcatBaseTest {
         assertEquals(LifecycleState.STARTED, ctx.getState());
     }
 
-    public static final class Bug49132Listener implements ServletContextListener {
+    public static final class Bug49132Listener implements
+            ServletContextListener {
 
         @Override
         public void contextDestroyed(ServletContextEvent sce) {
@@ -80,8 +79,8 @@ public class TestNamingContextListener extends TomcatBaseTest {
             javax.naming.Context initCtx;
             try {
                 initCtx = new InitialContext();
-                javax.naming.Context envCtx =
-                    (javax.naming.Context) initCtx.lookup("java:comp/env");
+                javax.naming.Context envCtx = (javax.naming.Context) initCtx
+                        .lookup("java:comp/env");
                 String value = (String) envCtx.lookup(BUG49132_NAME);
                 if (!BUG49132_VALUE.equals(value)) {
                     throw new RuntimeException();
@@ -160,19 +159,19 @@ public class TestNamingContextListener extends TomcatBaseTest {
             javax.naming.Context initCtx;
             try {
                 initCtx = new InitialContext();
-                javax.naming.Context envCtx =
-                    (javax.naming.Context) initCtx.lookup("java:comp/env");
+                javax.naming.Context envCtx = (javax.naming.Context) initCtx
+                        .lookup("java:comp/env");
 
                 // Validate entry A
-                Bug54096EnvA valueA =
-                        (Bug54096EnvA) envCtx.lookup(BUG54096_NameA);
+                Bug54096EnvA valueA = (Bug54096EnvA) envCtx.lookup(
+                        BUG54096_NameA);
                 if (!BUG54096_ValueA.equals(valueA.getValue())) {
                     throw new RuntimeException();
                 }
 
                 // Validate entry B
-                Bug54096EnvB valueB =
-                        (Bug54096EnvB) envCtx.lookup(BUG54096_NameB);
+                Bug54096EnvB valueB = (Bug54096EnvB) envCtx.lookup(
+                        BUG54096_NameB);
                 if (BUG54096_ValueB.charAt(0) != valueB.getValue()) {
                     throw new RuntimeException();
                 }

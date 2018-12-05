@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -61,14 +59,14 @@ public final class TesterSupport {
         if (protocol.indexOf("Apr") == -1) {
             Connector connector = tomcat.getConnector();
             connector.setProperty("sslProtocol", "tls");
-            File keystoreFile =
-                new File("test/org/apache/tomcat/util/net/" + keystore);
-            connector.setAttribute("keystoreFile",
-                    keystoreFile.getAbsolutePath());
+            File keystoreFile = new File("test/org/apache/tomcat/util/net/"
+                    + keystore);
+            connector.setAttribute("keystoreFile", keystoreFile
+                    .getAbsolutePath());
             File truststoreFile = new File(
                     "test/org/apache/tomcat/util/net/ca.jks");
-            connector.setAttribute("truststoreFile",
-                    truststoreFile.getAbsolutePath());
+            connector.setAttribute("truststoreFile", truststoreFile
+                    .getAbsolutePath());
             if (keystorePass != null) {
                 connector.setAttribute("keystorePass", keystorePass);
             }
@@ -92,14 +90,16 @@ public final class TesterSupport {
         // and would produce an error during init.
         // Trigger loading of the native library and choose old protocol
         // if we use old OpenSSL.
-        if (AprLifecycleListener.isAprAvailable() && SSL.version() < 0x10001000L) {
-            tomcat.getConnector().setProperty("SSLProtocol", Constants.SSL_PROTO_TLSv1);
+        if (AprLifecycleListener.isAprAvailable() && SSL
+                .version() < 0x10001000L) {
+            tomcat.getConnector().setProperty("SSLProtocol",
+                    Constants.SSL_PROTO_TLSv1);
         }
     }
 
     protected static KeyManager[] getUser1KeyManagers() throws Exception {
-        KeyManagerFactory kmf = KeyManagerFactory.getInstance(
-                KeyManagerFactory.getDefaultAlgorithm());
+        KeyManagerFactory kmf = KeyManagerFactory.getInstance(KeyManagerFactory
+                .getDefaultAlgorithm());
         kmf.init(getKeyStore("test/org/apache/tomcat/util/net/user1.jks"),
                 "changeit".toCharArray());
         return kmf.getKeyManagers();
@@ -112,14 +112,13 @@ public final class TesterSupport {
         return tmf.getTrustManagers();
     }
 
-
     protected static void configureClientSsl() {
         try {
             SSLContext sc = SSLContext.getInstance("TLS");
-            sc.init(TesterSupport.getUser1KeyManagers(),
-                    TesterSupport.getTrustManagers(),
-                    null);
-            javax.net.ssl.HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
+            sc.init(TesterSupport.getUser1KeyManagers(), TesterSupport
+                    .getTrustManagers(), null);
+            javax.net.ssl.HttpsURLConnection.setDefaultSSLSocketFactory(sc
+                    .getSocketFactory());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -135,7 +134,8 @@ public final class TesterSupport {
     }
 
     protected static boolean isMacOs() {
-        return System.getProperty("os.name").toLowerCase(Locale.ENGLISH).startsWith("mac os x");
+        return System.getProperty("os.name").toLowerCase(Locale.ENGLISH)
+                .startsWith("mac os x");
     }
 
     protected static boolean isRenegotiationSupported(Tomcat tomcat) {
@@ -144,7 +144,8 @@ public final class TesterSupport {
             // Disabled by default in 1.1.20 windows binary (2010-07-27)
             return false;
         }
-        if (protocol.contains("NioProtocol") || (protocol.contains("Nio2Protocol") && isMacOs())) {
+        if (protocol.contains("NioProtocol") || (protocol.contains(
+                "Nio2Protocol") && isMacOs())) {
             // Doesn't work on all platforms - see BZ 56448.
             return false;
         }
@@ -184,7 +185,7 @@ public final class TesterSupport {
         ctx.getPipeline().addValve(new SSLAuthenticator());
     }
 
-    public static final byte DATA = (byte)33;
+    public static final byte DATA = (byte) 33;
 
     public static class SimpleServlet extends HttpServlet {
 
@@ -212,7 +213,7 @@ public final class TesterSupport {
             while (len > -1) {
                 len = is.read(buffer);
                 read = read + len;
-                for (int i=0; i<len && contentOK; i++) {
+                for (int i = 0; i < len && contentOK; i++) {
                     contentOK = (buffer[i] == DATA);
                 }
             }

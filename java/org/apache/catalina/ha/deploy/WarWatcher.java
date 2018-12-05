@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -37,8 +35,8 @@ public class WarWatcher {
 
     /*--Static Variables----------------------------------------*/
     private static final Log log = LogFactory.getLog(WarWatcher.class);
-    private static final StringManager sm =
-            StringManager.getManager(Constants.Package);
+    private static final StringManager sm = StringManager.getManager(
+            Constants.Package);
 
     /*--Instance Variables--------------------------------------*/
     /**
@@ -73,28 +71,27 @@ public class WarWatcher {
             log.debug(sm.getString("warWatcher.checkingWars", watchDir));
         File[] list = watchDir.listFiles(new WarFilter());
         if (list == null) {
-            log.warn(sm.getString("warWatcher.cantListWatchDir",
-                                  watchDir));
+            log.warn(sm.getString("warWatcher.cantListWatchDir", watchDir));
 
             list = new File[0];
         }
         //first make sure all the files are listed in our current status
         for (int i = 0; i < list.length; i++) {
-            if(!list[i].exists())
+            if (!list[i].exists())
                 log.warn(sm.getString("warWatcher.listedFileDoesNotExist",
-                                      list[i], watchDir));
+                        list[i], watchDir));
 
             addWarInfo(list[i]);
         }
 
         // Check all the status codes and update the FarmDeployer
-        for (Iterator<Map.Entry<String,WarInfo>> i =
-                currentStatus.entrySet().iterator(); i.hasNext();) {
-            Map.Entry<String,WarInfo> entry = i.next();
+        for (Iterator<Map.Entry<String, WarInfo>> i = currentStatus.entrySet()
+                .iterator(); i.hasNext();) {
+            Map.Entry<String, WarInfo> entry = i.next();
             WarInfo info = entry.getValue();
-            if(log.isTraceEnabled())
-                log.trace(sm.getString("warWatcher.checkingWar",
-                                       info.getWar()));
+            if (log.isTraceEnabled())
+                log.trace(sm.getString("warWatcher.checkingWar", info
+                        .getWar()));
             int check = info.check();
             if (check == 1) {
                 listener.fileModified(info.getWar());
@@ -103,16 +100,16 @@ public class WarWatcher {
                 //no need to keep in memory
                 i.remove();
             }
-            if(log.isTraceEnabled())
-                log.trace(sm.getString("warWatcher.checkWarResult",
-                                       Integer.valueOf(check),
-                                       info.getWar()));
+            if (log.isTraceEnabled())
+                log.trace(sm.getString("warWatcher.checkWarResult", Integer
+                        .valueOf(check), info.getWar()));
         }
 
     }
 
     /**
      * add cluster war to the watcher state
+     * 
      * @param warfile
      */
     protected void addWarInfo(File warfile) {
@@ -130,7 +127,6 @@ public class WarWatcher {
     public void clear() {
         currentStatus.clear();
     }
-
 
     /*--Inner classes-------------------------------------------*/
 

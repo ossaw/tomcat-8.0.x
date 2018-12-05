@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -30,9 +28,9 @@ import javax.servlet.jsp.JspContext;
 import javax.servlet.jsp.PageContext;
 
 /**
-*
-* @since 2.1
-*/
+ *
+ * @since 2.1
+ */
 public class ScopedAttributeELResolver extends ELResolver {
 
     // Indicates if a performance short-cut is available
@@ -61,7 +59,8 @@ public class ScopedAttributeELResolver extends ELResolver {
             context.setPropertyResolved(base, property);
             if (property != null) {
                 String key = property.toString();
-                PageContext page = (PageContext) context.getContext(JspContext.class);
+                PageContext page = (PageContext) context.getContext(
+                        JspContext.class);
                 result = page.findAttribute(key);
 
                 if (result == null) {
@@ -73,7 +72,8 @@ public class ScopedAttributeELResolver extends ELResolver {
                         // identifier) rather than part of an AstValue (i.e.
                         // identifier.something). Imports do not need to be
                         // checked if this is a stand-alone identifier
-                        Boolean value = (Boolean) context.getContext(AST_IDENTIFIER_KEY);
+                        Boolean value = (Boolean) context.getContext(
+                                AST_IDENTIFIER_KEY);
                         if (value != null && value.booleanValue()) {
                             resolveClass = false;
                         }
@@ -94,8 +94,10 @@ public class ScopedAttributeELResolver extends ELResolver {
                             if (clazz != null) {
                                 try {
                                     result = clazz.getField(key).get(null);
-                                } catch (IllegalArgumentException | IllegalAccessException |
-                                        NoSuchFieldException | SecurityException e) {
+                                } catch (IllegalArgumentException
+                                        | IllegalAccessException
+                                        | NoSuchFieldException
+                                        | SecurityException e) {
                                     // Most (all?) of these should have been
                                     // prevented by the checks when the import
                                     // was defined.
@@ -111,7 +113,8 @@ public class ScopedAttributeELResolver extends ELResolver {
     }
 
     @Override
-    public Class<Object> getType(ELContext context, Object base, Object property) {
+    public Class<Object> getType(ELContext context, Object base,
+            Object property) {
         if (context == null) {
             throw new NullPointerException();
         }
@@ -125,7 +128,8 @@ public class ScopedAttributeELResolver extends ELResolver {
     }
 
     @Override
-    public void setValue(ELContext context, Object base, Object property, Object value) {
+    public void setValue(ELContext context, Object base, Object property,
+            Object value) {
         if (context == null) {
             throw new NullPointerException();
         }
@@ -134,7 +138,8 @@ public class ScopedAttributeELResolver extends ELResolver {
             context.setPropertyResolved(base, property);
             if (property != null) {
                 String key = property.toString();
-                PageContext page = (PageContext) context.getContext(JspContext.class);
+                PageContext page = (PageContext) context.getContext(
+                        JspContext.class);
                 int scope = page.getAttributesScope(key);
                 if (scope != 0) {
                     page.setAttribute(key, value, scope);
@@ -159,7 +164,8 @@ public class ScopedAttributeELResolver extends ELResolver {
     }
 
     @Override
-    public Iterator<FeatureDescriptor> getFeatureDescriptors(ELContext context, Object base) {
+    public Iterator<FeatureDescriptor> getFeatureDescriptors(ELContext context,
+            Object base) {
 
         PageContext ctxt = (PageContext) context.getContext(JspContext.class);
         List<FeatureDescriptor> list = new ArrayList<>();

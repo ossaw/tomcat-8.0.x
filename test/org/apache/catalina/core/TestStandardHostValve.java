@@ -1,18 +1,16 @@
 /*
- *  Licensed to the Apache Software Foundation (ASF) under one or more
- *  contributor license agreements.  See the NOTICE file distributed with
- *  this work for additional information regarding copyright ownership.
- *  The ASF licenses this file to You under the Apache License, Version 2.0
- *  (the "License"); you may not use this file except in compliance with
- *  the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements. See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.apache.catalina.core;
 
@@ -72,8 +70,7 @@ public class TestStandardHostValve extends TomcatBaseTest {
         doTestErrorPageHandling(501, "/default");
     }
 
-
-    @Test(expected=IllegalArgumentException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void testInvalidErrorPage() throws Exception {
         // Set up a container
         Tomcat tomcat = getTomcatInstance();
@@ -87,7 +84,6 @@ public class TestStandardHostValve extends TomcatBaseTest {
         errorPage500.setLocation("/report/500");
         ctx.addErrorPage(errorPage500);
     }
-
 
     @Test
     public void testSRLAfterError() throws Exception {
@@ -117,13 +113,15 @@ public class TestStandardHostValve extends TomcatBaseTest {
             }
 
         };
-        ((StandardContext) ctx).addApplicationEventListener(servletRequestListener);
+        ((StandardContext) ctx).addApplicationEventListener(
+                servletRequestListener);
 
         tomcat.start();
 
         // Request a page that triggers an error
         ByteChunk bc = new ByteChunk();
-        int rc = getUrl("http://localhost:" + getPort() + "/error?errorCode=400", bc, null);
+        int rc = getUrl("http://localhost:" + getPort()
+                + "/error?errorCode=400", bc, null);
 
         Assert.assertEquals(400, rc);
         Assert.assertTrue(result.contains("Visit requestInitialized"));
@@ -135,8 +133,8 @@ public class TestStandardHostValve extends TomcatBaseTest {
 
         // Request a page that triggers an error
         ByteChunk bc = new ByteChunk();
-        int rc = getUrl("http://localhost:" + getPort() +
-                "/error?errorCode=" + error, bc, null);
+        int rc = getUrl("http://localhost:" + getPort() + "/error?errorCode="
+                + error, bc, null);
 
         Assert.assertEquals(error, rc);
         Assert.assertEquals(report, bc.toString());

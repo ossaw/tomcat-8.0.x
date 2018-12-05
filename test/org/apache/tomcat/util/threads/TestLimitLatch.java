@@ -1,18 +1,16 @@
 /*
- *  Licensed to the Apache Software Foundation (ASF) under one or more
- *  contributor license agreements.  See the NOTICE file distributed with
- *  this work for additional information regarding copyright ownership.
- *  The ASF licenses this file to You under the Apache License, Version 2.0
- *  (the "License"); you may not use this file except in compliance with
- *  the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements. See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.apache.tomcat.util.threads;
 
@@ -27,7 +25,8 @@ public class TestLimitLatch {
     @Test
     public void testNoThreads() throws Exception {
         LimitLatch latch = new LimitLatch(0);
-        Assert.assertFalse("No threads should be waiting", latch.hasQueuedThreads());
+        Assert.assertFalse("No threads should be waiting", latch
+                .hasQueuedThreads());
     }
 
     @Test
@@ -135,7 +134,8 @@ public class TestLimitLatch {
         }
     }
 
-    private boolean waitForThreadToStart(TestThread t) throws InterruptedException {
+    private boolean waitForThreadToStart(TestThread t)
+            throws InterruptedException {
         long wait = 0;
         while (t.getStage() == 0 && wait < THREAD_WAIT_TIME) {
             Thread.sleep(100);
@@ -144,7 +144,8 @@ public class TestLimitLatch {
         return t.getStage() > 0;
     }
 
-    private boolean waitForThreadToStop(TestThread t, Object lock) throws InterruptedException {
+    private boolean waitForThreadToStop(TestThread t, Object lock)
+            throws InterruptedException {
         long wait = 0;
         while (t.getStage() < 3 && wait < THREAD_WAIT_TIME) {
             Thread.sleep(100);
@@ -156,17 +157,20 @@ public class TestLimitLatch {
         return t.getStage() == 3;
     }
 
-    private void checkWaitingThreadCount(LimitLatch latch, int target) throws InterruptedException {
+    private void checkWaitingThreadCount(LimitLatch latch, int target)
+            throws InterruptedException {
         long wait = 0;
-        while (latch.getQueuedThreads().size() != target && wait < THREAD_WAIT_TIME) {
+        while (latch.getQueuedThreads().size() != target
+                && wait < THREAD_WAIT_TIME) {
             Thread.sleep(100);
             wait += 100;
         }
-        Assert.assertEquals(target,  latch.getQueuedThreads().size());
+        Assert.assertEquals(target, latch.getQueuedThreads().size());
     }
 
     private boolean waitForThreadsToReachStage(TestThread[] testThreads,
-            int stage1Target, int stage2Target, int stage3Target) throws InterruptedException {
+            int stage1Target, int stage2Target, int stage3Target)
+            throws InterruptedException {
 
         long wait = 0;
 
@@ -174,13 +178,13 @@ public class TestLimitLatch {
         int stage2 = 0;
         int stage3 = 0;
 
-        while((stage1 != stage1Target || stage2 != stage2Target || stage3 != stage3Target) &&
-                wait < THREAD_WAIT_TIME) {
+        while ((stage1 != stage1Target || stage2 != stage2Target
+                || stage3 != stage3Target) && wait < THREAD_WAIT_TIME) {
             stage1 = 0;
             stage2 = 0;
             stage3 = 0;
             for (TestThread testThread : testThreads) {
-                switch(testThread.getStage()){
+                switch (testThread.getStage()) {
                     case 1:
                         stage1++;
                         break;
@@ -195,7 +199,8 @@ public class TestLimitLatch {
             Thread.sleep(100);
             wait += 100;
         }
-        return stage1 == stage1Target && stage2 == stage2Target && stage3 == stage3Target;
+        return stage1 == stage1Target && stage2 == stage2Target
+                && stage3 == stage3Target;
     }
 
     private static class TestThread extends Thread {

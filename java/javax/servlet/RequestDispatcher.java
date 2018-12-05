@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -238,21 +236,25 @@ public interface RequestDispatcher {
      *
      *
      * @param request
-     *            a {@link ServletRequest} object that represents the request
-     *            the client makes of the servlet
+     *                 a {@link ServletRequest} object that represents the
+     *                 request
+     *                 the client makes of the servlet
      *
      * @param response
-     *            a {@link ServletResponse} object that represents the response
-     *            the servlet returns to the client
+     *                 a {@link ServletResponse} object that represents the
+     *                 response
+     *                 the servlet returns to the client
      *
      * @exception ServletException
-     *                if the target resource throws this exception
+     *                                  if the target resource throws this
+     *                                  exception
      *
      * @exception IOException
-     *                if the target resource throws this exception
+     *                                  if the target resource throws this
+     *                                  exception
      *
      * @exception IllegalStateException
-     *                if the response was already committed
+     *                                  if the response was already committed
      */
     public void forward(ServletRequest request, ServletResponse response)
             throws ServletException, IOException;
@@ -275,18 +277,22 @@ public interface RequestDispatcher {
      * classes that wrap them.
      *
      * @param request
-     *            a {@link ServletRequest} object that contains the client's
-     *            request
+     *                 a {@link ServletRequest} object that contains the
+     *                 client's
+     *                 request
      *
      * @param response
-     *            a {@link ServletResponse} object that contains the servlet's
-     *            response
+     *                 a {@link ServletResponse} object that contains the
+     *                 servlet's
+     *                 response
      *
      * @exception ServletException
-     *                if the included resource throws this exception
+     *                             if the included resource throws this
+     *                             exception
      *
      * @exception IOException
-     *                if the included resource throws this exception
+     *                             if the included resource throws this
+     *                             exception
      */
     public void include(ServletRequest request, ServletResponse response)
             throws ServletException, IOException;

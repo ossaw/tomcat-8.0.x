@@ -1,18 +1,16 @@
 /*
- *  Licensed to the Apache Software Foundation (ASF) under one or more
- *  contributor license agreements.  See the NOTICE file distributed with
- *  this work for additional information regarding copyright ownership.
- *  The ASF licenses this file to You under the Apache License, Version 2.0
- *  (the "License"); you may not use this file except in compliance with
- *  the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements. See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.apache.tomcat.util.http;
 
@@ -32,36 +30,29 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public final class FastHttpDateFormat {
 
-
     // -------------------------------------------------------------- Variables
 
-
-    private static final int CACHE_SIZE =
-        Integer.parseInt(System.getProperty("org.apache.tomcat.util.http.FastHttpDateFormat.CACHE_SIZE", "1000"));
-
+    private static final int CACHE_SIZE = Integer.parseInt(System.getProperty(
+            "org.apache.tomcat.util.http.FastHttpDateFormat.CACHE_SIZE",
+            "1000"));
 
     /**
      * The only date format permitted when generating HTTP headers.
      */
-    public static final String RFC1123_DATE =
-            "EEE, dd MMM yyyy HH:mm:ss zzz";
+    public static final String RFC1123_DATE = "EEE, dd MMM yyyy HH:mm:ss zzz";
 
-    private static final SimpleDateFormat format =
-            new SimpleDateFormat(RFC1123_DATE, Locale.US);
-
+    private static final SimpleDateFormat format = new SimpleDateFormat(
+            RFC1123_DATE, Locale.US);
 
     /**
      * The set of SimpleDateFormat formats to use in getDateHeader().
      */
-    private static final SimpleDateFormat formats[] = {
-        new SimpleDateFormat(RFC1123_DATE, Locale.US),
-        new SimpleDateFormat("EEEEEE, dd-MMM-yy HH:mm:ss zzz", Locale.US),
-        new SimpleDateFormat("EEE MMMM d HH:mm:ss yyyy", Locale.US)
-    };
-
+    private static final SimpleDateFormat formats[] = { new SimpleDateFormat(
+            RFC1123_DATE, Locale.US), new SimpleDateFormat(
+                    "EEEEEE, dd-MMM-yy HH:mm:ss zzz", Locale.US),
+            new SimpleDateFormat("EEE MMMM d HH:mm:ss yyyy", Locale.US) };
 
     private static final TimeZone gmtZone = TimeZone.getTimeZone("GMT");
-
 
     /**
      * GMT timezone - all HTTP dates are on GMT
@@ -76,33 +67,29 @@ public final class FastHttpDateFormat {
 
     }
 
-
     /**
      * Instant on which the currentDate object was generated.
      */
     private static volatile long currentDateGenerated = 0L;
-
 
     /**
      * Current formatted date.
      */
     private static String currentDate = null;
 
-
     /**
      * Formatter cache.
      */
-    private static final Map<Long, String> formatCache = new ConcurrentHashMap<>(CACHE_SIZE);
-
+    private static final Map<Long, String> formatCache = new ConcurrentHashMap<>(
+            CACHE_SIZE);
 
     /**
      * Parser cache.
      */
-    private static final Map<String, Long> parseCache = new ConcurrentHashMap<>(CACHE_SIZE);
-
+    private static final Map<String, Long> parseCache = new ConcurrentHashMap<>(
+            CACHE_SIZE);
 
     // --------------------------------------------------------- Public Methods
-
 
     /**
      * Get the current date in HTTP format.
@@ -122,12 +109,11 @@ public final class FastHttpDateFormat {
 
     }
 
-
     /**
      * Get the HTTP format of the specified date.
      */
-    public static final String formatDate
-        (long value, DateFormat threadLocalformat) {
+    public static final String formatDate(long value,
+            DateFormat threadLocalformat) {
 
         Long longValue = Long.valueOf(value);
         String cachedDate = formatCache.get(longValue);
@@ -149,12 +135,11 @@ public final class FastHttpDateFormat {
         return newDate;
     }
 
-
     /**
      * Try to parse the given date as a HTTP date.
      */
     public static final long parseDate(String value,
-                                       DateFormat[] threadLocalformats) {
+            DateFormat[] threadLocalformats) {
 
         Long cachedDate = parseCache.get(value);
         if (cachedDate != null) {
@@ -176,12 +161,11 @@ public final class FastHttpDateFormat {
         return date.longValue();
     }
 
-
     /**
      * Parse date with given formatters.
      */
-    private static final Long internalParseDate
-        (String value, DateFormat[] formats) {
+    private static final Long internalParseDate(String value,
+            DateFormat[] formats) {
         Date date = null;
         for (int i = 0; (date == null) && (i < formats.length); i++) {
             try {
@@ -196,7 +180,6 @@ public final class FastHttpDateFormat {
         return Long.valueOf(date.getTime());
     }
 
-
     /**
      * Update cache.
      */
@@ -210,7 +193,6 @@ public final class FastHttpDateFormat {
         formatCache.put(key, value);
     }
 
-
     /**
      * Update cache.
      */
@@ -223,6 +205,5 @@ public final class FastHttpDateFormat {
         }
         parseCache.put(key, value);
     }
-
 
 }

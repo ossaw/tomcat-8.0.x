@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -38,6 +36,7 @@ public abstract class AbstractTestResourceSet {
     protected WebResourceRoot resourceRoot;
 
     protected abstract WebResourceRoot getWebResourceRoot();
+
     protected abstract boolean isWriteable();
 
     public String getMount() {
@@ -75,7 +74,6 @@ public abstract class AbstractTestResourceSet {
         doTestGetResourceRoot(false);
     }
 
-
     private void doTestGetResourceRoot(boolean slash) {
         String mount = getMount();
         if (!slash && mount.length() == 0) {
@@ -93,7 +91,8 @@ public abstract class AbstractTestResourceSet {
             expected = "";
         }
         Assert.assertEquals(expected, webResource.getName());
-        Assert.assertEquals(mount + (!slash ? "/" : ""), webResource.getWebappPath());
+        Assert.assertEquals(mount + (!slash ? "/" : ""), webResource
+                .getWebappPath());
     }
 
     @Test
@@ -114,18 +113,18 @@ public abstract class AbstractTestResourceSet {
 
     @Test
     public final void testGetResourceFile() {
-        WebResource webResource =
-                resourceRoot.getResource(getMount() + "/d1/d1-f1.txt");
+        WebResource webResource = resourceRoot.getResource(getMount()
+                + "/d1/d1-f1.txt");
         Assert.assertTrue(webResource.isFile());
         Assert.assertEquals("d1-f1.txt", webResource.getName());
-        Assert.assertEquals(
-                getMount() + "/d1/d1-f1.txt", webResource.getWebappPath());
+        Assert.assertEquals(getMount() + "/d1/d1-f1.txt", webResource
+                .getWebappPath());
     }
 
     @Test
     public final void testGetResourceCaseSensitive() {
-        WebResource webResource =
-                resourceRoot.getResource(getMount() + "/d1/d1-F1.txt");
+        WebResource webResource = resourceRoot.getResource(getMount()
+                + "/d1/d1-F1.txt");
         Assert.assertFalse(webResource.exists());
     }
 
@@ -143,7 +142,6 @@ public abstract class AbstractTestResourceSet {
         Assert.assertFalse(webResource.exists());
     }
 
-
     //------------------------------------------------------------------- list()
 
     @Test(expected = IllegalArgumentException.class)
@@ -160,7 +158,6 @@ public abstract class AbstractTestResourceSet {
     public final void testListRootNoSlash() {
         doTestListRoot(false);
     }
-
 
     private void doTestListRoot(boolean slash) {
         String mount = getMount();
@@ -184,8 +181,8 @@ public abstract class AbstractTestResourceSet {
         optional.add("META-INF");
 
         for (String result : results) {
-            Assert.assertTrue(result,
-                    expected.remove(result) || optional.remove(result));
+            Assert.assertTrue(result, expected.remove(result) || optional
+                    .remove(result));
         }
         Assert.assertEquals(0, expected.size());
     }
@@ -204,8 +201,8 @@ public abstract class AbstractTestResourceSet {
         optional.add(".ignore-me.txt");
 
         for (String result : results) {
-            Assert.assertTrue(result,
-                    expected.remove(result) || optional.remove(result));
+            Assert.assertTrue(result, expected.remove(result) || optional
+                    .remove(result));
         }
         Assert.assertEquals(0, expected.size());
     }
@@ -224,8 +221,8 @@ public abstract class AbstractTestResourceSet {
         optional.add(".ignore-me.txt");
 
         for (String result : results) {
-            Assert.assertTrue(result,
-                    expected.remove(result) || optional.remove(result));
+            Assert.assertTrue(result, expected.remove(result) || optional
+                    .remove(result));
         }
         Assert.assertEquals(0, expected.size());
     }
@@ -255,14 +252,14 @@ public abstract class AbstractTestResourceSet {
         doTestListWebAppPathsRoot(false);
     }
 
-
     private void doTestListWebAppPathsRoot(boolean slash) {
         String mount = getMount();
         if (!slash && mount.length() == 0) {
             return;
         }
 
-        Set<String> results = resourceRoot.listWebAppPaths(mount + (slash ? "/" : ""));
+        Set<String> results = resourceRoot.listWebAppPaths(mount + (slash ? "/"
+                : ""));
 
         Set<String> expected = new HashSet<>();
         expected.add(getMount() + "/d1/");
@@ -279,8 +276,8 @@ public abstract class AbstractTestResourceSet {
         optional.add(getMount() + "/META-INF/");
 
         for (String result : results) {
-            Assert.assertTrue(result,
-                    expected.remove(result) || optional.remove(result));
+            Assert.assertTrue(result, expected.remove(result) || optional
+                    .remove(result));
         }
         Assert.assertEquals(0, expected.size());
     }
@@ -299,8 +296,8 @@ public abstract class AbstractTestResourceSet {
         optional.add(getMount() + "/d1/.ignore-me.txt");
 
         for (String result : results) {
-            Assert.assertTrue(result,
-                    expected.remove(result) || optional.remove(result));
+            Assert.assertTrue(result, expected.remove(result) || optional
+                    .remove(result));
         }
         Assert.assertEquals(0, expected.size());
     }
@@ -319,16 +316,16 @@ public abstract class AbstractTestResourceSet {
         optional.add(getMount() + "/d1/.ignore-me.txt");
 
         for (String result : results) {
-            Assert.assertTrue(result,
-                    expected.remove(result) || optional.remove(result));
+            Assert.assertTrue(result, expected.remove(result) || optional
+                    .remove(result));
         }
         Assert.assertEquals(0, expected.size());
     }
 
     @Test
     public final void testListWebAppPathsFile() {
-        Set<String> results =
-                resourceRoot.listWebAppPaths(getMount() + "/d1/d1-f1.txt");
+        Set<String> results = resourceRoot.listWebAppPaths(getMount()
+                + "/d1/d1-f1.txt");
 
         Assert.assertNull(results);
     }
@@ -384,13 +381,15 @@ public abstract class AbstractTestResourceSet {
     public final void testMkdirNew() {
         String newDirName = getNewDirName();
         if (isWriteable()) {
-            Assert.assertTrue(resourceRoot.mkdir(getMount() + "/" + newDirName));
+            Assert.assertTrue(resourceRoot.mkdir(getMount() + "/"
+                    + newDirName));
 
             File file = new File(getBaseDir(), newDirName);
             Assert.assertTrue(file.isDirectory());
             Assert.assertTrue(file.delete());
         } else {
-            Assert.assertFalse(resourceRoot.mkdir(getMount() + "/" + newDirName));
+            Assert.assertFalse(resourceRoot.mkdir(getMount() + "/"
+                    + newDirName));
         }
     }
 
@@ -415,10 +414,11 @@ public abstract class AbstractTestResourceSet {
         WebResource d1 = resourceRoot.getResource(getMount() + "/d1");
         InputStream is = new ByteArrayInputStream("test".getBytes());
         if (d1.exists()) {
-            Assert.assertFalse(resourceRoot.write(getMount() + "/d1", is, false));
+            Assert.assertFalse(resourceRoot.write(getMount() + "/d1", is,
+                    false));
         } else if (d1.isVirtual()) {
-            Assert.assertTrue(resourceRoot.write(
-                    getMount() + "/d1", is, false));
+            Assert.assertTrue(resourceRoot.write(getMount() + "/d1", is,
+                    false));
             File file = new File(getBaseDir(), "d1");
             Assert.assertTrue(file.exists());
             Assert.assertTrue(file.delete());
@@ -432,10 +432,11 @@ public abstract class AbstractTestResourceSet {
         WebResource d1 = resourceRoot.getResource(getMount() + "/d1/");
         InputStream is = new ByteArrayInputStream("test".getBytes());
         if (d1.exists()) {
-            Assert.assertFalse(resourceRoot.write(getMount() + "/d1/", is, false));
+            Assert.assertFalse(resourceRoot.write(getMount() + "/d1/", is,
+                    false));
         } else if (d1.isVirtual()) {
-            Assert.assertTrue(resourceRoot.write(
-                    getMount() + "/d1/", is, false));
+            Assert.assertTrue(resourceRoot.write(getMount() + "/d1/", is,
+                    false));
             File file = new File(getBaseDir(), "d1");
             Assert.assertTrue(file.exists());
             Assert.assertTrue(file.delete());
@@ -447,13 +448,14 @@ public abstract class AbstractTestResourceSet {
     @Test
     public final void testWriteFile() {
         InputStream is = new ByteArrayInputStream("test".getBytes());
-        Assert.assertFalse(resourceRoot.write(
-                getMount() + "/d1/d1-f1.txt", is, false));
+        Assert.assertFalse(resourceRoot.write(getMount() + "/d1/d1-f1.txt", is,
+                false));
     }
 
     @Test(expected = NullPointerException.class)
     public final void testWriteNull() {
-        resourceRoot.write(getMount() + "/" + getNewFileNameNull(), null, false);
+        resourceRoot.write(getMount() + "/" + getNewFileNameNull(), null,
+                false);
     }
 
     protected abstract String getNewFileNameNull();
@@ -463,14 +465,14 @@ public abstract class AbstractTestResourceSet {
         String newFileName = getNewFileName();
         InputStream is = new ByteArrayInputStream("test".getBytes());
         if (isWriteable()) {
-            Assert.assertTrue(resourceRoot.write(
-                    getMount() + "/" + newFileName, is, false));
+            Assert.assertTrue(resourceRoot.write(getMount() + "/" + newFileName,
+                    is, false));
             File file = new File(getBaseDir(), newFileName);
             Assert.assertTrue(file.exists());
             Assert.assertTrue(file.delete());
         } else {
-            Assert.assertFalse(resourceRoot.write(
-                    getMount() + "/" + newFileName, is, false));
+            Assert.assertFalse(resourceRoot.write(getMount() + "/"
+                    + newFileName, is, false));
         }
     }
 
@@ -480,8 +482,8 @@ public abstract class AbstractTestResourceSet {
 
     @Test
     public final void testGetCanonicalPathExists() {
-        WebResource exists =
-                resourceRoot.getResource(getMount() + "/d1/d1-f1.txt");
+        WebResource exists = resourceRoot.getResource(getMount()
+                + "/d1/d1-f1.txt");
         String existsCanonicalPath = exists.getCanonicalPath();
 
         URL existsUrl = exists.getURL();
@@ -495,10 +497,10 @@ public abstract class AbstractTestResourceSet {
 
     @Test
     public final void testGetCanonicalPathDoesNotExist() {
-        WebResource exists =
-                resourceRoot.getResource(getMount() + "/d1/d1-f1.txt");
-        WebResource doesNotExist =
-                resourceRoot.getResource(getMount() + "/d1/dummy.txt");
+        WebResource exists = resourceRoot.getResource(getMount()
+                + "/d1/d1-f1.txt");
+        WebResource doesNotExist = resourceRoot.getResource(getMount()
+                + "/d1/dummy.txt");
         String doesNotExistCanonicalPath = doesNotExist.getCanonicalPath();
 
         URL existsUrl = exists.getURL();
@@ -512,13 +514,14 @@ public abstract class AbstractTestResourceSet {
         }
     }
 
-
     // ----------------------------------------------------------- getManifest()
 
     @Test
     public final void testGetManifest() {
-        WebResource exists = resourceRoot.getResource(getMount() + "/d1/d1-f1.txt");
-        boolean manifestExists = resourceRoot.getResource("/META-INF/MANIFEST.MF").exists();
+        WebResource exists = resourceRoot.getResource(getMount()
+                + "/d1/d1-f1.txt");
+        boolean manifestExists = resourceRoot.getResource(
+                "/META-INF/MANIFEST.MF").exists();
         Manifest m = exists.getManifest();
         if (getMount().equals("") && manifestExists) {
             Assert.assertNotNull(m);
@@ -526,7 +529,6 @@ public abstract class AbstractTestResourceSet {
             Assert.assertNull(m);
         }
     }
-
 
     // ------------------------------------------------------------ constructors
 

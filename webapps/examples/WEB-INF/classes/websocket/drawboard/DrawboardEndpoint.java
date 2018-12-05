@@ -1,18 +1,16 @@
 /*
- *  Licensed to the Apache Software Foundation (ASF) under one or more
- *  contributor license agreements.  See the NOTICE file distributed with
- *  this work for additional information regarding copyright ownership.
- *  The ASF licenses this file to You under the Apache License, Version 2.0
- *  (the "License"); you may not use this file except in compliance with
- *  the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements. See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package websocket.drawboard;
 
@@ -31,12 +29,9 @@ import org.apache.juli.logging.LogFactory;
 import websocket.drawboard.DrawMessage.ParseException;
 import websocket.drawboard.wsmessages.StringWebsocketMessage;
 
-
 public final class DrawboardEndpoint extends Endpoint {
 
-    private static final Log log =
-            LogFactory.getLog(DrawboardEndpoint.class);
-
+    private static final Log log = LogFactory.getLog(DrawboardEndpoint.class);
 
     /**
      * Our room where players can join.
@@ -61,7 +56,8 @@ public final class DrawboardEndpoint extends Endpoint {
 
     /**
      * The player that is associated with this Endpoint and the current room.
-     * Note that this variable is only accessed from the Room Thread.<br><br>
+     * Note that this variable is only accessed from the Room Thread.<br>
+     * <br>
      *
      * TODO: Currently, Tomcat uses an Endpoint instance once - however
      * the java doc of endpoint says:
@@ -71,12 +67,12 @@ public final class DrawboardEndpoint extends Endpoint {
      * could be reused for another connection so onOpen() will get called
      * (possibly from another thread).<br>
      * If this is the case, we would need a variable holder for the variables
-     * that are accessed by the Room thread, and read the reference to the holder
+     * that are accessed by the Room thread, and read the reference to the
+     * holder
      * at the beginning of onOpen, onMessage, onClose methods to ensure the room
      * thread always gets the correct instance of the variable holder.
      */
     private Room.Player player;
-
 
     @Override
     public void onOpen(Session session, EndpointConfig config) {
@@ -97,8 +93,8 @@ public final class DrawboardEndpoint extends Endpoint {
                     } catch (IllegalStateException ex) {
                         // Probably the max. number of players has been
                         // reached.
-                        client.sendMessage(new StringWebsocketMessage(
-                                "0" + ex.getLocalizedMessage()));
+                        client.sendMessage(new StringWebsocketMessage("0" + ex
+                                .getLocalizedMessage()));
                         // Close the connection.
                         client.close();
                     }
@@ -110,7 +106,6 @@ public final class DrawboardEndpoint extends Endpoint {
         });
 
     }
-
 
     @Override
     public void onClose(Session session, CloseReason closeReason) {
@@ -138,8 +133,6 @@ public final class DrawboardEndpoint extends Endpoint {
         }
     }
 
-
-
     @Override
     public void onError(Session session, Throwable t) {
         // Most likely cause is a user closing their browser. Check to see if
@@ -149,7 +142,7 @@ public final class DrawboardEndpoint extends Endpoint {
         Throwable root = t;
         while (root.getCause() != null && count < 20) {
             root = root.getCause();
-            count ++;
+            count++;
         }
         if (root instanceof EOFException) {
             // Assume this is triggered by the user closing their browser and
@@ -162,10 +155,7 @@ public final class DrawboardEndpoint extends Endpoint {
         }
     }
 
-
-
-    private final MessageHandler.Whole<String> stringHandler =
-            new MessageHandler.Whole<String>() {
+    private final MessageHandler.Whole<String> stringHandler = new MessageHandler.Whole<String>() {
 
         @Override
         public void onMessage(final String message) {
@@ -187,30 +177,33 @@ public final class DrawboardEndpoint extends Endpoint {
                             char messageType = message.charAt(0);
                             String messageContent = message.substring(1);
                             switch (messageType) {
-                            case '0':
-                                // Pong message.
-                                // Do nothing.
-                                break;
+                                case '0':
+                                    // Pong message.
+                                    // Do nothing.
+                                    break;
 
-                            case '1':
-                                // Draw message
-                                int indexOfChar = messageContent.indexOf('|');
-                                long msgId = Long.parseLong(
-                                        messageContent.substring(0, indexOfChar));
+                                case '1':
+                                    // Draw message
+                                    int indexOfChar = messageContent.indexOf(
+                                            '|');
+                                    long msgId = Long.parseLong(messageContent
+                                            .substring(0, indexOfChar));
 
-                                DrawMessage msg = DrawMessage.parseFromString(
-                                        messageContent.substring(indexOfChar + 1));
+                                    DrawMessage msg = DrawMessage
+                                            .parseFromString(messageContent
+                                                    .substring(indexOfChar
+                                                            + 1));
 
-                                // Don't ingore RuntimeExceptions thrown by
-                                // this method
-                                // TODO: Find a better solution than this variable
-                                dontSwallowException = true;
-                                if (player != null) {
-                                    player.handleDrawMessage(msg, msgId);
-                                }
-                                dontSwallowException = false;
+                                    // Don't ingore RuntimeExceptions thrown by
+                                    // this method
+                                    // TODO: Find a better solution than this variable
+                                    dontSwallowException = true;
+                                    if (player != null) {
+                                        player.handleDrawMessage(msg, msgId);
+                                    }
+                                    dontSwallowException = false;
 
-                                break;
+                                    break;
                             }
                         } catch (ParseException e) {
                             // Client sent invalid data
@@ -231,6 +224,5 @@ public final class DrawboardEndpoint extends Endpoint {
 
         }
     };
-
 
 }

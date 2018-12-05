@@ -1,18 +1,16 @@
 /*
- *  Licensed to the Apache Software Foundation (ASF) under one or more
- *  contributor license agreements.  See the NOTICE file distributed with
- *  this work for additional information regarding copyright ownership.
- *  The ASF licenses this file to You under the Apache License, Version 2.0
- *  (the "License"); you may not use this file except in compliance with
- *  the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements. See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.apache.catalina.core;
 
@@ -56,8 +54,8 @@ public class TestSwallowAbortedUploads extends TomcatBaseTest {
     /*
      * Test whether size limited uploads correctly handle connection draining.
      */
-    public Exception doAbortedUploadTest(AbortedUploadClient client, boolean limited,
-                            boolean swallow) {
+    public Exception doAbortedUploadTest(AbortedUploadClient client,
+            boolean limited, boolean swallow) {
         Exception ex = client.doRequest(limited, swallow);
         if (log.isDebugEnabled()) {
             log.debug("Response line: " + client.getResponseLine());
@@ -75,7 +73,7 @@ public class TestSwallowAbortedUploads extends TomcatBaseTest {
      * Test whether aborted POST correctly handle connection draining.
      */
     public Exception doAbortedPOSTTest(AbortedPOSTClient client, int status,
-                            boolean swallow) {
+            boolean swallow) {
         Exception ex = client.doRequest(status, swallow);
         if (log.isDebugEnabled()) {
             log.debug("Response line: " + client.getResponseLine());
@@ -94,10 +92,12 @@ public class TestSwallowAbortedUploads extends TomcatBaseTest {
         log.info("Unlimited, swallow enabled");
         AbortedUploadClient client = new AbortedUploadClient();
         Exception ex = doAbortedUploadTest(client, false, true);
-        assertNull("Unlimited upload with swallow enabled generates client exception",
-                   ex);
-        assertTrue("Unlimited upload with swallow enabled returns error status code",
-                   client.isResponse200());
+        assertNull(
+                "Unlimited upload with swallow enabled generates client exception",
+                ex);
+        assertTrue(
+                "Unlimited upload with swallow enabled returns error status code",
+                client.isResponse200());
         client.reset();
     }
 
@@ -106,10 +106,12 @@ public class TestSwallowAbortedUploads extends TomcatBaseTest {
         log.info("Unlimited, swallow disabled");
         AbortedUploadClient client = new AbortedUploadClient();
         Exception ex = doAbortedUploadTest(client, false, false);
-        assertNull("Unlimited upload with swallow disabled generates client exception",
-                   ex);
-        assertTrue("Unlimited upload with swallow disabled returns error status code",
-                   client.isResponse200());
+        assertNull(
+                "Unlimited upload with swallow disabled generates client exception",
+                ex);
+        assertTrue(
+                "Unlimited upload with swallow disabled returns error status code",
+                client.isResponse200());
         client.reset();
     }
 
@@ -118,10 +120,12 @@ public class TestSwallowAbortedUploads extends TomcatBaseTest {
         log.info("Limited, swallow enabled");
         AbortedUploadClient client = new AbortedUploadClient();
         Exception ex = doAbortedUploadTest(client, true, true);
-        assertNull("Limited upload with swallow enabled generates client exception",
-                   ex);
-        assertTrue("Limited upload with swallow enabled returns non-500 status code",
-                   client.isResponse500());
+        assertNull(
+                "Limited upload with swallow enabled generates client exception",
+                ex);
+        assertTrue(
+                "Limited upload with swallow enabled returns non-500 status code",
+                client.isResponse500());
         client.reset();
     }
 
@@ -130,8 +134,9 @@ public class TestSwallowAbortedUploads extends TomcatBaseTest {
         log.info("Limited, swallow disabled");
         AbortedUploadClient client = new AbortedUploadClient();
         Exception ex = doAbortedUploadTest(client, true, false);
-        assertTrue("Limited upload with swallow disabled does not generate client exception",
-                   ex != null && ex instanceof java.net.SocketException);
+        assertTrue(
+                "Limited upload with swallow disabled does not generate client exception",
+                ex != null && ex instanceof java.net.SocketException);
         client.reset();
     }
 
@@ -139,11 +144,14 @@ public class TestSwallowAbortedUploads extends TomcatBaseTest {
     public void testAbortedPOSTOKSwallow() {
         log.info("Aborted (OK), swallow enabled");
         AbortedPOSTClient client = new AbortedPOSTClient();
-        Exception ex = doAbortedPOSTTest(client, HttpServletResponse.SC_OK, true);
-        assertNull("Unlimited upload with swallow enabled generates client exception",
-                   ex);
-        assertTrue("Unlimited upload with swallow enabled returns error status code",
-                   client.isResponse200());
+        Exception ex = doAbortedPOSTTest(client, HttpServletResponse.SC_OK,
+                true);
+        assertNull(
+                "Unlimited upload with swallow enabled generates client exception",
+                ex);
+        assertTrue(
+                "Unlimited upload with swallow enabled returns error status code",
+                client.isResponse200());
         client.reset();
     }
 
@@ -151,11 +159,14 @@ public class TestSwallowAbortedUploads extends TomcatBaseTest {
     public void testAbortedPOSTOKNoSwallow() {
         log.info("Aborted (OK), swallow disabled");
         AbortedPOSTClient client = new AbortedPOSTClient();
-        Exception ex = doAbortedPOSTTest(client, HttpServletResponse.SC_OK, false);
-        assertNull("Unlimited upload with swallow disabled generates client exception",
-                   ex);
-        assertTrue("Unlimited upload with swallow disabled returns error status code",
-                   client.isResponse200());
+        Exception ex = doAbortedPOSTTest(client, HttpServletResponse.SC_OK,
+                false);
+        assertNull(
+                "Unlimited upload with swallow disabled generates client exception",
+                ex);
+        assertTrue(
+                "Unlimited upload with swallow disabled returns error status code",
+                client.isResponse200());
         client.reset();
     }
 
@@ -163,11 +174,14 @@ public class TestSwallowAbortedUploads extends TomcatBaseTest {
     public void testAbortedPOST413Swallow() {
         log.info("Aborted (413), swallow enabled");
         AbortedPOSTClient client = new AbortedPOSTClient();
-        Exception ex = doAbortedPOSTTest(client, HttpServletResponse.SC_REQUEST_ENTITY_TOO_LARGE, true);
-        assertNull("Limited upload with swallow enabled generates client exception",
-                   ex);
-        assertTrue("Limited upload with swallow enabled returns error status code",
-                   client.isResponse413());
+        Exception ex = doAbortedPOSTTest(client,
+                HttpServletResponse.SC_REQUEST_ENTITY_TOO_LARGE, true);
+        assertNull(
+                "Limited upload with swallow enabled generates client exception",
+                ex);
+        assertTrue(
+                "Limited upload with swallow enabled returns error status code",
+                client.isResponse413());
         client.reset();
     }
 
@@ -175,9 +189,11 @@ public class TestSwallowAbortedUploads extends TomcatBaseTest {
     public void testAbortedPOST413NoSwallow() {
         log.info("Aborted (413), swallow disabled");
         AbortedPOSTClient client = new AbortedPOSTClient();
-        Exception ex = doAbortedPOSTTest(client, HttpServletResponse.SC_REQUEST_ENTITY_TOO_LARGE, false);
-        assertTrue("Limited upload with swallow disabled does not generate client exception",
-                   ex != null && ex instanceof java.net.SocketException);
+        Exception ex = doAbortedPOSTTest(client,
+                HttpServletResponse.SC_REQUEST_ENTITY_TOO_LARGE, false);
+        assertTrue(
+                "Limited upload with swallow disabled does not generate client exception",
+                ex != null && ex instanceof java.net.SocketException);
         client.reset();
     }
 
@@ -202,10 +218,10 @@ public class TestSwallowAbortedUploads extends TomcatBaseTest {
                     log.debug("Count: " + c.size());
                     sb.append("Count: " + c.size() + "\n");
                     for (Part p : c) {
-                        log.debug("Name: " + p.getName() + ", Size: "
-                                + p.getSize());
-                        sb.append("Name: " + p.getName() + ", Size: "
-                                + p.getSize() + "\n");
+                        log.debug("Name: " + p.getName() + ", Size: " + p
+                                .getSize());
+                        sb.append("Name: " + p.getName() + ", Size: " + p
+                                .getSize() + "\n");
                     }
                 }
             } catch (IllegalStateException ex) {
@@ -242,7 +258,7 @@ public class TestSwallowAbortedUploads extends TomcatBaseTest {
             context = tomcat.addContext("", TEMP_DIR);
             Wrapper w;
             w = Tomcat.addServlet(context, servletName,
-                                  new AbortedUploadServlet());
+                    new AbortedUploadServlet());
             // Tomcat.addServlet does not respect annotations, so we have
             // to set our own MultipartConfigElement.
             // Choose upload file size limit.
@@ -292,13 +308,12 @@ public class TestSwallowAbortedUploads extends TomcatBaseTest {
                 String content = new String(sb.toString().getBytes("UTF-8"),
                         "ASCII");
 
-                request = new String[] { "POST http://localhost:" + getPort() + URI + " HTTP/1.1" + CRLF
-                        + "Host: localhost" + CRLF
+                request = new String[] { "POST http://localhost:" + getPort()
+                        + URI + " HTTP/1.1" + CRLF + "Host: localhost" + CRLF
                         + "Connection: close" + CRLF
-                        + "Content-Type: multipart/form-data; boundary=" + boundary + CRLF
-                        + "Content-Length: " + content.length() + CRLF
-                        + CRLF
-                        + content + CRLF };
+                        + "Content-Type: multipart/form-data; boundary="
+                        + boundary + CRLF + "Content-Length: " + content
+                                .length() + CRLF + CRLF + content + CRLF };
 
                 setRequest(request);
                 processRequest(); // blocks until response has been read
@@ -358,8 +373,7 @@ public class TestSwallowAbortedUploads extends TomcatBaseTest {
             context = tomcat.addContext("", TEMP_DIR);
             AbortedPOSTServlet servlet = new AbortedPOSTServlet();
             servlet.setStatus(status);
-            Tomcat.addServlet(context, servletName,
-                              servlet);
+            Tomcat.addServlet(context, servletName, servlet);
             context.addServletMappingDecoded(URI, servletName);
             context.setSwallowAbortedUploads(swallow);
 
@@ -383,12 +397,10 @@ public class TestSwallowAbortedUploads extends TomcatBaseTest {
 
                 String content = new String(body);
 
-                request = new String[] { "POST http://localhost:" + getPort() + URI + " HTTP/1.1" + CRLF
-                        + "Host: localhost" + CRLF
-                        + "Connection: close" + CRLF
-                        + "Content-Length: " + content.length() + CRLF
-                        + CRLF
-                        + content + CRLF };
+                request = new String[] { "POST http://localhost:" + getPort()
+                        + URI + " HTTP/1.1" + CRLF + "Host: localhost" + CRLF
+                        + "Connection: close" + CRLF + "Content-Length: "
+                        + content.length() + CRLF + CRLF + content + CRLF };
 
                 setRequest(request);
                 processRequest(); // blocks until response has been read
@@ -407,18 +419,15 @@ public class TestSwallowAbortedUploads extends TomcatBaseTest {
         }
     }
 
-
     @Test
     public void testChunkedPUTLimit() throws Exception {
         doTestChunkedPUT(true);
     }
 
-
     @Test
     public void testChunkedPUTNoLimit() throws Exception {
         doTestChunkedPUT(false);
     }
-
 
     public void doTestChunkedPUT(boolean limit) throws Exception {
 
@@ -437,8 +446,8 @@ public class TestSwallowAbortedUploads extends TomcatBaseTest {
         String responseLine = null;
 
         try (Socket conn = new Socket("localhost", getPort())) {
-            Writer writer = new OutputStreamWriter(
-                    conn.getOutputStream(), StandardCharsets.US_ASCII);
+            Writer writer = new OutputStreamWriter(conn.getOutputStream(),
+                    StandardCharsets.US_ASCII);
             writer.write("PUT /does-not-exist HTTP/1.1\r\n");
             writer.write("Host: any\r\n");
             writer.write("Transfer-encoding: chunked\r\n");
@@ -457,8 +466,9 @@ public class TestSwallowAbortedUploads extends TomcatBaseTest {
             }
 
             try {
-                BufferedReader reader = new BufferedReader(new InputStreamReader(
-                        conn.getInputStream(), StandardCharsets.US_ASCII));
+                BufferedReader reader = new BufferedReader(
+                        new InputStreamReader(conn.getInputStream(),
+                                StandardCharsets.US_ASCII));
 
                 responseLine = reader.readLine();
             } catch (IOException e) {

@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -15,7 +13,6 @@
  * limitations under the License.
  */
 package org.apache.catalina.filters;
-
 
 import java.io.IOException;
 
@@ -28,7 +25,6 @@ import org.apache.catalina.comet.CometEvent;
 import org.apache.catalina.comet.CometFilterChain;
 import org.apache.juli.logging.Log;
 import org.apache.juli.logging.LogFactory;
-
 
 /**
  * Concrete implementation of <code>RequestFilter</code> that filters
@@ -43,13 +39,9 @@ public final class RemoteAddrFilter extends RequestFilter {
     // ----------------------------------------------------- Instance Variables
     private static final Log log = LogFactory.getLog(RemoteAddrFilter.class);
 
-
     // ------------------------------------------------------------- Properties
 
-
-
     // --------------------------------------------------------- Public Methods
-
 
     /**
      * Extract the desired request property, and pass it (along with the
@@ -61,7 +53,7 @@ public final class RemoteAddrFilter extends RequestFilter {
      * @param response The servlet response to be created
      * @param chain    The filter chain for this request
      *
-     * @exception IOException if an input/output error occurs
+     * @exception IOException      if an input/output error occurs
      * @exception ServletException if a servlet error occurs
      */
     @Override
@@ -80,14 +72,14 @@ public final class RemoteAddrFilter extends RequestFilter {
      * @param event The comet event to be processed
      * @param chain The filter chain for this event
      *
-     * @exception IOException if an input/output error occurs
+     * @exception IOException      if an input/output error occurs
      * @exception ServletException if a servlet error occurs
      */
     @Override
     public void doFilterEvent(CometEvent event, CometFilterChain chain)
             throws IOException, ServletException {
-        processCometEvent(event.getHttpServletRequest().getRemoteAddr(),
-                event, chain);
+        processCometEvent(event.getHttpServletRequest().getRemoteAddr(), event,
+                chain);
     }
 
     @Override

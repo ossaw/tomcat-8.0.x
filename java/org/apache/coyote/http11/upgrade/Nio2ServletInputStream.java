@@ -1,18 +1,16 @@
 /*
- *  Licensed to the Apache Software Foundation (ASF) under one or more
- *  contributor license agreements.  See the NOTICE file distributed with
- *  this work for additional information regarding copyright ownership.
- *  The ASF licenses this file to You under the Apache License, Version 2.0
- *  (the "License"); you may not use this file except in compliance with
- *  the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements. See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.apache.coyote.http11.upgrade;
 
@@ -44,13 +42,15 @@ public class Nio2ServletInputStream extends AbstractServletInputStream {
     private volatile boolean interest = true;
     private volatile boolean closed = false;
 
-    public Nio2ServletInputStream(SocketWrapper<Nio2Channel> wrapper, AbstractEndpoint<Nio2Channel> endpoint0) {
+    public Nio2ServletInputStream(SocketWrapper<Nio2Channel> wrapper,
+            AbstractEndpoint<Nio2Channel> endpoint0) {
         this.endpoint = endpoint0;
         this.wrapper = wrapper;
         this.channel = wrapper.getSocket();
         this.completionHandler = new CompletionHandler<Integer, SocketWrapper<Nio2Channel>>() {
             @Override
-            public void completed(Integer nBytes, SocketWrapper<Nio2Channel> attachment) {
+            public void completed(Integer nBytes,
+                    SocketWrapper<Nio2Channel> attachment) {
                 boolean notify = false;
                 synchronized (completionHandler) {
                     if (nBytes.intValue() < 0) {
@@ -68,11 +68,14 @@ public class Nio2ServletInputStream extends AbstractServletInputStream {
                     }
                 }
                 if (notify) {
-                    endpoint.processSocket(attachment, SocketStatus.OPEN_READ, false);
+                    endpoint.processSocket(attachment, SocketStatus.OPEN_READ,
+                            false);
                 }
             }
+
             @Override
-            public void failed(Throwable exc, SocketWrapper<Nio2Channel> attachment) {
+            public void failed(Throwable exc,
+                    SocketWrapper<Nio2Channel> attachment) {
                 attachment.setError(true);
                 readPending = false;
                 if (exc instanceof AsynchronousCloseException) {
@@ -199,7 +202,8 @@ public class Nio2ServletInputStream extends AbstractServletInputStream {
             Future<Integer> future = null;
             try {
                 future = channel.read(readBuffer);
-                nRead = future.get(wrapper.getTimeout(), TimeUnit.MILLISECONDS).intValue();
+                nRead = future.get(wrapper.getTimeout(), TimeUnit.MILLISECONDS)
+                        .intValue();
                 readPending = false;
             } catch (ExecutionException e) {
                 if (e.getCause() instanceof IOException) {
@@ -223,8 +227,8 @@ public class Nio2ServletInputStream extends AbstractServletInputStream {
             readBuffer.clear();
             flipped = false;
             Nio2Endpoint.startInline();
-            channel.read(readBuffer,
-                    wrapper.getTimeout(), TimeUnit.MILLISECONDS, wrapper, completionHandler);
+            channel.read(readBuffer, wrapper.getTimeout(),
+                    TimeUnit.MILLISECONDS, wrapper, completionHandler);
             Nio2Endpoint.endInline();
             if (!readPending) {
                 nRead = readBuffer.position();

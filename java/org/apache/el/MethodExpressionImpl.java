@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -36,7 +34,6 @@ import org.apache.el.lang.ExpressionBuilder;
 import org.apache.el.parser.Node;
 import org.apache.el.util.ReflectionUtil;
 
-
 /**
  * An <code>Expression</code> that refers to a method on an object.
  *
@@ -46,9 +43,11 @@ import org.apache.el.util.ReflectionUtil;
  * of <code>MethodExpression</code> that encapsulates the parsed expression.
  * The {@link FunctionMapper} is used at parse time, not evaluation time,
  * so one is not needed to evaluate an expression using this class.
- * However, the {@link ELContext} is needed at evaluation time.</p>
+ * However, the {@link ELContext} is needed at evaluation time.
+ * </p>
  *
- * <p>The {@link #getMethodInfo} and {@link #invoke} methods will evaluate the
+ * <p>
+ * The {@link #getMethodInfo} and {@link #invoke} methods will evaluate the
  * expression each time they are called. The {@link javax.el.ELResolver} in the
  * <code>ELContext</code> is used to resolve the top-level variables and to
  * determine the behavior of the <code>.</code> and <code>[]</code>
@@ -61,9 +60,11 @@ import org.apache.el.util.ReflectionUtil;
  * which provides the name of the method to be found. A method matching the
  * name and expected parameters provided at parse time is found and it is
  * either queried or invoked (depending on the method called on this
- * <code>MethodExpression</code>).</p>
+ * <code>MethodExpression</code>).
+ * </p>
  *
- * <p>See the notes about comparison, serialization and immutability in
+ * <p>
+ * See the notes about comparison, serialization and immutability in
  * the {@link javax.el.Expression} javadocs.
  *
  * @see javax.el.ELResolver
@@ -92,9 +93,9 @@ public final class MethodExpressionImpl extends MethodExpression implements
         super();
     }
 
-    public MethodExpressionImpl(String expr, Node node,
-            FunctionMapper fnMapper, VariableMapper varMapper,
-            Class<?> expectedType, Class<?>[] paramTypes) {
+    public MethodExpressionImpl(String expr, Node node, FunctionMapper fnMapper,
+            VariableMapper varMapper, Class<?> expectedType,
+            Class<?>[] paramTypes) {
         super();
         this.expr = expr;
         this.node = node;
@@ -168,21 +169,28 @@ public final class MethodExpressionImpl extends MethodExpression implements
      * information about the actual referenced method.
      *
      * @param context
-     *            The context of this evaluation
+     *                The context of this evaluation
      * @return an instance of <code>MethodInfo</code> containing information
      *         about the method the expression evaluated to.
      * @throws NullPointerException
-     *             if context is <code>null</code> or the base object is
-     *             <code>null</code> on the last resolution.
+     *                                   if context is <code>null</code> or the
+     *                                   base object is
+     *                                   <code>null</code> on the last
+     *                                   resolution.
      * @throws PropertyNotFoundException
-     *             if one of the property resolutions failed because a specified
-     *             variable or property does not exist or is not readable.
+     *                                   if one of the property resolutions
+     *                                   failed because a specified
+     *                                   variable or property does not exist or
+     *                                   is not readable.
      * @throws MethodNotFoundException
-     *             if no suitable method can be found.
+     *                                   if no suitable method can be found.
      * @throws ELException
-     *             if an exception was thrown while performing property or
-     *             variable resolution. The thrown exception must be included as
-     *             the cause property of this exception, if available.
+     *                                   if an exception was thrown while
+     *                                   performing property or
+     *                                   variable resolution. The thrown
+     *                                   exception must be included as
+     *                                   the cause property of this exception,
+     *                                   if available.
      * @see javax.el.MethodExpression#getMethodInfo(javax.el.ELContext)
      */
     @Override
@@ -233,27 +241,36 @@ public final class MethodExpressionImpl extends MethodExpression implements
      * result of the method invocation.
      *
      * @param context
-     *            The context of this evaluation.
+     *                The context of this evaluation.
      * @param params
-     *            The parameters to pass to the method, or <code>null</code>
-     *            if no parameters.
+     *                The parameters to pass to the method, or <code>null</code>
+     *                if no parameters.
      * @return the result of the method invocation (<code>null</code> if the
      *         method has a <code>void</code> return type).
      * @throws NullPointerException
-     *             if context is <code>null</code> or the base object is
-     *             <code>null</code> on the last resolution.
+     *                                   if context is <code>null</code> or the
+     *                                   base object is
+     *                                   <code>null</code> on the last
+     *                                   resolution.
      * @throws PropertyNotFoundException
-     *             if one of the property resolutions failed because a specified
-     *             variable or property does not exist or is not readable.
+     *                                   if one of the property resolutions
+     *                                   failed because a specified
+     *                                   variable or property does not exist or
+     *                                   is not readable.
      * @throws MethodNotFoundException
-     *             if no suitable method can be found.
+     *                                   if no suitable method can be found.
      * @throws ELException
-     *             if an exception was thrown while performing property or
-     *             variable resolution. The thrown exception must be included as
-     *             the cause property of this exception, if available. If the
-     *             exception thrown is an <code>InvocationTargetException</code>,
-     *             extract its <code>cause</code> and pass it to the
-     *             <code>ELException</code> constructor.
+     *                                   if an exception was thrown while
+     *                                   performing property or
+     *                                   variable resolution. The thrown
+     *                                   exception must be included as
+     *                                   the cause property of this exception,
+     *                                   if available. If the
+     *                                   exception thrown is an
+     *                                   <code>InvocationTargetException</code>,
+     *                                   extract its <code>cause</code> and pass
+     *                                   it to the
+     *                                   <code>ELException</code> constructor.
      * @see javax.el.MethodExpression#invoke(javax.el.ELContext,
      *      java.lang.Object[])
      */
@@ -271,7 +288,6 @@ public final class MethodExpressionImpl extends MethodExpression implements
 
     /*
      * (non-Javadoc)
-     *
      * @see java.io.Externalizable#readExternal(java.io.ObjectInput)
      */
     @Override
@@ -290,7 +306,6 @@ public final class MethodExpressionImpl extends MethodExpression implements
 
     /*
      * (non-Javadoc)
-     *
      * @see java.io.Externalizable#writeExternal(java.io.ObjectOutput)
      */
     @Override
@@ -308,7 +323,6 @@ public final class MethodExpressionImpl extends MethodExpression implements
         return false;
     }
 
-
     /**
      * @since EL 3.0
      */
@@ -319,9 +333,9 @@ public final class MethodExpressionImpl extends MethodExpression implements
 
     /**
      * @since EL 2.2
-     * Note: The spelling mistake is deliberate.
-     * isParmetersProvided()  - Specification definition
-     * isParametersProvided() - Corrected spelling
+     *        Note: The spelling mistake is deliberate.
+     *        isParmetersProvided() - Specification definition
+     *        isParametersProvided() - Corrected spelling
      */
     @Override
     public boolean isParmetersProvided() {

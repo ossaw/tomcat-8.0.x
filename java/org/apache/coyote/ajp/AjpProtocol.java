@@ -1,18 +1,16 @@
 /*
- *  Licensed to the Apache Software Foundation (ASF) under one or more
- *  contributor license agreements.  See the NOTICE file distributed with
- *  this work for additional information regarding copyright ownership.
- *  The ASF licenses this file to You under the Apache License, Version 2.0
- *  (the "License"); you may not use this file except in compliance with
- *  the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements. See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.apache.coyote.ajp;
 
@@ -28,7 +26,6 @@ import org.apache.tomcat.util.net.JIoEndpoint.Handler;
 import org.apache.tomcat.util.net.SSLImplementation;
 import org.apache.tomcat.util.net.SocketWrapper;
 
-
 /**
  * Abstract the protocol implementation, including threading, etc.
  * Processor is single threaded and specific to stream-based protocols,
@@ -39,21 +36,19 @@ import org.apache.tomcat.util.net.SocketWrapper;
  */
 public class AjpProtocol extends AbstractAjpProtocol<Socket> {
 
-
     private static final Log log = LogFactory.getLog(AjpProtocol.class);
 
     @Override
-    protected Log getLog() { return log; }
-
+    protected Log getLog() {
+        return log;
+    }
 
     @Override
     protected AbstractEndpoint.Handler getHandler() {
         return cHandler;
     }
 
-
     // ------------------------------------------------------------ Constructor
-
 
     public AjpProtocol() {
         endpoint = new JIoEndpoint();
@@ -64,15 +59,12 @@ public class AjpProtocol extends AbstractAjpProtocol<Socket> {
         setTcpNoDelay(Constants.DEFAULT_TCP_NO_DELAY);
     }
 
-
     // ----------------------------------------------------- Instance Variables
-
 
     /**
      * Connection handler for AJP.
      */
     private final AjpConnectionHandler cHandler;
-
 
     // ----------------------------------------------------- JMX related methods
 
@@ -81,13 +73,11 @@ public class AjpProtocol extends AbstractAjpProtocol<Socket> {
         return ("ajp-bio");
     }
 
-
     // --------------------------------------  AjpConnectionHandler Inner Class
 
-
-    protected static class AjpConnectionHandler
-            extends AbstractAjpConnectionHandler<Socket,AjpProcessor>
-            implements Handler {
+    protected static class AjpConnectionHandler extends
+            AbstractAjpConnectionHandler<Socket, AjpProcessor> implements
+            Handler {
 
         protected final AjpProtocol proto;
 
@@ -115,10 +105,10 @@ public class AjpProtocol extends AbstractAjpProtocol<Socket> {
          * Expected to be used by the handler once the processor is no longer
          * required.
          *
-         * @param socket            Ignored for BIO
+         * @param socket          Ignored for BIO
          * @param processor
          * @param isSocketClosing
-         * @param addToPoller       Ignored for BIO
+         * @param addToPoller     Ignored for BIO
          */
         @Override
         public void release(SocketWrapper<Socket> socket,
@@ -128,17 +118,16 @@ public class AjpProtocol extends AbstractAjpProtocol<Socket> {
             recycledProcessors.push(processor);
         }
 
-
         @Override
         protected AjpProcessor createProcessor() {
-            AjpProcessor processor = new AjpProcessor(proto.packetSize, (JIoEndpoint)proto.endpoint);
+            AjpProcessor processor = new AjpProcessor(proto.packetSize,
+                    (JIoEndpoint) proto.endpoint);
             proto.configureProcessor(processor);
             register(processor);
             return processor;
         }
 
         @Override
-        public void beforeHandshake(SocketWrapper<Socket> socket) {
-        }
+        public void beforeHandshake(SocketWrapper<Socket> socket) {}
     }
 }

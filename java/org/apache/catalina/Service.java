@@ -1,20 +1,17 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 
 package org.apache.catalina;
 
@@ -24,7 +21,7 @@ import org.apache.catalina.mapper.Mapper;
 /**
  * A <strong>Service</strong> is a group of one or more
  * <strong>Connectors</strong> that share a single <strong>Container</strong>
- * to process their incoming requests.  This arrangement allows, for example,
+ * to process their incoming requests. This arrangement allows, for example,
  * a non-SSL and SSL connector to share the same population of web apps.
  * <p>
  * A given JVM can contain any number of Service instances; however, they are
@@ -39,7 +36,7 @@ public interface Service extends Lifecycle {
 
     /**
      * @return the <code>Container</code> that handles requests for all
-     * <code>Connectors</code> associated with this Service.
+     *         <code>Connectors</code> associated with this Service.
      *
      * @deprecated Return value will be narrowed to Engine in Tomcat 9.
      */
@@ -92,8 +89,9 @@ public interface Service extends Lifecycle {
 
     /**
      * @return the parent class loader for this component. If not set, return
-     * {@link #getServer()} {@link Server#getParentClassLoader()}. If no server
-     * has been set, return the system class loader.
+     *         {@link #getServer()} {@link Server#getParentClassLoader()}. If no
+     *         server
+     *         has been set, return the system class loader.
      */
     public ClassLoader getParentClassLoader();
 
@@ -106,10 +104,9 @@ public interface Service extends Lifecycle {
 
     /**
      * @return the domain under which this container will be / has been
-     * registered.
+     *         registered.
      */
     public String getDomain();
-
 
     // --------------------------------------------------------- Public Methods
 
@@ -130,7 +127,7 @@ public interface Service extends Lifecycle {
 
     /**
      * Remove the specified Connector from the set associated from this
-     * Service.  The removed Connector will also be disassociated from our
+     * Service. The removed Connector will also be disassociated from our
      * Container.
      *
      * @param connector The Connector to be removed
@@ -139,18 +136,21 @@ public interface Service extends Lifecycle {
 
     /**
      * Adds a named executor to the service
+     * 
      * @param ex Executor
      */
     public void addExecutor(Executor ex);
 
     /**
      * Retrieves all executors
+     * 
      * @return Executor[]
      */
     public Executor[] findExecutors();
 
     /**
      * Retrieves executor by name, null if not found
+     * 
      * @param name String
      * @return Executor
      */
@@ -158,6 +158,7 @@ public interface Service extends Lifecycle {
 
     /**
      * Removes an executor from the service
+     * 
      * @param ex Executor
      */
     public void removeExecutor(Executor ex);

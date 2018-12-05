@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -57,7 +55,6 @@ import org.apache.tomcat.util.descriptor.web.WebXmlParser;
 import org.apache.tomcat.util.scan.StandardJarScanFilter;
 import org.apache.tomcat.util.scan.StandardJarScanner;
 
-
 /**
  * Simple <code>ServletContext</code> implementation without
  * HTTP-specific methods.
@@ -67,39 +64,32 @@ import org.apache.tomcat.util.scan.StandardJarScanner;
 
 public class JspCServletContext implements ServletContext {
 
-
     // ----------------------------------------------------- Instance Variables
-
 
     /**
      * Servlet context attributes.
      */
-    private final Map<String,Object> myAttributes;
-
+    private final Map<String, Object> myAttributes;
 
     /**
      * Servlet context initialization parameters.
      */
-    private final ConcurrentMap<String,String> myParameters = new ConcurrentHashMap<>();
-
+    private final ConcurrentMap<String, String> myParameters = new ConcurrentHashMap<>();
 
     /**
      * The log writer we will write log messages to.
      */
     private final PrintWriter myLogWriter;
 
-
     /**
      * The base URL (document root) for this context.
      */
     private final URL myResourceBaseURL;
 
-
     /**
      * Merged web.xml for the application.
      */
     private WebXml webXml;
-
 
     private JspConfigDescriptor jspConfigDescriptor;
 
@@ -108,18 +98,19 @@ public class JspCServletContext implements ServletContext {
      */
     private final ClassLoader loader;
 
-
     // ----------------------------------------------------------- Constructors
 
     /**
      * Create a new instance of this ServletContext implementation.
      *
-     * @param aLogWriter PrintWriter which is used for <code>log()</code> calls
+     * @param aLogWriter       PrintWriter which is used for <code>log()</code>
+     *                         calls
      * @param aResourceBaseURL Resource base URL
-     * @param classLoader   Class loader for this {@link ServletContext}
-     * @param validate      Should a validating parser be used to parse web.xml?
-     * @param blockExternal Should external entities be blocked when parsing
-     *                      web.xml?
+     * @param classLoader      Class loader for this {@link ServletContext}
+     * @param validate         Should a validating parser be used to parse
+     *                         web.xml?
+     * @param blockExternal    Should external entities be blocked when parsing
+     *                         web.xml?
      * @throws JasperException
      */
     public JspCServletContext(PrintWriter aLogWriter, URL aResourceBaseURL,
@@ -127,8 +118,8 @@ public class JspCServletContext implements ServletContext {
             throws JasperException {
 
         myAttributes = new HashMap<>();
-        myParameters.put(Constants.XML_BLOCK_EXTERNAL_INIT_PARAM,
-                String.valueOf(blockExternal));
+        myParameters.put(Constants.XML_BLOCK_EXTERNAL_INIT_PARAM, String
+                .valueOf(blockExternal));
         myLogWriter = aLogWriter;
         myResourceBaseURL = aResourceBaseURL;
         this.loader = classLoader;
@@ -139,7 +130,8 @@ public class JspCServletContext implements ServletContext {
     private WebXml buildMergedWebXml(boolean validate, boolean blockExternal)
             throws JasperException {
         WebXml webXml = new WebXml();
-        WebXmlParser webXmlParser = new WebXmlParser(validate, validate, blockExternal);
+        WebXmlParser webXmlParser = new WebXmlParser(validate, validate,
+                blockExternal);
         // Use this class's classloader as Ant will have set the TCCL to its own
         webXmlParser.setClassLoader(getClass().getClassLoader());
 
@@ -147,7 +139,8 @@ public class JspCServletContext implements ServletContext {
             URL url = getResource(
                     org.apache.tomcat.util.descriptor.web.Constants.WEB_XML_LOCATION);
             if (!webXmlParser.parseWebXml(url, webXml, false)) {
-                throw new JasperException(Localizer.getMessage("jspc.error.invalidWebXml"));
+                throw new JasperException(Localizer.getMessage(
+                        "jspc.error.invalidWebXml"));
             }
         } catch (IOException e) {
             throw new JasperException(e);
@@ -166,29 +159,31 @@ public class JspCServletContext implements ServletContext {
         }
 
         Map<String, WebXml> fragments = scanForFragments(webXmlParser);
-        Set<WebXml> orderedFragments = WebXml.orderWebFragments(webXml, fragments, this);
+        Set<WebXml> orderedFragments = WebXml.orderWebFragments(webXml,
+                fragments, this);
 
         // JspC is not affected by annotations so skip that processing, proceed to merge
         webXml.merge(orderedFragments);
         return webXml;
     }
 
-    private Map<String, WebXml> scanForFragments(WebXmlParser webXmlParser) throws JasperException {
+    private Map<String, WebXml> scanForFragments(WebXmlParser webXmlParser)
+            throws JasperException {
         StandardJarScanner scanner = new StandardJarScanner();
         // TODO - enabling this means initializing the classloader first in JspC
         scanner.setScanClassPath(false);
         // TODO - configure filter rules from Ant rather then system properties
         scanner.setJarScanFilter(new StandardJarScanFilter());
 
-        FragmentJarScannerCallback callback =
-                new FragmentJarScannerCallback(webXmlParser, false, true);
+        FragmentJarScannerCallback callback = new FragmentJarScannerCallback(
+                webXmlParser, false, true);
         scanner.scan(JarScanType.PLUGGABILITY, this, callback);
         if (!callback.isOk()) {
-            throw new JasperException(Localizer.getMessage("jspc.error.invalidFragment"));
+            throw new JasperException(Localizer.getMessage(
+                    "jspc.error.invalidFragment"));
         }
         return callback.getFragments();
     }
-
 
     // --------------------------------------------------------- Public Methods
 
@@ -202,7 +197,6 @@ public class JspCServletContext implements ServletContext {
         return myAttributes.get(name);
     }
 
-
     /**
      * Return an enumeration of context attribute names.
      */
@@ -210,7 +204,6 @@ public class JspCServletContext implements ServletContext {
     public Enumeration<String> getAttributeNames() {
         return Collections.enumeration(myAttributes.keySet());
     }
-
 
     /**
      * Return the servlet context for the specified path.
@@ -222,7 +215,6 @@ public class JspCServletContext implements ServletContext {
         return null;
     }
 
-
     /**
      * Return the context path.
      */
@@ -230,7 +222,6 @@ public class JspCServletContext implements ServletContext {
     public String getContextPath() {
         return null;
     }
-
 
     /**
      * Return the specified context initialization parameter.
@@ -242,7 +233,6 @@ public class JspCServletContext implements ServletContext {
         return myParameters.get(name);
     }
 
-
     /**
      * Return an enumeration of the names of context initialization
      * parameters.
@@ -252,7 +242,6 @@ public class JspCServletContext implements ServletContext {
         return Collections.enumeration(myParameters.keySet());
     }
 
-
     /**
      * Return the Servlet API major version number.
      */
@@ -260,7 +249,6 @@ public class JspCServletContext implements ServletContext {
     public int getMajorVersion() {
         return 3;
     }
-
 
     /**
      * Return the MIME type for the specified filename.
@@ -272,7 +260,6 @@ public class JspCServletContext implements ServletContext {
         return null;
     }
 
-
     /**
      * Return the Servlet API minor version number.
      */
@@ -280,7 +267,6 @@ public class JspCServletContext implements ServletContext {
     public int getMinorVersion() {
         return 1;
     }
-
 
     /**
      * Return a request dispatcher for the specified servlet name.
@@ -291,7 +277,6 @@ public class JspCServletContext implements ServletContext {
     public RequestDispatcher getNamedDispatcher(String name) {
         return null;
     }
-
 
     /**
      * Return the real path for the specified context-relative
@@ -314,7 +299,6 @@ public class JspCServletContext implements ServletContext {
         }
     }
 
-
     /**
      * Return a request dispatcher for the specified context-relative path.
      *
@@ -325,7 +309,6 @@ public class JspCServletContext implements ServletContext {
         return null;
     }
 
-
     /**
      * Return a URL object of a resource that is mapped to the
      * specified context-relative path.
@@ -333,14 +316,14 @@ public class JspCServletContext implements ServletContext {
      * @param path Context-relative path of the desired resource
      *
      * @exception MalformedURLException if the resource path is
-     *  not properly formed
+     *                                  not properly formed
      */
     @Override
     public URL getResource(String path) throws MalformedURLException {
 
         if (!path.startsWith("/"))
-            throw new MalformedURLException("Path '" + path +
-                                            "' does not start with '/'");
+            throw new MalformedURLException("Path '" + path
+                    + "' does not start with '/'");
         URL url = new URL(myResourceBaseURL, path.substring(1));
         try (InputStream is = url.openStream()) {
         } catch (Throwable t) {
@@ -349,7 +332,6 @@ public class JspCServletContext implements ServletContext {
         }
         return url;
     }
-
 
     /**
      * Return an InputStream allowing access to the resource at the
@@ -368,7 +350,6 @@ public class JspCServletContext implements ServletContext {
         }
 
     }
-
 
     /**
      * Return the set of resource paths for the "directory" at the
@@ -403,7 +384,6 @@ public class JspCServletContext implements ServletContext {
 
     }
 
-
     /**
      * Return descriptive information about this server.
      */
@@ -411,7 +391,6 @@ public class JspCServletContext implements ServletContext {
     public String getServerInfo() {
         return ("JspC/ApacheTomcat8");
     }
-
 
     /**
      * Return a null reference for the specified servlet name.
@@ -426,7 +405,6 @@ public class JspCServletContext implements ServletContext {
         return null;
     }
 
-
     /**
      * Return the name of this servlet context.
      */
@@ -434,7 +412,6 @@ public class JspCServletContext implements ServletContext {
     public String getServletContextName() {
         return (getServerInfo());
     }
-
 
     /**
      * Return an empty enumeration of servlet names.
@@ -447,7 +424,6 @@ public class JspCServletContext implements ServletContext {
         return (new Vector<String>().elements());
     }
 
-
     /**
      * Return an empty enumeration of servlets.
      *
@@ -459,7 +435,6 @@ public class JspCServletContext implements ServletContext {
         return (new Vector<Servlet>().elements());
     }
 
-
     /**
      * Log the specified message.
      *
@@ -470,12 +445,11 @@ public class JspCServletContext implements ServletContext {
         myLogWriter.println(message);
     }
 
-
     /**
      * Log the specified message and exception.
      *
      * @param exception The exception to be logged
-     * @param message The message to be logged
+     * @param message   The message to be logged
      *
      * @deprecated Use log(String,Throwable) instead
      */
@@ -485,11 +459,10 @@ public class JspCServletContext implements ServletContext {
         log(message, exception);
     }
 
-
     /**
      * Log the specified message and exception.
      *
-     * @param message The message to be logged
+     * @param message   The message to be logged
      * @param exception The exception to be logged
      */
     @Override
@@ -497,7 +470,6 @@ public class JspCServletContext implements ServletContext {
         myLogWriter.println(message);
         exception.printStackTrace(myLogWriter);
     }
-
 
     /**
      * Remove the specified context attribute.
@@ -509,11 +481,10 @@ public class JspCServletContext implements ServletContext {
         myAttributes.remove(name);
     }
 
-
     /**
      * Set or replace the specified context attribute.
      *
-     * @param name Name of the context attribute to set
+     * @param name  Name of the context attribute to set
      * @param value Corresponding attribute value
      */
     @Override
@@ -521,13 +492,11 @@ public class JspCServletContext implements ServletContext {
         myAttributes.put(name, value);
     }
 
-
     @Override
     public FilterRegistration.Dynamic addFilter(String filterName,
             String className) {
         return null;
     }
-
 
     @Override
     public ServletRegistration.Dynamic addServlet(String servletName,
@@ -535,24 +504,20 @@ public class JspCServletContext implements ServletContext {
         return null;
     }
 
-
     @Override
     public Set<SessionTrackingMode> getDefaultSessionTrackingModes() {
         return EnumSet.noneOf(SessionTrackingMode.class);
     }
-
 
     @Override
     public Set<SessionTrackingMode> getEffectiveSessionTrackingModes() {
         return EnumSet.noneOf(SessionTrackingMode.class);
     }
 
-
     @Override
     public SessionCookieConfig getSessionCookieConfig() {
         return null;
     }
-
 
     @Override
     public void setSessionTrackingModes(
@@ -560,12 +525,10 @@ public class JspCServletContext implements ServletContext {
         // Do nothing
     }
 
-
     @Override
     public Dynamic addFilter(String filterName, Filter filter) {
         return null;
     }
-
 
     @Override
     public Dynamic addFilter(String filterName,
@@ -573,13 +536,11 @@ public class JspCServletContext implements ServletContext {
         return null;
     }
 
-
     @Override
     public ServletRegistration.Dynamic addServlet(String servletName,
             Servlet servlet) {
         return null;
     }
-
 
     @Override
     public ServletRegistration.Dynamic addServlet(String servletName,
@@ -587,13 +548,11 @@ public class JspCServletContext implements ServletContext {
         return null;
     }
 
-
     @Override
     public <T extends Filter> T createFilter(Class<T> c)
             throws ServletException {
         return null;
     }
-
 
     @Override
     public <T extends Servlet> T createServlet(Class<T> c)
@@ -601,42 +560,35 @@ public class JspCServletContext implements ServletContext {
         return null;
     }
 
-
     @Override
     public FilterRegistration getFilterRegistration(String filterName) {
         return null;
     }
-
 
     @Override
     public ServletRegistration getServletRegistration(String servletName) {
         return null;
     }
 
-
     @Override
     public boolean setInitParameter(String name, String value) {
         return myParameters.putIfAbsent(name, value) == null;
     }
-
 
     @Override
     public void addListener(Class<? extends EventListener> listenerClass) {
         // NOOP
     }
 
-
     @Override
     public void addListener(String className) {
         // NOOP
     }
 
-
     @Override
     public <T extends EventListener> void addListener(T t) {
         // NOOP
     }
-
 
     @Override
     public <T extends EventListener> T createListener(Class<T> c)
@@ -644,48 +596,40 @@ public class JspCServletContext implements ServletContext {
         return null;
     }
 
-
     @Override
     public void declareRoles(String... roleNames) {
         // NOOP
     }
-
 
     @Override
     public ClassLoader getClassLoader() {
         return loader;
     }
 
-
     @Override
     public int getEffectiveMajorVersion() {
         return webXml.getMajorVersion();
     }
-
 
     @Override
     public int getEffectiveMinorVersion() {
         return webXml.getMinorVersion();
     }
 
-
     @Override
     public Map<String, ? extends FilterRegistration> getFilterRegistrations() {
         return null;
     }
-
 
     @Override
     public JspConfigDescriptor getJspConfigDescriptor() {
         return jspConfigDescriptor;
     }
 
-
     @Override
     public Map<String, ? extends ServletRegistration> getServletRegistrations() {
         return null;
     }
-
 
     @Override
     public String getVirtualServerName() {

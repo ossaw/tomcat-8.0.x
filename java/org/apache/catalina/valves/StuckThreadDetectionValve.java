@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -46,13 +44,14 @@ public class StuckThreadDetectionValve extends ValveBase {
     /**
      * Logger
      */
-    private static final Log log = LogFactory.getLog(StuckThreadDetectionValve.class);
+    private static final Log log = LogFactory.getLog(
+            StuckThreadDetectionValve.class);
 
     /**
      * The string manager for this package.
      */
-    private static final StringManager sm =
-        StringManager.getManager(Constants.Package);
+    private static final StringManager sm = StringManager.getManager(
+            Constants.Package);
 
     /**
      * Keeps count of the number of stuck threads detected
@@ -82,15 +81,15 @@ public class StuckThreadDetectionValve extends ValveBase {
      */
     private final Map<Long, MonitoredThread> activeThreads = new ConcurrentHashMap<>();
 
-    private final Queue<CompletedStuckThread> completedStuckThreadsQueue =
-            new ConcurrentLinkedQueue<>();
+    private final Queue<CompletedStuckThread> completedStuckThreadsQueue = new ConcurrentLinkedQueue<>();
 
     /**
-     * Specifies the threshold (in seconds) used when checking for stuck threads.
+     * Specifies the threshold (in seconds) used when checking for stuck
+     * threads.
      * If &lt;=0, the detection is disabled. The default is 600 seconds.
      *
      * @param threshold
-     *            The new threshold in seconds
+     *                  The new threshold in seconds
      */
     public void setThreshold(int threshold) {
         this.threshold = threshold;
@@ -104,18 +103,19 @@ public class StuckThreadDetectionValve extends ValveBase {
         return threshold;
     }
 
-
     public int getInterruptThreadThreshold() {
         return interruptThreadThreshold;
     }
 
     /**
-     * Specifies the threshold (in seconds) before stuck threads are interrupted.
+     * Specifies the threshold (in seconds) before stuck threads are
+     * interrupted.
      * If &lt;=0, the interruption is disabled. The default is -1.
      * If &gt;=0, the value must actually be &gt;= threshold.
      *
      * @param interruptThreadThreshold
-     *            The new thread interruption threshold in seconds
+     *                                 The new thread interruption threshold in
+     *                                 seconds
      */
     public void setInterruptThreadThreshold(int interruptThreadThreshold) {
         this.interruptThreadThreshold = interruptThreadThreshold;
@@ -128,31 +128,29 @@ public class StuckThreadDetectionValve extends ValveBase {
         super(true);
     }
 
-
     @Override
     protected void initInternal() throws LifecycleException {
         super.initInternal();
 
         if (log.isDebugEnabled()) {
-            log.debug("Monitoring stuck threads with threshold = "
-                    + threshold
+            log.debug("Monitoring stuck threads with threshold = " + threshold
                     + " sec");
         }
     }
 
     private void notifyStuckThreadDetected(MonitoredThread monitoredThread,
-        long activeTime, int numStuckThreads) {
+            long activeTime, int numStuckThreads) {
         if (log.isWarnEnabled()) {
             String msg = sm.getString(
-                "stuckThreadDetectionValve.notifyStuckThreadDetected",
-                monitoredThread.getThread().getName(),
-                Long.valueOf(activeTime),
-                monitoredThread.getStartTime(),
-                Integer.valueOf(numStuckThreads),
-                monitoredThread.getRequestUri(),
-                Integer.valueOf(threshold),
-                String.valueOf(monitoredThread.getThread().getId())
-                );
+                    "stuckThreadDetectionValve.notifyStuckThreadDetected",
+                    monitoredThread.getThread().getName(), Long.valueOf(
+                            activeTime), monitoredThread.getStartTime(), Integer
+                                    .valueOf(numStuckThreads), monitoredThread
+                                            .getRequestUri(), Integer.valueOf(
+                                                    threshold), String.valueOf(
+                                                            monitoredThread
+                                                                    .getThread()
+                                                                    .getId()));
             // msg += "\n" + getStackTraceAsString(trace);
             Throwable th = new Throwable();
             th.setStackTrace(monitoredThread.getThread().getStackTrace());
@@ -164,11 +162,10 @@ public class StuckThreadDetectionValve extends ValveBase {
             int numStuckThreads) {
         if (log.isWarnEnabled()) {
             String msg = sm.getString(
-                "stuckThreadDetectionValve.notifyStuckThreadCompleted",
-                thread.getName(),
-                Long.valueOf(thread.getTotalActiveTime()),
-                Integer.valueOf(numStuckThreads),
-                String.valueOf(thread.getId()));
+                    "stuckThreadDetectionValve.notifyStuckThreadCompleted",
+                    thread.getName(), Long.valueOf(thread.getTotalActiveTime()),
+                    Integer.valueOf(numStuckThreads), String.valueOf(thread
+                            .getId()));
             // Since the "stuck thread notification" is warn, this should also
             // be warn
             log.warn(msg);
@@ -179,8 +176,8 @@ public class StuckThreadDetectionValve extends ValveBase {
      * {@inheritDoc}
      */
     @Override
-    public void invoke(Request request, Response response)
-            throws IOException, ServletException {
+    public void invoke(Request request, Response response) throws IOException,
+            ServletException {
 
         if (threshold <= 0) {
             // short-circuit if not monitoring stuck threads
@@ -194,12 +191,13 @@ public class StuckThreadDetectionValve extends ValveBase {
 
         Long key = Long.valueOf(Thread.currentThread().getId());
         StringBuffer requestUrl = request.getRequestURL();
-        if(request.getQueryString()!=null) {
+        if (request.getQueryString() != null) {
             requestUrl.append("?");
             requestUrl.append(request.getQueryString());
         }
-        MonitoredThread monitoredThread = new MonitoredThread(Thread.currentThread(),
-            requestUrl.toString(), interruptThreadThreshold > 0);
+        MonitoredThread monitoredThread = new MonitoredThread(Thread
+                .currentThread(), requestUrl.toString(),
+                interruptThreadThreshold > 0);
         activeThreads.put(key, monitoredThread);
 
         try {
@@ -207,12 +205,12 @@ public class StuckThreadDetectionValve extends ValveBase {
         } finally {
             activeThreads.remove(key);
             if (monitoredThread.markAsDone() == MonitoredThreadState.STUCK) {
-                if(monitoredThread.wasInterrupted()) {
+                if (monitoredThread.wasInterrupted()) {
                     interruptedThreadsCount.incrementAndGet();
                 }
-                completedStuckThreadsQueue.add(
-                        new CompletedStuckThread(monitoredThread.getThread(),
-                            monitoredThread.getActiveTimeInMillis()));
+                completedStuckThreadsQueue.add(new CompletedStuckThread(
+                        monitoredThread.getThread(), monitoredThread
+                                .getActiveTimeInMillis()));
             }
         }
     }
@@ -228,17 +226,21 @@ public class StuckThreadDetectionValve extends ValveBase {
         for (MonitoredThread monitoredThread : activeThreads.values()) {
             long activeTime = monitoredThread.getActiveTimeInMillis();
 
-            if (activeTime >= thresholdInMillis && monitoredThread.markAsStuckIfStillRunning()) {
+            if (activeTime >= thresholdInMillis && monitoredThread
+                    .markAsStuckIfStillRunning()) {
                 int numStuckThreads = stuckCount.incrementAndGet();
-                notifyStuckThreadDetected(monitoredThread, activeTime, numStuckThreads);
+                notifyStuckThreadDetected(monitoredThread, activeTime,
+                        numStuckThreads);
             }
-            if(interruptThreadThreshold > 0 && activeTime >= interruptThreadThreshold*1000L) {
+            if (interruptThreadThreshold > 0
+                    && activeTime >= interruptThreadThreshold * 1000L) {
                 monitoredThread.interruptIfStuck(interruptThreadThreshold);
             }
         }
         // Check if any threads previously reported as stuck, have finished.
-        for (CompletedStuckThread completedStuckThread = completedStuckThreadsQueue.poll();
-            completedStuckThread != null; completedStuckThread = completedStuckThreadsQueue.poll()) {
+        for (CompletedStuckThread completedStuckThread = completedStuckThreadsQueue
+                .poll(); completedStuckThread != null; completedStuckThread = completedStuckThreadsQueue
+                        .poll()) {
 
             int numStuckThreads = stuckCount.decrementAndGet();
             notifyStuckThreadCompleted(completedStuckThread, numStuckThreads);
@@ -278,7 +280,6 @@ public class StuckThreadDetectionValve extends ValveBase {
         return interruptedThreadsCount.get();
     }
 
-
     private static class MonitoredThread {
 
         /**
@@ -288,7 +289,7 @@ public class StuckThreadDetectionValve extends ValveBase {
         private final String requestUri;
         private final long start;
         private final AtomicInteger state = new AtomicInteger(
-            MonitoredThreadState.RUNNING.ordinal());
+                MonitoredThreadState.RUNNING.ordinal());
         /**
          * Semaphore to synchronize the stuck thread with the background-process
          * thread. It's not used if the interruption feature is not active.
@@ -329,13 +330,14 @@ public class StuckThreadDetectionValve extends ValveBase {
         }
 
         public boolean markAsStuckIfStillRunning() {
-            return this.state.compareAndSet(MonitoredThreadState.RUNNING.ordinal(),
-                MonitoredThreadState.STUCK.ordinal());
+            return this.state.compareAndSet(MonitoredThreadState.RUNNING
+                    .ordinal(), MonitoredThreadState.STUCK.ordinal());
         }
 
         public MonitoredThreadState markAsDone() {
             int val = this.state.getAndSet(MonitoredThreadState.DONE.ordinal());
-            MonitoredThreadState threadState = MonitoredThreadState.values()[val];
+            MonitoredThreadState threadState = MonitoredThreadState
+                    .values()[val];
 
             if (threadState == MonitoredThreadState.STUCK
                     && interruptionSemaphore != null) {
@@ -371,12 +373,14 @@ public class StuckThreadDetectionValve extends ValveBase {
             try {
                 if (log.isWarnEnabled()) {
                     String msg = sm.getString(
-                        "stuckThreadDetectionValve.notifyStuckThreadInterrupted",
-                        this.getThread().getName(),
-                        Long.valueOf(getActiveTimeInMillis()),
-                        this.getStartTime(), this.getRequestUri(),
-                        Long.valueOf(interruptThreadThreshold),
-                        String.valueOf(this.getThread().getId()));
+                            "stuckThreadDetectionValve.notifyStuckThreadInterrupted",
+                            this.getThread().getName(), Long.valueOf(
+                                    getActiveTimeInMillis()), this
+                                            .getStartTime(), this
+                                                    .getRequestUri(), Long
+                                                            .valueOf(
+                                                                    interruptThreadThreshold),
+                            String.valueOf(this.getThread().getId()));
                     Throwable th = new Throwable();
                     th.setStackTrace(this.getThread().getStackTrace());
                     log.warn(msg, th);

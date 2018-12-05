@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -15,36 +13,31 @@
  * limitations under the License.
  */
 
-
 package org.apache.catalina.realm;
-
 
 import org.apache.tomcat.util.digester.Digester;
 import org.apache.tomcat.util.digester.Rule;
 import org.apache.tomcat.util.digester.RuleSetBase;
 import org.xml.sax.Attributes;
 
-
 /**
- * <p><strong>RuleSet</strong> for recognizing the users defined in the
- * XML file processed by <code>MemoryRealm</code>.</p>
+ * <p>
+ * <strong>RuleSet</strong> for recognizing the users defined in the
+ * XML file processed by <code>MemoryRealm</code>.
+ * </p>
  *
  * @author Craig R. McClanahan
  */
 public class MemoryRuleSet extends RuleSetBase {
 
-
     // ----------------------------------------------------- Instance Variables
-
 
     /**
      * The matching pattern prefix to use for recognizing our elements.
      */
     protected final String prefix;
 
-
     // ------------------------------------------------------------ Constructor
-
 
     /**
      * Construct an instance of this <code>RuleSet</code> with the default
@@ -56,13 +49,12 @@ public class MemoryRuleSet extends RuleSetBase {
 
     }
 
-
     /**
      * Construct an instance of this <code>RuleSet</code> with the specified
      * matching pattern prefix.
      *
      * @param prefix Prefix for matching pattern rules (including the
-     *  trailing slash character)
+     *               trailing slash character)
      */
     public MemoryRuleSet(String prefix) {
 
@@ -72,18 +64,18 @@ public class MemoryRuleSet extends RuleSetBase {
 
     }
 
-
     // --------------------------------------------------------- Public Methods
 
-
     /**
-     * <p>Add the set of Rule instances defined in this RuleSet to the
+     * <p>
+     * Add the set of Rule instances defined in this RuleSet to the
      * specified <code>Digester</code> instance, associating them with
-     * our namespace URI (if any).  This method should only be called
-     * by a Digester instance.</p>
+     * our namespace URI (if any). This method should only be called
+     * by a Digester instance.
+     * </p>
      *
      * @param digester Digester instance to which the new Rule instances
-     *  should be added.
+     *                 should be added.
      */
     @Override
     public void addRuleInstances(Digester digester) {
@@ -92,15 +84,12 @@ public class MemoryRuleSet extends RuleSetBase {
 
     }
 
-
 }
-
 
 /**
  * Private class used when parsing the XML database file.
  */
 final class MemoryUserRule extends Rule {
-
 
     /**
      * Construct a new instance of this <code>Rule</code>.
@@ -109,7 +98,6 @@ final class MemoryUserRule extends Rule {
         // No initialisation required
     }
 
-
     /**
      * Process a <code>&lt;user&gt;</code> element from the XML database file.
      *
@@ -117,7 +105,7 @@ final class MemoryUserRule extends Rule {
      */
     @Override
     public void begin(String namespace, String name, Attributes attributes)
-        throws Exception {
+            throws Exception {
 
         String username = attributes.getValue("username");
         if (username == null) {
@@ -126,11 +114,10 @@ final class MemoryUserRule extends Rule {
         String password = attributes.getValue("password");
         String roles = attributes.getValue("roles");
 
-        MemoryRealm realm =
-            (MemoryRealm) digester.peek(digester.getCount() - 1);
+        MemoryRealm realm = (MemoryRealm) digester.peek(digester.getCount()
+                - 1);
         realm.addUser(username, password, roles);
 
     }
-
 
 }

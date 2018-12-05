@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -32,25 +30,22 @@ public class TestAstAssign {
         ELProcessor processor = new ELProcessor();
         processor.defineBean("bean01", new TesterBeanB());
 
-        Object result = processor.getValue(
-                "bean01.text = 'hello'", String.class);
+        Object result = processor.getValue("bean01.text = 'hello'",
+                String.class);
 
         Assert.assertEquals("hello", result);
     }
-
 
     @Test
     public void testGetValue02() {
         ELProcessor processor = new ELProcessor();
         processor.defineBean("bean01", new TesterBeanB());
 
-        Object result = processor.getValue(
-                "bean01.text = 'hello'; bean01.text", String.class);
+        Object result = processor.getValue("bean01.text = 'hello'; bean01.text",
+                String.class);
 
         Assert.assertEquals("hello", result);
     }
-
-
 
     @Test
     public void testGetType01() {
@@ -59,13 +54,12 @@ public class TestAstAssign {
         ExpressionFactory factory = ELManager.getExpressionFactory();
 
         processor.defineBean("bean01", new TesterBeanB());
-        ValueExpression ve = factory.createValueExpression(
-                context, "${bean01.text = 'hello'}", String.class);
+        ValueExpression ve = factory.createValueExpression(context,
+                "${bean01.text = 'hello'}", String.class);
 
         Assert.assertEquals(String.class, ve.getType(context));
         Assert.assertEquals("hello", ve.getValue(context));
     }
-
 
     @Test
     public void testGetType02() {
@@ -74,8 +68,8 @@ public class TestAstAssign {
         ExpressionFactory factory = ELManager.getExpressionFactory();
 
         processor.defineBean("bean01", new TesterBeanB());
-        ValueExpression ve = factory.createValueExpression(
-                context, "${bean01.text = 'hello'; bean01.text}", String.class);
+        ValueExpression ve = factory.createValueExpression(context,
+                "${bean01.text = 'hello'; bean01.text}", String.class);
 
         Assert.assertEquals(String.class, ve.getType(context));
         Assert.assertEquals("hello", ve.getValue(context));

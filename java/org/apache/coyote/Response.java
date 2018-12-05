@@ -1,18 +1,16 @@
 /*
- *  Licensed to the Apache Software Foundation (ASF) under one or more
- *  contributor license agreements.  See the NOTICE file distributed with
- *  this work for additional information regarding copyright ownership.
- *  The ASF licenses this file to You under the Apache License, Version 2.0
- *  (the "License"); you may not use this file except in compliance with
- *  the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements. See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.apache.coyote;
 
@@ -42,8 +40,8 @@ import org.apache.tomcat.util.res.StringManager;
  */
 public final class Response {
 
-    private static final StringManager sm =
-            StringManager.getManager(Constants.Package);
+    private static final StringManager sm = StringManager.getManager(
+            Constants.Package);
 
     // ----------------------------------------------------- Class Variables
 
@@ -52,7 +50,6 @@ public final class Response {
      */
     private static final Locale DEFAULT_LOCALE = Locale.getDefault();
 
-
     // ----------------------------------------------------- Instance Variables
 
     /**
@@ -60,42 +57,35 @@ public final class Response {
      */
     int status = 200;
 
-
     /**
      * Status message.
      */
     String message = null;
-
 
     /**
      * Response headers.
      */
     final MimeHeaders headers = new MimeHeaders();
 
-
     /**
      * Associated output buffer.
      */
     OutputBuffer outputBuffer;
-
 
     /**
      * Notes.
      */
     final Object notes[] = new Object[Constants.MAX_NOTES];
 
-
     /**
      * Committed flag.
      */
     volatile boolean commited = false;
 
-
     /**
      * Action hook.
      */
     public volatile ActionHook hook;
-
 
     /**
      * HTTP specific fields.
@@ -128,34 +118,29 @@ public final class Response {
         return req;
     }
 
-    public void setRequest( Request req ) {
-        this.req=req;
+    public void setRequest(Request req) {
+        this.req = req;
     }
 
     public OutputBuffer getOutputBuffer() {
         return outputBuffer;
     }
 
-
     public void setOutputBuffer(OutputBuffer outputBuffer) {
         this.outputBuffer = outputBuffer;
     }
-
 
     public MimeHeaders getMimeHeaders() {
         return headers;
     }
 
-
     public ActionHook getHook() {
         return hook;
     }
 
-
     public void setHook(ActionHook hook) {
         this.hook = hook;
     }
-
 
     // -------------------- Per-Response "notes" --------------------
 
@@ -163,11 +148,9 @@ public final class Response {
         notes[pos] = value;
     }
 
-
     public final Object getNote(int pos) {
         return notes[pos];
     }
-
 
     // -------------------- Actions --------------------
 
@@ -181,21 +164,18 @@ public final class Response {
         }
     }
 
-
     // -------------------- State --------------------
 
     public int getStatus() {
         return status;
     }
 
-
     /**
      * Set the response status
      */
-    public void setStatus( int status ) {
+    public void setStatus(int status) {
         this.status = status;
     }
-
 
     /**
      * Get the status message.
@@ -204,7 +184,6 @@ public final class Response {
         return message;
     }
 
-
     /**
      * Set the status message.
      */
@@ -212,11 +191,9 @@ public final class Response {
         this.message = message;
     }
 
-
     public boolean isCommitted() {
         return commited;
     }
-
 
     public void setCommitted(boolean v) {
         if (v && !this.commited) {
@@ -226,7 +203,8 @@ public final class Response {
     }
 
     /**
-     * Return the time the response was committed (based on System.currentTimeMillis).
+     * Return the time the response was committed (based on
+     * System.currentTimeMillis).
      *
      * @return the time the response was committed
      */
@@ -236,7 +214,6 @@ public final class Response {
 
     // -----------------Error State --------------------
 
-
     /**
      * Set the error Exception that occurred during
      * request processing.
@@ -244,7 +221,6 @@ public final class Response {
     public void setErrorException(Exception ex) {
         errorException = ex;
     }
-
 
     /**
      * Get the Exception that occurred during request
@@ -254,14 +230,11 @@ public final class Response {
         return errorException;
     }
 
-
     public boolean isExceptionPresent() {
-        return ( errorException != null );
+        return (errorException != null);
     }
 
-
     // -------------------- Methods --------------------
-
 
     public void reset() throws IllegalStateException {
 
@@ -275,7 +248,6 @@ public final class Response {
         action(ActionCode.RESET, this);
     }
 
-
     // -------------------- Headers --------------------
     /**
      * Warning: This method always returns <code>false</code> for Content-Type
@@ -285,27 +257,24 @@ public final class Response {
         return headers.getHeader(name) != null;
     }
 
-
     public void setHeader(String name, String value) {
-        char cc=name.charAt(0);
-        if( cc=='C' || cc=='c' ) {
-            if( checkSpecialHeader(name, value) )
-            return;
+        char cc = name.charAt(0);
+        if (cc == 'C' || cc == 'c') {
+            if (checkSpecialHeader(name, value))
+                return;
         }
-        headers.setValue(name).setString( value);
+        headers.setValue(name).setString(value);
     }
-
 
     public void addHeader(String name, String value) {
         addHeader(name, value, null);
     }
 
-
     public void addHeader(String name, String value, Charset charset) {
-        char cc=name.charAt(0);
-        if( cc=='C' || cc=='c' ) {
-            if( checkSpecialHeader(name, value) )
-            return;
+        char cc = name.charAt(0);
+        if (cc == 'C' || cc == 'c') {
+            if (checkSpecialHeader(name, value))
+                return;
         }
         MessageBytes mb = headers.addValue(name);
         if (charset != null) {
@@ -314,25 +283,24 @@ public final class Response {
         mb.setString(value);
     }
 
-
     /**
      * Set internal fields for special header names.
      * Called from set/addHeader.
      * Return true if the header is special, no need to set the header.
      */
-    private boolean checkSpecialHeader( String name, String value) {
+    private boolean checkSpecialHeader(String name, String value) {
         // XXX Eliminate redundant fields !!!
         // ( both header and in special fields )
-        if( name.equalsIgnoreCase( "Content-Type" ) ) {
-            setContentType( value );
+        if (name.equalsIgnoreCase("Content-Type")) {
+            setContentType(value);
             return true;
         }
-        if( name.equalsIgnoreCase( "Content-Length" ) ) {
+        if (name.equalsIgnoreCase("Content-Length")) {
             try {
-                long cL=Long.parseLong( value );
-                setContentLength( cL );
+                long cL = Long.parseLong(value);
+                setContentLength(cL);
                 return true;
-            } catch( NumberFormatException ex ) {
+            } catch (NumberFormatException ex) {
                 // Do nothing - the spec doesn't have any "throws"
                 // and the user might know what he's doing
                 return false;
@@ -341,19 +309,17 @@ public final class Response {
         return false;
     }
 
-
-    /** Signal that we're done with the headers, and body will follow.
-     *  Any implementation needs to notify ContextManager, to allow
-     *  interceptors to fix headers.
+    /**
+     * Signal that we're done with the headers, and body will follow.
+     * Any implementation needs to notify ContextManager, to allow
+     * interceptors to fix headers.
      */
     public void sendHeaders() {
         action(ActionCode.COMMIT, this);
         setCommitted(true);
     }
 
-
     // -------------------- I18N --------------------
-
 
     public Locale getLocale() {
         return locale;
@@ -366,7 +332,7 @@ public final class Response {
     public void setLocale(Locale locale) {
 
         if (locale == null) {
-            return;  // throw an exception?
+            return; // throw an exception?
         }
 
         // Save the locale for use by getLocale()
@@ -387,7 +353,6 @@ public final class Response {
      * Overrides the name of the character encoding used in the body
      * of the response. This method must be called prior to writing output
      * using getWriter().
-     *
      * @param charset String containing the name of the character encoding.
      */
     public void setCharacterEncoding(String charset) {
@@ -398,7 +363,7 @@ public final class Response {
             return;
 
         characterEncoding = charset;
-        charsetSet=true;
+        charsetSet = true;
     }
 
     public String getCharacterEncoding() {
@@ -423,7 +388,7 @@ public final class Response {
 
         MediaType m = null;
         try {
-             m = MediaType.parseMediaType(new StringReader(type));
+            m = MediaType.parseMediaType(new StringReader(type));
         } catch (IOException e) {
             // Ignore - null test below handles this
         }
@@ -455,9 +420,7 @@ public final class Response {
 
         String ret = contentType;
 
-        if (ret != null
-            && characterEncoding != null
-            && charsetSet) {
+        if (ret != null && characterEncoding != null && charsetSet) {
             ret = ret + ";charset=" + characterEncoding;
         }
 
@@ -481,15 +444,13 @@ public final class Response {
         return contentLength;
     }
 
-
     /**
      * Write a chunk of bytes.
      */
-    public void doWrite(ByteChunk chunk/*byte buffer[], int pos, int count*/)
-        throws IOException
-    {
+    public void doWrite(ByteChunk chunk/* byte buffer[], int pos, int count */)
+            throws IOException {
         outputBuffer.doWrite(chunk, this);
-        contentWritten+=chunk.getLength();
+        contentWritten += chunk.getLength();
     }
 
     // --------------------
@@ -514,7 +475,7 @@ public final class Response {
         registeredForWrite = false;
 
         // update counters
-        contentWritten=0;
+        contentWritten = 0;
     }
 
     /**
@@ -546,24 +507,23 @@ public final class Response {
 
     public WriteListener getWriteListener() {
         return listener;
-}
+    }
 
     public void setWriteListener(WriteListener listener) {
         if (listener == null) {
-            throw new NullPointerException(
-                    sm.getString("response.nullWriteListener"));
+            throw new NullPointerException(sm.getString(
+                    "response.nullWriteListener"));
         }
         if (getWriteListener() != null) {
-            throw new IllegalStateException(
-                    sm.getString("response.writeListenerSet"));
+            throw new IllegalStateException(sm.getString(
+                    "response.writeListenerSet"));
         }
         // Note: This class is not used for HTTP upgrade so only need to test
         //       for async
         AtomicBoolean result = new AtomicBoolean(false);
         action(ActionCode.ASYNC_IS_ASYNC, result);
         if (!result.get()) {
-            throw new IllegalStateException(
-                    sm.getString("response.notAsync"));
+            throw new IllegalStateException(sm.getString("response.notAsync"));
         }
 
         this.listener = listener;

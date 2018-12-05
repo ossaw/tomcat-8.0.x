@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -15,24 +13,19 @@
  * limitations under the License.
  */
 
-
 package org.apache.tomcat.util.digester;
-
 
 import org.xml.sax.Attributes;
 
-
 /**
  * Rule implementation that creates a new object and pushes it
- * onto the object stack.  When the element is complete, the
+ * onto the object stack. When the element is complete, the
  * object will be popped
  */
 
 public class ObjectCreateRule extends Rule {
 
-
     // ----------------------------------------------------------- Constructors
-
 
     /**
      * Construct an object create rule with the specified class name.
@@ -45,23 +38,20 @@ public class ObjectCreateRule extends Rule {
 
     }
 
-
     /**
      * Construct an object create rule with the specified class name and an
      * optional attribute name containing an override.
      *
-     * @param className Java class name of the object to be created
+     * @param className     Java class name of the object to be created
      * @param attributeName Attribute name which, if present, contains an
-     *  override of the class name to create
+     *                      override of the class name to create
      */
-    public ObjectCreateRule(String className,
-                            String attributeName) {
+    public ObjectCreateRule(String className, String attributeName) {
 
         this.className = className;
         this.attributeName = attributeName;
 
     }
-
 
     // ----------------------------------------------------- Instance Variables
 
@@ -70,24 +60,23 @@ public class ObjectCreateRule extends Rule {
      */
     protected String attributeName = null;
 
-
     /**
      * The Java class name of the object to be created.
      */
     protected String className = null;
 
-
     // --------------------------------------------------------- Public Methods
-
 
     /**
      * Process the beginning of this element.
      *
-     * @param namespace the namespace URI of the matching element, or an
-     *   empty string if the parser is not namespace aware or the element has
-     *   no namespace
-     * @param name the local name if the parser is namespace aware, or just
-     *   the element name otherwise
+     * @param namespace  the namespace URI of the matching element, or an
+     *                   empty string if the parser is not namespace aware or
+     *                   the element has
+     *                   no namespace
+     * @param name       the local name if the parser is namespace aware, or
+     *                   just
+     *                   the element name otherwise
      * @param attributes The attribute list for this element
      */
     @Override
@@ -103,13 +92,13 @@ public class ObjectCreateRule extends Rule {
             }
         }
         if (digester.log.isDebugEnabled()) {
-            digester.log.debug("[ObjectCreateRule]{" + digester.match +
-                    "}New " + realClassName);
+            digester.log.debug("[ObjectCreateRule]{" + digester.match + "}New "
+                    + realClassName);
         }
 
         if (realClassName == null) {
-            throw new NullPointerException("No class name specified for " +
-                    namespace + " " + name);
+            throw new NullPointerException("No class name specified for "
+                    + namespace + " " + name);
         }
 
         // Instantiate the new object and push it on the context stack
@@ -118,27 +107,26 @@ public class ObjectCreateRule extends Rule {
         digester.push(instance);
     }
 
-
     /**
      * Process the end of this element.
      *
      * @param namespace the namespace URI of the matching element, or an
-     *   empty string if the parser is not namespace aware or the element has
-     *   no namespace
-     * @param name the local name if the parser is namespace aware, or just
-     *   the element name otherwise
+     *                  empty string if the parser is not namespace aware or the
+     *                  element has
+     *                  no namespace
+     * @param name      the local name if the parser is namespace aware, or just
+     *                  the element name otherwise
      */
     @Override
     public void end(String namespace, String name) throws Exception {
 
         Object top = digester.pop();
         if (digester.log.isDebugEnabled()) {
-            digester.log.debug("[ObjectCreateRule]{" + digester.match +
-                    "} Pop " + top.getClass().getName());
+            digester.log.debug("[ObjectCreateRule]{" + digester.match + "} Pop "
+                    + top.getClass().getName());
         }
 
     }
-
 
     /**
      * Render a printable version of this Rule.
@@ -155,6 +143,5 @@ public class ObjectCreateRule extends Rule {
         return (sb.toString());
 
     }
-
 
 }

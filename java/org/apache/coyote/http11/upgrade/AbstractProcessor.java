@@ -1,18 +1,16 @@
 /*
- *  Licensed to the Apache Software Foundation (ASF) under one or more
- *  contributor license agreements.  See the NOTICE file distributed with
- *  this work for additional information regarding copyright ownership.
- *  The ASF licenses this file to You under the Apache License, Version 2.0
- *  (the "License"); you may not use this file except in compliance with
- *  the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements. See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.apache.coyote.http11.upgrade;
 
@@ -34,11 +32,12 @@ import org.apache.tomcat.util.net.SocketStatus;
 import org.apache.tomcat.util.net.SocketWrapper;
 import org.apache.tomcat.util.res.StringManager;
 
-public abstract class AbstractProcessor<S>
-        implements Processor<S>, WebConnection {
+public abstract class AbstractProcessor<S> implements Processor<S>,
+        WebConnection {
 
-    protected static final StringManager sm =
-            StringManager.getManager(Constants.Package);
+    protected static final StringManager sm = StringManager.getManager(
+            Constants.Package);
+
     protected abstract Log getLog();
 
     private final UpgradeToken upgradeToken;
@@ -53,7 +52,6 @@ public abstract class AbstractProcessor<S>
         this.upgradeServletOutputStream = upgradeServletOutputStream;
     }
 
-
     // --------------------------------------------------- AutoCloseable methods
 
     @Override
@@ -61,7 +59,6 @@ public abstract class AbstractProcessor<S>
         upgradeServletInputStream.close();
         upgradeServletOutputStream.close();
     }
-
 
     // --------------------------------------------------- WebConnection methods
 
@@ -74,7 +71,6 @@ public abstract class AbstractProcessor<S>
     public ServletOutputStream getOutputStream() throws IOException {
         return upgradeServletOutputStream;
     }
-
 
     // ------------------------------------------- Implemented Processor methods
 
@@ -100,25 +96,25 @@ public abstract class AbstractProcessor<S>
             try {
                 upgradeServletInputStream.close();
             } catch (IOException ioe) {
-                getLog().debug(sm.getString(
-                        "abstractProcessor.isCloseFail", ioe));
+                getLog().debug(sm.getString("abstractProcessor.isCloseFail",
+                        ioe));
             }
             try {
                 upgradeServletOutputStream.close();
             } catch (IOException ioe) {
-                getLog().debug(sm.getString(
-                        "abstractProcessor.osCloseFail", ioe));
+                getLog().debug(sm.getString("abstractProcessor.osCloseFail",
+                        ioe));
             }
             return SocketState.CLOSED;
         } else if (status == SocketStatus.DISCONNECT) {
-            upgradeServletInputStream.onError(
-                    new IOException(sm.getString("abstractProcessor.clientAbort")));
+            upgradeServletInputStream.onError(new IOException(sm.getString(
+                    "abstractProcessor.clientAbort")));
         } else {
             // Unexpected state
             return SocketState.CLOSED;
         }
-        if (upgradeServletInputStream.isCloseRequired() ||
-                upgradeServletOutputStream.isCloseRequired()) {
+        if (upgradeServletInputStream.isCloseRequired()
+                || upgradeServletOutputStream.isCloseRequired()) {
             return SocketState.CLOSED;
         }
         return SocketState.UPGRADED;
@@ -128,7 +124,6 @@ public abstract class AbstractProcessor<S>
     public final void recycle(boolean socketClosing) {
         // Currently a NO-OP as upgrade processors are not recycled.
     }
-
 
     // ---------------------------- Processor methods that are NO-OP for upgrade
 

@@ -1,18 +1,16 @@
 /*
- *  Licensed to the Apache Software Foundation (ASF) under one or more
- *  contributor license agreements.  See the NOTICE file distributed with
- *  this work for additional information regarding copyright ownership.
- *  The ASF licenses this file to You under the Apache License, Version 2.0
- *  (the "License"); you may not use this file except in compliance with
- *  the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements. See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.apache.catalina.connector;
 
@@ -52,6 +50,7 @@ public class TestCoyoteAdapter extends TomcatBaseTest {
         TEXT_8K = sb.toString();
         BYTES_8K = TEXT_8K.getBytes(StandardCharsets.UTF_8);
     }
+
     @Test
     public void testPathParmsRootNone() throws Exception {
         pathParamTest("/", "none");
@@ -228,7 +227,7 @@ public class TestCoyoteAdapter extends TomcatBaseTest {
     }
 
     private void doTestUriDecoding(String path, String encoding,
-            String expectedPathInfo) throws Exception{
+            String expectedPathInfo) throws Exception {
 
         // Setup Tomcat instance
         Tomcat tomcat = getTomcatInstance();
@@ -244,8 +243,8 @@ public class TestCoyoteAdapter extends TomcatBaseTest {
 
         tomcat.start();
 
-        int rc = getUrl("http://localhost:" + getPort() + path,
-                new ByteChunk(), null);
+        int rc = getUrl("http://localhost:" + getPort() + path, new ByteChunk(),
+                null);
         Assert.assertEquals(HttpServletResponse.SC_OK, rc);
 
         Assert.assertEquals(expectedPathInfo, servlet.getPathInfo());
@@ -271,7 +270,6 @@ public class TestCoyoteAdapter extends TomcatBaseTest {
         }
     }
 
-
     @Test
     public void testBug54928() throws Exception {
         // Setup Tomcat instance
@@ -294,11 +292,11 @@ public class TestCoyoteAdapter extends TomcatBaseTest {
             }
         };
 
-        String request = "GET /async HTTP/1.1" + SimpleHttpClient.CRLF +
-                "Host: a" + SimpleHttpClient.CRLF + SimpleHttpClient.CRLF;
+        String request = "GET /async HTTP/1.1" + SimpleHttpClient.CRLF
+                + "Host: a" + SimpleHttpClient.CRLF + SimpleHttpClient.CRLF;
 
         client.setPort(getPort());
-        client.setRequest(new String[] {request});
+        client.setRequest(new String[] { request });
 
         client.connect();
         client.sendRequest();
@@ -317,8 +315,8 @@ public class TestCoyoteAdapter extends TomcatBaseTest {
         long startTime = System.nanoTime();
         t.join(5000);
         long endTime = System.nanoTime();
-        log.info("Waited for servlet thread to stop for "
-                + (endTime - startTime) / 1000000 + " ms");
+        log.info("Waited for servlet thread to stop for " + (endTime
+                - startTime) / 1000000 + " ms");
 
         Assert.assertTrue(servlet.isCompleted());
     }
@@ -343,7 +341,6 @@ public class TestCoyoteAdapter extends TomcatBaseTest {
             Assert.assertEquals(expected, mb.toString());
         }
     }
-
 
     private class AsyncServlet extends HttpServlet {
 
@@ -384,7 +381,7 @@ public class TestCoyoteAdapter extends TomcatBaseTest {
                             // because the client has gone away). In some cases
                             // there may be a large (ish) buffer to fill before
                             // the write fails.
-                            for (int j = 0 ; j < 8; j++) {
+                            for (int j = 0; j < 8; j++) {
                                 os.write(BYTES_8K);
                             }
                             os.flush();

@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -47,13 +45,14 @@ public class TestGroupChannelSenderConnections extends LoggingBaseTest {
         super.setUp();
         for (int i = 0; i < channels.length; i++) {
             channels[i] = new GroupChannel();
-            channels[i].getMembershipService().setPayload( ("Channel-" + (i + 1)).getBytes("ASCII"));
-            listeners[i] = new TestMsgListener( ("Listener-" + (i + 1)));
+            channels[i].getMembershipService().setPayload(("Channel-" + (i + 1))
+                    .getBytes("ASCII"));
+            listeners[i] = new TestMsgListener(("Listener-" + (i + 1)));
             channels[i].addChannelListener(listeners[i]);
         }
         TesterUtil.addRandomDomain(channels);
         for (int i = 0; i < channels.length; i++) {
-            channels[i].start(Channel.SND_RX_SEQ|Channel.SND_TX_SEQ);
+            channels[i].start(Channel.SND_RX_SEQ | Channel.SND_TX_SEQ);
         }
     }
 
@@ -90,27 +89,29 @@ public class TestGroupChannelSenderConnections extends LoggingBaseTest {
 
     @Test
     public void testConnectionLinger() throws Exception {
-        sendMessages(0,15000);
+        sendMessages(0, 15000);
     }
 
     @Test
     public void testKeepAliveCount() throws Exception {
         log.info("Setting keep alive count to 0");
         for (int i = 0; i < channels.length; i++) {
-            ReplicationTransmitter t = (ReplicationTransmitter)channels[0].getChannelSender();
+            ReplicationTransmitter t = (ReplicationTransmitter) channels[0]
+                    .getChannelSender();
             t.getTransport().setKeepAliveCount(0);
         }
-        sendMessages(1000,15000);
+        sendMessages(1000, 15000);
     }
 
     @Test
     public void testKeepAliveTime() throws Exception {
         log.info("Setting keep alive count to 1 second");
         for (int i = 0; i < channels.length; i++) {
-            ReplicationTransmitter t = (ReplicationTransmitter)channels[0].getChannelSender();
+            ReplicationTransmitter t = (ReplicationTransmitter) channels[0]
+                    .getChannelSender();
             t.getTransport().setKeepAliveTime(1000);
         }
-        sendMessages(2000,15000);
+        sendMessages(2000, 15000);
     }
 
     @After
@@ -126,14 +127,14 @@ public class TestGroupChannelSenderConnections extends LoggingBaseTest {
     }
 
     private void resetMessageCounters() {
-        for (TestMsgListener listener: listeners) {
+        for (TestMsgListener listener : listeners) {
             listener.reset();
         }
     }
 
     private int getReceivedMessageCount() {
         int count = 0;
-        for (TestMsgListener listener: listeners) {
+        for (TestMsgListener listener : listeners) {
             count += listener.getReceivedCount();
         }
         return count;
@@ -144,12 +145,13 @@ public class TestGroupChannelSenderConnections extends LoggingBaseTest {
         private static final long serialVersionUID = 1L;
         private static Random r = new Random();
         private HashMap<Integer, ArrayList<Object>> map = new HashMap<>();
+
         public TestMsg() {
             int size = Math.abs(r.nextInt() % 200);
-            for (int i=0; i<size; i++ ) {
-                int length = Math.abs(r.nextInt() %65000);
+            for (int i = 0; i < size; i++) {
+                int length = Math.abs(r.nextInt() % 65000);
                 ArrayList<Object> list = new ArrayList<>(length);
-                map.put(Integer.valueOf(i),list);
+                map.put(Integer.valueOf(i), list);
             }
         }
     }
@@ -157,6 +159,7 @@ public class TestGroupChannelSenderConnections extends LoggingBaseTest {
     public class TestMsgListener implements ChannelListener {
         private final String name;
         private final AtomicInteger counter = new AtomicInteger();
+
         public TestMsgListener(String name) {
             this.name = name;
         }
@@ -172,7 +175,8 @@ public class TestGroupChannelSenderConnections extends LoggingBaseTest {
         @Override
         public void messageReceived(Serializable msg, Member sender) {
             counter.incrementAndGet();
-            log.info("["+name+"] Received message:"+msg+" from " + sender.getName());
+            log.info("[" + name + "] Received message:" + msg + " from "
+                    + sender.getName());
         }
 
         @Override

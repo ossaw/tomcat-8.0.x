@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -33,7 +31,7 @@ import org.apache.tomcat.util.res.StringManager;
 
 /**
  * Custom subclass of <code>ObjectInputStream</code> that loads from the
- * class loader for this web application.  This allows classes defined only
+ * class loader for this web application. This allows classes defined only
  * with the web application to be found correctly.
  *
  * @author Craig R. McClanahan
@@ -41,10 +39,10 @@ import org.apache.tomcat.util.res.StringManager;
  */
 public final class CustomObjectInputStream extends ObjectInputStream {
 
-    private static final StringManager sm = StringManager.getManager(CustomObjectInputStream.class);
+    private static final StringManager sm = StringManager.getManager(
+            CustomObjectInputStream.class);
 
-    private static final WeakHashMap<ClassLoader, Set<String>> reportedClassCache =
-            new WeakHashMap<>();
+    private static final WeakHashMap<ClassLoader, Set<String>> reportedClassCache = new WeakHashMap<>();
 
     /**
      * The class loader we will use to resolve classes.
@@ -57,35 +55,36 @@ public final class CustomObjectInputStream extends ObjectInputStream {
     private final String allowedClassNameFilter;
     private final boolean warnOnFailure;
 
-
     /**
      * Construct a new instance of CustomObjectInputStream without any filtering
      * of deserialized classes.
      *
-     * @param stream The input stream we will read from
+     * @param stream      The input stream we will read from
      * @param classLoader The class loader used to instantiate objects
      *
      * @exception IOException if an input/output error occurs
      */
-    public CustomObjectInputStream(InputStream stream, ClassLoader classLoader) throws IOException {
+    public CustomObjectInputStream(InputStream stream, ClassLoader classLoader)
+            throws IOException {
         this(stream, classLoader, null, null, false);
     }
-
 
     /**
      * Construct a new instance of CustomObjectInputStream with filtering of
      * deserialized classes.
      *
-     * @param stream The input stream we will read from
-     * @param classLoader The class loader used to instantiate objects
-     * @param log The logger to use to report any issues. It may only be null if
-     *            the filterMode does not require logging
+     * @param stream                  The input stream we will read from
+     * @param classLoader             The class loader used to instantiate
+     *                                objects
+     * @param log                     The logger to use to report any issues. It
+     *                                may only be null if
+     *                                the filterMode does not require logging
      * @param allowedClassNamePattern The regular expression to use to filter
      *                                deserialized classes. The fully qualified
      *                                class name must match this pattern for
      *                                deserialization to be allowed if filtering
      *                                is enabled.
-     * @param warnOnFailure Should any failures be logged?
+     * @param warnOnFailure           Should any failures be logged?
      *
      * @exception IOException if an input/output error occurs
      */
@@ -94,8 +93,8 @@ public final class CustomObjectInputStream extends ObjectInputStream {
             throws IOException {
         super(stream);
         if (log == null && allowedClassNamePattern != null && warnOnFailure) {
-            throw new IllegalArgumentException(
-                    sm.getString("customObjectInputStream.logRequired"));
+            throw new IllegalArgumentException(sm.getString(
+                    "customObjectInputStream.logRequired"));
         }
         this.classLoader = classLoader;
         this.log = log;
@@ -111,13 +110,13 @@ public final class CustomObjectInputStream extends ObjectInputStream {
         synchronized (reportedClassCache) {
             reportedClasses = reportedClassCache.get(classLoader);
             if (reportedClasses == null) {
-                reportedClasses = Collections.newSetFromMap(new ConcurrentHashMap<String,Boolean>());
+                reportedClasses = Collections.newSetFromMap(
+                        new ConcurrentHashMap<String, Boolean>());
                 reportedClassCache.put(classLoader, reportedClasses);
             }
         }
         this.reportedClasses = reportedClasses;
     }
-
 
     /**
      * Load the local class equivalent of the specified stream class
@@ -126,18 +125,19 @@ public final class CustomObjectInputStream extends ObjectInputStream {
      * @param classDesc Class description from the input stream
      *
      * @exception ClassNotFoundException if this class cannot be found
-     * @exception IOException if an input/output error occurs
+     * @exception IOException            if an input/output error occurs
      */
     @Override
     public Class<?> resolveClass(ObjectStreamClass classDesc)
-        throws ClassNotFoundException, IOException {
+            throws ClassNotFoundException, IOException {
 
         String name = classDesc.getName();
         if (allowedClassNamePattern != null) {
             boolean allowed = allowedClassNamePattern.matcher(name).matches();
             if (!allowed) {
                 boolean doLog = warnOnFailure && reportedClasses.add(name);
-                String msg = sm.getString("customObjectInputStream.nomatch", name, allowedClassNameFilter);
+                String msg = sm.getString("customObjectInputStream.nomatch",
+                        name, allowedClassNameFilter);
                 if (doLog) {
                     log.warn(msg);
                 } else if (log.isDebugEnabled()) {
@@ -160,7 +160,6 @@ public final class CustomObjectInputStream extends ObjectInputStream {
             }
         }
     }
-
 
     /**
      * Return a proxy class that implements the interfaces named in a proxy

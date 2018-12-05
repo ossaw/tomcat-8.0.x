@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -15,8 +13,6 @@
  * limitations under the License.
  */
 package org.apache.tomcat.util.descriptor.web;
-
-
 
 /**
  * Representation of an EJB resource reference for a web application, as
@@ -32,8 +28,6 @@ public class ContextEjb extends ResourceBase {
 
     // ------------------------------------------------------------- Properties
 
-
-
     /**
      * The name of the EJB home implementation class.
      */
@@ -46,7 +40,6 @@ public class ContextEjb extends ResourceBase {
     public void setHome(String home) {
         this.home = home;
     }
-
 
     /**
      * The link to a J2EE EJB definition.
@@ -74,9 +67,7 @@ public class ContextEjb extends ResourceBase {
         this.remote = remote;
     }
 
-
     // --------------------------------------------------------- Public Methods
-
 
     /**
      * Return a String representation of this object.
@@ -112,7 +103,6 @@ public class ContextEjb extends ResourceBase {
 
     }
 
-
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -122,7 +112,6 @@ public class ContextEjb extends ResourceBase {
         result = prime * result + ((remote == null) ? 0 : remote.hashCode());
         return result;
     }
-
 
     @Override
     public boolean equals(Object obj) {

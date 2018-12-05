@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -57,7 +55,7 @@ class ImplicitTagLibraryInfo extends TagLibraryInfo {
     private static final String IMPLICIT_TLD = "implicit.tld";
 
     // Maps tag names to tag file paths
-    private final Hashtable<String,String> tagFileMap;
+    private final Hashtable<String, String> tagFileMap;
 
     private final ParserController pc;
     private final PageInfo pi;
@@ -67,10 +65,7 @@ class ImplicitTagLibraryInfo extends TagLibraryInfo {
      * Constructor.
      */
     public ImplicitTagLibraryInfo(JspCompilationContext ctxt,
-            ParserController pc,
-            PageInfo pi,
-            String prefix,
-            String tagdir,
+            ParserController pc, PageInfo pi, String prefix, String tagdir,
             ErrorDispatcher err) throws JasperException {
         super(prefix, null);
         this.pc = pc;
@@ -90,8 +85,7 @@ class ImplicitTagLibraryInfo extends TagLibraryInfo {
 
         // Determine the value of the <short-name> subelement of the
         // "imaginary" <taglib> element
-        if (tagdir.equals(WEB_INF_TAGS)
-                || tagdir.equals( WEB_INF_TAGS + "/")) {
+        if (tagdir.equals(WEB_INF_TAGS) || tagdir.equals(WEB_INF_TAGS + "/")) {
             shortname = TAGS_SHORTNAME;
         } else {
             shortname = tagdir.substring(WEB_INF_TAGS.length());
@@ -102,35 +96,39 @@ class ImplicitTagLibraryInfo extends TagLibraryInfo {
         Set<String> dirList = ctxt.getResourcePaths(tagdir);
         if (dirList != null) {
             for (String path : dirList) {
-                if (path.endsWith(TAG_FILE_SUFFIX)
-                        || path.endsWith(TAGX_FILE_SUFFIX)) {
+                if (path.endsWith(TAG_FILE_SUFFIX) || path.endsWith(
+                        TAGX_FILE_SUFFIX)) {
                     /*
                      * Use the filename of the tag file, without the .tag or
                      * .tagx extension, respectively, as the <name> subelement
                      * of the "imaginary" <tag-file> element
                      */
-                    String suffix = path.endsWith(TAG_FILE_SUFFIX) ?
-                            TAG_FILE_SUFFIX : TAGX_FILE_SUFFIX;
+                    String suffix = path.endsWith(TAG_FILE_SUFFIX)
+                            ? TAG_FILE_SUFFIX
+                            : TAGX_FILE_SUFFIX;
                     String tagName = path.substring(path.lastIndexOf('/') + 1);
-                    tagName = tagName.substring(0,
-                            tagName.lastIndexOf(suffix));
+                    tagName = tagName.substring(0, tagName.lastIndexOf(suffix));
                     tagFileMap.put(tagName, path);
                 } else if (path.endsWith(IMPLICIT_TLD)) {
                     TaglibXml taglibXml;
                     try {
                         URL url = ctxt.getResource(path);
-                        TldResourcePath resourcePath = new TldResourcePath(url, path);
-                        ServletContext servletContext = ctxt.getServletContext();
-                        boolean validate = Boolean.parseBoolean(
-                                servletContext.getInitParameter(
+                        TldResourcePath resourcePath = new TldResourcePath(url,
+                                path);
+                        ServletContext servletContext = ctxt
+                                .getServletContext();
+                        boolean validate = Boolean.parseBoolean(servletContext
+                                .getInitParameter(
                                         Constants.XML_VALIDATION_TLD_INIT_PARAM));
-                        String blockExternalString = servletContext.getInitParameter(
-                                Constants.XML_BLOCK_EXTERNAL_INIT_PARAM);
+                        String blockExternalString = servletContext
+                                .getInitParameter(
+                                        Constants.XML_BLOCK_EXTERNAL_INIT_PARAM);
                         boolean blockExternal;
                         if (blockExternalString == null) {
                             blockExternal = true;
                         } else {
-                            blockExternal = Boolean.parseBoolean(blockExternalString);
+                            blockExternal = Boolean.parseBoolean(
+                                    blockExternalString);
                         }
                         TldParser parser = new TldParser(true, validate,
                                 new ImplicitTldRuleSet(), blockExternal);
@@ -145,10 +143,12 @@ class ImplicitTagLibraryInfo extends TagLibraryInfo {
                     try {
                         double version = Double.parseDouble(this.jspversion);
                         if (version < 2.0) {
-                            err.jspError("jsp.error.invalid.implicit.version", path);
+                            err.jspError("jsp.error.invalid.implicit.version",
+                                    path);
                         }
                     } catch (NumberFormatException e) {
-                        err.jspError("jsp.error.invalid.implicit.version", path);
+                        err.jspError("jsp.error.invalid.implicit.version",
+                                path);
                     }
 
                     // Add implicit TLD to dependency list
@@ -166,7 +166,7 @@ class ImplicitTagLibraryInfo extends TagLibraryInfo {
      * and if so, parses the corresponding tag file.
      *
      * @return The TagFileInfo corresponding to the given tag name, or null if
-     * the given tag name is not implemented as a tag file
+     *         the given tag name is not implemented as a tag file
      */
     @Override
     public TagFileInfo getTagFile(String shortName) {
@@ -180,11 +180,8 @@ class ImplicitTagLibraryInfo extends TagLibraryInfo {
 
             TagInfo tagInfo = null;
             try {
-                tagInfo = TagFileProcessor.parseTagFileDirectives(pc,
-                        shortName,
-                        path,
-                        null,
-                        this);
+                tagInfo = TagFileProcessor.parseTagFileDirectives(pc, shortName,
+                        path, null, this);
             } catch (JasperException je) {
                 throw new RuntimeException(je.toString(), je);
             }

@@ -1,18 +1,16 @@
 /*
- *  Licensed to the Apache Software Foundation (ASF) under one or more
- *  contributor license agreements.  See the NOTICE file distributed with
- *  this work for additional information regarding copyright ownership.
- *  The ASF licenses this file to You under the Apache License, Version 2.0
- *  (the "License"); you may not use this file except in compliance with
- *  the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements. See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.apache.coyote.ajp;
 
@@ -28,7 +26,6 @@ import org.apache.tomcat.util.net.SSLImplementation;
 import org.apache.tomcat.util.net.SocketStatus;
 import org.apache.tomcat.util.net.SocketWrapper;
 
-
 /**
  * Abstract the protocol implementation, including threading, etc.
  * Processor is single threaded and specific to stream-based protocols,
@@ -36,21 +33,19 @@ import org.apache.tomcat.util.net.SocketWrapper;
  */
 public class AjpNio2Protocol extends AbstractAjpProtocol<Nio2Channel> {
 
-
     private static final Log log = LogFactory.getLog(AjpNio2Protocol.class);
 
     @Override
-    protected Log getLog() { return log; }
-
+    protected Log getLog() {
+        return log;
+    }
 
     @Override
     protected AbstractEndpoint.Handler getHandler() {
         return cHandler;
     }
 
-
     // ------------------------------------------------------------ Constructor
-
 
     public AjpNio2Protocol() {
         endpoint = new Nio2Endpoint();
@@ -63,15 +58,12 @@ public class AjpNio2Protocol extends AbstractAjpProtocol<Nio2Channel> {
         ((Nio2Endpoint) endpoint).setUseSendfile(false);
     }
 
-
     // ----------------------------------------------------- Instance Variables
-
 
     /**
      * Connection handler for AJP.
      */
     private final AjpConnectionHandler cHandler;
-
 
     // ----------------------------------------------------- JMX related methods
 
@@ -80,12 +72,10 @@ public class AjpNio2Protocol extends AbstractAjpProtocol<Nio2Channel> {
         return ("ajp-nio2");
     }
 
-
     // --------------------------------------  AjpConnectionHandler Inner Class
 
-
-    protected static class AjpConnectionHandler
-            extends AbstractAjpConnectionHandler<Nio2Channel, AjpNio2Processor>
+    protected static class AjpConnectionHandler extends
+            AbstractAjpConnectionHandler<Nio2Channel, AjpNio2Processor>
             implements Handler {
 
         protected final AjpNio2Protocol proto;
@@ -116,8 +106,8 @@ public class AjpNio2Protocol extends AbstractAjpProtocol<Nio2Channel> {
          */
         @Override
         public void release(SocketWrapper<Nio2Channel> socket) {
-            Processor<Nio2Channel> processor =
-                    connections.remove(socket.getSocket());
+            Processor<Nio2Channel> processor = connections.remove(socket
+                    .getSocket());
             if (processor != null) {
                 processor.recycle(true);
                 recycledProcessors.push(processor);
@@ -141,7 +131,8 @@ public class AjpNio2Protocol extends AbstractAjpProtocol<Nio2Channel> {
 
         @Override
         protected AjpNio2Processor createProcessor() {
-            AjpNio2Processor processor = new AjpNio2Processor(proto.packetSize, (Nio2Endpoint) proto.endpoint);
+            AjpNio2Processor processor = new AjpNio2Processor(proto.packetSize,
+                    (Nio2Endpoint) proto.endpoint);
             proto.configureProcessor(processor);
             register(processor);
             return processor;
@@ -150,7 +141,8 @@ public class AjpNio2Protocol extends AbstractAjpProtocol<Nio2Channel> {
         @Override
         public void closeAll() {
             for (Nio2Channel channel : connections.keySet()) {
-                ((Nio2Endpoint) proto.endpoint).closeSocket(channel.getSocket(), SocketStatus.STOP);
+                ((Nio2Endpoint) proto.endpoint).closeSocket(channel.getSocket(),
+                        SocketStatus.STOP);
             }
         }
     }

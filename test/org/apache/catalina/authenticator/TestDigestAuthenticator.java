@@ -1,18 +1,16 @@
 /*
- *  Licensed to the Apache Software Foundation (ASF) under one or more
- *  contributor license agreements.  See the NOTICE file distributed with
- *  this work for additional information regarding copyright ownership.
- *  The ASF licenses this file to You under the Apache License, Version 2.0
- *  (the "License"); you may not use this file except in compliance with
- *  the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements. See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.apache.catalina.authenticator;
 
@@ -59,7 +57,6 @@ public class TestDigestAuthenticator extends TomcatBaseTest {
     private static String NC2 = "00000002";
     private static String QOP = "auth";
 
-
     @Test
     public void bug54521() throws LifecycleException {
         DigestAuthenticator digestAuthenticator = new DigestAuthenticator();
@@ -74,9 +71,8 @@ public class TestDigestAuthenticator extends TomcatBaseTest {
             nonces.add(digestAuthenticator.generateNonce(request));
         }
 
-        Assert.assertEquals(count,  nonces.size());
+        Assert.assertEquals(count, nonces.size());
     }
-
 
     @Test
     public void testAllValid() throws Exception {
@@ -187,9 +183,8 @@ public class TestDigestAuthenticator extends TomcatBaseTest {
             throws Exception {
 
         if (!validateUri) {
-            DigestAuthenticator auth =
-                (DigestAuthenticator) getTomcatInstance().getHost().findChild(
-                        CONTEXT_PATH).getPipeline().getFirst();
+            DigestAuthenticator auth = (DigestAuthenticator) getTomcatInstance()
+                    .getHost().findChild(CONTEXT_PATH).getPipeline().getFirst();
             auth.setValidateUri(false);
         }
         getTomcatInstance().start();
@@ -203,10 +198,10 @@ public class TestDigestAuthenticator extends TomcatBaseTest {
         List<String> auth = new ArrayList<>();
         auth.add(buildDigestResponse(user, pwd, digestUri, realm, "null",
                 "null", nc1, cnonce, qop));
-        Map<String,List<String>> reqHeaders = new HashMap<>();
+        Map<String, List<String>> reqHeaders = new HashMap<>();
         reqHeaders.put(CLIENT_AUTH_HEADER, auth);
 
-        Map<String,List<String>> respHeaders = new HashMap<>();
+        Map<String, List<String>> respHeaders = new HashMap<>();
 
         // The first request will fail - but we need to extract the nonce
         ByteChunk bc = new ByteChunk();
@@ -228,8 +223,8 @@ public class TestDigestAuthenticator extends TomcatBaseTest {
                         getNonce(respHeaders), "null", nc1, cnonce, qop));
             }
         } else {
-            auth.add(buildDigestResponse(user, pwd, digestUri, realm,
-                    "null", getOpaque(respHeaders), nc1, cnonce, QOP));
+            auth.add(buildDigestResponse(user, pwd, digestUri, realm, "null",
+                    getOpaque(respHeaders), nc1, cnonce, QOP));
         }
         rc = getUrl("http://localhost:" + getPort() + uri, bc, reqHeaders,
                 null);
@@ -246,9 +241,8 @@ public class TestDigestAuthenticator extends TomcatBaseTest {
         auth.clear();
         bc.recycle();
         bc.reset();
-        auth.add(buildDigestResponse(user, pwd, digestUri, realm,
-                getNonce(respHeaders), getOpaque(respHeaders), nc2, cnonce,
-                qop));
+        auth.add(buildDigestResponse(user, pwd, digestUri, realm, getNonce(
+                respHeaders), getOpaque(respHeaders), nc2, cnonce, qop));
         rc = getUrl("http://localhost:" + getPort() + uri, bc, reqHeaders,
                 null);
 
@@ -295,9 +289,9 @@ public class TestDigestAuthenticator extends TomcatBaseTest {
         ctxt.getPipeline().addValve(new DigestAuthenticator());
     }
 
-    protected static String getNonce(Map<String,List<String>> respHeaders) {
-        List<String> authHeaders =
-            respHeaders.get(AuthenticatorBase.AUTH_HEADER_NAME);
+    protected static String getNonce(Map<String, List<String>> respHeaders) {
+        List<String> authHeaders = respHeaders.get(
+                AuthenticatorBase.AUTH_HEADER_NAME);
         // Assume there is only one
         String authHeader = authHeaders.iterator().next();
 
@@ -306,9 +300,9 @@ public class TestDigestAuthenticator extends TomcatBaseTest {
         return authHeader.substring(start, end);
     }
 
-    protected static String getOpaque(Map<String,List<String>> respHeaders) {
-        List<String> authHeaders =
-            respHeaders.get(AuthenticatorBase.AUTH_HEADER_NAME);
+    protected static String getOpaque(Map<String, List<String>> respHeaders) {
+        List<String> authHeaders = respHeaders.get(
+                AuthenticatorBase.AUTH_HEADER_NAME);
         // Assume there is only one
         String authHeader = authHeaders.iterator().next();
 
@@ -323,12 +317,12 @@ public class TestDigestAuthenticator extends TomcatBaseTest {
      * KD(secret, data) = H(concat(secret, ":", data))
      * A1 = unq(username-value) ":" unq(realm-value) ":" passwd
      * A2 = Method ":" digest-uri-value
-     * request-digest  = <"> < KD ( H(A1),     unq(nonce-value)
-                                    ":" nc-value
-                                    ":" unq(cnonce-value)
-                                    ":" unq(qop-value)
-                                    ":" H(A2)
-                                   ) <">
+     * request-digest = <"> < KD ( H(A1), unq(nonce-value)
+     * ":" nc-value
+     * ":" unq(cnonce-value)
+     * ":" unq(qop-value)
+     * ":" H(A2)
+     * ) <">
      */
     private static String buildDigestResponse(String user, String pwd,
             String uri, String realm, String nonce, String opaque, String nc,
@@ -344,8 +338,8 @@ public class TestDigestAuthenticator extends TomcatBaseTest {
         if (qop == null) {
             response = md5a1 + ":" + nonce + ":" + md5a2;
         } else {
-            response = md5a1 + ":" + nonce + ":" + nc + ":" + cnonce + ":" +
-                    qop + ":" + md5a2;
+            response = md5a1 + ":" + nonce + ":" + nc + ":" + cnonce + ":" + qop
+                    + ":" + md5a2;
         }
 
         String md5response = digest(response);
@@ -383,10 +377,9 @@ public class TestDigestAuthenticator extends TomcatBaseTest {
     }
 
     private static String digest(String input) {
-        return MD5Encoder.encode(
-                ConcurrentMessageDigest.digestMD5(input.getBytes()));
+        return MD5Encoder.encode(ConcurrentMessageDigest.digestMD5(input
+                .getBytes()));
     }
-
 
     private static class TesterRequest extends Request {
 

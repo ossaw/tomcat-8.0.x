@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -79,7 +77,8 @@ public class TestWsRemoteEndpoint extends WebSocketBaseTest {
         doTestWriter(TesterProgrammaticEndpoint.class, false);
     }
 
-    private void doTestWriter(Class<?> clazz, boolean useWriter) throws Exception {
+    private void doTestWriter(Class<?> clazz, boolean useWriter)
+            throws Exception {
         Tomcat tomcat = getTomcatInstance();
         // No file system docBase required
         Context ctx = tomcat.addContext("", null);
@@ -87,27 +86,26 @@ public class TestWsRemoteEndpoint extends WebSocketBaseTest {
         Tomcat.addServlet(ctx, "default", new DefaultServlet());
         ctx.addServletMappingDecoded("/", "default");
 
-        WebSocketContainer wsContainer =
-                ContainerProvider.getWebSocketContainer();
+        WebSocketContainer wsContainer = ContainerProvider
+                .getWebSocketContainer();
 
         tomcat.start();
 
         Session wsSession;
-        URI uri = new URI("ws://localhost:" + getPort() +
-                TesterEchoServer.Config.PATH_ASYNC);
+        URI uri = new URI("ws://localhost:" + getPort()
+                + TesterEchoServer.Config.PATH_ASYNC);
         if (Endpoint.class.isAssignableFrom(clazz)) {
             @SuppressWarnings("unchecked")
-            Class<? extends Endpoint> endpointClazz =
-                    (Class<? extends Endpoint>) clazz;
-            wsSession = wsContainer.connectToServer(endpointClazz,
-                    Builder.create().build(), uri);
+            Class<? extends Endpoint> endpointClazz = (Class<? extends Endpoint>) clazz;
+            wsSession = wsContainer.connectToServer(endpointClazz, Builder
+                    .create().build(), uri);
         } else {
             wsSession = wsContainer.connectToServer(clazz, uri);
         }
 
         CountDownLatch latch = new CountDownLatch(1);
-        TesterEndpoint tep =
-                (TesterEndpoint) wsSession.getUserProperties().get("endpoint");
+        TesterEndpoint tep = (TesterEndpoint) wsSession.getUserProperties().get(
+                "endpoint");
         tep.setLatch(latch);
         AsyncHandler<?> handler;
         if (useWriter) {
@@ -150,7 +148,8 @@ public class TestWsRemoteEndpoint extends WebSocketBaseTest {
             // are represented as a single UTF-8 byte so won't be split across
             // binary messages
             @SuppressWarnings("unchecked")
-            List<ByteBuffer> messages = (List<ByteBuffer>) handler.getMessages();
+            List<ByteBuffer> messages = (List<ByteBuffer>) handler
+                    .getMessages();
             for (ByteBuffer message : messages) {
                 byte[] bytes = new byte[message.limit()];
                 message.get(bytes);
@@ -162,8 +161,8 @@ public class TestWsRemoteEndpoint extends WebSocketBaseTest {
         int i = 0;
         for (String result : results) {
             // First may be a fragment
-            Assert.assertEquals(SEQUENCE.substring(offset, S_LEN),
-                    result.substring(0, S_LEN - offset));
+            Assert.assertEquals(SEQUENCE.substring(offset, S_LEN), result
+                    .substring(0, S_LEN - offset));
             i = S_LEN - offset;
             while (i + S_LEN < result.length()) {
                 if (!SEQUENCE.equals(result.substring(i, i + S_LEN))) {

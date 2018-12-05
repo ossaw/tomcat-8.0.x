@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -27,16 +25,14 @@ import org.apache.tomcat.util.buf.UDecoder;
 /**
  * Representation of a filter mapping for a web application, as represented
  * in a <code>&lt;filter-mapping&gt;</code> element in the deployment
- * descriptor.  Each filter mapping must contain a filter name plus either
+ * descriptor. Each filter mapping must contain a filter name plus either
  * a URL pattern or a servlet name.
  *
  * @author Craig R. McClanahan
  */
 public class FilterMap extends XmlEncodingBase implements Serializable {
 
-
     // ------------------------------------------------------------- Properties
-
 
     private static final long serialVersionUID = 1L;
 
@@ -67,7 +63,6 @@ public class FilterMap extends XmlEncodingBase implements Serializable {
         this.filterName = filterName;
     }
 
-
     /**
      * The servlet name this mapping matches.
      */
@@ -92,7 +87,6 @@ public class FilterMap extends XmlEncodingBase implements Serializable {
         }
     }
 
-
     /**
      * The flag that indicates this mapping will match all url-patterns
      */
@@ -102,7 +96,6 @@ public class FilterMap extends XmlEncodingBase implements Serializable {
         return matchAllUrlPatterns;
     }
 
-
     /**
      * The flag that indicates this mapping will match all servlet-names
      */
@@ -111,7 +104,6 @@ public class FilterMap extends XmlEncodingBase implements Serializable {
     public boolean getMatchAllServletNames() {
         return matchAllServletNames;
     }
-
 
     /**
      * The URL pattern this mapping matches.
@@ -129,6 +121,7 @@ public class FilterMap extends XmlEncodingBase implements Serializable {
     public void addURLPattern(String urlPattern) {
         addURLPatternDecoded(UDecoder.URLDecode(urlPattern, getEncoding()));
     }
+
     public void addURLPatternDecoded(String urlPattern) {
         if ("*".equals(urlPattern)) {
             this.matchAllUrlPatterns = true;
@@ -157,10 +150,10 @@ public class FilterMap extends XmlEncodingBase implements Serializable {
         } else if (dispatcher.equals(DispatcherType.REQUEST.name())) {
             // apply REQUEST to the global dispatcherMapping.
             dispatcherMapping |= REQUEST;
-        }  else if (dispatcher.equals(DispatcherType.ERROR.name())) {
+        } else if (dispatcher.equals(DispatcherType.ERROR.name())) {
             // apply ERROR to the global dispatcherMapping.
             dispatcherMapping |= ERROR;
-        }  else if (dispatcher.equals(DispatcherType.ASYNC.name())) {
+        } else if (dispatcher.equals(DispatcherType.ASYNC.name())) {
             // apply ERROR to the global dispatcherMapping.
             dispatcherMapping |= ASYNC;
         }
@@ -169,7 +162,8 @@ public class FilterMap extends XmlEncodingBase implements Serializable {
     public int getDispatcherMapping() {
         // per the SRV.6.2.5 absence of any dispatcher elements is
         // equivalent to a REQUEST value
-        if (dispatcherMapping == NOT_SET) return REQUEST;
+        if (dispatcherMapping == NOT_SET)
+            return REQUEST;
 
         return dispatcherMapping;
     }
@@ -196,7 +190,6 @@ public class FilterMap extends XmlEncodingBase implements Serializable {
 
     // --------------------------------------------------------- Public Methods
 
-
     /**
      * Render a String representation of this object.
      */
@@ -218,6 +211,5 @@ public class FilterMap extends XmlEncodingBase implements Serializable {
         return (sb.toString());
 
     }
-
 
 }

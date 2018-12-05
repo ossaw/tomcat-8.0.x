@@ -1,18 +1,16 @@
 /*
- *  Licensed to the Apache Software Foundation (ASF) under one or more
- *  contributor license agreements.  See the NOTICE file distributed with
- *  this work for additional information regarding copyright ownership.
- *  The ASF licenses this file to You under the Apache License, Version 2.0
- *  (the "License"); you may not use this file except in compliance with
- *  the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements. See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package org.apache.tomcat.util.net.jsse;
@@ -41,9 +39,9 @@ public final class JSSEKeyManager extends X509ExtendedKeyManager {
     /**
      * Constructor.
      *
-     * @param mgr The X509KeyManager used as a delegate
+     * @param mgr            The X509KeyManager used as a delegate
      * @param serverKeyAlias The alias name of the server's keypair and
-     * supporting certificate chain
+     *                       supporting certificate chain
      */
     public JSSEKeyManager(X509KeyManager mgr, String serverKeyAlias) {
         super();
@@ -57,19 +55,20 @@ public final class JSSEKeyManager extends X509ExtendedKeyManager {
      * recognized by the peer (if any).
      *
      * @param keyType The key algorithm type name(s), ordered with the
-     * most-preferred key type first
+     *                most-preferred key type first
      * @param issuers The list of acceptable CA issuer subject names, or null
-     * if it does not matter which issuers are used
-     * @param socket The socket to be used for this connection. This parameter
-     * can be null, in which case this method will return the most generic
-     * alias to use
+     *                if it does not matter which issuers are used
+     * @param socket  The socket to be used for this connection. This parameter
+     *                can be null, in which case this method will return the
+     *                most generic
+     *                alias to use
      *
      * @return The alias name for the desired key, or null if there are no
-     * matches
+     *         matches
      */
     @Override
     public String chooseClientAlias(String[] keyType, Principal[] issuers,
-                                    Socket socket) {
+            Socket socket) {
         return delegate.chooseClientAlias(keyType, issuers, socket);
     }
 
@@ -79,13 +78,13 @@ public final class JSSEKeyManager extends X509ExtendedKeyManager {
      *
      * @param keyType Ignored
      * @param issuers Ignored
-     * @param socket Ignored
+     * @param socket  Ignored
      *
      * @return Alias name for the desired key
      */
     @Override
     public String chooseServerAlias(String keyType, Principal[] issuers,
-                                    Socket socket) {
+            Socket socket) {
         return serverKeyAlias;
     }
 
@@ -95,8 +94,9 @@ public final class JSSEKeyManager extends X509ExtendedKeyManager {
      * @param alias The alias name
      *
      * @return Certificate chain (ordered with the user's certificate first
-     * and the root certificate authority last), or null if the alias can't be
-     * found
+     *         and the root certificate authority last), or null if the alias
+     *         can't be
+     *         found
      */
     @Override
     public X509Certificate[] getCertificateChain(String alias) {
@@ -110,10 +110,10 @@ public final class JSSEKeyManager extends X509ExtendedKeyManager {
      *
      * @param keyType The key algorithm type name
      * @param issuers The list of acceptable CA issuer subject names, or null
-     * if it does not matter which issuers are used
+     *                if it does not matter which issuers are used
      *
      * @return Array of the matching alias names, or null if there were no
-     * matches
+     *         matches
      */
     @Override
     public String[] getClientAliases(String keyType, Principal[] issuers) {
@@ -127,10 +127,10 @@ public final class JSSEKeyManager extends X509ExtendedKeyManager {
      *
      * @param keyType The key algorithm type name
      * @param issuers The list of acceptable CA issuer subject names, or null
-     * if it does not matter which issuers are used
+     *                if it does not matter which issuers are used
      *
      * @return Array of the matching alias names, or null if there were no
-     * matches
+     *         matches
      */
     @Override
     public String[] getServerAliases(String keyType, Principal[] issuers) {
@@ -155,13 +155,13 @@ public final class JSSEKeyManager extends X509ExtendedKeyManager {
      * recognized by the peer (if any).
      *
      * @param keyType The key algorithm type name(s), ordered with the
-     * most-preferred key type first
+     *                most-preferred key type first
      * @param issuers The list of acceptable CA issuer subject names, or null
-     * if it does not matter which issuers are used
-     * @param engine Ignored
+     *                if it does not matter which issuers are used
+     * @param engine  Ignored
      *
      * @return The alias name for the desired key, or null if there are no
-     * matches
+     *         matches
      */
     @Override
     public String chooseEngineClientAlias(String[] keyType, Principal[] issuers,
@@ -175,7 +175,7 @@ public final class JSSEKeyManager extends X509ExtendedKeyManager {
      *
      * @param keyType Ignored
      * @param issuers Ignored
-     * @param engine Ignored
+     * @param engine  Ignored
      *
      * @return Alias name for the desired key
      */

@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -36,8 +34,8 @@ public class ServletException extends Exception {
      * message can be written to the server log and/or displayed for the user.
      *
      * @param message
-     *            a <code>String</code> specifying the text of the exception
-     *            message
+     *                a <code>String</code> specifying the text of the exception
+     *                message
      */
     public ServletException(String message) {
         super(message);
@@ -49,12 +47,15 @@ public class ServletException extends Exception {
      * interfered with its normal operation, including a description message.
      *
      * @param message
-     *            a <code>String</code> containing the text of the exception
-     *            message
+     *                  a <code>String</code> containing the text of the
+     *                  exception
+     *                  message
      * @param rootCause
-     *            the <code>Throwable</code> exception that interfered with the
-     *            servlet's normal operation, making this servlet exception
-     *            necessary
+     *                  the <code>Throwable</code> exception that interfered
+     *                  with the
+     *                  servlet's normal operation, making this servlet
+     *                  exception
+     *                  necessary
      */
     public ServletException(String message, Throwable rootCause) {
         super(message, rootCause);
@@ -72,9 +73,10 @@ public class ServletException extends Exception {
      * overridden to create an exception message designed for a specific locale.
      *
      * @param rootCause
-     *            the <code>Throwable</code> exception that interfered with the
-     *            servlet's normal operation, making the servlet exception
-     *            necessary
+     *                  the <code>Throwable</code> exception that interfered
+     *                  with the
+     *                  servlet's normal operation, making the servlet exception
+     *                  necessary
      */
     public ServletException(Throwable rootCause) {
         super(rootCause);

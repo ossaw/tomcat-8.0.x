@@ -1,18 +1,16 @@
 /*
- *  Licensed to the Apache Software Foundation (ASF) under one or more
- *  contributor license agreements.  See the NOTICE file distributed with
- *  this work for additional information regarding copyright ownership.
- *  The ASF licenses this file to You under the Apache License, Version 2.0
- *  (the "License"); you may not use this file except in compliance with
- *  the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements. See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.apache.tomcat.util.buf;
 
@@ -29,13 +27,10 @@ import java.util.TreeMap;
  */
 public class StringCache {
 
-
-    private static final org.apache.juli.logging.Log log=
-        org.apache.juli.logging.LogFactory.getLog( StringCache.class );
-
+    private static final org.apache.juli.logging.Log log = org.apache.juli.logging.LogFactory
+            .getLog(StringCache.class);
 
     // ------------------------------------------------------- Static Variables
-
 
     /**
      * Enabled ?
@@ -43,76 +38,61 @@ public class StringCache {
     protected static boolean byteEnabled = ("true".equals(System.getProperty(
             "tomcat.util.buf.StringCache.byte.enabled", "false")));
 
-
     protected static boolean charEnabled = ("true".equals(System.getProperty(
             "tomcat.util.buf.StringCache.char.enabled", "false")));
-
 
     protected static int trainThreshold = Integer.parseInt(System.getProperty(
             "tomcat.util.buf.StringCache.trainThreshold", "20000"));
 
-
     protected static int cacheSize = Integer.parseInt(System.getProperty(
             "tomcat.util.buf.StringCache.cacheSize", "200"));
 
+    protected static final int maxStringSize = Integer.parseInt(System
+            .getProperty("tomcat.util.buf.StringCache.maxStringSize", "128"));
 
-    protected static final int maxStringSize =
-            Integer.parseInt(System.getProperty(
-                    "tomcat.util.buf.StringCache.maxStringSize", "128"));
-
-
-   /**
+    /**
      * Statistics hash map for byte chunk.
      */
-    protected static final HashMap<ByteEntry,int[]> bcStats =
-            new HashMap<>(cacheSize);
-
+    protected static final HashMap<ByteEntry, int[]> bcStats = new HashMap<>(
+            cacheSize);
 
     /**
      * toString count for byte chunk.
      */
     protected static int bcCount = 0;
 
-
     /**
      * Cache for byte chunk.
      */
     protected static ByteEntry[] bcCache = null;
 
-
     /**
      * Statistics hash map for char chunk.
      */
-    protected static final HashMap<CharEntry,int[]> ccStats =
-            new HashMap<>(cacheSize);
-
+    protected static final HashMap<CharEntry, int[]> ccStats = new HashMap<>(
+            cacheSize);
 
     /**
      * toString count for char chunk.
      */
     protected static int ccCount = 0;
 
-
     /**
      * Cache for char chunk.
      */
     protected static CharEntry[] ccCache = null;
-
 
     /**
      * Access count.
      */
     protected static int accessCount = 0;
 
-
     /**
      * Hit count.
      */
     protected static int hitCount = 0;
 
-
     // ------------------------------------------------------------ Properties
-
 
     /**
      * @return Returns the cacheSize.
@@ -121,14 +101,12 @@ public class StringCache {
         return cacheSize;
     }
 
-
     /**
      * @param cacheSize The cacheSize to set.
      */
     public void setCacheSize(int cacheSize) {
         StringCache.cacheSize = cacheSize;
     }
-
 
     /**
      * @return Returns the enabled.
@@ -137,14 +115,12 @@ public class StringCache {
         return byteEnabled;
     }
 
-
     /**
      * @param byteEnabled The enabled to set.
      */
     public void setByteEnabled(boolean byteEnabled) {
         StringCache.byteEnabled = byteEnabled;
     }
-
 
     /**
      * @return Returns the enabled.
@@ -153,14 +129,12 @@ public class StringCache {
         return charEnabled;
     }
 
-
     /**
      * @param charEnabled The enabled to set.
      */
     public void setCharEnabled(boolean charEnabled) {
         StringCache.charEnabled = charEnabled;
     }
-
 
     /**
      * @return Returns the trainThreshold.
@@ -169,14 +143,12 @@ public class StringCache {
         return trainThreshold;
     }
 
-
     /**
      * @param trainThreshold The trainThreshold to set.
      */
     public void setTrainThreshold(int trainThreshold) {
         StringCache.trainThreshold = trainThreshold;
     }
-
 
     /**
      * @return Returns the accessCount.
@@ -185,7 +157,6 @@ public class StringCache {
         return accessCount;
     }
 
-
     /**
      * @return Returns the hitCount.
      */
@@ -193,9 +164,7 @@ public class StringCache {
         return hitCount;
     }
 
-
     // -------------------------------------------------- Public Static Methods
-
 
     public void reset() {
         hitCount = 0;
@@ -209,7 +178,6 @@ public class StringCache {
             ccCount = 0;
         }
     }
-
 
     public static String toString(ByteChunk bc) {
 
@@ -232,9 +200,9 @@ public class StringCache {
                     if (bcCount > trainThreshold) {
                         long t1 = System.currentTimeMillis();
                         // Sort the entries according to occurrence
-                        TreeMap<Integer,ArrayList<ByteEntry>> tempMap =
-                                new TreeMap<>();
-                        for (Entry<ByteEntry,int[]> item : bcStats.entrySet()) {
+                        TreeMap<Integer, ArrayList<ByteEntry>> tempMap = new TreeMap<>();
+                        for (Entry<ByteEntry, int[]> item : bcStats
+                                .entrySet()) {
                             ByteEntry entry = item.getKey();
                             int[] countA = item.getValue();
                             Integer count = Integer.valueOf(countA[0]);
@@ -270,8 +238,8 @@ public class StringCache {
                                     tempbcCache[n + 1] = entry;
                                 } else {
                                     System.arraycopy(tempbcCache, insertPos + 1,
-                                            tempbcCache, insertPos + 2,
-                                            n - insertPos - 1);
+                                            tempbcCache, insertPos + 2, n
+                                                    - insertPos - 1);
                                     tempbcCache[insertPos + 1] = entry;
                                 }
                                 n++;
@@ -283,8 +251,8 @@ public class StringCache {
                         bcCache = tempbcCache;
                         if (log.isDebugEnabled()) {
                             long t2 = System.currentTimeMillis();
-                            log.debug("ByteCache generation time: " +
-                                    (t2 - t1) + "ms");
+                            log.debug("ByteCache generation time: " + (t2 - t1)
+                                    + "ms");
                         }
                     } else {
                         bcCount++;
@@ -327,7 +295,6 @@ public class StringCache {
 
     }
 
-
     public static String toString(CharChunk cc) {
 
         // If the cache is null, then either caching is disabled, or we're
@@ -349,9 +316,9 @@ public class StringCache {
                     if (ccCount > trainThreshold) {
                         long t1 = System.currentTimeMillis();
                         // Sort the entries according to occurrence
-                        TreeMap<Integer,ArrayList<CharEntry>> tempMap =
-                                new TreeMap<>();
-                        for (Entry<CharEntry,int[]> item : ccStats.entrySet()) {
+                        TreeMap<Integer, ArrayList<CharEntry>> tempMap = new TreeMap<>();
+                        for (Entry<CharEntry, int[]> item : ccStats
+                                .entrySet()) {
                             CharEntry entry = item.getKey();
                             int[] countA = item.getValue();
                             Integer count = Integer.valueOf(countA[0]);
@@ -387,8 +354,8 @@ public class StringCache {
                                     tempccCache[n + 1] = entry;
                                 } else {
                                     System.arraycopy(tempccCache, insertPos + 1,
-                                            tempccCache, insertPos + 2,
-                                            n - insertPos - 1);
+                                            tempccCache, insertPos + 2, n
+                                                    - insertPos - 1);
                                     tempccCache[insertPos + 1] = entry;
                                 }
                                 n++;
@@ -400,8 +367,8 @@ public class StringCache {
                         ccCache = tempccCache;
                         if (log.isDebugEnabled()) {
                             long t2 = System.currentTimeMillis();
-                            log.debug("CharCache generation time: " +
-                                    (t2 - t1) + "ms");
+                            log.debug("CharCache generation time: " + (t2 - t1)
+                                    + "ms");
                         }
                     } else {
                         ccCount++;
@@ -442,9 +409,7 @@ public class StringCache {
 
     }
 
-
     // ----------------------------------------------------- Protected Methods
-
 
     /**
      * Compare given byte chunk with byte array.
@@ -478,21 +443,19 @@ public class StringCache {
         return result;
     }
 
-
     /**
      * Find an entry given its name in the cache and return the associated
      * String.
      */
     protected static final String find(ByteChunk name) {
         int pos = findClosest(name, bcCache, bcCache.length);
-        if ((pos < 0) || (compare(name, bcCache[pos].name) != 0)
-                || !(name.getCharset().equals(bcCache[pos].charset))) {
+        if ((pos < 0) || (compare(name, bcCache[pos].name) != 0) || !(name
+                .getCharset().equals(bcCache[pos].charset))) {
             return null;
         } else {
             return bcCache[pos].value;
         }
     }
-
 
     /**
      * Find an entry given its name in a sorted array of map elements.
@@ -540,7 +503,6 @@ public class StringCache {
 
     }
 
-
     /**
      * Compare given char chunk with char array.
      * Return -1, 0 or +1 if inferior, equal, or superior to the String.
@@ -573,7 +535,6 @@ public class StringCache {
         return result;
     }
 
-
     /**
      * Find an entry given its name in the cache and return the associated
      * String.
@@ -586,7 +547,6 @@ public class StringCache {
             return ccCache[pos].value;
         }
     }
-
 
     /**
      * Find an entry given its name in a sorted array of map elements.
@@ -604,7 +564,7 @@ public class StringCache {
             return -1;
         }
 
-        if (compare(name, array[0].name) < 0 ) {
+        if (compare(name, array[0].name) < 0) {
             return -1;
         }
         if (b == 0) {
@@ -634,9 +594,7 @@ public class StringCache {
 
     }
 
-
     // -------------------------------------------------- ByteEntry Inner Class
-
 
     private static class ByteEntry {
 
@@ -648,10 +606,12 @@ public class StringCache {
         public String toString() {
             return value;
         }
+
         @Override
         public int hashCode() {
             return value.hashCode();
         }
+
         @Override
         public boolean equals(Object obj) {
             if (obj instanceof ByteEntry) {
@@ -662,9 +622,7 @@ public class StringCache {
 
     }
 
-
     // -------------------------------------------------- CharEntry Inner Class
-
 
     private static class CharEntry {
 
@@ -675,10 +633,12 @@ public class StringCache {
         public String toString() {
             return value;
         }
+
         @Override
         public int hashCode() {
             return value.hashCode();
         }
+
         @Override
         public boolean equals(Object obj) {
             if (obj instanceof CharEntry) {
@@ -688,6 +648,5 @@ public class StringCache {
         }
 
     }
-
 
 }

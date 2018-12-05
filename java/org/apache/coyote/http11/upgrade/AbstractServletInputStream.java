@@ -1,18 +1,16 @@
 /*
- *  Licensed to the Apache Software Foundation (ASF) under one or more
- *  contributor license agreements.  See the NOTICE file distributed with
- *  this work for additional information regarding copyright ownership.
- *  The ASF licenses this file to You under the Apache License, Version 2.0
- *  (the "License"); you may not use this file except in compliance with
- *  the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements. See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.apache.coyote.http11.upgrade;
 
@@ -28,9 +26,10 @@ import org.apache.tomcat.util.res.StringManager;
 
 public abstract class AbstractServletInputStream extends ServletInputStream {
 
-    private static final Log log = LogFactory.getLog(AbstractServletInputStream.class);
-    protected static final StringManager sm =
-            StringManager.getManager(Constants.Package);
+    private static final Log log = LogFactory.getLog(
+            AbstractServletInputStream.class);
+    protected static final StringManager sm = StringManager.getManager(
+            Constants.Package);
 
     private volatile boolean closeRequired = false;
     // Start in blocking-mode
@@ -41,20 +40,19 @@ public abstract class AbstractServletInputStream extends ServletInputStream {
     @Override
     public final boolean isFinished() {
         if (listener == null) {
-            throw new IllegalStateException(
-                    sm.getString("upgrade.sis.isFinished.ise"));
+            throw new IllegalStateException(sm.getString(
+                    "upgrade.sis.isFinished.ise"));
         }
         // The only way to finish an HTTP Upgrade connection is to close the
         // socket.
         return false;
     }
 
-
     @Override
     public final boolean isReady() {
         if (listener == null) {
-            throw new IllegalStateException(
-                    sm.getString("upgrade.sis.isReady.ise"));
+            throw new IllegalStateException(sm.getString(
+                    "upgrade.sis.isReady.ise"));
         }
 
         // If we already know the current state, return it.
@@ -70,16 +68,15 @@ public abstract class AbstractServletInputStream extends ServletInputStream {
         return ready.booleanValue();
     }
 
-
     @Override
     public final void setReadListener(ReadListener listener) {
         if (listener == null) {
-            throw new IllegalArgumentException(
-                    sm.getString("upgrade.sis.readListener.null"));
+            throw new IllegalArgumentException(sm.getString(
+                    "upgrade.sis.readListener.null"));
         }
         if (this.listener != null) {
-            throw new IllegalArgumentException(
-                    sm.getString("upgrade.sis.readListener.set"));
+            throw new IllegalArgumentException(sm.getString(
+                    "upgrade.sis.readListener.set"));
         }
         this.listener = listener;
         this.applicationLoader = Thread.currentThread().getContextClassLoader();
@@ -87,14 +84,12 @@ public abstract class AbstractServletInputStream extends ServletInputStream {
         ready = null;
     }
 
-
     @Override
     public final int read() throws IOException {
         preReadChecks();
 
         return readInternal();
     }
-
 
     @Override
     public final int readLine(byte[] b, int off, int len) throws IOException {
@@ -115,7 +110,6 @@ public abstract class AbstractServletInputStream extends ServletInputStream {
         return count > 0 ? count : -1;
     }
 
-
     @Override
     public final int read(byte[] b, int off, int len) throws IOException {
         preReadChecks();
@@ -128,24 +122,20 @@ public abstract class AbstractServletInputStream extends ServletInputStream {
         }
     }
 
-
-
     @Override
     public void close() throws IOException {
         closeRequired = true;
         doClose();
     }
 
-
     private void preReadChecks() {
         if (listener != null && (ready == null || !ready.booleanValue())) {
-            throw new IllegalStateException(
-                    sm.getString("upgrade.sis.read.ise"));
+            throw new IllegalStateException(sm.getString(
+                    "upgrade.sis.read.ise"));
         }
         // No longer know if data is available
         ready = null;
     }
-
 
     private int readInternal() throws IOException {
         // Single byte reads for non-blocking need special handling so all
@@ -170,7 +160,6 @@ public abstract class AbstractServletInputStream extends ServletInputStream {
         }
     }
 
-
     protected final void onAllDataRead() throws IOException {
         if (listener == null) {
             return;
@@ -184,7 +173,6 @@ public abstract class AbstractServletInputStream extends ServletInputStream {
             thread.setContextClassLoader(originalClassLoader);
         }
     }
-
 
     final void onDataAvailable() {
         if (listener == null) {
@@ -203,7 +191,6 @@ public abstract class AbstractServletInputStream extends ServletInputStream {
             thread.setContextClassLoader(originalClassLoader);
         }
     }
-
 
     protected final void onError(Throwable t) {
         if (listener == null) {
@@ -230,11 +217,9 @@ public abstract class AbstractServletInputStream extends ServletInputStream {
         ready = Boolean.FALSE;
     }
 
-
     final boolean isCloseRequired() {
         return closeRequired;
     }
-
 
     protected abstract boolean doIsReady() throws IOException;
 

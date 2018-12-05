@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -32,14 +30,14 @@ public class PersistentManagerSF extends StoreFactoryBase {
      * Store the specified PersistentManager properties.
      *
      * @param aWriter
-     *            PrintWriter to which we are storing
+     *                 PrintWriter to which we are storing
      * @param indent
-     *            Number of spaces to indent this element
+     *                 Number of spaces to indent this element
      * @param aManager
-     *            PersistentManager whose properties are being stored
+     *                 PersistentManager whose properties are being stored
      *
      * @exception Exception
-     *                if an exception occurs while storing
+     *                      if an exception occurs while storing
      */
     @Override
     public void storeChildren(PrintWriter aWriter, int indent, Object aManager,
@@ -52,7 +50,8 @@ public class PersistentManagerSF extends StoreFactoryBase {
             storeElement(aWriter, indent, store);
 
             // Store nested <SessionIdGenerator> element
-            SessionIdGenerator sessionIdGenerator = manager.getSessionIdGenerator();
+            SessionIdGenerator sessionIdGenerator = manager
+                    .getSessionIdGenerator();
             if (sessionIdGenerator != null) {
                 storeElement(aWriter, indent, sessionIdGenerator);
             }

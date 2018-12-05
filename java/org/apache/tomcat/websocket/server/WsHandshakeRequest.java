@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -38,16 +36,16 @@ import org.apache.tomcat.websocket.CaseInsensitiveKeyMap;
 public class WsHandshakeRequest implements HandshakeRequest {
 
     private final URI requestUri;
-    private final Map<String,List<String>> parameterMap;
+    private final Map<String, List<String>> parameterMap;
     private final String queryString;
     private final Principal userPrincipal;
-    private final Map<String,List<String>> headers;
+    private final Map<String, List<String>> headers;
     private final Object httpSession;
 
     private volatile HttpServletRequest request;
 
-
-    public WsHandshakeRequest(HttpServletRequest request, Map<String,String> pathParams) {
+    public WsHandshakeRequest(HttpServletRequest request,
+            Map<String, String> pathParams) {
 
         this.request = request;
 
@@ -68,30 +66,28 @@ public class WsHandshakeRequest implements HandshakeRequest {
         }
 
         // ParameterMap
-        Map<String,String[]> originalParameters = request.getParameterMap();
-        Map<String,List<String>> newParameters =
-                new HashMap<>(originalParameters.size());
-        for (Entry<String,String[]> entry : originalParameters.entrySet()) {
-            newParameters.put(entry.getKey(),
-                    Collections.unmodifiableList(
-                            Arrays.asList(entry.getValue())));
+        Map<String, String[]> originalParameters = request.getParameterMap();
+        Map<String, List<String>> newParameters = new HashMap<>(
+                originalParameters.size());
+        for (Entry<String, String[]> entry : originalParameters.entrySet()) {
+            newParameters.put(entry.getKey(), Collections.unmodifiableList(
+                    Arrays.asList(entry.getValue())));
         }
-        for (Entry<String,String> entry : pathParams.entrySet()) {
-            newParameters.put(entry.getKey(),
-                    Collections.unmodifiableList(
-                            Arrays.asList(entry.getValue())));
+        for (Entry<String, String> entry : pathParams.entrySet()) {
+            newParameters.put(entry.getKey(), Collections.unmodifiableList(
+                    Arrays.asList(entry.getValue())));
         }
         parameterMap = Collections.unmodifiableMap(newParameters);
 
         // Headers
-        Map<String,List<String>> newHeaders = new CaseInsensitiveKeyMap<>();
+        Map<String, List<String>> newHeaders = new CaseInsensitiveKeyMap<>();
 
         Enumeration<String> headerNames = request.getHeaderNames();
         while (headerNames.hasMoreElements()) {
             String headerName = headerNames.nextElement();
 
-            newHeaders.put(headerName, Collections.unmodifiableList(
-                    Collections.list(request.getHeaders(headerName))));
+            newHeaders.put(headerName, Collections.unmodifiableList(Collections
+                    .list(request.getHeaders(headerName))));
         }
 
         headers = Collections.unmodifiableMap(newHeaders);
@@ -103,7 +99,7 @@ public class WsHandshakeRequest implements HandshakeRequest {
     }
 
     @Override
-    public Map<String,List<String>> getParameterMap() {
+    public Map<String, List<String>> getParameterMap() {
         return parameterMap;
     }
 
@@ -118,7 +114,7 @@ public class WsHandshakeRequest implements HandshakeRequest {
     }
 
     @Override
-    public Map<String,List<String>> getHeaders() {
+    public Map<String, List<String>> getHeaders() {
         return headers;
     }
 

@@ -1,18 +1,16 @@
 /*
- *  Licensed to the Apache Software Foundation (ASF) under one or more
- *  contributor license agreements.  See the NOTICE file distributed with
- *  this work for additional information regarding copyright ownership.
- *  The ASF licenses this file to You under the Apache License, Version 2.0
- *  (the "License"); you may not use this file except in compliance with
- *  the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements. See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.apache.juli;
 
@@ -35,21 +33,23 @@ public class TestClassLoaderLogManager {
         ClassLoaderLogManager logManager = new ClassLoaderLogManager();
         Assert.assertEquals("", logManager.replace(""));
         Assert.assertEquals("${", logManager.replace("${"));
-        Assert.assertEquals("${undefinedproperty}", logManager.replace("${undefinedproperty}"));
-        Assert.assertEquals(
-                System.lineSeparator() + File.pathSeparator + File.separator,
-                logManager.replace("${line.separator}${path.separator}${file.separator}"));
-        Assert.assertEquals(
-                "foo" + File.separator + "bar" + System.lineSeparator() + File.pathSeparator + "baz",
-                logManager.replace("foo${file.separator}bar${line.separator}${path.separator}baz"));
+        Assert.assertEquals("${undefinedproperty}", logManager.replace(
+                "${undefinedproperty}"));
+        Assert.assertEquals(System.lineSeparator() + File.pathSeparator
+                + File.separator, logManager.replace(
+                        "${line.separator}${path.separator}${file.separator}"));
+        Assert.assertEquals("foo" + File.separator + "bar" + System
+                .lineSeparator() + File.pathSeparator + "baz", logManager
+                        .replace(
+                                "foo${file.separator}bar${line.separator}${path.separator}baz"));
         // BZ 51249
-        Assert.assertEquals(
-                "%{file.separator}" + File.separator,
-                logManager.replace("%{file.separator}${file.separator}"));
-        Assert.assertEquals(
-                File.separator + "${undefinedproperty}" + File.separator,
-                logManager.replace("${file.separator}${undefinedproperty}${file.separator}"));
-        Assert.assertEquals("${}" + File.pathSeparator, logManager.replace("${}${path.separator}"));
+        Assert.assertEquals("%{file.separator}" + File.separator, logManager
+                .replace("%{file.separator}${file.separator}"));
+        Assert.assertEquals(File.separator + "${undefinedproperty}"
+                + File.separator, logManager.replace(
+                        "${file.separator}${undefinedproperty}${file.separator}"));
+        Assert.assertEquals("${}" + File.pathSeparator, logManager.replace(
+                "${}${path.separator}"));
     }
 
     @Test
@@ -57,7 +57,7 @@ public class TestClassLoaderLogManager {
         ClassLoaderLogManager logManager = new ClassLoaderLogManager();
 
         LoggerCreateThread[] createThreads = new LoggerCreateThread[10];
-        for (int i = 0; i < createThreads.length; i ++) {
+        for (int i = 0; i < createThreads.length; i++) {
             createThreads[i] = new LoggerCreateThread(logManager);
             createThreads[i].setName("LoggerCreate-" + i);
             createThreads[i].start();
@@ -73,7 +73,7 @@ public class TestClassLoaderLogManager {
             // Ignore
         }
 
-        for (int i = 0; i < createThreads.length; i ++) {
+        for (int i = 0; i < createThreads.length; i++) {
             createThreads[i].setRunning(false);
         }
 
@@ -94,7 +94,8 @@ public class TestClassLoaderLogManager {
         public void run() {
             Random r = new Random();
             while (running) {
-                Logger logger = Logger.getLogger("Bug56082-" + r.nextInt(100000));
+                Logger logger = Logger.getLogger("Bug56082-" + r.nextInt(
+                        100000));
                 logManager.addLogger(logger);
             }
         }

@@ -1,18 +1,16 @@
 /*
- *  Licensed to the Apache Software Foundation (ASF) under one or more
- *  contributor license agreements.  See the NOTICE file distributed with
- *  this work for additional information regarding copyright ownership.
- *  The ASF licenses this file to You under the Apache License, Version 2.0
- *  (the "License"); you may not use this file except in compliance with
- *  the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements. See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.apache.coyote.ajp;
 
@@ -29,16 +27,13 @@ public abstract class AbstractAjpProtocol<S> extends AbstractProtocol<S> {
     /**
      * The string manager for this package.
      */
-    protected static final StringManager sm =
-            StringManager.getManager(Constants.Package);
-
+    protected static final StringManager sm = StringManager.getManager(
+            Constants.Package);
 
     @Override
     protected String getProtocolName() {
         return "Ajp";
     }
-
-
 
     // ------------------------------------------------- AJP specific properties
     // ------------------------------------------ managed in the ProtocolHandler
@@ -55,50 +50,63 @@ public abstract class AbstractAjpProtocol<S> extends AbstractProtocol<S> {
      * packets are enabled by default.
      */
     protected boolean ajpFlush = true;
-    public boolean getAjpFlush() { return ajpFlush; }
+
+    public boolean getAjpFlush() {
+        return ajpFlush;
+    }
+
     public void setAjpFlush(boolean ajpFlush) {
         this.ajpFlush = ajpFlush;
     }
-
 
     /**
      * Should authentication be done in the native web server layer,
      * or in the Servlet container ?
      */
     protected boolean tomcatAuthentication = true;
-    public boolean getTomcatAuthentication() { return tomcatAuthentication; }
+
+    public boolean getTomcatAuthentication() {
+        return tomcatAuthentication;
+    }
+
     public void setTomcatAuthentication(boolean tomcatAuthentication) {
         this.tomcatAuthentication = tomcatAuthentication;
     }
-
 
     /**
      * Should authentication be done in the native web server layer and
      * authorization in the Servlet container?
      */
     private boolean tomcatAuthorization = false;
-    public boolean getTomcatAuthorization() { return tomcatAuthorization; }
+
+    public boolean getTomcatAuthorization() {
+        return tomcatAuthorization;
+    }
+
     public void setTomcatAuthorization(boolean tomcatAuthorization) {
         this.tomcatAuthorization = tomcatAuthorization;
     }
-
 
     /**
      * Required secret.
      */
     protected String requiredSecret = null;
+
     public void setRequiredSecret(String requiredSecret) {
         this.requiredSecret = requiredSecret;
     }
-
 
     /**
      * AJP packet size.
      */
     protected int packetSize = Constants.MAX_PACKET_SIZE;
-    public int getPacketSize() { return packetSize; }
+
+    public int getPacketSize() {
+        return packetSize;
+    }
+
     public void setPacketSize(int packetSize) {
-        if(packetSize < Constants.MAX_PACKET_SIZE) {
+        if (packetSize < Constants.MAX_PACKET_SIZE) {
             this.packetSize = Constants.MAX_PACKET_SIZE;
         } else {
             this.packetSize = packetSize;
@@ -116,11 +124,12 @@ public abstract class AbstractAjpProtocol<S> extends AbstractProtocol<S> {
         processor.setMaxCookieCount(getMaxCookieCount());
     }
 
-    protected abstract static class AbstractAjpConnectionHandler<S,P extends AbstractAjpProcessor<S>>
+    protected abstract static class AbstractAjpConnectionHandler<S, P extends AbstractAjpProcessor<S>>
             extends AbstractConnectionHandler<S, P> {
 
         @Override
-        protected void initSsl(SocketWrapper<S> socket, Processor<S> processor) {
+        protected void initSsl(SocketWrapper<S> socket,
+                Processor<S> processor) {
             // NOOP for AJP
         }
 
@@ -132,8 +141,8 @@ public abstract class AbstractAjpProtocol<S> extends AbstractProtocol<S> {
         }
 
         @Override
-        protected P createUpgradeProcessor(SocketWrapper<S> socket, ByteBuffer leftoverInput,
-                UpgradeToken upgradeToken) {
+        protected P createUpgradeProcessor(SocketWrapper<S> socket,
+                ByteBuffer leftoverInput, UpgradeToken upgradeToken) {
             // TODO should fail - throw IOE
             return null;
         }

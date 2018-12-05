@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -34,7 +32,6 @@ import javax.websocket.server.ServerEndpointConfig;
 
 import org.junit.Assert;
 import org.junit.Test;
-
 
 import org.apache.catalina.Context;
 import org.apache.catalina.servlets.DefaultServlet;
@@ -66,7 +63,7 @@ public class TestWsSubprotocols extends WebSocketBaseTest {
                 TesterProgrammaticEndpoint.class, ClientEndpointConfig.Builder
                         .create().preferredSubprotocols(Arrays.asList("sp3"))
                         .build(), new URI("ws://localhost:" + getPort()
-                        + SubProtocolsEndpoint.PATH_BASIC));
+                                + SubProtocolsEndpoint.PATH_BASIC));
 
         Assert.assertTrue(wsSession.isOpen());
         if (wsSession.getNegotiatedSubprotocol() != null) {
@@ -79,7 +76,7 @@ public class TestWsSubprotocols extends WebSocketBaseTest {
                 TesterProgrammaticEndpoint.class, ClientEndpointConfig.Builder
                         .create().preferredSubprotocols(Arrays.asList("sp2"))
                         .build(), new URI("ws://localhost:" + getPort()
-                        + SubProtocolsEndpoint.PATH_BASIC));
+                                + SubProtocolsEndpoint.PATH_BASIC));
 
         Assert.assertTrue(wsSession.isOpen());
         Assert.assertEquals("sp2", wsSession.getNegotiatedSubprotocol());
@@ -91,21 +88,21 @@ public class TestWsSubprotocols extends WebSocketBaseTest {
             Thread.sleep(100);
         }
         Assert.assertNotNull(SubProtocolsEndpoint.subprotocols);
-        Assert.assertArrayEquals(new String[]{"sp1","sp2"},
+        Assert.assertArrayEquals(new String[] { "sp1", "sp2" },
                 SubProtocolsEndpoint.subprotocols.toArray(new String[2]));
         wsSession.close();
         SubProtocolsEndpoint.recycle();
     }
 
-    @ServerEndpoint(value = "/echo", subprotocols = {"sp1","sp2"})
+    @ServerEndpoint(value = "/echo", subprotocols = { "sp1", "sp2" })
     public static class SubProtocolsEndpoint {
         public static String PATH_BASIC = "/echo";
         public static volatile List<String> subprotocols;
 
         @OnOpen
         public void processOpen(@SuppressWarnings("unused") Session session,
-                EndpointConfig  epc) {
-            subprotocols = ((ServerEndpointConfig)epc).getSubprotocols();
+                EndpointConfig epc) {
+            subprotocols = ((ServerEndpointConfig) epc).getSubprotocols();
         }
 
         public static void recycle() {
@@ -119,8 +116,8 @@ public class TestWsSubprotocols extends WebSocketBaseTest {
         public void contextInitialized(ServletContextEvent sce) {
             super.contextInitialized(sce);
             ServerContainer sc = (ServerContainer) sce.getServletContext()
-                    .getAttribute(Constants.
-                            SERVER_CONTAINER_SERVLET_CONTEXT_ATTRIBUTE);
+                    .getAttribute(
+                            Constants.SERVER_CONTAINER_SERVLET_CONTEXT_ATTRIBUTE);
             try {
                 sc.addEndpoint(SubProtocolsEndpoint.class);
             } catch (DeploymentException e) {

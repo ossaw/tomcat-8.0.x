@@ -1,18 +1,16 @@
 /*
- *  Licensed to the Apache Software Foundation (ASF) under one or more
- *  contributor license agreements.  See the NOTICE file distributed with
- *  this work for additional information regarding copyright ownership.
- *  The ASF licenses this file to You under the Apache License, Version 2.0
- *  (the "License"); you may not use this file except in compliance with
- *  the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements. See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.apache.coyote;
 
@@ -32,7 +30,7 @@ import org.apache.tomcat.util.res.StringManager;
 
 /**
  * This is a low-level, efficient representation of a server request. Most
- * fields are GC-free, expensive operations are delayed until the  user code
+ * fields are GC-free, expensive operations are delayed until the user code
  * needs the information.
  *
  * Processing is delegated to modules, using a hook mechanism.
@@ -44,8 +42,8 @@ import org.apache.tomcat.util.res.StringManager;
  *
  * Tomcat defines a number of attributes:
  * <ul>
- *   <li>"org.apache.tomcat.request" - allows access to the low-level
- *       request object in trusted applications
+ * <li>"org.apache.tomcat.request" - allows access to the low-level
+ * request object in trusted applications
  * </ul>
  *
  * @author James Duncan Davidson [duncan@eng.sun.com]
@@ -59,8 +57,8 @@ import org.apache.tomcat.util.res.StringManager;
  */
 public final class Request {
 
-    private static final StringManager sm =
-            StringManager.getManager(Constants.Package);
+    private static final StringManager sm = StringManager.getManager(
+            Constants.Package);
 
     // Expected maximum typica number of cookies per request.
     private static final int INITIAL_COOKIE_SIZE = 4;
@@ -71,7 +69,6 @@ public final class Request {
         parameters.setQuery(queryMB);
         parameters.setURLDecoder(urlDecoder);
     }
-
 
     // ----------------------------------------------------- Instance Variables
 
@@ -104,18 +101,15 @@ public final class Request {
      */
     private final Object notes[] = new Object[Constants.MAX_NOTES];
 
-
     /**
      * Associated input buffer.
      */
     private InputBuffer inputBuffer = null;
 
-
     /**
      * URL decoder.
      */
     private final UDecoder urlDecoder = new UDecoder();
-
 
     /**
      * HTTP specific fields. (remove them ?)
@@ -124,24 +118,24 @@ public final class Request {
     private MessageBytes contentTypeMB = null;
     private String charEncoding = null;
 
-    private final ServerCookies serverCookies = new ServerCookies(INITIAL_COOKIE_SIZE);
+    private final ServerCookies serverCookies = new ServerCookies(
+            INITIAL_COOKIE_SIZE);
     private final Parameters parameters = new Parameters();
 
     private final MessageBytes remoteUser = MessageBytes.newInstance();
     private boolean remoteUserNeedsAuthorization = false;
     private final MessageBytes authType = MessageBytes.newInstance();
-    private final HashMap<String,Object> attributes = new HashMap<>();
+    private final HashMap<String, Object> attributes = new HashMap<>();
 
     private Response response;
     private volatile ActionHook hook;
 
-    private long bytesRead=0;
+    private long bytesRead = 0;
     // Time of the request - useful to avoid repeated calls to System.currentTime
     private long startTime = -1;
     private int available = 0;
 
-    private final RequestInfo reqProcessorMX=new RequestInfo(this);
-
+    private final RequestInfo reqProcessorMX = new RequestInfo(this);
 
     volatile ReadListener listener;
 
@@ -151,20 +145,19 @@ public final class Request {
 
     public void setReadListener(ReadListener listener) {
         if (listener == null) {
-            throw new NullPointerException(
-                    sm.getString("request.nullReadListener"));
+            throw new NullPointerException(sm.getString(
+                    "request.nullReadListener"));
         }
         if (getReadListener() != null) {
-            throw new IllegalStateException(
-                    sm.getString("request.readListenerSet"));
+            throw new IllegalStateException(sm.getString(
+                    "request.readListenerSet"));
         }
         // Note: This class is not used for HTTP upgrade so only need to test
         //       for async
         AtomicBoolean result = new AtomicBoolean(false);
         action(ActionCode.ASYNC_IS_ASYNC, result);
         if (!result.get()) {
-            throw new IllegalStateException(
-                    sm.getString("request.notAsync"));
+            throw new IllegalStateException(sm.getString("request.notAsync"));
         }
 
         this.listener = listener;
@@ -176,13 +169,13 @@ public final class Request {
         return allDataReadEventSent.compareAndSet(false, true);
     }
 
-
     // ------------------------------------------------------------- Properties
 
     /**
      * Get the instance id (or JVM route). Currently Ajp is sending it with each
      * request. In future this should be fixed, and sent only once ( or
-     * 'negotiated' at config time so both tomcat and apache share the same name.
+     * 'negotiated' at config time so both tomcat and apache share the same
+     * name.
      *
      * @return the instance id
      */
@@ -190,18 +183,15 @@ public final class Request {
         return instanceId;
     }
 
-
     public MimeHeaders getMimeHeaders() {
         return headers;
     }
-
 
     public UDecoder getURLDecoder() {
         return urlDecoder;
     }
 
     // -------------------- Request data --------------------
-
 
     public MessageBytes scheme() {
         return schemeMB;
@@ -242,8 +232,8 @@ public final class Request {
         return serverPort;
     }
 
-    public void setServerPort(int serverPort ) {
-        this.serverPort=serverPort;
+    public void setServerPort(int serverPort) {
+        this.serverPort = serverPort;
     }
 
     public MessageBytes remoteAddr() {
@@ -262,24 +252,23 @@ public final class Request {
         return localAddrMB;
     }
 
-    public int getRemotePort(){
+    public int getRemotePort() {
         return remotePort;
     }
 
-    public void setRemotePort(int port){
+    public void setRemotePort(int port) {
         this.remotePort = port;
     }
 
-    public int getLocalPort(){
+    public int getLocalPort() {
         return localPort;
     }
 
-    public void setLocalPort(int port){
+    public void setLocalPort(int port) {
         this.localPort = port;
     }
 
     // -------------------- encoding/type --------------------
-
 
     /**
      * Get the character encoding used for this request.
@@ -295,16 +284,13 @@ public final class Request {
 
     }
 
-
     public void setCharacterEncoding(String enc) {
         this.charEncoding = enc;
     }
 
-
     public void setContentLength(long len) {
         this.contentLength = len;
     }
-
 
     public int getContentLength() {
         long length = getContentLengthLong();
@@ -316,7 +302,7 @@ public final class Request {
     }
 
     public long getContentLengthLong() {
-        if( contentLength > -1 ) {
+        if (contentLength > -1) {
             return contentLength;
         }
 
@@ -334,11 +320,9 @@ public final class Request {
         return contentTypeMB.toString();
     }
 
-
     public void setContentType(String type) {
         contentTypeMB.setString(type);
     }
-
 
     public MessageBytes contentType() {
         if (contentTypeMB == null) {
@@ -347,11 +331,9 @@ public final class Request {
         return contentTypeMB;
     }
 
-
     public void setContentType(MessageBytes mb) {
-        contentTypeMB=mb;
+        contentTypeMB = mb;
     }
-
 
     public String getHeader(String name) {
         return headers.getHeader(name);
@@ -382,13 +364,11 @@ public final class Request {
         }
     }
 
-
     // -------------------- Cookies --------------------
 
     public ServerCookies getCookies() {
         return serverCookies;
     }
-
 
     // -------------------- Parameters --------------------
 
@@ -396,19 +376,18 @@ public final class Request {
         return parameters;
     }
 
-
     // -------------------- Other attributes --------------------
     // We can use notes for most - need to discuss what is of general interest
 
-    public void setAttribute( String name, Object o ) {
-        attributes.put( name, o );
+    public void setAttribute(String name, Object o) {
+        attributes.put(name, o);
     }
 
-    public HashMap<String,Object> getAttributes() {
+    public HashMap<String, Object> getAttributes() {
         return attributes;
     }
 
-    public Object getAttribute(String name ) {
+    public Object getAttribute(String name) {
         return attributes.get(name);
     }
 
@@ -420,7 +399,8 @@ public final class Request {
         return remoteUserNeedsAuthorization;
     }
 
-    public void setRemoteUserNeedsAuthorization(boolean remoteUserNeedsAuthorization) {
+    public void setRemoteUserNeedsAuthorization(
+            boolean remoteUserNeedsAuthorization) {
         this.remoteUserNeedsAuthorization = remoteUserNeedsAuthorization;
     }
 
@@ -449,37 +429,36 @@ public final class Request {
         return true;
     }
 
-
     // -------------------- Input Buffer --------------------
 
     public InputBuffer getInputBuffer() {
         return inputBuffer;
     }
 
-
     public void setInputBuffer(InputBuffer inputBuffer) {
         this.inputBuffer = inputBuffer;
     }
 
-
     /**
      * Read data from the input buffer and put it into a byte chunk.
      *
-     * The buffer is owned by the protocol implementation - it will be reused on the next read.
-     * The Adapter must either process the data in place or copy it to a separate buffer if it needs
-     * to hold it. In most cases this is done during byte-&gt;char conversions or via InputStream. Unlike
-     * InputStream, this interface allows the app to process data in place, without copy.
+     * The buffer is owned by the protocol implementation - it will be reused on
+     * the next read.
+     * The Adapter must either process the data in place or copy it to a
+     * separate buffer if it needs
+     * to hold it. In most cases this is done during byte-&gt;char conversions
+     * or via InputStream. Unlike
+     * InputStream, this interface allows the app to process data in place,
+     * without copy.
      *
      */
-    public int doRead(ByteChunk chunk)
-        throws IOException {
+    public int doRead(ByteChunk chunk) throws IOException {
         int n = inputBuffer.doRead(chunk, this);
         if (n > 0) {
-            bytesRead+=n;
+            bytesRead += n;
         }
         return n;
     }
-
 
     // -------------------- debug --------------------
 
@@ -498,48 +477,44 @@ public final class Request {
 
     // -------------------- Per-Request "notes" --------------------
 
-
     /**
      * Used to store private data. Thread data could be used instead - but
      * if you have the req, getting/setting a note is just a array access, may
      * be faster than ThreadLocal for very frequent operations.
      *
-     *  Example use:
-     *   Jk:
-     *     HandlerRequest.HOSTBUFFER = 10 CharChunk, buffer for Host decoding
-     *     WorkerEnv: SSL_CERT_NOTE=16 - MessageBytes containing the cert
+     * Example use:
+     * Jk:
+     * HandlerRequest.HOSTBUFFER = 10 CharChunk, buffer for Host decoding
+     * WorkerEnv: SSL_CERT_NOTE=16 - MessageBytes containing the cert
      *
-     *   Catalina CoyoteAdapter:
-     *      ADAPTER_NOTES = 1 - stores the HttpServletRequest object ( req/res)
+     * Catalina CoyoteAdapter:
+     * ADAPTER_NOTES = 1 - stores the HttpServletRequest object ( req/res)
      *
-     *   To avoid conflicts, note in the range 0 - 8 are reserved for the
-     *   servlet container ( catalina connector, etc ), and values in 9 - 16
-     *   for connector use.
+     * To avoid conflicts, note in the range 0 - 8 are reserved for the
+     * servlet container ( catalina connector, etc ), and values in 9 - 16
+     * for connector use.
      *
-     *   17-31 range is not allocated or used.
+     * 17-31 range is not allocated or used.
      */
     public final void setNote(int pos, Object value) {
         notes[pos] = value;
     }
 
-
     public final Object getNote(int pos) {
         return notes[pos];
     }
 
-
     // -------------------- Recycling --------------------
 
-
     public void recycle() {
-        bytesRead=0;
+        bytesRead = 0;
 
         contentLength = -1;
         contentTypeMB = null;
         charEncoding = null;
         headers.recycle();
         serverNameMB.recycle();
-        serverPort=-1;
+        serverPort = -1;
         localNameMB.recycle();
         localPort = -1;
         remotePort = -1;
@@ -582,7 +557,8 @@ public final class Request {
     }
 
     public boolean isProcessing() {
-        return reqProcessorMX.getStage()==org.apache.coyote.Constants.STAGE_SERVICE;
+        return reqProcessorMX
+                .getStage() == org.apache.coyote.Constants.STAGE_SERVICE;
     }
 
     /**
@@ -607,8 +583,8 @@ public final class Request {
             encoding = encoding.substring(0, end);
         }
         encoding = encoding.trim();
-        if ((encoding.length() > 2) && (encoding.startsWith("\""))
-            && (encoding.endsWith("\""))) {
+        if ((encoding.length() > 2) && (encoding.startsWith("\"")) && (encoding
+                .endsWith("\""))) {
             encoding = encoding.substring(1, encoding.length() - 1);
         }
         return (encoding.trim());

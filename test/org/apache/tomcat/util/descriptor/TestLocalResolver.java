@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -35,7 +33,8 @@ public class TestLocalResolver {
     private final Map<String, String> publicIds = new HashMap<>();
     private final Map<String, String> systemIds = new HashMap<>();
 
-    private LocalResolver resolver = new LocalResolver(publicIds, systemIds, true);
+    private LocalResolver resolver = new LocalResolver(publicIds, systemIds,
+            true);
     private String WEB_22_LOCAL;
     private String WEB_31_LOCAL;
     private String WEBCOMMON_31_LOCAL;
@@ -72,10 +71,9 @@ public class TestLocalResolver {
     }
 
     @Test(expected = FileNotFoundException.class)
-    public void unknownRelativeSystemId()
-            throws IOException, SAXException {
-        InputSource source = resolver.resolveEntity(
-                null, null, "http://example.com/home.html", "unknown");
+    public void unknownRelativeSystemId() throws IOException, SAXException {
+        InputSource source = resolver.resolveEntity(null, null,
+                "http://example.com/home.html", "unknown");
         Assert.assertEquals(null, source.getPublicId());
         Assert.assertEquals("http://example.com/unknown", source.getSystemId());
     }
@@ -89,8 +87,8 @@ public class TestLocalResolver {
     }
 
     @Test
-    public void systemIdIsIgnoredWhenPublicIdIsResolved()
-            throws IOException, SAXException {
+    public void systemIdIsIgnoredWhenPublicIdIsResolved() throws IOException,
+            SAXException {
         InputSource source = resolver.resolveEntity(
                 XmlIdentifiers.WEB_22_PUBLIC, "unknown");
         Assert.assertEquals(XmlIdentifiers.WEB_22_PUBLIC, source.getPublicId());
@@ -99,24 +97,24 @@ public class TestLocalResolver {
 
     @Test
     public void systemIdIsResolved() throws IOException, SAXException {
-        InputSource source =
-                resolver.resolveEntity(null, XmlIdentifiers.WEB_31_XSD);
+        InputSource source = resolver.resolveEntity(null,
+                XmlIdentifiers.WEB_31_XSD);
         Assert.assertEquals(null, source.getPublicId());
         Assert.assertEquals(WEB_31_LOCAL, source.getSystemId());
     }
 
     @Test
-    public void relativeSystemIdIsResolvedAgainstBaseURI()
-            throws IOException, SAXException {
-        InputSource source = resolver.resolveEntity(
-                null, null, WEB_31_LOCAL, "web-common_3_1.xsd");
+    public void relativeSystemIdIsResolvedAgainstBaseURI() throws IOException,
+            SAXException {
+        InputSource source = resolver.resolveEntity(null, null, WEB_31_LOCAL,
+                "web-common_3_1.xsd");
         Assert.assertEquals(null, source.getPublicId());
         Assert.assertEquals(WEBCOMMON_31_LOCAL, source.getSystemId());
     }
 
     @Test
-    public void absoluteSystemIdOverridesBaseURI()
-            throws IOException, SAXException {
+    public void absoluteSystemIdOverridesBaseURI() throws IOException,
+            SAXException {
         InputSource source = resolver.resolveEntity(null, null,
                 "http://example.com/home.html", XmlIdentifiers.WEB_31_XSD);
         Assert.assertEquals(null, source.getPublicId());

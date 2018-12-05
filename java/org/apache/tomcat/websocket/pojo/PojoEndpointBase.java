@@ -1,18 +1,16 @@
 /*
- *  Licensed to the Apache Software Foundation (ASF) under one or more
- *  contributor license agreements.  See the NOTICE file distributed with
- *  this work for additional information regarding copyright ownership.
- *  The ASF licenses this file to You under the Apache License, Version 2.0
- *  (the "License"); you may not use this file except in compliance with
- *  the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements. See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.apache.tomcat.websocket.pojo;
 
@@ -40,18 +38,17 @@ import org.apache.tomcat.util.res.StringManager;
 public abstract class PojoEndpointBase extends Endpoint {
 
     private static final Log log = LogFactory.getLog(PojoEndpointBase.class);
-    private static final StringManager sm =
-            StringManager.getManager(Constants.PACKAGE_NAME);
+    private static final StringManager sm = StringManager.getManager(
+            Constants.PACKAGE_NAME);
 
     private Object pojo;
-    private Map<String,String> pathParameters;
+    private Map<String, String> pathParameters;
     private PojoMethodMapping methodMapping;
-
 
     protected final void doOnOpen(Session session, EndpointConfig config) {
         PojoMethodMapping methodMapping = getMethodMapping();
         Object pojo = getPojo();
-        Map<String,String> pathParameters = getPathParameters();
+        Map<String, String> pathParameters = getPathParameters();
 
         // Add message handlers before calling onOpen since that may trigger a
         // message which in turn could trigger a response and/or close the
@@ -63,15 +60,13 @@ public abstract class PojoEndpointBase extends Endpoint {
 
         if (methodMapping.getOnOpen() != null) {
             try {
-                methodMapping.getOnOpen().invoke(pojo,
-                        methodMapping.getOnOpenArgs(
-                                pathParameters, session, config));
+                methodMapping.getOnOpen().invoke(pojo, methodMapping
+                        .getOnOpenArgs(pathParameters, session, config));
 
             } catch (IllegalAccessException e) {
                 // Reflection related problems
-                log.error(sm.getString(
-                        "pojoEndpointBase.onOpenFail",
-                        pojo.getClass().getName()), e);
+                log.error(sm.getString("pojoEndpointBase.onOpenFail", pojo
+                        .getClass().getName()), e);
                 handleOnOpenOrCloseError(session, e);
                 return;
             } catch (InvocationTargetException e) {
@@ -84,7 +79,6 @@ public abstract class PojoEndpointBase extends Endpoint {
             }
         }
     }
-
 
     private void handleOnOpenOrCloseError(Session session, Throwable t) {
         // If really fatal - re-throw
@@ -104,11 +98,11 @@ public abstract class PojoEndpointBase extends Endpoint {
 
         if (methodMapping.getOnClose() != null) {
             try {
-                methodMapping.getOnClose().invoke(pojo,
-                        methodMapping.getOnCloseArgs(pathParameters, session, closeReason));
+                methodMapping.getOnClose().invoke(pojo, methodMapping
+                        .getOnCloseArgs(pathParameters, session, closeReason));
             } catch (Throwable t) {
-                log.error(sm.getString("pojoEndpointBase.onCloseFail",
-                        pojo.getClass().getName()), t);
+                log.error(sm.getString("pojoEndpointBase.onCloseFail", pojo
+                        .getClass().getName()), t);
                 handleOnOpenOrCloseError(session, t);
             }
         }
@@ -122,38 +116,44 @@ public abstract class PojoEndpointBase extends Endpoint {
         }
     }
 
-
     @Override
     public final void onError(Session session, Throwable throwable) {
 
         if (methodMapping.getOnError() == null) {
-            log.error(sm.getString("pojoEndpointBase.onError",
-                    pojo.getClass().getName()), throwable);
+            log.error(sm.getString("pojoEndpointBase.onError", pojo.getClass()
+                    .getName()), throwable);
         } else {
             try {
-                methodMapping.getOnError().invoke(
-                        pojo,
-                        methodMapping.getOnErrorArgs(pathParameters, session,
-                                throwable));
+                methodMapping.getOnError().invoke(pojo, methodMapping
+                        .getOnErrorArgs(pathParameters, session, throwable));
             } catch (Throwable t) {
                 ExceptionUtils.handleThrowable(t);
-                log.error(sm.getString("pojoEndpointBase.onErrorFail",
-                        pojo.getClass().getName()), t);
+                log.error(sm.getString("pojoEndpointBase.onErrorFail", pojo
+                        .getClass().getName()), t);
             }
         }
     }
 
-    protected Object getPojo() { return pojo; }
-    protected void setPojo(Object pojo) { this.pojo = pojo; }
+    protected Object getPojo() {
+        return pojo;
+    }
 
+    protected void setPojo(Object pojo) {
+        this.pojo = pojo;
+    }
 
-    protected Map<String,String> getPathParameters() { return pathParameters; }
-    protected void setPathParameters(Map<String,String> pathParameters) {
+    protected Map<String, String> getPathParameters() {
+        return pathParameters;
+    }
+
+    protected void setPathParameters(Map<String, String> pathParameters) {
         this.pathParameters = pathParameters;
     }
 
+    protected PojoMethodMapping getMethodMapping() {
+        return methodMapping;
+    }
 
-    protected PojoMethodMapping getMethodMapping() { return methodMapping; }
     protected void setMethodMapping(PojoMethodMapping methodMapping) {
         this.methodMapping = methodMapping;
     }

@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -31,15 +29,13 @@ import org.apache.juli.logging.LogFactory;
  */
 public class SnakeTimer {
 
-    private static final Log log =
-            LogFactory.getLog(SnakeTimer.class);
+    private static final Log log = LogFactory.getLog(SnakeTimer.class);
 
     private static Timer gameTimer = null;
 
     private static final long TICK_DELAY = 100;
 
-    private static final ConcurrentHashMap<Integer, Snake> snakes =
-            new ConcurrentHashMap<>();
+    private static final ConcurrentHashMap<Integer, Snake> snakes = new ConcurrentHashMap<>();
 
     protected static synchronized void addSnake(Snake snake) {
         if (snakes.size() == 0) {
@@ -48,11 +44,9 @@ public class SnakeTimer {
         snakes.put(Integer.valueOf(snake.getId()), snake);
     }
 
-
     protected static Collection<Snake> getSnakes() {
         return Collections.unmodifiableCollection(snakes.values());
     }
-
 
     protected static synchronized void removeSnake(Snake snake) {
         snakes.remove(Integer.valueOf(snake.getId()));
@@ -61,11 +55,10 @@ public class SnakeTimer {
         }
     }
 
-
     protected static void tick() {
         StringBuilder sb = new StringBuilder();
-        for (Iterator<Snake> iterator = SnakeTimer.getSnakes().iterator();
-                iterator.hasNext();) {
+        for (Iterator<Snake> iterator = SnakeTimer.getSnakes()
+                .iterator(); iterator.hasNext();) {
             Snake snake = iterator.next();
             snake.update(SnakeTimer.getSnakes());
             sb.append(snake.getLocationsJson());
@@ -73,8 +66,8 @@ public class SnakeTimer {
                 sb.append(',');
             }
         }
-        broadcast(String.format("{\"type\": \"update\", \"data\" : [%s]}",
-                sb.toString()));
+        broadcast(String.format("{\"type\": \"update\", \"data\" : [%s]}", sb
+                .toString()));
     }
 
     protected static void broadcast(String message) {
@@ -91,7 +84,6 @@ public class SnakeTimer {
         }
     }
 
-
     public static void startTimer() {
         gameTimer = new Timer(SnakeTimer.class.getSimpleName() + " Timer");
         gameTimer.scheduleAtFixedRate(new TimerTask() {
@@ -105,7 +97,6 @@ public class SnakeTimer {
             }
         }, TICK_DELAY, TICK_DELAY);
     }
-
 
     public static void stopTimer() {
         if (gameTimer != null) {

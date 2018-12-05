@@ -1,18 +1,16 @@
 /*
- *  Licensed to the Apache Software Foundation (ASF) under one or more
- *  contributor license agreements.  See the NOTICE file distributed with
- *  this work for additional information regarding copyright ownership.
- *  The ASF licenses this file to You under the Apache License, Version 2.0
- *  (the "License"); you may not use this file except in compliance with
- *  the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements. See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.apache.tomcat.websocket;
 
@@ -31,17 +29,15 @@ import org.apache.tomcat.util.res.StringManager;
  */
 public class BackgroundProcessManager {
 
-    private static final Log log =
-            LogFactory.getLog(BackgroundProcessManager.class);
-    private static final StringManager sm =
-            StringManager.getManager(Constants.PACKAGE_NAME);
+    private static final Log log = LogFactory.getLog(
+            BackgroundProcessManager.class);
+    private static final StringManager sm = StringManager.getManager(
+            Constants.PACKAGE_NAME);
     private static final BackgroundProcessManager instance;
-
 
     static {
         instance = new BackgroundProcessManager();
     }
-
 
     public static BackgroundProcessManager getInstance() {
         return instance;
@@ -55,20 +51,18 @@ public class BackgroundProcessManager {
         // Hide default constructor
     }
 
-
     public void register(BackgroundProcess process) {
         synchronized (processesLock) {
             if (processes.size() == 0) {
                 wsBackgroundThread = new WsBackgroundThread(this);
-                wsBackgroundThread.setContextClassLoader(
-                        this.getClass().getClassLoader());
+                wsBackgroundThread.setContextClassLoader(this.getClass()
+                        .getClassLoader());
                 wsBackgroundThread.setDaemon(true);
                 wsBackgroundThread.start();
             }
             processes.add(process);
         }
     }
-
 
     public void unregister(BackgroundProcess process) {
         synchronized (processesLock) {
@@ -79,7 +73,6 @@ public class BackgroundProcessManager {
             }
         }
     }
-
 
     private void process() {
         Set<BackgroundProcess> currentProcesses = new HashSet<>();
@@ -97,7 +90,6 @@ public class BackgroundProcessManager {
         }
     }
 
-
     /*
      * For unit testing.
      */
@@ -106,7 +98,6 @@ public class BackgroundProcessManager {
             return processes.size();
         }
     }
-
 
     void shutdown() {
         synchronized (processesLock) {
@@ -117,7 +108,6 @@ public class BackgroundProcessManager {
             }
         }
     }
-
 
     private static class WsBackgroundThread extends Thread {
 

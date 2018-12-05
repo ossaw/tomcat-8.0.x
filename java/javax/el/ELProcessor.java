@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -44,58 +42,52 @@ public class ELProcessor {
     private final ELContext context = manager.getELContext();
     private final ExpressionFactory factory = ELManager.getExpressionFactory();
 
-
     public ELManager getELManager() {
         return manager;
     }
-
 
     public Object eval(String expression) {
         return getValue(expression, Object.class);
     }
 
-
     public Object getValue(String expression, Class<?> expectedType) {
-        ValueExpression ve = factory.createValueExpression(
-                context, bracket(expression), expectedType);
+        ValueExpression ve = factory.createValueExpression(context, bracket(
+                expression), expectedType);
         return ve.getValue(context);
     }
 
-
     public void setValue(String expression, Object value) {
-        ValueExpression ve = factory.createValueExpression(
-                context, bracket(expression), Object.class);
+        ValueExpression ve = factory.createValueExpression(context, bracket(
+                expression), Object.class);
         ve.setValue(context, value);
     }
-
 
     public void setVariable(String variable, String expression) {
         if (expression == null) {
             manager.setVariable(variable, null);
         } else {
-            ValueExpression ve = factory.createValueExpression(
-                    context, bracket(expression), Object.class);
+            ValueExpression ve = factory.createValueExpression(context, bracket(
+                    expression), Object.class);
             manager.setVariable(variable, ve);
         }
     }
-
 
     public void defineFunction(String prefix, String function, String className,
             String methodName) throws ClassNotFoundException,
             NoSuchMethodException {
 
-        if (prefix == null || function == null || className == null ||
-                methodName == null) {
-            throw new NullPointerException(Util.message(
-                    context, "elProcessor.defineFunctionNullParams"));
+        if (prefix == null || function == null || className == null
+                || methodName == null) {
+            throw new NullPointerException(Util.message(context,
+                    "elProcessor.defineFunctionNullParams"));
         }
 
         // Check the imports
         Class<?> clazz = context.getImportHandler().resolveClass(className);
 
         if (clazz == null) {
-            clazz = Class.forName(className, true,
-                    Thread.currentThread().getContextClassLoader());
+            clazz = Class.forName(className, true, Thread.currentThread()
+                    .getContextClassLoader());
         }
 
         if (!Modifier.isPublic(clazz.getModifiers())) {
@@ -103,8 +95,8 @@ public class ELProcessor {
                     "elProcessor.defineFunctionInvalidClass", className));
         }
 
-        MethodSignature sig =
-                new MethodSignature(context, methodName, className);
+        MethodSignature sig = new MethodSignature(context, methodName,
+                className);
 
         if (function.length() == 0) {
             function = sig.getName();
@@ -122,7 +114,8 @@ public class ELProcessor {
                     manager.mapFunction(prefix, function, method);
                     return;
                 }
-                if (sig.getParamTypeNames().length != method.getParameterTypes().length) {
+                if (sig.getParamTypeNames().length != method
+                        .getParameterTypes().length) {
                     continue;
                 }
                 if (sig.getParamTypeNames().length == 0) {
@@ -134,17 +127,19 @@ public class ELProcessor {
                     if (types.length == typeNames.length) {
                         boolean match = true;
                         for (int i = 0; i < types.length; i++) {
-                            if (i == types.length -1 && method.isVarArgs()) {
+                            if (i == types.length - 1 && method.isVarArgs()) {
                                 String typeName = typeNames[i];
                                 if (typeName.endsWith("...")) {
-                                    typeName = typeName.substring(0, typeName.length() - 3);
+                                    typeName = typeName.substring(0, typeName
+                                            .length() - 3);
                                     if (!typeName.equals(types[i].getName())) {
                                         match = false;
                                     }
                                 } else {
                                     match = false;
                                 }
-                            } else if (!types[i].getName().equals(typeNames[i])) {
+                            } else if (!types[i].getName().equals(
+                                    typeNames[i])) {
                                 match = false;
                                 break;
                             }
@@ -162,25 +157,24 @@ public class ELProcessor {
                 "elProcessor.defineFunctionNoMethod", methodName, className));
     }
 
-
     /**
      * Map a method to a function name.
      *
-     * @param prefix    Function prefix
-     * @param function  Function name
-     * @param method    Method
+     * @param prefix   Function prefix
+     * @param function Function name
+     * @param method   Method
      *
      * @throws NullPointerException
-     *              If any of the arguments are null
+     *                               If any of the arguments are null
      * @throws NoSuchMethodException
-     *              If the method is not static
+     *                               If the method is not static
      */
     public void defineFunction(String prefix, String function, Method method)
             throws java.lang.NoSuchMethodException {
 
         if (prefix == null || function == null || method == null) {
-            throw new NullPointerException(Util.message(
-                    context, "elProcessor.defineFunctionNullParams"));
+            throw new NullPointerException(Util.message(context,
+                    "elProcessor.defineFunctionNullParams"));
         }
 
         int modifiers = method.getModifiers();
@@ -195,11 +189,9 @@ public class ELProcessor {
         manager.mapFunction(prefix, function, method);
     }
 
-
     public void defineBean(String name, Object bean) {
         manager.defineBean(name, bean);
     }
-
 
     private static String bracket(String expression) {
         return "${" + expression + "}";
@@ -219,7 +211,8 @@ public class ELProcessor {
                 name = methodName.trim();
                 parameterTypeNames = null;
             } else {
-                String returnTypeAndName = methodName.substring(0, paramIndex).trim();
+                String returnTypeAndName = methodName.substring(0, paramIndex)
+                        .trim();
                 // Assume that the return type and the name are separated by
                 // whitespace. Given the use of trim() above, there should only
                 // be one sequence of whitespace characters.
@@ -243,7 +236,8 @@ public class ELProcessor {
                             paramString, methodName, className));
                 }
                 // Trim '(' and ')'
-                paramString = paramString.substring(1, paramString.length() - 1).trim();
+                paramString = paramString.substring(1, paramString.length() - 1)
+                        .trim();
                 if (paramString.length() == 0) {
                     parameterTypeNames = EMPTY_STRING_ARRAY;
                 } else {
@@ -254,11 +248,12 @@ public class ELProcessor {
                         int dimension = 0;
                         int bracketPos = parameterTypeName.indexOf('[');
                         if (bracketPos > -1) {
-                            String parameterTypeNameOnly =
-                                    parameterTypeName.substring(0, bracketPos).trim();
+                            String parameterTypeNameOnly = parameterTypeName
+                                    .substring(0, bracketPos).trim();
                             while (bracketPos > -1) {
                                 dimension++;
-                                bracketPos = parameterTypeName.indexOf('[', bracketPos+ 1);
+                                bracketPos = parameterTypeName.indexOf('[',
+                                        bracketPos + 1);
                             }
                             parameterTypeName = parameterTypeNameOnly;
                         }
@@ -266,14 +261,14 @@ public class ELProcessor {
                         if (parameterTypeName.endsWith("...")) {
                             varArgs = true;
                             dimension = 1;
-                            parameterTypeName = parameterTypeName.substring(
-                                    0, parameterTypeName.length() -3).trim();
+                            parameterTypeName = parameterTypeName.substring(0,
+                                    parameterTypeName.length() - 3).trim();
                         }
-                        boolean isPrimitive = PRIMITIVES.contains(parameterTypeName);
+                        boolean isPrimitive = PRIMITIVES.contains(
+                                parameterTypeName);
                         if (isPrimitive && dimension > 0) {
                             // When in an array, class name changes for primitive
-                            switch(parameterTypeName)
-                            {
+                            switch (parameterTypeName) {
                                 case "boolean":
                                     parameterTypeName = "Z";
                                     break;
@@ -302,8 +297,8 @@ public class ELProcessor {
                                     // Should never happen
                                     break;
                             }
-                        } else  if (!isPrimitive &&
-                                !parameterTypeName.contains(".")) {
+                        } else if (!isPrimitive && !parameterTypeName.contains(
+                                ".")) {
                             Class<?> clazz = importHandler.resolveClass(
                                     parameterTypeName);
                             if (clazz == null) {

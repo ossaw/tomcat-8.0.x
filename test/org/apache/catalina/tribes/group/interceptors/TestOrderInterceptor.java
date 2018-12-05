@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -55,7 +53,7 @@ public class TestOrderInterceptor {
         mangleitcs = new MangleOrderInterceptor[channelCount];
         test = new TestListener[channelCount];
         threads = new Thread[channelCount];
-        for ( int i=0; i<channelCount; i++ ) {
+        for (int i = 0; i < channelCount; i++) {
             channels[i] = new GroupChannel();
 
             orderitcs[i] = new OrderInterceptor();
@@ -79,8 +77,10 @@ public class TestOrderInterceptor {
             };
         }
         TesterUtil.addRandomDomain(channels);
-        for ( int i=0; i<channelCount; i++ ) threads[i].start();
-        for ( int i=0; i<channelCount; i++ ) threads[i].join();
+        for (int i = 0; i < channelCount; i++)
+            threads[i].start();
+        for (int i = 0; i < channelCount; i++)
+            threads[i].join();
         Thread.sleep(1500);
     }
 
@@ -88,11 +88,11 @@ public class TestOrderInterceptor {
     public void testOrder1() throws Exception {
         Member[] dest = channels[0].getMembers();
         final AtomicInteger value = new AtomicInteger(0);
-        for ( int i=0; i<100; i++ ) {
-            channels[0].send(dest,Integer.valueOf(value.getAndAdd(1)),0);
+        for (int i = 0; i < 100; i++) {
+            channels[0].send(dest, Integer.valueOf(value.getAndAdd(1)), 0);
         }
         Thread.sleep(5000);
-        for ( int i=0; i<test.length; i++ ) {
+        for (int i = 0; i < test.length; i++) {
             assertFalse(test[i].fail);
         }
     }
@@ -108,30 +108,31 @@ public class TestOrderInterceptor {
                 for (int i = 0; i < 100; i++) {
                     try {
                         synchronized (channels[0]) {
-                            channels[0].send(dest, Integer.valueOf(value.getAndAdd(1)), 0);
+                            channels[0].send(dest, Integer.valueOf(value
+                                    .getAndAdd(1)), 0);
                         }
-                    }catch ( Exception x ) {
+                    } catch (Exception x) {
                         exceptionQueue.add(x);
                     }
                 }
             }
         };
         Thread[] threads = new Thread[5];
-        for (int i=0;i<threads.length;i++) {
+        for (int i = 0; i < threads.length; i++) {
             threads[i] = new Thread(run);
         }
-        for (int i=0;i<threads.length;i++) {
+        for (int i = 0; i < threads.length; i++) {
             threads[i].start();
         }
-        for (int i=0;i<threads.length;i++) {
+        for (int i = 0; i < threads.length; i++) {
             threads[i].join();
         }
         if (!exceptionQueue.isEmpty()) {
-            fail("Exception while sending in threads: "
-                    + exceptionQueue.remove().toString());
+            fail("Exception while sending in threads: " + exceptionQueue
+                    .remove().toString());
         }
         Thread.sleep(5000);
-        for ( int i=0; i<test.length; i++ ) {
+        for (int i = 0; i < test.length; i++) {
             assertFalse(test[i].fail);
         }
     }
@@ -139,7 +140,7 @@ public class TestOrderInterceptor {
     @After
     public void tearDown() throws Exception {
         System.out.println("tearDown");
-        for ( int i=0; i<channelCount; i++ ) {
+        for (int i = 0; i < channelCount; i++) {
             channels[i].stop(Channel.DEFAULT);
         }
     }
@@ -150,19 +151,26 @@ public class TestOrderInterceptor {
 
     public static class TestListener implements ChannelListener {
         int id = -1;
+
         public TestListener(int id) {
             this.id = id;
         }
+
         int cnt = 0;
         int total = 0;
         volatile boolean fail = false;
+
         @Override
-        public synchronized void messageReceived(Serializable msg, Member sender) {
+        public synchronized void messageReceived(Serializable msg,
+                Member sender) {
             total++;
-            Integer i = (Integer)msg;
-            if ( i.intValue() != cnt ) fail = true;
-            else cnt++;
-            System.out.println("Listener["+id+"] Message received:"+i+" Count:"+total+" Fail:"+fail);
+            Integer i = (Integer) msg;
+            if (i.intValue() != cnt)
+                fail = true;
+            else
+                cnt++;
+            System.out.println("Listener[" + id + "] Message received:" + i
+                    + " Count:" + total + " Fail:" + fail);
 
         }
 
@@ -175,23 +183,25 @@ public class TestOrderInterceptor {
     public static class MangleOrderInterceptor extends ChannelInterceptorBase {
         ChannelMessage hold = null;
         Member[] dest = null;
+
         @Override
-        public synchronized void sendMessage(Member[] destination, ChannelMessage msg, InterceptorPayload payload) throws ChannelException {
-            if ( hold == null ) {
+        public synchronized void sendMessage(Member[] destination,
+                ChannelMessage msg, InterceptorPayload payload)
+                throws ChannelException {
+            if (hold == null) {
                 //System.out.println("Skipping message:"+msg);
-                hold = (ChannelMessage)msg.deepclone();
+                hold = (ChannelMessage) msg.deepclone();
                 dest = new Member[destination.length];
-                System.arraycopy(destination,0,dest,0,dest.length);
+                System.arraycopy(destination, 0, dest, 0, dest.length);
             } else {
                 //System.out.println("Sending message:"+msg);
-                super.sendMessage(destination,msg,payload);
+                super.sendMessage(destination, msg, payload);
                 //System.out.println("Sending message:"+hold);
-                super.sendMessage(dest,hold,null);
+                super.sendMessage(dest, hold, null);
                 hold = null;
                 dest = null;
             }
         }
     }
-
 
 }

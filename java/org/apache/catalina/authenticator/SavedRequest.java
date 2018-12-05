@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -15,9 +13,7 @@
  * limitations under the License.
  */
 
-
 package org.apache.catalina.authenticator;
-
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -27,7 +23,6 @@ import java.util.Locale;
 import javax.servlet.http.Cookie;
 
 import org.apache.tomcat.util.buf.ByteChunk;
-
 
 /**
  * Object that saves the critical information from a request so that
@@ -42,7 +37,6 @@ import org.apache.tomcat.util.buf.ByteChunk;
  */
 public final class SavedRequest {
 
-
     /**
      * The set of Cookies associated with this Request.
      */
@@ -56,14 +50,13 @@ public final class SavedRequest {
         return (cookies.iterator());
     }
 
-
     /**
-     * The set of Headers associated with this Request.  Each key is a header
+     * The set of Headers associated with this Request. Each key is a header
      * name, while the value is a ArrayList containing one or more actual
-     * values for this header.  The values are returned as an Iterator when
+     * values for this header. The values are returned as an Iterator when
      * you ask for them.
      */
-    private final HashMap<String,ArrayList<String>> headers = new HashMap<>();
+    private final HashMap<String, ArrayList<String>> headers = new HashMap<>();
 
     public void addHeader(String name, String value) {
         ArrayList<String> values = headers.get(name);
@@ -86,7 +79,6 @@ public final class SavedRequest {
             return (values.iterator());
     }
 
-
     /**
      * The set of Locales associated with this Request.
      */
@@ -99,7 +91,6 @@ public final class SavedRequest {
     public Iterator<Locale> getLocales() {
         return (locales.iterator());
     }
-
 
     /**
      * The request method used on this Request.
@@ -114,7 +105,6 @@ public final class SavedRequest {
         this.method = method;
     }
 
-
     /**
      * The query string associated with this Request.
      */
@@ -127,7 +117,6 @@ public final class SavedRequest {
     public void setQueryString(String queryString) {
         this.queryString = queryString;
     }
-
 
     /**
      * The request URI associated with this Request.
@@ -142,7 +131,6 @@ public final class SavedRequest {
         this.requestURI = requestURI;
     }
 
-
     /**
      * The decode request URI associated with this Request. Path parameters are
      * also excluded
@@ -156,7 +144,6 @@ public final class SavedRequest {
     public void setDecodedRequestURI(String decodedRequestURI) {
         this.decodedRequestURI = decodedRequestURI;
     }
-
 
     /**
      * The body of this request.

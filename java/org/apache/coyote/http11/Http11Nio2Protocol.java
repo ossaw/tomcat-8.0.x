@@ -1,18 +1,16 @@
 /*
- *  Licensed to the Apache Software Foundation (ASF) under one or more
- *  contributor license agreements.  See the NOTICE file distributed with
- *  this work for additional information regarding copyright ownership.
- *  The ASF licenses this file to You under the Apache License, Version 2.0
- *  (the "License"); you may not use this file except in compliance with
- *  the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements. See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.apache.coyote.http11;
 
@@ -36,27 +34,26 @@ import org.apache.tomcat.util.net.SecureNio2Channel;
 import org.apache.tomcat.util.net.SocketStatus;
 import org.apache.tomcat.util.net.SocketWrapper;
 
-
 /**
  * HTTP/1.1 protocol implementation using NIO2.
  */
-public class Http11Nio2Protocol extends AbstractHttp11JsseProtocol<Nio2Channel> {
+public class Http11Nio2Protocol extends
+        AbstractHttp11JsseProtocol<Nio2Channel> {
 
     private static final Log log = LogFactory.getLog(Http11Nio2Protocol.class);
 
-
     @Override
-    protected Log getLog() { return log; }
-
+    protected Log getLog() {
+        return log;
+    }
 
     @Override
     protected AbstractEndpoint.Handler getHandler() {
         return cHandler;
     }
 
-
     public Http11Nio2Protocol() {
-        endpoint=new Nio2Endpoint();
+        endpoint = new Nio2Endpoint();
         cHandler = new Http11ConnectionHandler(this);
         ((Nio2Endpoint) endpoint).setHandler(cHandler);
         setSoLinger(Constants.DEFAULT_CONNECTION_LINGER);
@@ -64,11 +61,9 @@ public class Http11Nio2Protocol extends AbstractHttp11JsseProtocol<Nio2Channel> 
         setTcpNoDelay(Constants.DEFAULT_TCP_NO_DELAY);
     }
 
-
     public Nio2Endpoint getEndpoint() {
-        return ((Nio2Endpoint)endpoint);
+        return ((Nio2Endpoint) endpoint);
     }
-
 
     // -------------------- Properties--------------------
 
@@ -77,19 +72,19 @@ public class Http11Nio2Protocol extends AbstractHttp11JsseProtocol<Nio2Channel> 
     // -------------------- Pool setup --------------------
 
     public void setAcceptorThreadPriority(int threadPriority) {
-        ((Nio2Endpoint)endpoint).setAcceptorThreadPriority(threadPriority);
+        ((Nio2Endpoint) endpoint).setAcceptorThreadPriority(threadPriority);
     }
 
     public void setPollerThreadPriority(int threadPriority) {
-        ((Nio2Endpoint)endpoint).setPollerThreadPriority(threadPriority);
+        ((Nio2Endpoint) endpoint).setPollerThreadPriority(threadPriority);
     }
 
     public int getAcceptorThreadPriority() {
-      return ((Nio2Endpoint)endpoint).getAcceptorThreadPriority();
+        return ((Nio2Endpoint) endpoint).getAcceptorThreadPriority();
     }
 
     public int getPollerThreadPriority() {
-      return ((Nio2Endpoint)endpoint).getThreadPriority();
+        return ((Nio2Endpoint) endpoint).getThreadPriority();
     }
 
     public boolean getUseSendfile() {
@@ -97,13 +92,13 @@ public class Http11Nio2Protocol extends AbstractHttp11JsseProtocol<Nio2Channel> 
     }
 
     public void setUseSendfile(boolean useSendfile) {
-        ((Nio2Endpoint)endpoint).setUseSendfile(useSendfile);
+        ((Nio2Endpoint) endpoint).setUseSendfile(useSendfile);
     }
 
     // -------------------- Tcp setup --------------------
 
     public void setOomParachute(int oomParachute) {
-        ((Nio2Endpoint)endpoint).setOomParachute(oomParachute);
+        ((Nio2Endpoint) endpoint).setOomParachute(oomParachute);
     }
 
     // ----------------------------------------------------- JMX related methods
@@ -113,11 +108,10 @@ public class Http11Nio2Protocol extends AbstractHttp11JsseProtocol<Nio2Channel> 
         return ("http-nio2");
     }
 
-
     // --------------------  Connection handler --------------------
 
-    protected static class Http11ConnectionHandler
-            extends AbstractConnectionHandler<Nio2Channel,Http11Nio2Processor>
+    protected static class Http11ConnectionHandler extends
+            AbstractConnectionHandler<Nio2Channel, Http11Nio2Processor>
             implements Handler {
 
         protected Http11Nio2Protocol proto;
@@ -136,7 +130,6 @@ public class Http11Nio2Protocol extends AbstractHttp11JsseProtocol<Nio2Channel> 
             return log;
         }
 
-
         @Override
         public SSLImplementation getSslImplementation() {
             return proto.sslImplementation;
@@ -148,8 +141,8 @@ public class Http11Nio2Protocol extends AbstractHttp11JsseProtocol<Nio2Channel> 
          */
         @Override
         public void release(SocketWrapper<Nio2Channel> socket) {
-            Processor<Nio2Channel> processor =
-                connections.remove(socket.getSocket());
+            Processor<Nio2Channel> processor = connections.remove(socket
+                    .getSocket());
             if (processor != null) {
                 processor.recycle(true);
                 if (!processor.isUpgrade()) {
@@ -158,14 +151,13 @@ public class Http11Nio2Protocol extends AbstractHttp11JsseProtocol<Nio2Channel> 
             }
         }
 
-
         /**
          * Expected to be used by the handler once the processor is no longer
          * required.
          *
          * @param socket
          * @param processor
-         * @param isSocketClosing   Not used in HTTP
+         * @param isSocketClosing Not used in HTTP
          * @param addToPoller
          */
         @Override
@@ -182,17 +174,14 @@ public class Http11Nio2Protocol extends AbstractHttp11JsseProtocol<Nio2Channel> 
             }
         }
 
-
         @Override
         protected void initSsl(SocketWrapper<Nio2Channel> socket,
                 Processor<Nio2Channel> processor) {
-            if (proto.isSSLEnabled() &&
-                    (proto.sslImplementation != null)
+            if (proto.isSSLEnabled() && (proto.sslImplementation != null)
                     && (socket.getSocket() instanceof SecureNio2Channel)) {
-                SecureNio2Channel ch = (SecureNio2Channel)socket.getSocket();
-                processor.setSslSupport(
-                        proto.sslImplementation.getSSLSupport(
-                                ch.getSslEngine().getSession()));
+                SecureNio2Channel ch = (SecureNio2Channel) socket.getSocket();
+                processor.setSslSupport(proto.sslImplementation.getSSLSupport(ch
+                        .getSslEngine().getSession()));
             } else {
                 processor.setSslSupport(null);
             }
@@ -228,10 +217,12 @@ public class Http11Nio2Protocol extends AbstractHttp11JsseProtocol<Nio2Channel> 
 
         @Override
         public Http11Nio2Processor createProcessor() {
-            Http11Nio2Processor processor = new Http11Nio2Processor(
-                    proto.getMaxHttpHeaderSize(), (Nio2Endpoint) proto.endpoint,
-                    proto.getMaxTrailerSize(), proto.getAllowedTrailerHeadersAsSet(),
-                    proto.getMaxExtensionSize(), proto.getMaxSwallowSize());
+            Http11Nio2Processor processor = new Http11Nio2Processor(proto
+                    .getMaxHttpHeaderSize(), (Nio2Endpoint) proto.endpoint,
+                    proto.getMaxTrailerSize(), proto
+                            .getAllowedTrailerHeadersAsSet(), proto
+                                    .getMaxExtensionSize(), proto
+                                            .getMaxSwallowSize());
             proto.configureProcessor(processor);
             register(processor);
             return processor;
@@ -240,8 +231,7 @@ public class Http11Nio2Protocol extends AbstractHttp11JsseProtocol<Nio2Channel> 
         @Override
         protected Processor<Nio2Channel> createUpgradeProcessor(
                 SocketWrapper<Nio2Channel> socket, ByteBuffer leftoverInput,
-                UpgradeToken upgradeToken)
-                throws IOException {
+                UpgradeToken upgradeToken) throws IOException {
             return new Nio2Processor(proto.endpoint, socket, leftoverInput,
                     upgradeToken, proto.getUpgradeAsyncWriteBufferSize());
         }
@@ -249,7 +239,8 @@ public class Http11Nio2Protocol extends AbstractHttp11JsseProtocol<Nio2Channel> 
         @Override
         public void closeAll() {
             for (Nio2Channel channel : connections.keySet()) {
-                ((Nio2Endpoint) proto.endpoint).closeSocket(channel.getSocket(), SocketStatus.STOP);
+                ((Nio2Endpoint) proto.endpoint).closeSocket(channel.getSocket(),
+                        SocketStatus.STOP);
             }
         }
     }

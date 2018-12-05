@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -15,21 +13,18 @@
  * limitations under the License.
  */
 
-
 package org.apache.catalina.util;
-
 
 import java.util.Collection;
 import java.util.HashSet;
 
 import org.apache.tomcat.util.res.StringManager;
 
-
 /**
  * Extended implementation of <strong>HashSet</strong> that includes a
- * <code>locked</code> property.  This class can be used to safely expose
+ * <code>locked</code> property. This class can be used to safely expose
  * resource path sets to user classes without having to clone them in order
- * to avoid modifications.  When first created, a <code>ResourceMap</code>
+ * to avoid modifications. When first created, a <code>ResourceMap</code>
  * is not locked.
  *
  * @author Craig R. McClanahan
@@ -49,7 +44,6 @@ public final class ResourceSet<T> extends HashSet<T> {
 
     }
 
-
     /**
      * Construct a new, empty set with the specified initial capacity and
      * default load factor.
@@ -62,20 +56,18 @@ public final class ResourceSet<T> extends HashSet<T> {
 
     }
 
-
     /**
      * Construct a new, empty set with the specified initial capacity and
      * load factor.
      *
      * @param initialCapacity The initial capacity of this set
-     * @param loadFactor The load factor of this set
+     * @param loadFactor      The load factor of this set
      */
     public ResourceSet(int initialCapacity, float loadFactor) {
 
         super(initialCapacity, loadFactor);
 
     }
-
 
     /**
      * Construct a new set with the same contents as the existing collection.
@@ -88,15 +80,12 @@ public final class ResourceSet<T> extends HashSet<T> {
 
     }
 
-
     // ------------------------------------------------------------- Properties
-
 
     /**
      * The current lock state of this parameter map.
      */
     private boolean locked = false;
-
 
     /**
      * Return the locked state of this parameter map.
@@ -106,7 +95,6 @@ public final class ResourceSet<T> extends HashSet<T> {
         return (this.locked);
 
     }
-
 
     /**
      * Set the locked state of this parameter map.
@@ -119,16 +107,13 @@ public final class ResourceSet<T> extends HashSet<T> {
 
     }
 
-
     /**
      * The string manager for this package.
      */
-    private static final StringManager sm =
-        StringManager.getManager("org.apache.catalina.util");
-
+    private static final StringManager sm = StringManager.getManager(
+            "org.apache.catalina.util");
 
     // --------------------------------------------------------- Public Methods
-
 
     /**
      * Add the specified element to this set if it is not already present.
@@ -142,12 +127,10 @@ public final class ResourceSet<T> extends HashSet<T> {
     public boolean add(T o) {
 
         if (locked)
-            throw new IllegalStateException
-              (sm.getString("resourceSet.locked"));
+            throw new IllegalStateException(sm.getString("resourceSet.locked"));
         return (super.add(o));
 
     }
-
 
     /**
      * Remove all of the elements from this set.
@@ -158,12 +141,10 @@ public final class ResourceSet<T> extends HashSet<T> {
     public void clear() {
 
         if (locked)
-            throw new IllegalStateException
-              (sm.getString("resourceSet.locked"));
+            throw new IllegalStateException(sm.getString("resourceSet.locked"));
         super.clear();
 
     }
-
 
     /**
      * Remove the given element from this set if it is present.
@@ -177,11 +158,9 @@ public final class ResourceSet<T> extends HashSet<T> {
     public boolean remove(Object o) {
 
         if (locked)
-            throw new IllegalStateException
-              (sm.getString("resourceSet.locked"));
+            throw new IllegalStateException(sm.getString("resourceSet.locked"));
         return (super.remove(o));
 
     }
-
 
 }

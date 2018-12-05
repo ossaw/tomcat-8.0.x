@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -66,87 +64,91 @@ import org.apache.catalina.LifecycleException;
 import org.ietf.jgss.GSSCredential;
 
 /**
- * <p>Implementation of <strong>Realm</strong> that works with a directory
+ * <p>
+ * Implementation of <strong>Realm</strong> that works with a directory
  * server accessed via the Java Naming and Directory Interface (JNDI) APIs.
  * The following constraints are imposed on the data structure in the
- * underlying directory server:</p>
+ * underlying directory server:
+ * </p>
  * <ul>
  *
  * <li>Each user that can be authenticated is represented by an individual
- *     element in the top level <code>DirContext</code> that is accessed
- *     via the <code>connectionURL</code> property.</li>
+ * element in the top level <code>DirContext</code> that is accessed
+ * via the <code>connectionURL</code> property.</li>
  *
  * <li>If a socket connection can not be made to the <code>connectURL</code>
- *     an attempt will be made to use the <code>alternateURL</code> if it
- *     exists.</li>
+ * an attempt will be made to use the <code>alternateURL</code> if it
+ * exists.</li>
  *
  * <li>Each user element has a distinguished name that can be formed by
- *     substituting the presented username into a pattern configured by the
- *     <code>userPattern</code> property.</li>
+ * substituting the presented username into a pattern configured by the
+ * <code>userPattern</code> property.</li>
  *
  * <li>Alternatively, if the <code>userPattern</code> property is not
- *     specified, a unique element can be located by searching the directory
- *     context. In this case:
- *     <ul>
- *     <li>The <code>userSearch</code> pattern specifies the search filter
- *         after substitution of the username.</li>
- *     <li>The <code>userBase</code> property can be set to the element that
- *         is the base of the subtree containing users.  If not specified,
- *         the search base is the top-level context.</li>
- *     <li>The <code>userSubtree</code> property can be set to
- *         <code>true</code> if you wish to search the entire subtree of the
- *         directory context.  The default value of <code>false</code>
- *         requests a search of only the current level.</li>
- *    </ul>
+ * specified, a unique element can be located by searching the directory
+ * context. In this case:
+ * <ul>
+ * <li>The <code>userSearch</code> pattern specifies the search filter
+ * after substitution of the username.</li>
+ * <li>The <code>userBase</code> property can be set to the element that
+ * is the base of the subtree containing users. If not specified,
+ * the search base is the top-level context.</li>
+ * <li>The <code>userSubtree</code> property can be set to
+ * <code>true</code> if you wish to search the entire subtree of the
+ * directory context. The default value of <code>false</code>
+ * requests a search of only the current level.</li>
+ * </ul>
  * </li>
  *
  * <li>The user may be authenticated by binding to the directory with the
- *      username and password presented. This method is used when the
- *      <code>userPassword</code> property is not specified.</li>
+ * username and password presented. This method is used when the
+ * <code>userPassword</code> property is not specified.</li>
  *
  * <li>The user may be authenticated by retrieving the value of an attribute
- *     from the directory and comparing it explicitly with the value presented
- *     by the user. This method is used when the <code>userPassword</code>
- *     property is specified, in which case:
- *     <ul>
- *     <li>The element for this user must contain an attribute named by the
- *         <code>userPassword</code> property.
- *     <li>The value of the user password attribute is either a cleartext
- *         String, or the result of passing a cleartext String through the
- *         <code>RealmBase.digest()</code> method (using the standard digest
- *         support included in <code>RealmBase</code>).
- *     <li>The user is considered to be authenticated if the presented
- *         credentials (after being passed through
- *         <code>RealmBase.digest()</code>) are equal to the retrieved value
- *         for the user password attribute.</li>
- *     </ul></li>
+ * from the directory and comparing it explicitly with the value presented
+ * by the user. This method is used when the <code>userPassword</code>
+ * property is specified, in which case:
+ * <ul>
+ * <li>The element for this user must contain an attribute named by the
+ * <code>userPassword</code> property.
+ * <li>The value of the user password attribute is either a cleartext
+ * String, or the result of passing a cleartext String through the
+ * <code>RealmBase.digest()</code> method (using the standard digest
+ * support included in <code>RealmBase</code>).
+ * <li>The user is considered to be authenticated if the presented
+ * credentials (after being passed through
+ * <code>RealmBase.digest()</code>) are equal to the retrieved value
+ * for the user password attribute.</li>
+ * </ul>
+ * </li>
  *
  * <li>Each group of users that has been assigned a particular role may be
- *     represented by an individual element in the top level
- *     <code>DirContext</code> that is accessed via the
- *     <code>connectionURL</code> property.  This element has the following
- *     characteristics:
- *     <ul>
- *     <li>The set of all possible groups of interest can be selected by a
- *         search pattern configured by the <code>roleSearch</code>
- *         property.</li>
- *     <li>The <code>roleSearch</code> pattern optionally includes pattern
- *         replacements "{0}" for the distinguished name, and/or "{1}" for
- *         the username, and/or "{2}" the value of an attribute from the
- *         user's directory entry (the attribute is specified by the
- *         <code>userRoleAttribute</code> property), of the authenticated user
- *         for which roles will be retrieved.</li>
- *     <li>The <code>roleBase</code> property can be set to the element that
- *         is the base of the search for matching roles.  If not specified,
- *         the entire context will be searched.</li>
- *     <li>The <code>roleSubtree</code> property can be set to
- *         <code>true</code> if you wish to search the entire subtree of the
- *         directory context.  The default value of <code>false</code>
- *         requests a search of only the current level.</li>
- *     <li>The element includes an attribute (whose name is configured by
- *         the <code>roleName</code> property) containing the name of the
- *         role represented by this element.</li>
- *     </ul></li>
+ * represented by an individual element in the top level
+ * <code>DirContext</code> that is accessed via the
+ * <code>connectionURL</code> property. This element has the following
+ * characteristics:
+ * <ul>
+ * <li>The set of all possible groups of interest can be selected by a
+ * search pattern configured by the <code>roleSearch</code>
+ * property.</li>
+ * <li>The <code>roleSearch</code> pattern optionally includes pattern
+ * replacements "{0}" for the distinguished name, and/or "{1}" for
+ * the username, and/or "{2}" the value of an attribute from the
+ * user's directory entry (the attribute is specified by the
+ * <code>userRoleAttribute</code> property), of the authenticated user
+ * for which roles will be retrieved.</li>
+ * <li>The <code>roleBase</code> property can be set to the element that
+ * is the base of the search for matching roles. If not specified,
+ * the entire context will be searched.</li>
+ * <li>The <code>roleSubtree</code> property can be set to
+ * <code>true</code> if you wish to search the entire subtree of the
+ * directory context. The default value of <code>false</code>
+ * requests a search of only the current level.</li>
+ * <li>The element includes an attribute (whose name is configured by
+ * the <code>roleName</code> property) containing the name of the
+ * role represented by this element.</li>
+ * </ul>
+ * </li>
  *
  * <li>In addition, roles may be represented by the values of an attribute
  * in the user's element whose name is configured by the
@@ -162,32 +164,35 @@ import org.ietf.jgss.GSSCredential;
  * nested roles.</li>
  *
  * <li>Note that the standard <code>&lt;security-role-ref&gt;</code> element in
- *     the web application deployment descriptor allows applications to refer
- *     to roles programmatically by names other than those used in the
- *     directory server itself.</li>
+ * the web application deployment descriptor allows applications to refer
+ * to roles programmatically by names other than those used in the
+ * directory server itself.</li>
  * </ul>
  *
- * <p><strong>TODO</strong> - Support connection pooling (including message
+ * <p>
+ * <strong>TODO</strong> - Support connection pooling (including message
  * format objects) so that <code>authenticate()</code> does not have to be
- * synchronized.</p>
+ * synchronized.
+ * </p>
  *
- * <p><strong>WARNING</strong> - There is a reported bug against the Netscape
+ * <p>
+ * <strong>WARNING</strong> - There is a reported bug against the Netscape
  * provider code (com.netscape.jndi.ldap.LdapContextFactory) with respect to
  * successfully authenticated a non-existing user. The
  * report is here: http://bz.apache.org/bugzilla/show_bug.cgi?id=11210 .
  * With luck, Netscape has updated their provider code and this is not an
- * issue. </p>
+ * issue.
+ * </p>
  *
  * @author John Holman
  * @author Craig R. McClanahan
  */
 public class JNDIRealm extends RealmBase {
 
-
     // ----------------------------------------------------- Instance Variables
 
     /**
-     *  The type of authentication to use
+     * The type of authentication to use
      */
     protected String authentication = null;
 
@@ -196,32 +201,27 @@ public class JNDIRealm extends RealmBase {
      */
     protected String connectionName = null;
 
-
     /**
      * The connection password for the server we will contact.
      */
     protected String connectionPassword = null;
-
 
     /**
      * The connection URL for the server we will contact.
      */
     protected String connectionURL = null;
 
-
     /**
      * The directory context linking us to our directory server.
      */
     protected DirContext context = null;
 
-
     /**
-     * The JNDI context factory used to acquire our InitialContext.  By
+     * The JNDI context factory used to acquire our InitialContext. By
      * default, assumes use of an LDAP server using the standard JNDI LDAP
      * provider.
      */
     protected String contextFactory = "com.sun.jndi.ldap.LdapCtxFactory";
-
 
     /**
      * How aliases should be dereferenced during search operations.
@@ -234,12 +234,10 @@ public class JNDIRealm extends RealmBase {
      */
     public static final String DEREF_ALIASES = "java.naming.ldap.derefAliases";
 
-
     /**
      * Descriptive information about this Realm implementation.
      */
     protected static final String name = "JNDIRealm";
-
 
     /**
      * The protocol that will be used in the communication with the
@@ -247,38 +245,35 @@ public class JNDIRealm extends RealmBase {
      */
     protected String protocol = null;
 
-
     /**
-     * Should we ignore PartialResultExceptions when iterating over NamingEnumerations?
+     * Should we ignore PartialResultExceptions when iterating over
+     * NamingEnumerations?
      * Microsoft Active Directory often returns referrals, which lead
-     * to PartialResultExceptions. Unfortunately there's no stable way to detect,
+     * to PartialResultExceptions. Unfortunately there's no stable way to
+     * detect,
      * if the Exceptions really come from an AD referral.
      * Set to true to ignore PartialResultExceptions.
      */
     protected boolean adCompat = false;
 
-
     /**
-     * How should we handle referrals?  Microsoft Active Directory often returns
+     * How should we handle referrals? Microsoft Active Directory often returns
      * referrals. If you need to follow them set referrals to "follow".
      * Caution: if your DNS is not part of AD, the LDAP client lib might try
      * to resolve your domain name in DNS to find another LDAP server.
      */
     protected String referrals = null;
 
-
     /**
      * The base element for user searches.
      */
     protected String userBase = "";
-
 
     /**
      * The message format used to search for a user, with "{0}" marking
      * the spot where the username goes.
      */
     protected String userSearch = null;
-
 
     /**
      * When searching for users, should the search be performed as the user
@@ -288,19 +283,16 @@ public class JNDIRealm extends RealmBase {
      */
     private boolean userSearchAsUser = false;
 
-
     /**
      * The MessageFormat object associated with the current
      * <code>userSearch</code>.
      */
     protected MessageFormat userSearchFormat = null;
 
-
     /**
      * Should we search the entire subtree for matching users?
      */
     protected boolean userSubtree = false;
-
 
     /**
      * The attribute name used to retrieve the user password.
@@ -315,7 +307,6 @@ public class JNDIRealm extends RealmBase {
      */
     protected String userRoleAttribute = null;
 
-
     /**
      * A string of LDAP user patterns or paths, ":"-separated
      * These will be used to form the distinguished name of a
@@ -326,14 +317,12 @@ public class JNDIRealm extends RealmBase {
      */
     protected String[] userPatternArray = null;
 
-
     /**
      * The message format used to form the distinguished name of a
      * user, with "{0}" marking the spot where the specified username
      * goes.
      */
     protected String userPattern = null;
-
 
     /**
      * An array of MessageFormat objects associated with the current
@@ -346,13 +335,11 @@ public class JNDIRealm extends RealmBase {
      */
     protected String roleBase = "";
 
-
     /**
      * The MessageFormat object associated with the current
      * <code>roleBase</code>.
      */
     protected MessageFormat roleBaseFormat = null;
-
 
     /**
      * The MessageFormat object associated with the current
@@ -360,19 +347,16 @@ public class JNDIRealm extends RealmBase {
      */
     protected MessageFormat roleFormat = null;
 
-
     /**
      * The name of an attribute in the user's entry containing
      * roles for that user
      */
     protected String userRoleName = null;
 
-
     /**
      * The name of the attribute containing roles held elsewhere
      */
     protected String roleName = null;
-
 
     /**
      * The message format used to select roles for a user, with "{0}" marking
@@ -380,7 +364,6 @@ public class JNDIRealm extends RealmBase {
      * and "{2}" are described in the Configuration Reference.
      */
     protected String roleSearch = null;
-
 
     /**
      * Should we search the entire subtree for matching memberships?
@@ -406,16 +389,15 @@ public class JNDIRealm extends RealmBase {
     protected String alternateURL;
 
     /**
-     * The number of connection attempts.  If greater than zero we use the
+     * The number of connection attempts. If greater than zero we use the
      * alternate url.
      */
     protected int connectionAttempt = 0;
 
     /**
-     *  Add this role to every authenticated user
+     * Add this role to every authenticated user
      */
     protected String commonRole = null;
-
 
     /**
      * The timeout, in milliseconds, to use when trying to create a connection
@@ -435,13 +417,11 @@ public class JNDIRealm extends RealmBase {
      */
     protected int timeLimit = 0;
 
-
     /**
      * Should delegated credentials from the SPNEGO authenticator be used if
      * available
      */
     protected boolean useDelegatedCredential = true;
-
 
     /**
      * The QOP that should be used for the connection to the LDAP server after
@@ -465,7 +445,8 @@ public class JNDIRealm extends RealmBase {
     private String[] cipherSuitesArray = null;
 
     /**
-     * Verifier for hostnames in a StartTLS secured connection. <code>null</code>
+     * Verifier for hostnames in a StartTLS secured connection.
+     * <code>null</code>
      * means to use the default verifier.
      */
     private HostnameVerifier hostnameVerifier = null;
@@ -529,7 +510,6 @@ public class JNDIRealm extends RealmBase {
 
     }
 
-
     /**
      * Set the connection username for this Realm.
      *
@@ -541,7 +521,6 @@ public class JNDIRealm extends RealmBase {
 
     }
 
-
     /**
      * @return the connection password for this Realm.
      */
@@ -550,7 +529,6 @@ public class JNDIRealm extends RealmBase {
         return this.connectionPassword;
 
     }
-
 
     /**
      * Set the connection password for this Realm.
@@ -563,7 +541,6 @@ public class JNDIRealm extends RealmBase {
 
     }
 
-
     /**
      * @return the connection URL for this Realm.
      */
@@ -572,7 +549,6 @@ public class JNDIRealm extends RealmBase {
         return this.connectionURL;
 
     }
-
 
     /**
      * Set the connection URL for this Realm.
@@ -585,7 +561,6 @@ public class JNDIRealm extends RealmBase {
 
     }
 
-
     /**
      * @return the JNDI context factory for this Realm.
      */
@@ -594,7 +569,6 @@ public class JNDIRealm extends RealmBase {
         return this.contextFactory;
 
     }
-
 
     /**
      * Set the JNDI context factory for this Realm.
@@ -620,7 +594,7 @@ public class JNDIRealm extends RealmBase {
      * @param derefAliases New value of property derefAliases.
      */
     public void setDerefAliases(java.lang.String derefAliases) {
-      this.derefAliases = derefAliases;
+        this.derefAliases = derefAliases;
     }
 
     /**
@@ -643,42 +617,39 @@ public class JNDIRealm extends RealmBase {
 
     }
 
-
     /**
      * @return the current settings for handling PartialResultExceptions
      */
-    public boolean getAdCompat () {
+    public boolean getAdCompat() {
         return adCompat;
     }
-
 
     /**
      * How do we handle PartialResultExceptions?
      * True: ignore all PartialResultExceptions.
+     * 
      * @param adCompat <code>true</code> to ignore partial results
      */
-    public void setAdCompat (boolean adCompat) {
+    public void setAdCompat(boolean adCompat) {
         this.adCompat = adCompat;
     }
-
 
     /**
      * @return the current settings for handling JNDI referrals.
      */
-    public String getReferrals () {
+    public String getReferrals() {
         return referrals;
     }
-
 
     /**
      * How do we handle JNDI referrals? ignore, follow, or throw
      * (see javax.naming.Context.REFERRAL for more information).
+     * 
      * @param referrals The referral handling
      */
-    public void setReferrals (String referrals) {
+    public void setReferrals(String referrals) {
         this.referrals = referrals;
     }
-
 
     /**
      * @return the base element for user searches.
@@ -688,7 +659,6 @@ public class JNDIRealm extends RealmBase {
         return this.userBase;
 
     }
-
 
     /**
      * Set the base element for user searches.
@@ -701,7 +671,6 @@ public class JNDIRealm extends RealmBase {
 
     }
 
-
     /**
      * @return the message format pattern for selecting users in this Realm.
      */
@@ -710,7 +679,6 @@ public class JNDIRealm extends RealmBase {
         return this.userSearch;
 
     }
-
 
     /**
      * Set the message format pattern for selecting users in this Realm.
@@ -727,16 +695,13 @@ public class JNDIRealm extends RealmBase {
 
     }
 
-
     public boolean isUserSearchAsUser() {
         return userSearchAsUser;
     }
 
-
     public void setUserSearchAsUser(boolean userSearchAsUser) {
         this.userSearchAsUser = userSearchAsUser;
     }
-
 
     /**
      * @return the "search subtree for users" flag.
@@ -746,7 +711,6 @@ public class JNDIRealm extends RealmBase {
         return this.userSubtree;
 
     }
-
 
     /**
      * Set the "search subtree for users" flag.
@@ -759,7 +723,6 @@ public class JNDIRealm extends RealmBase {
 
     }
 
-
     /**
      * @return the user role name attribute name for this Realm.
      */
@@ -767,7 +730,6 @@ public class JNDIRealm extends RealmBase {
 
         return userRoleName;
     }
-
 
     /**
      * Set the user role name attribute name for this Realm.
@@ -780,7 +742,6 @@ public class JNDIRealm extends RealmBase {
 
     }
 
-
     /**
      * @return the base element for role searches.
      */
@@ -789,7 +750,6 @@ public class JNDIRealm extends RealmBase {
         return this.roleBase;
 
     }
-
 
     /**
      * Set the base element for role searches.
@@ -806,7 +766,6 @@ public class JNDIRealm extends RealmBase {
 
     }
 
-
     /**
      * @return the role name attribute name for this Realm.
      */
@@ -815,7 +774,6 @@ public class JNDIRealm extends RealmBase {
         return this.roleName;
 
     }
-
 
     /**
      * Set the role name attribute name for this Realm.
@@ -828,7 +786,6 @@ public class JNDIRealm extends RealmBase {
 
     }
 
-
     /**
      * @return the message format pattern for selecting roles in this Realm.
      */
@@ -837,7 +794,6 @@ public class JNDIRealm extends RealmBase {
         return this.roleSearch;
 
     }
-
 
     /**
      * Set the message format pattern for selecting roles in this Realm.
@@ -854,16 +810,13 @@ public class JNDIRealm extends RealmBase {
 
     }
 
-
     public boolean isRoleSearchAsUser() {
         return roleSearchAsUser;
     }
 
-
     public void setRoleSearchAsUser(boolean roleSearchAsUser) {
         this.roleSearchAsUser = roleSearchAsUser;
     }
-
 
     /**
      * @return the "search subtree for roles" flag.
@@ -873,7 +826,6 @@ public class JNDIRealm extends RealmBase {
         return this.roleSubtree;
 
     }
-
 
     /**
      * Set the "search subtree for roles" flag.
@@ -895,7 +847,6 @@ public class JNDIRealm extends RealmBase {
 
     }
 
-
     /**
      * Set the "search subtree for roles" flag.
      *
@@ -907,7 +858,6 @@ public class JNDIRealm extends RealmBase {
 
     }
 
-
     /**
      * @return the password attribute used to retrieve the user password.
      */
@@ -916,7 +866,6 @@ public class JNDIRealm extends RealmBase {
         return this.userPassword;
 
     }
-
 
     /**
      * Set the password attribute used to retrieve the user password.
@@ -928,7 +877,6 @@ public class JNDIRealm extends RealmBase {
         this.userPassword = userPassword;
 
     }
-
 
     public String getUserRoleAttribute() {
         return userRoleAttribute;
@@ -946,9 +894,6 @@ public class JNDIRealm extends RealmBase {
         return this.userPattern;
 
     }
-
-
-
 
     /**
      * Set the message format pattern for selecting users in this Realm.
@@ -969,13 +914,12 @@ public class JNDIRealm extends RealmBase {
             userPatternArray = parseUserPatternString(userPattern);
             int len = this.userPatternArray.length;
             userPatternFormatArray = new MessageFormat[len];
-            for (int i=0; i < len; i++) {
-                userPatternFormatArray[i] =
-                    new MessageFormat(userPatternArray[i]);
+            for (int i = 0; i < len; i++) {
+                userPatternFormatArray[i] = new MessageFormat(
+                        userPatternArray[i]);
             }
         }
     }
-
 
     /**
      * Getter for property alternateURL.
@@ -988,7 +932,6 @@ public class JNDIRealm extends RealmBase {
 
     }
 
-
     /**
      * Setter for property alternateURL.
      *
@@ -1000,7 +943,6 @@ public class JNDIRealm extends RealmBase {
 
     }
 
-
     /**
      * @return the common role
      */
@@ -1009,7 +951,6 @@ public class JNDIRealm extends RealmBase {
         return commonRole;
 
     }
-
 
     /**
      * Set the common role
@@ -1022,7 +963,6 @@ public class JNDIRealm extends RealmBase {
 
     }
 
-
     /**
      * @return the connection timeout.
      */
@@ -1031,7 +971,6 @@ public class JNDIRealm extends RealmBase {
         return connectionTimeout;
 
     }
-
 
     /**
      * Set the connection timeout.
@@ -1044,26 +983,21 @@ public class JNDIRealm extends RealmBase {
 
     }
 
-
     public long getSizeLimit() {
         return sizeLimit;
     }
-
 
     public void setSizeLimit(long sizeLimit) {
         this.sizeLimit = sizeLimit;
     }
 
-
     public int getTimeLimit() {
         return timeLimit;
     }
 
-
     public void setTimeLimit(int timeLimit) {
         this.timeLimit = timeLimit;
     }
-
 
     public boolean isUseDelegatedCredential() {
         return useDelegatedCredential;
@@ -1073,7 +1007,6 @@ public class JNDIRealm extends RealmBase {
         this.useDelegatedCredential = useDelegatedCredential;
     }
 
-
     public String getSpnegoDelegationQop() {
         return spnegoDelegationQop;
     }
@@ -1081,7 +1014,6 @@ public class JNDIRealm extends RealmBase {
     public void setSpnegoDelegationQop(String spnegoDelegationQop) {
         this.spnegoDelegationQop = spnegoDelegationQop;
     }
-
 
     /**
      * @return flag whether to use StartTLS for connections to the ldap server
@@ -1094,8 +1026,8 @@ public class JNDIRealm extends RealmBase {
      * Flag whether StartTLS should be used when connecting to the ldap server
      *
      * @param useStartTls
-     *            {@code true} when StartTLS should be used. Default is
-     *            {@code false}.
+     *                    {@code true} when StartTLS should be used. Default is
+     *                    {@code false}.
      */
     public void setUseStartTls(boolean useStartTls) {
         this.useStartTls = useStartTls;
@@ -1114,8 +1046,8 @@ public class JNDIRealm extends RealmBase {
             this.cipherSuitesArray = null;
         } else {
             this.cipherSuitesArray = cipherSuites.trim().split("\\s*,\\s*");
-            containerLog.debug(sm.getString("jndiRealm.cipherSuites",
-                    Arrays.asList(this.cipherSuitesArray)));
+            containerLog.debug(sm.getString("jndiRealm.cipherSuites", Arrays
+                    .asList(this.cipherSuitesArray)));
         }
         return this.cipherSuitesArray;
     }
@@ -1125,7 +1057,7 @@ public class JNDIRealm extends RealmBase {
      * The cipher suites are expected as a comma separated list.
      *
      * @param suites
-     *            comma separated list of allowed cipher suites
+     *               comma separated list of allowed cipher suites
      */
     public void setCipherSuites(String suites) {
         this.cipherSuites = suites;
@@ -1149,7 +1081,8 @@ public class JNDIRealm extends RealmBase {
      * using the default constructor.
      *
      * @param verifierClassName
-     *            class name of the {@link HostnameVerifier} to be constructed
+     *                          class name of the {@link HostnameVerifier} to be
+     *                          constructed
      */
     public void setHostnameVerifierClassName(String verifierClassName) {
         if (verifierClassName != null) {
@@ -1167,8 +1100,8 @@ public class JNDIRealm extends RealmBase {
         if (this.hostnameVerifier != null) {
             return this.hostnameVerifier;
         }
-        if (this.hostNameVerifierClassName == null
-                || hostNameVerifierClassName.equals("")) {
+        if (this.hostNameVerifierClassName == null || hostNameVerifierClassName
+                .equals("")) {
             return null;
         }
         try {
@@ -1193,10 +1126,11 @@ public class JNDIRealm extends RealmBase {
      * Set the {@link SSLSocketFactory} to be used when opening connections
      * using StartTLS. An instance of the factory with the given name will be
      * created using the default constructor. The SSLSocketFactory can also be
-     * set using {@link JNDIRealm#setSslProtocol(String) setSslProtocol(String)}.
+     * set using {@link JNDIRealm#setSslProtocol(String)
+     * setSslProtocol(String)}.
      *
      * @param factoryClassName
-     *            class name of the factory to be constructed
+     *                         class name of the factory to be constructed
      */
     public void setSslSocketFactoryClassName(String factoryClassName) {
         this.sslSocketFactoryClassName = factoryClassName;
@@ -1206,7 +1140,7 @@ public class JNDIRealm extends RealmBase {
      * Set the ssl protocol to be used for connections using StartTLS.
      *
      * @param protocol
-     *            one of the allowed ssl protocol names
+     *                 one of the allowed ssl protocol names
      */
     public void setSslProtocol(String protocol) {
         this.sslProtocol = protocol;
@@ -1243,9 +1177,9 @@ public class JNDIRealm extends RealmBase {
      * event is also logged, and the connection will be closed so that
      * a subsequent request will automatically re-open it.
      *
-     * @param username Username of the Principal to look up
+     * @param username    Username of the Principal to look up
      * @param credentials Password or other credentials to use in
-     *  authenticating this username
+     *                    authenticating this username
      * @return the associated principal, or <code>null</code> if there is none.
      */
     @Override
@@ -1268,9 +1202,10 @@ public class JNDIRealm extends RealmBase {
 
             } catch (NullPointerException | CommunicationException
                     | ServiceUnavailableException e) {
-                /* BZ 42449 - Catch NPE - Kludge Sun's LDAP provider
-                   with broken SSL
-                */
+                /*
+                 * BZ 42449 - Catch NPE - Kludge Sun's LDAP provider
+                 * with broken SSL
+                 */
                 // log the exception so we know it's there.
                 containerLog.info(sm.getString("jndiRealm.exception.retry"), e);
 
@@ -1284,7 +1219,6 @@ public class JNDIRealm extends RealmBase {
                 // Try the authentication again.
                 principal = authenticate(context, username, credentials);
             }
-
 
             // Release this context
             release(context);
@@ -1310,43 +1244,38 @@ public class JNDIRealm extends RealmBase {
 
     }
 
-
     // -------------------------------------------------------- Package Methods
 
-
     // ------------------------------------------------------ Protected Methods
-
 
     /**
      * Return the Principal associated with the specified username and
      * credentials, if there is one; otherwise return <code>null</code>.
      *
-     * @param context The directory context
-     * @param username Username of the Principal to look up
+     * @param context     The directory context
+     * @param username    Username of the Principal to look up
      * @param credentials Password or other credentials to use in
-     *  authenticating this username
+     *                    authenticating this username
      * @return the associated principal, or <code>null</code> if there is none.
      *
      * @exception NamingException if a directory server error occurs
      */
     public synchronized Principal authenticate(DirContext context,
-                                               String username,
-                                               String credentials)
-        throws NamingException {
+            String username, String credentials) throws NamingException {
 
-        if (username == null || username.equals("")
-            || credentials == null || credentials.equals("")) {
+        if (username == null || username.equals("") || credentials == null
+                || credentials.equals("")) {
             if (containerLog.isDebugEnabled())
-                containerLog.debug("username null or empty: returning null principal.");
+                containerLog.debug(
+                        "username null or empty: returning null principal.");
             return null;
         }
 
         if (userPatternArray != null) {
-            for (int curUserPattern = 0;
-                 curUserPattern < userPatternFormatArray.length;
-                 curUserPattern++) {
+            for (int curUserPattern = 0; curUserPattern < userPatternFormatArray.length; curUserPattern++) {
                 // Retrieve user information
-                User user = getUser(context, username, credentials, curUserPattern);
+                User user = getUser(context, username, credentials,
+                        curUserPattern);
                 if (user != null) {
                     try {
                         // Check the user's credentials
@@ -1357,16 +1286,17 @@ public class JNDIRealm extends RealmBase {
                                 Iterator<String> it = roles.iterator();
                                 // TODO: Use a single log message
                                 while (it.hasNext()) {
-                                    containerLog.debug("Found role: " + it.next());
+                                    containerLog.debug("Found role: " + it
+                                            .next());
                                 }
                             }
-                            return (new GenericPrincipal(username,
-                                                         credentials,
-                                                         roles));
+                            return (new GenericPrincipal(username, credentials,
+                                    roles));
                         }
                     } catch (InvalidNameException ine) {
                         // Log the problem for posterity
-                        containerLog.warn(sm.getString("jndiRealm.exception"), ine);
+                        containerLog.warn(sm.getString("jndiRealm.exception"),
+                                ine);
                         // ignore; this is probably due to a name not fitting
                         // the search path format exactly, as in a fully-
                         // qualified name being munged into a search path
@@ -1400,13 +1330,12 @@ public class JNDIRealm extends RealmBase {
         }
     }
 
-
     /**
      * Return a User object containing information about the user
      * with the specified username, if found in the directory;
      * otherwise return <code>null</code>.
      *
-     * @param context The directory context
+     * @param context  The directory context
      * @param username Username to be looked up
      * @return the User object
      * @exception NamingException if a directory server error occurs
@@ -1414,31 +1343,29 @@ public class JNDIRealm extends RealmBase {
      * @see #getUser(DirContext, String, String, int)
      */
     protected User getUser(DirContext context, String username)
-        throws NamingException {
+            throws NamingException {
 
         return getUser(context, username, null, -1);
     }
-
 
     /**
      * Return a User object containing information about the user
      * with the specified username, if found in the directory;
      * otherwise return <code>null</code>.
      *
-     * @param context The directory context
-     * @param username Username to be looked up
+     * @param context     The directory context
+     * @param username    Username to be looked up
      * @param credentials User credentials (optional)
      * @return the User object
      * @exception NamingException if a directory server error occurs
      *
      * @see #getUser(DirContext, String, String, int)
      */
-    protected User getUser(DirContext context, String username, String credentials)
-        throws NamingException {
+    protected User getUser(DirContext context, String username,
+            String credentials) throws NamingException {
 
         return getUser(context, username, credentials, -1);
     }
-
 
     /**
      * Return a User object containing information about the user
@@ -1451,16 +1378,15 @@ public class JNDIRealm extends RealmBase {
      * configuration attribute is specified, all values of that
      * attribute are retrieved from the directory entry.
      *
-     * @param context The directory context
-     * @param username Username to be looked up
-     * @param credentials User credentials (optional)
+     * @param context        The directory context
+     * @param username       Username to be looked up
+     * @param credentials    User credentials (optional)
      * @param curUserPattern Index into userPatternFormatArray
      * @return the User object
      * @exception NamingException if a directory server error occurs
      */
     protected User getUser(DirContext context, String username,
-                           String credentials, int curUserPattern)
-        throws NamingException {
+            String credentials, int curUserPattern) throws NamingException {
 
         User user = null;
 
@@ -1478,7 +1404,8 @@ public class JNDIRealm extends RealmBase {
 
         // Use pattern or search for user entry
         if (userPatternFormatArray != null && curUserPattern >= 0) {
-            user = getUserByPattern(context, username, credentials, attrIds, curUserPattern);
+            user = getUserByPattern(context, username, credentials, attrIds,
+                    curUserPattern);
             if (containerLog.isDebugEnabled()) {
                 containerLog.debug("Found user by pattern [" + user + "]");
             }
@@ -1502,36 +1429,32 @@ public class JNDIRealm extends RealmBase {
         if (userPassword == null && credentials != null && user != null) {
             // The password is available. Insert it since it may be required for
             // role searches.
-            return new User(user.getUserName(), user.getDN(), credentials,
-                    user.getRoles(), user.getUserRoleId());
+            return new User(user.getUserName(), user.getDN(), credentials, user
+                    .getRoles(), user.getUserRoleId());
         }
 
         return user;
     }
-
 
     /**
      * Use the distinguished name to locate the directory
      * entry for the user with the specified username and
      * return a User object; otherwise return <code>null</code>.
      *
-     * @param context The directory context
+     * @param context  The directory context
      * @param username The username
-     * @param attrIds String[]containing names of attributes to
-     * @param dn Distinguished name of the user
-     * retrieve.
+     * @param attrIds  String[]containing names of attributes to
+     * @param dn       Distinguished name of the user
+     *                 retrieve.
      * @return the User object
      * @exception NamingException if a directory server error occurs
      */
-    protected User getUserByPattern(DirContext context,
-                                    String username,
-                                    String[] attrIds,
-                                    String dn)
-        throws NamingException {
+    protected User getUserByPattern(DirContext context, String username,
+            String[] attrIds, String dn) throws NamingException {
 
         // If no attributes are requested, no need to look for them
         if (attrIds == null || attrIds.length == 0) {
-            return new User(username, dn, null, null,null);
+            return new User(username, dn, null, null, null);
         }
 
         // Get required attributes from user entry
@@ -1562,28 +1485,24 @@ public class JNDIRealm extends RealmBase {
         return new User(username, dn, password, roles, userRoleAttrValue);
     }
 
-
     /**
      * Use the <code>UserPattern</code> configuration attribute to
      * locate the directory entry for the user with the specified
      * username and return a User object; otherwise return
      * <code>null</code>.
      *
-     * @param context The directory context
-     * @param username The username
-     * @param credentials User credentials (optional)
-     * @param attrIds String[]containing names of attributes to
+     * @param context        The directory context
+     * @param username       The username
+     * @param credentials    User credentials (optional)
+     * @param attrIds        String[]containing names of attributes to
      * @param curUserPattern Index into userPatternFormatArray
      * @return the User object
      * @exception NamingException if a directory server error occurs
      * @see #getUserByPattern(DirContext, String, String[], String)
      */
-    protected User getUserByPattern(DirContext context,
-                                    String username,
-                                    String credentials,
-                                    String[] attrIds,
-                                    int curUserPattern)
-        throws NamingException {
+    protected User getUserByPattern(DirContext context, String username,
+            String credentials, String[] attrIds, int curUserPattern)
+            throws NamingException {
 
         User user = null;
 
@@ -1591,7 +1510,8 @@ public class JNDIRealm extends RealmBase {
             return null;
 
         // Form the dn from the user pattern
-        String dn = userPatternFormatArray[curUserPattern].format(new String[] { username });
+        String dn = userPatternFormatArray[curUserPattern].format(new String[] {
+                username });
 
         try {
             user = getUserByPattern(context, username, attrIds, dn);
@@ -1611,22 +1531,19 @@ public class JNDIRealm extends RealmBase {
         return user;
     }
 
-
     /**
      * Search the directory to return a User object containing
      * information about the user with the specified username, if
      * found in the directory; otherwise return <code>null</code>.
      *
-     * @param context The directory context
+     * @param context  The directory context
      * @param username The username
-     * @param attrIds String[]containing names of attributes to retrieve.
+     * @param attrIds  String[]containing names of attributes to retrieve.
      * @return the User object
      * @exception NamingException if a directory server error occurs
      */
-    protected User getUserBySearch(DirContext context,
-                                   String username,
-                                   String[] attrIds)
-        throws NamingException {
+    protected User getUserBySearch(DirContext context, String username,
+            String[] attrIds) throws NamingException {
 
         if (username == null || userSearchFormat == null)
             return null;
@@ -1639,8 +1556,7 @@ public class JNDIRealm extends RealmBase {
 
         if (userSubtree) {
             constraints.setSearchScope(SearchControls.SUBTREE_SCOPE);
-        }
-        else {
+        } else {
             constraints.setSearchScope(SearchControls.ONELEVEL_SCOPE);
         }
 
@@ -1652,8 +1568,8 @@ public class JNDIRealm extends RealmBase {
             attrIds = new String[0];
         constraints.setReturningAttributes(attrIds);
 
-        NamingEnumeration<SearchResult> results =
-            context.search(userBase, filter, constraints);
+        NamingEnumeration<SearchResult> results = context.search(userBase,
+                filter, constraints);
 
         try {
             // Fail if no entries found
@@ -1674,8 +1590,9 @@ public class JNDIRealm extends RealmBase {
             // Check no further entries were found
             try {
                 if (results.hasMore()) {
-                    if(containerLog.isInfoEnabled())
-                        containerLog.info("username " + username + " has multiple entries");
+                    if (containerLog.isInfoEnabled())
+                        containerLog.info("username " + username
+                                + " has multiple entries");
                     return null;
                 }
             } catch (PartialResultException ex) {
@@ -1686,7 +1603,8 @@ public class JNDIRealm extends RealmBase {
             String dn = getDistinguishedName(context, userBase, result);
 
             if (containerLog.isTraceEnabled())
-                containerLog.trace("  entry found for " + username + " with dn " + dn);
+                containerLog.trace("  entry found for " + username + " with dn "
+                        + dn);
 
             // Get the entry's attributes
             Attributes attrs = result.getAttributes();
@@ -1716,7 +1634,6 @@ public class JNDIRealm extends RealmBase {
         }
     }
 
-
     /**
      * Check whether the given User can be authenticated with the
      * given credentials. If the <code>userPassword</code>
@@ -1726,52 +1643,47 @@ public class JNDIRealm extends RealmBase {
      * credentials are checked by binding to the directory as the
      * user.
      *
-     * @param context The directory context
-     * @param user The User to be authenticated
+     * @param context     The directory context
+     * @param user        The User to be authenticated
      * @param credentials The credentials presented by the user
      * @return <code>true</code> if the credentials are validated
      * @exception NamingException if a directory server error occurs
      */
-    protected boolean checkCredentials(DirContext context,
-                                     User user,
-                                     String credentials)
-         throws NamingException {
+    protected boolean checkCredentials(DirContext context, User user,
+            String credentials) throws NamingException {
 
-         boolean validated = false;
+        boolean validated = false;
 
-         if (userPassword == null) {
-             validated = bindAsUser(context, user, credentials);
-         } else {
-             validated = compareCredentials(context, user, credentials);
-         }
+        if (userPassword == null) {
+            validated = bindAsUser(context, user, credentials);
+        } else {
+            validated = compareCredentials(context, user, credentials);
+        }
 
-         if (containerLog.isTraceEnabled()) {
-             if (validated) {
-                 containerLog.trace(sm.getString("jndiRealm.authenticateSuccess",
-                                  user.getUserName()));
-             } else {
-                 containerLog.trace(sm.getString("jndiRealm.authenticateFailure",
-                                  user.getUserName()));
-             }
-         }
-         return validated;
-     }
-
+        if (containerLog.isTraceEnabled()) {
+            if (validated) {
+                containerLog.trace(sm.getString("jndiRealm.authenticateSuccess",
+                        user.getUserName()));
+            } else {
+                containerLog.trace(sm.getString("jndiRealm.authenticateFailure",
+                        user.getUserName()));
+            }
+        }
+        return validated;
+    }
 
     /**
      * Check whether the credentials presented by the user match those
      * retrieved from the directory.
      *
-     * @param context The directory context
-     * @param info The User to be authenticated
+     * @param context     The directory context
+     * @param info        The User to be authenticated
      * @param credentials Authentication credentials
      * @return <code>true</code> if the credentials are validated
      * @exception NamingException if a directory server error occurs
      */
-    protected boolean compareCredentials(DirContext context,
-                                         User info,
-                                         String credentials)
-        throws NamingException {
+    protected boolean compareCredentials(DirContext context, User info,
+            String credentials) throws NamingException {
 
         // Validate the credentials specified by the user
         if (containerLog.isTraceEnabled())
@@ -1785,31 +1697,29 @@ public class JNDIRealm extends RealmBase {
         return getCredentialHandler().matches(credentials, password);
     }
 
-
     /**
      * Check credentials by binding to the directory as the user
      *
-     * @param context The directory context
-     * @param user The User to be authenticated
+     * @param context     The directory context
+     * @param user        The User to be authenticated
      * @param credentials Authentication credentials
      * @return <code>true</code> if the credentials are validated
      * @exception NamingException if a directory server error occurs
      */
-     protected boolean bindAsUser(DirContext context,
-                                  User user,
-                                  String credentials)
-         throws NamingException {
+    protected boolean bindAsUser(DirContext context, User user,
+            String credentials) throws NamingException {
 
-         if (credentials == null || user == null)
-             return (false);
+        if (credentials == null || user == null)
+            return (false);
 
-         String dn = user.getDN();
-         if (dn == null)
-             return (false);
+        String dn = user.getDN();
+        if (dn == null)
+            return (false);
 
-         // Validate the credentials specified by the user
-         if (containerLog.isTraceEnabled()) {
-             containerLog.trace("  validating credentials by binding as the user");
+        // Validate the credentials specified by the user
+        if (containerLog.isTraceEnabled()) {
+            containerLog.trace(
+                    "  validating credentials by binding as the user");
         }
 
         userCredentialsAdd(context, dn, credentials);
@@ -1818,12 +1728,11 @@ public class JNDIRealm extends RealmBase {
         boolean validated = false;
         try {
             if (containerLog.isTraceEnabled()) {
-                containerLog.trace("  binding as "  + dn);
+                containerLog.trace("  binding as " + dn);
             }
             context.getAttributes("", null);
             validated = true;
-        }
-        catch (AuthenticationException e) {
+        } catch (AuthenticationException e) {
             if (containerLog.isTraceEnabled()) {
                 containerLog.trace("  bind attempt failed");
             }
@@ -1834,15 +1743,15 @@ public class JNDIRealm extends RealmBase {
         return validated;
     }
 
-     /**
-      * Configure the context to use the provided credentials for
-      * authentication.
-      *
-      * @param context      DirContext to configure
-      * @param dn           Distinguished name of user
-      * @param credentials  Credentials of user
-      * @exception NamingException if a directory server error occurs
-      */
+    /**
+     * Configure the context to use the provided credentials for
+     * authentication.
+     *
+     * @param context     DirContext to configure
+     * @param dn          Distinguished name of user
+     * @param credentials Credentials of user
+     * @exception NamingException if a directory server error occurs
+     */
     private void userCredentialsAdd(DirContext context, String dn,
             String credentials) throws NamingException {
         // Set up security environment to bind as the user
@@ -1855,41 +1764,40 @@ public class JNDIRealm extends RealmBase {
      * {@link #connectionPassword} if specified or an anonymous connection if
      * those attributes are not specified.
      *
-      * @param context      DirContext to configure
-      * @exception NamingException if a directory server error occurs
+     * @param context DirContext to configure
+     * @exception NamingException if a directory server error occurs
      */
     private void userCredentialsRemove(DirContext context)
             throws NamingException {
         // Restore the original security environment
         if (connectionName != null) {
             context.addToEnvironment(Context.SECURITY_PRINCIPAL,
-                                     connectionName);
+                    connectionName);
         } else {
             context.removeFromEnvironment(Context.SECURITY_PRINCIPAL);
         }
 
         if (connectionPassword != null) {
             context.addToEnvironment(Context.SECURITY_CREDENTIALS,
-                                     connectionPassword);
-        }
-        else {
+                    connectionPassword);
+        } else {
             context.removeFromEnvironment(Context.SECURITY_CREDENTIALS);
         }
     }
 
     /**
-     * Return a List of roles associated with the given User.  Any
+     * Return a List of roles associated with the given User. Any
      * roles present in the user's directory entry are supplemented by
      * a directory search. If no roles are associated with this user,
      * a zero-length List is returned.
      *
      * @param context The directory context we are searching
-     * @param user The User to be checked
+     * @param user    The User to be checked
      * @return the list of role names
      * @exception NamingException if a directory server error occurs
      */
     protected List<String> getRoles(DirContext context, User user)
-        throws NamingException {
+            throws NamingException {
 
         if (user == null)
             return null;
@@ -1914,9 +1822,10 @@ public class JNDIRealm extends RealmBase {
             list.add(commonRole);
 
         if (containerLog.isTraceEnabled()) {
-            containerLog.trace("  Found " + list.size() + " user internal roles");
-            for (int i=0; i<list.size(); i++)
-                containerLog.trace(  "  Found user internal role " + list.get(i));
+            containerLog.trace("  Found " + list.size()
+                    + " user internal roles");
+            for (int i = 0; i < list.size(); i++)
+                containerLog.trace("  Found user internal role " + list.get(i));
         }
 
         // Are we configured to do role searches?
@@ -1924,13 +1833,14 @@ public class JNDIRealm extends RealmBase {
             return list;
 
         // Set up parameters for an appropriate search
-        String filter = roleFormat.format(new String[] { doRFC2254Encoding(dn), username, userRoleId });
+        String filter = roleFormat.format(new String[] { doRFC2254Encoding(dn),
+                username, userRoleId });
         SearchControls controls = new SearchControls();
         if (roleSubtree)
             controls.setSearchScope(SearchControls.SUBTREE_SCOPE);
         else
             controls.setSearchScope(SearchControls.ONELEVEL_SCOPE);
-        controls.setReturningAttributes(new String[] {roleName});
+        controls.setReturningAttributes(new String[] { roleName });
 
         String base = null;
         if (roleBaseFormat != null) {
@@ -1946,11 +1856,11 @@ public class JNDIRealm extends RealmBase {
         }
 
         // Perform the configured search and process the results
-        NamingEnumeration<SearchResult> results = searchAsUser(context, user, base, filter, controls,
-                isRoleSearchAsUser());
+        NamingEnumeration<SearchResult> results = searchAsUser(context, user,
+                base, filter, controls, isRoleSearchAsUser());
 
         if (results == null)
-            return list;  // Should never happen, but just in case ...
+            return list; // Should never happen, but just in case ...
 
         HashMap<String, String> groupMap = new HashMap<>();
         try {
@@ -1976,7 +1886,8 @@ public class JNDIRealm extends RealmBase {
             Set<Entry<String, String>> entries = groupMap.entrySet();
             containerLog.trace("  Found " + entries.size() + " direct roles");
             for (Entry<String, String> entry : entries) {
-                containerLog.trace(  "  Found direct role " + entry.getKey() + " -> " + entry.getValue());
+                containerLog.trace("  Found direct role " + entry.getKey()
+                        + " -> " + entry.getValue());
             }
         }
 
@@ -1992,14 +1903,17 @@ public class JNDIRealm extends RealmBase {
                 Map<String, String> newThisRound = new HashMap<>(); // Stores the groups we find in this iteration
 
                 for (Entry<String, String> group : newGroups.entrySet()) {
-                    filter = roleFormat.format(new String[] { group.getKey(), group.getValue(), group.getValue() });
+                    filter = roleFormat.format(new String[] { group.getKey(),
+                            group.getValue(), group.getValue() });
 
                     if (containerLog.isTraceEnabled()) {
-                        containerLog.trace("Perform a nested group search with base "+ roleBase + " and filter " + filter);
+                        containerLog.trace(
+                                "Perform a nested group search with base "
+                                        + roleBase + " and filter " + filter);
                     }
 
-                    results = searchAsUser(context, user, roleBase, filter, controls,
-                            isRoleSearchAsUser());
+                    results = searchAsUser(context, user, roleBase, filter,
+                            controls, isRoleSearchAsUser());
 
                     try {
                         while (results.hasMore()) {
@@ -2007,18 +1921,21 @@ public class JNDIRealm extends RealmBase {
                             Attributes attrs = result.getAttributes();
                             if (attrs == null)
                                 continue;
-                            String dname = getDistinguishedName(context, roleBase, result);
+                            String dname = getDistinguishedName(context,
+                                    roleBase, result);
                             String name = getAttributeValue(roleName, attrs);
-                            if (name != null && dname != null && !groupMap.keySet().contains(dname)) {
+                            if (name != null && dname != null && !groupMap
+                                    .keySet().contains(dname)) {
                                 groupMap.put(dname, name);
                                 newThisRound.put(dname, name);
 
                                 if (containerLog.isTraceEnabled()) {
-                                    containerLog.trace("  Found nested role " + dname + " -> " + name);
+                                    containerLog.trace("  Found nested role "
+                                            + dname + " -> " + name);
                                 }
 
                             }
-                         }
+                        }
                     } catch (PartialResultException ex) {
                         if (!adCompat)
                             throw ex;
@@ -2041,25 +1958,26 @@ public class JNDIRealm extends RealmBase {
      * the default credentials.
      *
      * @param context
-     *            context to search on
+     *                     context to search on
      * @param user
-     *            user to bind on
+     *                     user to bind on
      * @param base
-     *            base to start the search from
+     *                     base to start the search from
      * @param filter
-     *            filter to use for the search
+     *                     filter to use for the search
      * @param controls
-     *            controls to use for the search
+     *                     controls to use for the search
      * @param searchAsUser
-     *            {@code true} when the search should be done as user, or
-     *            {@code false} for using the default credentials
+     *                     {@code true} when the search should be done as user,
+     *                     or
+     *                     {@code false} for using the default credentials
      * @return enumeration with all found entries
      * @throws NamingException
-     *             if a directory server error occurs
+     *                         if a directory server error occurs
      */
     private NamingEnumeration<SearchResult> searchAsUser(DirContext context,
-            User user, String base, String filter,
-            SearchControls controls, boolean searchAsUser) throws NamingException {
+            User user, String base, String filter, SearchControls controls,
+            boolean searchAsUser) throws NamingException {
         NamingEnumeration<SearchResult> results;
         try {
             if (searchAsUser) {
@@ -2074,17 +1992,16 @@ public class JNDIRealm extends RealmBase {
         return results;
     }
 
-
     /**
      * Return a String representing the value of the specified attribute.
      *
      * @param attrId Attribute name
-     * @param attrs Attributes containing the required value
+     * @param attrs  Attributes containing the required value
      * @return the attribute value
      * @exception NamingException if a directory server error occurs
      */
     private String getAttributeValue(String attrId, Attributes attrs)
-        throws NamingException {
+            throws NamingException {
 
         if (containerLog.isTraceEnabled())
             containerLog.trace("  retrieving attribute " + attrId);
@@ -2107,20 +2024,17 @@ public class JNDIRealm extends RealmBase {
         return valueString;
     }
 
-
     /**
      * Add values of a specified attribute to a list
      *
      * @param attrId Attribute name
-     * @param attrs Attributes containing the new values
+     * @param attrs  Attributes containing the new values
      * @param values ArrayList containing values found so far
      * @return the list of attribute values
      * @exception NamingException if a directory server error occurs
      */
     private ArrayList<String> addAttributeValues(String attrId,
-                                         Attributes attrs,
-                                         ArrayList<String> values)
-        throws NamingException{
+            Attributes attrs, ArrayList<String> values) throws NamingException {
 
         if (containerLog.isTraceEnabled())
             containerLog.trace("  retrieving values for attribute " + attrId);
@@ -2133,8 +2047,8 @@ public class JNDIRealm extends RealmBase {
             return values;
         NamingEnumeration<?> e = attr.getAll();
         try {
-            while(e.hasMore()) {
-                String value = (String)e.next();
+            while (e.hasMore()) {
+                String value = (String) e.next();
                 values.add(value);
             }
         } catch (PartialResultException ex) {
@@ -2145,7 +2059,6 @@ public class JNDIRealm extends RealmBase {
         }
         return values;
     }
-
 
     /**
      * Close any open connection to the directory server for this Realm.
@@ -2178,7 +2091,6 @@ public class JNDIRealm extends RealmBase {
 
     }
 
-
     /**
      * @return a short name for this Realm implementation.
      */
@@ -2189,9 +2101,9 @@ public class JNDIRealm extends RealmBase {
 
     }
 
-
     /**
      * Get the password for the specified user.
+     * 
      * @param username The user name
      * @return the password associated with the given principal's user name.
      */
@@ -2204,7 +2116,7 @@ public class JNDIRealm extends RealmBase {
 
         try {
             User user = getUser(open(), username, null);
-             if (user == null) {
+            if (user == null) {
                 // User should be found...
                 return null;
             } else {
@@ -2219,6 +2131,7 @@ public class JNDIRealm extends RealmBase {
 
     /**
      * Get the principal associated with the specified certificate.
+     * 
      * @param username The user name
      * @return the Principal associated with the given certificate.
      */
@@ -2263,7 +2176,6 @@ public class JNDIRealm extends RealmBase {
 
             }
 
-
             // Release this context
             release(context);
 
@@ -2284,21 +2196,20 @@ public class JNDIRealm extends RealmBase {
 
         }
 
-
     }
-
 
     /**
      * Get the principal associated with the specified certificate.
-     * @param context The directory context
-     * @param username The user name
+     * 
+     * @param context       The directory context
+     * @param username      The user name
      * @param gssCredential The credentials
      * @return the Principal associated with the given certificate.
      * @exception NamingException if a directory server error occurs
      */
     protected synchronized Principal getPrincipal(DirContext context,
             String username, GSSCredential gssCredential)
-        throws NamingException {
+            throws NamingException {
 
         User user = null;
         List<String> roles = null;
@@ -2309,12 +2220,12 @@ public class JNDIRealm extends RealmBase {
                 // Preserve the current context environment parameters
                 preservedEnvironment = context.getEnvironment();
                 // Set up context
-                context.addToEnvironment(
-                        Context.SECURITY_AUTHENTICATION, "GSSAPI");
+                context.addToEnvironment(Context.SECURITY_AUTHENTICATION,
+                        "GSSAPI");
                 context.addToEnvironment(
                         "javax.security.sasl.server.authentication", "true");
-                context.addToEnvironment(
-                        "javax.security.sasl.qop", spnegoDelegationQop);
+                context.addToEnvironment("javax.security.sasl.qop",
+                        spnegoDelegationQop);
                 // Note: Subject already set in SPNEGO authenticator so no need
                 //       for Subject.doAs() here
             }
@@ -2326,7 +2237,8 @@ public class JNDIRealm extends RealmBase {
             restoreEnvironmentParameter(context,
                     Context.SECURITY_AUTHENTICATION, preservedEnvironment);
             restoreEnvironmentParameter(context,
-                    "javax.security.sasl.server.authentication", preservedEnvironment);
+                    "javax.security.sasl.server.authentication",
+                    preservedEnvironment);
             restoreEnvironmentParameter(context, "javax.security.sasl.qop",
                     preservedEnvironment);
         }
@@ -2343,9 +2255,10 @@ public class JNDIRealm extends RealmBase {
             String parameterName, Hashtable<?, ?> preservedEnvironment) {
         try {
             context.removeFromEnvironment(parameterName);
-            if (preservedEnvironment != null && preservedEnvironment.containsKey(parameterName)) {
-                context.addToEnvironment(parameterName,
-                        preservedEnvironment.get(parameterName));
+            if (preservedEnvironment != null && preservedEnvironment
+                    .containsKey(parameterName)) {
+                context.addToEnvironment(parameterName, preservedEnvironment
+                        .get(parameterName));
             }
         } catch (NamingException e) {
             // Ignore
@@ -2355,6 +2268,7 @@ public class JNDIRealm extends RealmBase {
     /**
      * Open (if necessary) and return a connection to the configured
      * directory server for this Realm.
+     * 
      * @return the directory context
      * @exception NamingException if a directory server error occurs
      */
@@ -2391,7 +2305,8 @@ public class JNDIRealm extends RealmBase {
 
     }
 
-    private DirContext createDirContext(Hashtable<String, String> env) throws NamingException {
+    private DirContext createDirContext(Hashtable<String, String> env)
+            throws NamingException {
         if (useStartTls) {
             return createTlsDirContext(env);
         } else {
@@ -2404,9 +2319,10 @@ public class JNDIRealm extends RealmBase {
             return sslSocketFactory;
         }
         final SSLSocketFactory result;
-        if (this.sslSocketFactoryClassName != null
-                && !sslSocketFactoryClassName.trim().equals("")) {
-            result = createSSLSocketFactoryFromClassName(this.sslSocketFactoryClassName);
+        if (this.sslSocketFactoryClassName != null && !sslSocketFactoryClassName
+                .trim().equals("")) {
+            result = createSSLSocketFactoryFromClassName(
+                    this.sslSocketFactoryClassName);
         } else {
             result = createSSLContextFactoryFromProtocol(sslProtocol);
         }
@@ -2414,25 +2330,25 @@ public class JNDIRealm extends RealmBase {
         return result;
     }
 
-    private SSLSocketFactory createSSLSocketFactoryFromClassName(String className) {
+    private SSLSocketFactory createSSLSocketFactoryFromClassName(
+            String className) {
         try {
             Object o = constructInstance(className);
             if (o instanceof SSLSocketFactory) {
                 return sslSocketFactory;
             } else {
                 throw new IllegalArgumentException(sm.getString(
-                        "jndiRealm.invalidSslSocketFactory",
-                        className));
+                        "jndiRealm.invalidSslSocketFactory", className));
             }
         } catch (ClassNotFoundException | SecurityException
                 | InstantiationException | IllegalAccessException e) {
             throw new IllegalArgumentException(sm.getString(
-                    "jndiRealm.invalidSslSocketFactory",
-                    className), e);
+                    "jndiRealm.invalidSslSocketFactory", className), e);
         }
     }
 
-    private SSLSocketFactory createSSLContextFactoryFromProtocol(String protocol) {
+    private SSLSocketFactory createSSLContextFactoryFromProtocol(
+            String protocol) {
         try {
             SSLContext sslContext;
             if (protocol != null) {
@@ -2443,11 +2359,11 @@ public class JNDIRealm extends RealmBase {
             }
             return sslContext.getSocketFactory();
         } catch (NoSuchAlgorithmException | KeyManagementException e) {
-            List<String> allowedProtocols = Arrays
-                    .asList(getSupportedSslProtocols());
-            throw new IllegalArgumentException(
-                    sm.getString("jndiRealm.invalidSslProtocol", protocol,
-                            allowedProtocols), e);
+            List<String> allowedProtocols = Arrays.asList(
+                    getSupportedSslProtocols());
+            throw new IllegalArgumentException(sm.getString(
+                    "jndiRealm.invalidSslProtocol", protocol, allowedProtocols),
+                    e);
         }
     }
 
@@ -2459,10 +2375,11 @@ public class JNDIRealm extends RealmBase {
      *            Environment to use for context creation
      * @return configured {@link LdapContext}
      * @throws NamingException
-     *             when something goes wrong while negotiating the connection
+     *                         when something goes wrong while negotiating the
+     *                         connection
      */
-    private DirContext createTlsDirContext(
-            Hashtable<String, String> env) throws NamingException {
+    private DirContext createTlsDirContext(Hashtable<String, String> env)
+            throws NamingException {
         Map<String, Object> savedEnv = new HashMap<>();
         for (String key : Arrays.asList(Context.SECURITY_AUTHENTICATION,
                 Context.SECURITY_CREDENTIALS, Context.SECURITY_PRINCIPAL,
@@ -2475,8 +2392,8 @@ public class JNDIRealm extends RealmBase {
         LdapContext result = null;
         try {
             result = new InitialLdapContext(env, null);
-            tls = (StartTlsResponse) result
-                    .extendedOperation(new StartTlsRequest());
+            tls = (StartTlsResponse) result.extendedOperation(
+                    new StartTlsRequest());
             if (getHostnameVerifier() != null) {
                 tls.setHostnameVerifier(getHostnameVerifier());
             }
@@ -2492,9 +2409,10 @@ public class JNDIRealm extends RealmBase {
             }
         } finally {
             if (result != null) {
-                for (Map.Entry<String, Object> savedEntry : savedEnv.entrySet()) {
-                    result.addToEnvironment(savedEntry.getKey(),
-                            savedEntry.getValue());
+                for (Map.Entry<String, Object> savedEntry : savedEnv
+                        .entrySet()) {
+                    result.addToEnvironment(savedEntry.getKey(), savedEntry
+                            .getValue());
                 }
             }
         }
@@ -2506,9 +2424,9 @@ public class JNDIRealm extends RealmBase {
      *
      * @return java.util.Hashtable the configuration for the directory context.
      */
-    protected Hashtable<String,String> getDirectoryContextEnvironment() {
+    protected Hashtable<String, String> getDirectoryContextEnvironment() {
 
-        Hashtable<String,String> env = new Hashtable<>();
+        Hashtable<String, String> env = new Hashtable<>();
 
         // Configure our directory context environment.
         if (containerLog.isDebugEnabled() && connectionAttempt == 0)
@@ -2539,7 +2457,6 @@ public class JNDIRealm extends RealmBase {
 
     }
 
-
     /**
      * Release our use of this connection so that it can be recycled.
      *
@@ -2551,9 +2468,7 @@ public class JNDIRealm extends RealmBase {
 
     }
 
-
     // ------------------------------------------------------ Lifecycle Methods
-
 
     /**
      * Prepare for the beginning of active use of the public methods of this
@@ -2561,7 +2476,8 @@ public class JNDIRealm extends RealmBase {
      * {@link org.apache.catalina.util.LifecycleBase#startInternal()}.
      *
      * @exception LifecycleException if this component detects a fatal error
-     *  that prevents this component from being used
+     *                               that prevents this component from being
+     *                               used
      */
     @Override
     protected void startInternal() throws LifecycleException {
@@ -2580,16 +2496,15 @@ public class JNDIRealm extends RealmBase {
         super.startInternal();
     }
 
-
     /**
      * Gracefully terminate the active use of the public methods of this
      * component and implement the requirements of
      * {@link org.apache.catalina.util.LifecycleBase#stopInternal()}.
      *
      * @exception LifecycleException if this component detects a fatal error
-     *  that needs to be reported
+     *                               that needs to be reported
      */
-     @Override
+    @Override
     protected void stopInternal() throws LifecycleException {
 
         super.stopInternal();
@@ -2602,11 +2517,11 @@ public class JNDIRealm extends RealmBase {
     /**
      * Given a string containing LDAP patterns for user locations (separated by
      * parentheses in a pseudo-LDAP search string format -
-     * "(location1)(location2)", returns an array of those paths.  Real LDAP
+     * "(location1)(location2)", returns an array of those paths. Real LDAP
      * search strings are supported as well (though only the "|" "OR" type).
      *
      * @param userPatternString - a string LDAP search paths surrounded by
-     * parentheses
+     *                          parentheses
      * @return a parsed string array
      */
     protected String[] parseUserPatternString(String userPatternString) {
@@ -2616,7 +2531,7 @@ public class JNDIRealm extends RealmBase {
             int startParenLoc = userPatternString.indexOf('(');
             if (startParenLoc == -1) {
                 // no parens here; return whole thing
-                return new String[] {userPatternString};
+                return new String[] { userPatternString };
             }
             int startingPoint = 0;
             while (startParenLoc > -1) {
@@ -2624,19 +2539,22 @@ public class JNDIRealm extends RealmBase {
                 // weed out escaped open parens and parens enclosing the
                 // whole statement (in the case of valid LDAP search
                 // strings: (|(something)(somethingelse))
-                while ( (userPatternString.charAt(startParenLoc + 1) == '|') ||
-                        (startParenLoc != 0 && userPatternString.charAt(startParenLoc - 1) == '\\') ) {
-                    startParenLoc = userPatternString.indexOf('(', startParenLoc+1);
+                while ((userPatternString.charAt(startParenLoc + 1) == '|')
+                        || (startParenLoc != 0 && userPatternString.charAt(
+                                startParenLoc - 1) == '\\')) {
+                    startParenLoc = userPatternString.indexOf('(', startParenLoc
+                            + 1);
                 }
-                endParenLoc = userPatternString.indexOf(')', startParenLoc+1);
+                endParenLoc = userPatternString.indexOf(')', startParenLoc + 1);
                 // weed out escaped end-parens
                 while (userPatternString.charAt(endParenLoc - 1) == '\\') {
-                    endParenLoc = userPatternString.indexOf(')', endParenLoc+1);
+                    endParenLoc = userPatternString.indexOf(')', endParenLoc
+                            + 1);
                 }
-                String nextPathPart = userPatternString.substring
-                    (startParenLoc+1, endParenLoc);
+                String nextPathPart = userPatternString.substring(startParenLoc
+                        + 1, endParenLoc);
                 pathList.add(nextPathPart);
-                startingPoint = endParenLoc+1;
+                startingPoint = endParenLoc + 1;
                 startParenLoc = userPatternString.indexOf('(', startingPoint);
             }
             return pathList.toArray(new String[] {});
@@ -2645,18 +2563,18 @@ public class JNDIRealm extends RealmBase {
 
     }
 
-
     /**
      * Given an LDAP search string, returns the string with certain characters
      * escaped according to RFC 2254 guidelines.
      * The character mapping is as follows:
-     *     char -&gt;  Replacement
-     *    ---------------------------
-     *     *  -&gt; \2a
-     *     (  -&gt; \28
-     *     )  -&gt; \29
-     *     \  -&gt; \5c
-     *     \0 -&gt; \00
+     * char -&gt; Replacement
+     * ---------------------------
+     * * -&gt; \2a
+     * ( -&gt; \28
+     * ) -&gt; \29
+     * \ -&gt; \5c
+     * \0 -&gt; \00
+     * 
      * @param inString string to escape according to RFC 2254 guidelines
      * @return String the escaped/encoded result
      */
@@ -2688,13 +2606,12 @@ public class JNDIRealm extends RealmBase {
         return buf.toString();
     }
 
-
     /**
      * Returns the distinguished name of a search result.
      *
      * @param context Our DirContext
-     * @param base The base DN
-     * @param result The search result
+     * @param base    The base DN
+     * @param result  The search result
      * @return String containing the distinguished name
      * @exception NamingException if a directory server error occurs
      */
@@ -2704,47 +2621,46 @@ public class JNDIRealm extends RealmBase {
         // we need to composite a name with the base name, the context name, and
         // the result name.  For non-relative names, use the returned name.
         if (result.isRelative()) {
-           if (containerLog.isTraceEnabled()) {
-               containerLog.trace("  search returned relative name: " +
-                       result.getName());
-           }
-           NameParser parser = context.getNameParser("");
-           Name contextName = parser.parse(context.getNameInNamespace());
-           Name baseName = parser.parse(base);
+            if (containerLog.isTraceEnabled()) {
+                containerLog.trace("  search returned relative name: " + result
+                        .getName());
+            }
+            NameParser parser = context.getNameParser("");
+            Name contextName = parser.parse(context.getNameInNamespace());
+            Name baseName = parser.parse(base);
 
-           // Bugzilla 32269
-           Name entryName =
-               parser.parse(new CompositeName(result.getName()).get(0));
+            // Bugzilla 32269
+            Name entryName = parser.parse(new CompositeName(result.getName())
+                    .get(0));
 
-           Name name = contextName.addAll(baseName);
-           name = name.addAll(entryName);
-           return name.toString();
+            Name name = contextName.addAll(baseName);
+            name = name.addAll(entryName);
+            return name.toString();
         } else {
-           String absoluteName = result.getName();
-           if (containerLog.isTraceEnabled())
-               containerLog.trace("  search returned absolute name: " +
-                       result.getName());
-           try {
-               // Normalize the name by running it through the name parser.
-               NameParser parser = context.getNameParser("");
-               URI userNameUri = new URI(absoluteName);
-               String pathComponent = userNameUri.getPath();
-               // Should not ever have an empty path component, since that is /{DN}
-               if (pathComponent.length() < 1 ) {
-                   throw new InvalidNameException(
-                           "Search returned unparseable absolute name: " +
-                           absoluteName );
-               }
-               Name name = parser.parse(pathComponent.substring(1));
-               return name.toString();
-           } catch ( URISyntaxException e ) {
-               throw new InvalidNameException(
-                       "Search returned unparseable absolute name: " +
-                       absoluteName );
-           }
+            String absoluteName = result.getName();
+            if (containerLog.isTraceEnabled())
+                containerLog.trace("  search returned absolute name: " + result
+                        .getName());
+            try {
+                // Normalize the name by running it through the name parser.
+                NameParser parser = context.getNameParser("");
+                URI userNameUri = new URI(absoluteName);
+                String pathComponent = userNameUri.getPath();
+                // Should not ever have an empty path component, since that is /{DN}
+                if (pathComponent.length() < 1) {
+                    throw new InvalidNameException(
+                            "Search returned unparseable absolute name: "
+                                    + absoluteName);
+                }
+                Name name = parser.parse(pathComponent.substring(1));
+                return name.toString();
+            } catch (URISyntaxException e) {
+                throw new InvalidNameException(
+                        "Search returned unparseable absolute name: "
+                                + absoluteName);
+            }
         }
     }
-
 
     // ------------------------------------------------------ Private Classes
 
@@ -2758,7 +2674,6 @@ public class JNDIRealm extends RealmBase {
         private final String password;
         private final List<String> roles;
         private final String userRoleId;
-
 
         public User(String username, String dn, String password,
                 List<String> roles, String userRoleId) {
@@ -2793,7 +2708,5 @@ public class JNDIRealm extends RealmBase {
             return userRoleId;
         }
 
-
     }
 }
-

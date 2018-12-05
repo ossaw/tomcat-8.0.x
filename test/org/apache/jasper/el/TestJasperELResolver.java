@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -52,16 +50,15 @@ public class TestJasperELResolver {
             list.add(new ImplicitObjectELResolver());
         }
 
-        JasperELResolver resolver =
-                new JasperELResolver(list, new StreamELResolverImpl());
+        JasperELResolver resolver = new JasperELResolver(list,
+                new StreamELResolverImpl());
 
-
-        Assert.assertEquals(Integer.valueOf(count),
-                getField("appResolversSize", resolver));
-        Assert.assertEquals(9 + count,
-                ((ELResolver[])getField("resolvers", resolver)).length);
-        Assert.assertEquals(Integer.valueOf(9 + count),
-                getField("size", resolver));
+        Assert.assertEquals(Integer.valueOf(count), getField("appResolversSize",
+                resolver));
+        Assert.assertEquals(9 + count, ((ELResolver[]) getField("resolvers",
+                resolver)).length);
+        Assert.assertEquals(Integer.valueOf(9 + count), getField("size",
+                resolver));
     }
 
     private static final Object getField(String name, Object target)

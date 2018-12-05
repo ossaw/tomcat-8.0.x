@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -57,7 +55,7 @@ public class SingleRemoveSynchronizedAddLock {
     }
 
     public SingleRemoveSynchronizedAddLock(boolean dataAvailable) {
-        this.dataAvailable=dataAvailable;
+        this.dataAvailable = dataAvailable;
     }
 
     /**
@@ -141,6 +139,7 @@ public class SingleRemoveSynchronizedAddLock {
     /**
      * Check if the locked object has data available
      * i.e. the remover can stop poling and get the lock.
+     * 
      * @return True iff the lock Object has data available.
      */
     public synchronized boolean isDataAvailable() {
@@ -149,6 +148,7 @@ public class SingleRemoveSynchronizedAddLock {
 
     /**
      * Check if an add thread owns the lock.
+     * 
      * @return True iff an add thread owns the lock.
      */
     public synchronized boolean isAddLocked() {
@@ -157,6 +157,7 @@ public class SingleRemoveSynchronizedAddLock {
 
     /**
      * Check if the remove thread owns the lock.
+     * 
      * @return True iff the remove thread owns the lock.
      */
     public synchronized boolean isRemoveLocked() {
@@ -165,10 +166,11 @@ public class SingleRemoveSynchronizedAddLock {
 
     /**
      * Check if the remove thread is polling.
+     * 
      * @return True iff the remove thread is polling.
      */
     public synchronized boolean isRemovePolling() {
-        if ( remover != null ) {
+        if (remover != null) {
             return true;
         }
         return false;
@@ -180,16 +182,16 @@ public class SingleRemoveSynchronizedAddLock {
      * this add thread will block until the lock is released.
      */
     public synchronized void lockAdd() {
-        if ( addLocked || removeLocked ) {
+        if (addLocked || removeLocked) {
             do {
                 try {
                     wait(addWaitTimeout);
-                } catch ( InterruptedException e ) {
+                } catch (InterruptedException e) {
                     Thread.currentThread().interrupt();
                 }
-            } while ( addLocked || removeLocked );
+            } while (addLocked || removeLocked);
         }
-        addLocked=true;
+        addLocked = true;
     }
 
     /**
@@ -199,21 +201,21 @@ public class SingleRemoveSynchronizedAddLock {
      * and the queue is not empty.
      */
     public synchronized boolean lockRemove() {
-        removeLocked=false;
-        removeEnabled=true;
-        if ( ( addLocked || ! dataAvailable ) && removeEnabled ) {
-            remover=Thread.currentThread();
+        removeLocked = false;
+        removeEnabled = true;
+        if ((addLocked || !dataAvailable) && removeEnabled) {
+            remover = Thread.currentThread();
             do {
                 try {
                     wait(removeWaitTimeout);
-                } catch ( InterruptedException e ) {
+                } catch (InterruptedException e) {
                     Thread.currentThread().interrupt();
                 }
-            } while ( ( addLocked || ! dataAvailable ) && removeEnabled );
-            remover=null;
+            } while ((addLocked || !dataAvailable) && removeEnabled);
+            remover = null;
         }
-        if ( removeEnabled ) {
-            removeLocked=true;
+        if (removeEnabled) {
+            removeLocked = true;
         }
         return removeLocked;
     }
@@ -223,9 +225,9 @@ public class SingleRemoveSynchronizedAddLock {
      * If the reader thread is polling, notify it.
      */
     public synchronized void unlockAdd(boolean dataAvailable) {
-        addLocked=false;
-        this.dataAvailable=dataAvailable;
-        if ( ( remover != null ) && ( dataAvailable || ! removeEnabled ) ) {
+        addLocked = false;
+        this.dataAvailable = dataAvailable;
+        if ((remover != null) && (dataAvailable || !removeEnabled)) {
             remover.interrupt();
         } else {
             notifyAll();
@@ -238,8 +240,8 @@ public class SingleRemoveSynchronizedAddLock {
      * that the lock has been released by the remove thread.
      */
     public synchronized void unlockRemove() {
-        removeLocked=false;
-        dataAvailable=false;
+        removeLocked = false;
+        dataAvailable = false;
         notifyAll();
     }
 
@@ -247,8 +249,8 @@ public class SingleRemoveSynchronizedAddLock {
      * Abort any polling remover thread
      */
     public synchronized void abortRemove() {
-        removeEnabled=false;
-        if ( remover != null ) {
+        removeEnabled = false;
+        if (remover != null) {
             remover.interrupt();
         }
     }

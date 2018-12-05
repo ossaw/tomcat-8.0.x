@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -40,8 +38,9 @@ public class TestDomainFilterInterceptor {
     public void setUp() throws Exception {
         for (int i = 0; i < channels.length; i++) {
             channels[i] = new GroupChannel();
-            channels[i].getMembershipService().setPayload( ("Channel-" + (i + 1)).getBytes("ASCII"));
-            listeners[i] = new TestMbrListener( ("Listener-" + (i + 1)));
+            channels[i].getMembershipService().setPayload(("Channel-" + (i + 1))
+                    .getBytes("ASCII"));
+            listeners[i] = new TestMbrListener(("Listener-" + (i + 1)));
             channels[i].addMembershipListener(listeners[i]);
             DomainFilterInterceptor filter = new DomainFilterInterceptor();
             filter.setDomain(UUIDGenerator.randomUUID(false));
@@ -60,24 +59,28 @@ public class TestDomainFilterInterceptor {
         //purpose of this test is to make sure that we have received all the members
         //that we can expect before the start method returns
         Thread[] threads = new Thread[channels.length];
-        for (int i=0; i<channels.length; i++ ) {
+        for (int i = 0; i < channels.length; i++) {
             final Channel channel = channels[i];
             Thread t = new Thread() {
                 @Override
                 public void run() {
                     try {
                         channel.start(Channel.DEFAULT);
-                    }catch ( Exception x ) {
+                    } catch (Exception x) {
                         throw new RuntimeException(x);
                     }
                 }
             };
             threads[i] = t;
         }
-        for (int i=0; i<threads.length; i++ ) threads[i].start();
-        for (int i=0; i<threads.length; i++ ) threads[i].join();
+        for (int i = 0; i < threads.length; i++)
+            threads[i].start();
+        for (int i = 0; i < threads.length; i++)
+            threads[i].join();
         System.out.println("All channels started.");
-        for (int i=listeners.length-1; i>=0; i-- ) assertEquals("Checking member arrival length",0,listeners[i].members.size());
+        for (int i = listeners.length - 1; i >= 0; i--)
+            assertEquals("Checking member arrival length", 0,
+                    listeners[i].members.size());
     }
 
     @After
@@ -92,20 +95,23 @@ public class TestDomainFilterInterceptor {
         }
     }
 
-    public static class TestMbrListener
-        implements MembershipListener {
+    public static class TestMbrListener implements MembershipListener {
         public String name = null;
+
         public TestMbrListener(String name) {
             this.name = name;
         }
 
         public ArrayList<Member> members = new ArrayList<>();
+
         @Override
         public void memberAdded(Member member) {
             if (!members.contains(member)) {
                 members.add(member);
                 try {
-                    System.out.println(name + ":member added[" + new String(member.getPayload(), "ASCII") + "; Thread:"+Thread.currentThread().getName()+"]");
+                    System.out.println(name + ":member added[" + new String(
+                            member.getPayload(), "ASCII") + "; Thread:" + Thread
+                                    .currentThread().getName() + "]");
                 } catch (Exception x) {
                     System.out.println(name + ":member added[unknown]");
                 }
@@ -117,7 +123,10 @@ public class TestDomainFilterInterceptor {
             if (members.contains(member)) {
                 members.remove(member);
                 try {
-                    System.out.println(name + ":member disappeared[" + new String(member.getPayload(), "ASCII") + "; Thread:"+Thread.currentThread().getName()+"]");
+                    System.out.println(name + ":member disappeared["
+                            + new String(member.getPayload(), "ASCII")
+                            + "; Thread:" + Thread.currentThread().getName()
+                            + "]");
                 } catch (Exception x) {
                     System.out.println(name + ":member disappeared[unknown]");
                 }

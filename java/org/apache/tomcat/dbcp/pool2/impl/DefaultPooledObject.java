@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -83,10 +81,10 @@ public class DefaultPooledObject<T> implements PooledObject<T> {
     @Override
     public long getIdleTimeMillis() {
         final long elapsed = System.currentTimeMillis() - lastReturnTime;
-     // elapsed may be negative if:
-     // - another thread updates lastReturnTime during the calculation window
-     // - System.currentTimeMillis() is not monotonic (e.g. system time is set back)
-     return elapsed >= 0 ? elapsed : 0;
+        // elapsed may be negative if:
+        // - another thread updates lastReturnTime during the calculation window
+        // - System.currentTimeMillis() is not monotonic (e.g. system time is set back)
+        return elapsed >= 0 ? elapsed : 0;
     }
 
     @Override
@@ -101,6 +99,7 @@ public class DefaultPooledObject<T> implements PooledObject<T> {
 
     /**
      * Get the number of times this object has been borrowed.
+     * 
      * @return The number of times this object has been borrowed.
      * @since 2.1
      */
@@ -109,7 +108,7 @@ public class DefaultPooledObject<T> implements PooledObject<T> {
     }
 
     /**
-     * Return an estimate of the last time this object was used.  If the class
+     * Return an estimate of the last time this object was used. If the class
      * of the pooled object implements {@link TrackedUse}, what is returned is
      * the maximum of {@link TrackedUse#getLastUsed()} and
      * {@link #getLastBorrowTime()}; otherwise this method gives the same
@@ -127,16 +126,19 @@ public class DefaultPooledObject<T> implements PooledObject<T> {
 
     @Override
     public int compareTo(final PooledObject<T> other) {
-        final long lastActiveDiff = this.getLastReturnTime() - other.getLastReturnTime();
+        final long lastActiveDiff = this.getLastReturnTime() - other
+                .getLastReturnTime();
         if (lastActiveDiff == 0) {
             // Make sure the natural ordering is broadly consistent with equals
             // although this will break down if distinct objects have the same
             // identity hash code.
             // see java.lang.Comparable Javadocs
-            return System.identityHashCode(this) - System.identityHashCode(other);
+            return System.identityHashCode(this) - System.identityHashCode(
+                    other);
         }
         // handle int overflow
-        return (int)Math.min(Math.max(lastActiveDiff, Integer.MIN_VALUE), Integer.MAX_VALUE);
+        return (int) Math.min(Math.max(lastActiveDiff, Integer.MIN_VALUE),
+                Integer.MAX_VALUE);
     }
 
     @Override
@@ -181,7 +183,8 @@ public class DefaultPooledObject<T> implements PooledObject<T> {
     /**
      * Allocates the object.
      *
-     * @return {@code true} if the original state was {@link PooledObjectState#IDLE IDLE}
+     * @return {@code true} if the original state was
+     *         {@link PooledObjectState#IDLE IDLE}
      */
     @Override
     public synchronized boolean allocate() {
@@ -208,12 +211,13 @@ public class DefaultPooledObject<T> implements PooledObject<T> {
      * Deallocates the object and sets it {@link PooledObjectState#IDLE IDLE}
      * if it is currently {@link PooledObjectState#ALLOCATED ALLOCATED}.
      *
-     * @return {@code true} if the state was {@link PooledObjectState#ALLOCATED ALLOCATED}
+     * @return {@code true} if the state was {@link PooledObjectState#ALLOCATED
+     *         ALLOCATED}
      */
     @Override
     public synchronized boolean deallocate() {
-        if (state == PooledObjectState.ALLOCATED ||
-                state == PooledObjectState.RETURNING) {
+        if (state == PooledObjectState.ALLOCATED
+                || state == PooledObjectState.RETURNING) {
             state = PooledObjectState.IDLE;
             lastReturnTime = System.currentTimeMillis();
             borrowedBy = null;
@@ -257,6 +261,7 @@ public class DefaultPooledObject<T> implements PooledObject<T> {
 
     /**
      * Returns the state of this object.
+     * 
      * @return state
      */
     @Override
@@ -296,15 +301,16 @@ public class DefaultPooledObject<T> implements PooledObject<T> {
 
         /** Date format */
         //@GuardedBy("format")
-        private static final SimpleDateFormat format = new SimpleDateFormat
-            ("'Pooled object created' yyyy-MM-dd HH:mm:ss Z " +
-             "'by the following code has not been returned to the pool:'");
+        private static final SimpleDateFormat format = new SimpleDateFormat(
+                "'Pooled object created' yyyy-MM-dd HH:mm:ss Z "
+                        + "'by the following code has not been returned to the pool:'");
 
         private final long _createdTime;
 
         /**
          * Create a new instance.
          * <p>
+         * 
          * @see Exception#Exception()
          */
         public AbandonedObjectCreatedException() {
@@ -317,7 +323,7 @@ public class DefaultPooledObject<T> implements PooledObject<T> {
         @Override
         public String getMessage() {
             String msg;
-            synchronized(format) {
+            synchronized (format) {
                 msg = format.format(new Date(_createdTime));
             }
             return msg;

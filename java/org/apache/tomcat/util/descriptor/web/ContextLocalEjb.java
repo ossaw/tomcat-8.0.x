@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -15,8 +13,6 @@
  * limitations under the License.
  */
 package org.apache.tomcat.util.descriptor.web;
-
-
 
 /**
  * Representation of a local EJB resource reference for a web application, as
@@ -45,7 +41,6 @@ public class ContextLocalEjb extends ResourceBase {
         this.home = home;
     }
 
-
     /**
      * The link to a J2EE EJB definition.
      */
@@ -58,7 +53,6 @@ public class ContextLocalEjb extends ResourceBase {
     public void setLink(String link) {
         this.link = link;
     }
-
 
     /**
      * The name of the EJB local implementation class.
@@ -73,9 +67,7 @@ public class ContextLocalEjb extends ResourceBase {
         this.local = local;
     }
 
-
     // --------------------------------------------------------- Public Methods
-
 
     /**
      * Return a String representation of this object.
@@ -110,7 +102,6 @@ public class ContextLocalEjb extends ResourceBase {
         return (sb.toString());
     }
 
-
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -120,7 +111,6 @@ public class ContextLocalEjb extends ResourceBase {
         result = prime * result + ((local == null) ? 0 : local.hashCode());
         return result;
     }
-
 
     @Override
     public boolean equals(Object obj) {

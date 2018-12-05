@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -22,11 +20,10 @@ public class RequestUtil {
         // Hide default constructor as this is a utility class
     }
 
-
     /**
      * Normalize a relative URI path that may have relative values ("/./",
-     * "/../", and so on ) it it.  <strong>WARNING</strong> - This method is
-     * useful only for normalizing application-generated paths.  It does not
+     * "/../", and so on ) it it. <strong>WARNING</strong> - This method is
+     * useful only for normalizing application-generated paths. It does not
      * try to perform security checks for malicious input.
      *
      * @param path Relative path to be normalized
@@ -38,14 +35,13 @@ public class RequestUtil {
         return normalize(path, true);
     }
 
-
     /**
      * Normalize a relative URI path that may have relative values ("/./",
-     * "/../", and so on ) it it.  <strong>WARNING</strong> - This method is
-     * useful only for normalizing application-generated paths.  It does not
+     * "/../", and so on ) it it. <strong>WARNING</strong> - This method is
+     * useful only for normalizing application-generated paths. It does not
      * try to perform security checks for malicious input.
      *
-     * @param path Relative path to be normalized
+     * @param path             Relative path to be normalized
      * @param replaceBackSlash Should '\\' be replaced with '/'
      *
      * @return The normalized path or <code>null</code> if the path cannot be
@@ -79,7 +75,8 @@ public class RequestUtil {
             if (index < 0) {
                 break;
             }
-            normalized = normalized.substring(0, index) + normalized.substring(index + 1);
+            normalized = normalized.substring(0, index) + normalized.substring(
+                    index + 1);
         }
 
         // Resolve occurrences of "/./" in the normalized path
@@ -88,7 +85,8 @@ public class RequestUtil {
             if (index < 0) {
                 break;
             }
-            normalized = normalized.substring(0, index) + normalized.substring(index + 2);
+            normalized = normalized.substring(0, index) + normalized.substring(
+                    index + 2);
         }
 
         // Resolve occurrences of "/../" in the normalized path
@@ -98,10 +96,11 @@ public class RequestUtil {
                 break;
             }
             if (index == 0) {
-                return null;  // Trying to go outside our context
+                return null; // Trying to go outside our context
             }
             int index2 = normalized.lastIndexOf('/', index - 1);
-            normalized = normalized.substring(0, index2) + normalized.substring(index + 3);
+            normalized = normalized.substring(0, index2) + normalized.substring(
+                    index + 3);
         }
 
         if (normalized.length() > 1 && addedTrailingSlash) {

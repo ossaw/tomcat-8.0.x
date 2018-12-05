@@ -1,20 +1,17 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 
 package org.apache.naming;
 
@@ -31,12 +28,10 @@ import javax.naming.NamingException;
  *
  * @author Remy Maucherat
  */
-public class NamingContextBindingsEnumeration
-    implements NamingEnumeration<Binding> {
-
+public class NamingContextBindingsEnumeration implements
+        NamingEnumeration<Binding> {
 
     // ----------------------------------------------------------- Constructors
-
 
     public NamingContextBindingsEnumeration(Iterator<NamingEntry> entries,
             Context ctx) {
@@ -46,56 +41,44 @@ public class NamingContextBindingsEnumeration
 
     // -------------------------------------------------------------- Variables
 
-
     /**
      * Underlying enumeration.
      */
     protected final Iterator<NamingEntry> iterator;
-
 
     /**
      * The context for which this enumeration is being generated.
      */
     private final Context ctx;
 
-
     // --------------------------------------------------------- Public Methods
-
 
     /**
      * Retrieves the next element in the enumeration.
      */
     @Override
-    public Binding next()
-        throws NamingException {
+    public Binding next() throws NamingException {
         return nextElementInternal();
     }
-
 
     /**
      * Determines whether there are any more elements in the enumeration.
      */
     @Override
-    public boolean hasMore()
-        throws NamingException {
+    public boolean hasMore() throws NamingException {
         return iterator.hasNext();
     }
-
 
     /**
      * Closes this enumeration.
      */
     @Override
-    public void close()
-        throws NamingException {
-    }
-
+    public void close() throws NamingException {}
 
     @Override
     public boolean hasMoreElements() {
         return iterator.hasNext();
     }
-
 
     @Override
     public Binding nextElement() {
@@ -129,4 +112,3 @@ public class NamingContextBindingsEnumeration
         return new Binding(entry.name, value.getClass().getName(), value, true);
     }
 }
-

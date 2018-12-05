@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -22,8 +20,8 @@ import java.util.jar.Attributes;
 import java.util.jar.Manifest;
 
 /**
- *  Representation of a Manifest file and its available extensions and
- *  required extensions
+ * Representation of a Manifest file and its available extensions and
+ * required extensions
  *
  * @author Greg Murray
  * @author Justyna Horwat
@@ -44,7 +42,7 @@ public class ManifestResource {
     private final int resourceType;
 
     public ManifestResource(String resourceName, Manifest manifest,
-                            int resourceType) {
+            int resourceType) {
         this.resourceName = resourceName;
         this.resourceType = resourceType;
         processManifest(manifest);
@@ -110,7 +108,8 @@ public class ManifestResource {
         Iterator<Extension> it = requiredExtensions.iterator();
         while (it.hasNext()) {
             Extension ext = it.next();
-            if (!ext.isFulfilled()) return false;
+            if (!ext.isFulfilled())
+                return false;
         }
         return true;
     }
@@ -122,20 +121,25 @@ public class ManifestResource {
         sb.append(resourceName);
 
         sb.append(", isFulfilled=");
-        sb.append(isFulfilled() +"");
+        sb.append(isFulfilled() + "");
         sb.append(", requiredExtensionCount =");
         sb.append(getRequiredExtensionCount());
         sb.append(", availableExtensionCount=");
         sb.append(getAvailableExtensionCount());
         switch (resourceType) {
-            case SYSTEM : sb.append(", resourceType=SYSTEM"); break;
-            case WAR : sb.append(", resourceType=WAR"); break;
-            case APPLICATION : sb.append(", resourceType=APPLICATION"); break;
+            case SYSTEM:
+                sb.append(", resourceType=SYSTEM");
+                break;
+            case WAR:
+                sb.append(", resourceType=WAR");
+                break;
+            case APPLICATION:
+                sb.append(", resourceType=APPLICATION");
+                break;
         }
         sb.append("]");
         return (sb.toString());
     }
-
 
     // -------------------------------------------------------- Private Methods
 
@@ -152,7 +156,7 @@ public class ManifestResource {
      * @param manifest Manifest to be parsed
      *
      * @return List of required extensions, or null if the application
-     * does not require any extensions
+     *         does not require any extensions
      */
     private ArrayList<Extension> getRequiredExtensions(Manifest manifest) {
 
@@ -172,20 +176,20 @@ public class ManifestResource {
             String name = names.substring(0, space).trim();
             names = names.substring(space + 1);
 
-            String value =
-                attributes.getValue(name + "-Extension-Name");
+            String value = attributes.getValue(name + "-Extension-Name");
             if (value == null)
                 continue;
             Extension extension = new Extension();
             extension.setExtensionName(value);
-            extension.setImplementationURL
-                (attributes.getValue(name + "-Implementation-URL"));
-            extension.setImplementationVendorId
-                (attributes.getValue(name + "-Implementation-Vendor-Id"));
-            String version = attributes.getValue(name + "-Implementation-Version");
+            extension.setImplementationURL(attributes.getValue(name
+                    + "-Implementation-URL"));
+            extension.setImplementationVendorId(attributes.getValue(name
+                    + "-Implementation-Vendor-Id"));
+            String version = attributes.getValue(name
+                    + "-Implementation-Version");
             extension.setImplementationVersion(version);
-            extension.setSpecificationVersion
-                (attributes.getValue(name + "-Specification-Version"));
+            extension.setSpecificationVersion(attributes.getValue(name
+                    + "-Specification-Version"));
             extensionList.add(extension);
         }
         return extensionList;
@@ -199,7 +203,7 @@ public class ManifestResource {
      * @param manifest Manifest to be parsed
      *
      * @return List of available extensions, or null if the web application
-     * does not bundle any extensions
+     *         does not bundle any extensions
      */
     private ArrayList<Extension> getAvailableExtensions(Manifest manifest) {
 
@@ -212,16 +216,16 @@ public class ManifestResource {
 
         Extension extension = new Extension();
         extension.setExtensionName(name);
-        extension.setImplementationURL(
-            attributes.getValue("Implementation-URL"));
-        extension.setImplementationVendor(
-            attributes.getValue("Implementation-Vendor"));
-        extension.setImplementationVendorId(
-            attributes.getValue("Implementation-Vendor-Id"));
-        extension.setImplementationVersion(
-            attributes.getValue("Implementation-Version"));
-        extension.setSpecificationVersion(
-            attributes.getValue("Specification-Version"));
+        extension.setImplementationURL(attributes.getValue(
+                "Implementation-URL"));
+        extension.setImplementationVendor(attributes.getValue(
+                "Implementation-Vendor"));
+        extension.setImplementationVendorId(attributes.getValue(
+                "Implementation-Vendor-Id"));
+        extension.setImplementationVersion(attributes.getValue(
+                "Implementation-Version"));
+        extension.setSpecificationVersion(attributes.getValue(
+                "Specification-Version"));
 
         extensionList.add(extension);
 

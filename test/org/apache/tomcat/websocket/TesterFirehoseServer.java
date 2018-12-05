@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -53,7 +51,6 @@ public class TesterFirehoseServer {
         MESSAGE = sb.toString();
     }
 
-
     public static class Config extends WsContextListener {
 
         public static final String PATH = "/firehose";
@@ -61,8 +58,8 @@ public class TesterFirehoseServer {
         @Override
         public void contextInitialized(ServletContextEvent sce) {
             super.contextInitialized(sce);
-            ServerContainer sc =
-                    (ServerContainer) sce.getServletContext().getAttribute(
+            ServerContainer sc = (ServerContainer) sce.getServletContext()
+                    .getAttribute(
                             Constants.SERVER_CONTAINER_SERVLET_CONTEXT_ATTRIBUTE);
             try {
                 sc.addEndpoint(Endpoint.class);
@@ -71,7 +68,6 @@ public class TesterFirehoseServer {
             }
         }
     }
-
 
     @ServerEndpoint(Config.PATH)
     public static class Endpoint {
@@ -111,8 +107,8 @@ public class TesterFirehoseServer {
             System.out.println("Received " + msg + ", now sending data");
 
             session.getUserProperties().put(
-                    "org.apache.tomcat.websocket.BLOCKING_SEND_TIMEOUT",
-                    Long.valueOf(SEND_TIME_OUT_MILLIS));
+                    "org.apache.tomcat.websocket.BLOCKING_SEND_TIMEOUT", Long
+                            .valueOf(SEND_TIME_OUT_MILLIS));
 
             Basic remote = session.getBasicRemote();
             remote.setBatchingAllowed(true);

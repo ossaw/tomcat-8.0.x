@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -114,7 +112,7 @@ public class AbandonedTrace implements TrackedUse {
      * object.
      */
     protected void clearTrace() {
-        synchronized(this.traceList) {
+        synchronized (this.traceList) {
             this.traceList.clear();
         }
     }
@@ -131,7 +129,8 @@ public class AbandonedTrace implements TrackedUse {
         }
         final ArrayList<AbandonedTrace> result = new ArrayList<>(size);
         synchronized (this.traceList) {
-            final Iterator<WeakReference<AbandonedTrace>> iter = traceList.iterator();
+            final Iterator<WeakReference<AbandonedTrace>> iter = traceList
+                    .iterator();
             while (iter.hasNext()) {
                 final WeakReference<AbandonedTrace> ref = iter.next();
                 if (ref.get() == null) {
@@ -151,8 +150,9 @@ public class AbandonedTrace implements TrackedUse {
      * @param trace AbandonedTrace object to remove
      */
     protected void removeTrace(final AbandonedTrace trace) {
-        synchronized(this.traceList) {
-            final Iterator<WeakReference<AbandonedTrace>> iter = traceList.iterator();
+        synchronized (this.traceList) {
+            final Iterator<WeakReference<AbandonedTrace>> iter = traceList
+                    .iterator();
             while (iter.hasNext()) {
                 final WeakReference<AbandonedTrace> ref = iter.next();
                 if (trace.equals(ref.get())) {

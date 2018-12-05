@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -37,15 +35,16 @@ public class EjbFactory extends FactoryBase {
     }
 
     @Override
-    protected ObjectFactory getDefaultFactory(Reference ref) throws NamingException {
+    protected ObjectFactory getDefaultFactory(Reference ref)
+            throws NamingException {
 
         ObjectFactory factory;
         String javaxEjbFactoryClassName = System.getProperty(
                 "javax.ejb.Factory", Constants.OPENEJB_EJB_FACTORY);
         try {
-            factory = (ObjectFactory)
-                Class.forName(javaxEjbFactoryClassName).newInstance();
-        } catch(Throwable t) {
+            factory = (ObjectFactory) Class.forName(javaxEjbFactoryClassName)
+                    .newInstance();
+        } catch (Throwable t) {
             if (t instanceof NamingException) {
                 throw (NamingException) t;
             }
@@ -55,8 +54,8 @@ public class EjbFactory extends FactoryBase {
             if (t instanceof VirtualMachineError) {
                 throw (VirtualMachineError) t;
             }
-            NamingException ex = new NamingException
-                ("Could not create resource factory instance");
+            NamingException ex = new NamingException(
+                    "Could not create resource factory instance");
             ex.initCause(t);
             throw ex;
         }

@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -37,8 +35,7 @@ public class TestParserNoStrictWhitespace extends TomcatBaseTest {
     @Override
     public void setUp() throws Exception {
         System.setProperty(
-                "org.apache.jasper.compiler.Parser.STRICT_WHITESPACE",
-                "false");
+                "org.apache.jasper.compiler.Parser.STRICT_WHITESPACE", "false");
         super.setUp();
     }
 
@@ -46,8 +43,8 @@ public class TestParserNoStrictWhitespace extends TomcatBaseTest {
     public void testBug48627() throws Exception {
         getTomcatInstanceTestWebapp(false, true);
 
-        ByteChunk res = getUrl("http://localhost:" + getPort() +
-                "/test/bug48nnn/bug48627.jsp");
+        ByteChunk res = getUrl("http://localhost:" + getPort()
+                + "/test/bug48nnn/bug48627.jsp");
 
         String result = res.toString();
         // Beware of the differences between escaping in JSP attributes and
@@ -60,8 +57,8 @@ public class TestParserNoStrictWhitespace extends TomcatBaseTest {
     public void testBug48668a() throws Exception {
         getTomcatInstanceTestWebapp(false, true);
 
-        ByteChunk res = getUrl("http://localhost:" + getPort() +
-                "/test/bug48nnn/bug48668a.jsp");
+        ByteChunk res = getUrl("http://localhost:" + getPort()
+                + "/test/bug48nnn/bug48668a.jsp");
         String result = res.toString();
         assertEcho(result, "00-Hello world</p>#{foo.bar}");
         assertEcho(result, "01-Hello world</p>${foo.bar}");
@@ -99,8 +96,8 @@ public class TestParserNoStrictWhitespace extends TomcatBaseTest {
     public void testBug48668b() throws Exception {
         getTomcatInstanceTestWebapp(false, true);
 
-        ByteChunk res = getUrl("http://localhost:" + getPort() +
-                "/test/bug48nnn/bug48668b.jsp");
+        ByteChunk res = getUrl("http://localhost:" + getPort()
+                + "/test/bug48nnn/bug48668b.jsp");
         String result = res.toString();
         assertEcho(result, "00-Hello world</p>#{foo.bar}");
         assertEcho(result, "01-Hello world</p>#{foo2");
@@ -111,10 +108,9 @@ public class TestParserNoStrictWhitespace extends TomcatBaseTest {
         getTomcatInstanceTestWebapp(false, true);
 
         ByteChunk res = new ByteChunk();
-        int sc = getUrl("http://localhost:" + getPort() +
-                "/test/bug49nnn/bug49297NoSpace.jsp", res,
-                new HashMap<String,List<String>>());
-
+        int sc = getUrl("http://localhost:" + getPort()
+                + "/test/bug49nnn/bug49297NoSpace.jsp", res,
+                new HashMap<String, List<String>>());
 
         assertEquals(200, sc);
         assertEcho(res.toString(), "Hello World");
@@ -124,9 +120,9 @@ public class TestParserNoStrictWhitespace extends TomcatBaseTest {
     public void testBug49297DuplicateAttr() throws Exception {
         getTomcatInstanceTestWebapp(false, true);
 
-        int sc = getUrl("http://localhost:" + getPort() +
-                "/test/bug49nnn/bug49297DuplicateAttr.jsp", new ByteChunk(),
-                new HashMap<String,List<String>>());
+        int sc = getUrl("http://localhost:" + getPort()
+                + "/test/bug49nnn/bug49297DuplicateAttr.jsp", new ByteChunk(),
+                new HashMap<String, List<String>>());
 
         assertEquals(500, sc);
     }

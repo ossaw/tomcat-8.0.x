@@ -1,18 +1,16 @@
 /*
- *  Licensed to the Apache Software Foundation (ASF) under one or more
- *  contributor license agreements.  See the NOTICE file distributed with
- *  this work for additional information regarding copyright ownership.
- *  The ASF licenses this file to You under the Apache License, Version 2.0
- *  (the "License"); you may not use this file except in compliance with
- *  the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements. See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.apache.coyote.http11.upgrade;
 
@@ -100,13 +98,10 @@ public class NioServletInputStream extends AbstractServletInputStream {
         return len - leftToWrite;
     }
 
-
-
     @Override
     protected void doClose() throws IOException {
         channel.close();
     }
-
 
     private int fillReadBuffer(boolean block) throws IOException {
         int nRead;
@@ -114,12 +109,12 @@ public class NioServletInputStream extends AbstractServletInputStream {
             Selector selector = null;
             try {
                 selector = pool.get();
-            } catch ( IOException x ) {
+            } catch (IOException x) {
                 // Ignore
             }
             try {
-                NioEndpoint.KeyAttachment att =
-                        (NioEndpoint.KeyAttachment) channel.getAttachment();
+                NioEndpoint.KeyAttachment att = (NioEndpoint.KeyAttachment) channel
+                        .getAttachment();
                 if (att == null) {
                     throw new IOException("Key must be cancelled.");
                 }

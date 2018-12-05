@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -40,7 +38,7 @@ public class JasperLoader extends URLClassLoader {
     private final SecurityManager securityManager;
 
     public JasperLoader(URL[] urls, ClassLoader parent,
-                        PermissionCollection permissionCollection) {
+            PermissionCollection permissionCollection) {
         super(urls, parent);
         this.permissionCollection = permissionCollection;
         this.parent = parent;
@@ -48,7 +46,7 @@ public class JasperLoader extends URLClassLoader {
     }
 
     /**
-     * Load the class with the specified name.  This method searches for
+     * Load the class with the specified name. This method searches for
      * classes in the same manner as <code>loadClass(String, boolean)</code>
      * with <code>false</code> as the second argument.
      *
@@ -64,32 +62,32 @@ public class JasperLoader extends URLClassLoader {
 
     /**
      * Load the class with the specified name, searching using the following
-     * algorithm until it finds and returns the class.  If the class cannot
+     * algorithm until it finds and returns the class. If the class cannot
      * be found, returns <code>ClassNotFoundException</code>.
      * <ul>
      * <li>Call <code>findLoadedClass(String)</code> to check if the
-     *     class has already been loaded.  If it has, the same
-     *     <code>Class</code> object is returned.</li>
+     * class has already been loaded. If it has, the same
+     * <code>Class</code> object is returned.</li>
      * <li>If the <code>delegate</code> property is set to <code>true</code>,
-     *     call the <code>loadClass()</code> method of the parent class
-     *     loader, if any.</li>
+     * call the <code>loadClass()</code> method of the parent class
+     * loader, if any.</li>
      * <li>Call <code>findClass()</code> to find this class in our locally
-     *     defined repositories.</li>
+     * defined repositories.</li>
      * <li>Call the <code>loadClass()</code> method of our parent
-     *     class loader, if any.</li>
+     * class loader, if any.</li>
      * </ul>
      * If the class was found using the above steps, and the
      * <code>resolve</code> flag is <code>true</code>, this method will then
      * call <code>resolveClass(Class)</code> on the resulting Class object.
      *
-     * @param name Name of the class to be loaded
+     * @param name    Name of the class to be loaded
      * @param resolve If <code>true</code> then resolve the class
      *
      * @exception ClassNotFoundException if the class was not found
      */
     @Override
     public synchronized Class<?> loadClass(final String name, boolean resolve)
-        throws ClassNotFoundException {
+            throws ClassNotFoundException {
 
         Class<?> clazz = null;
 
@@ -107,30 +105,31 @@ public class JasperLoader extends URLClassLoader {
             if (dot >= 0) {
                 try {
                     // Do not call the security manager since by default, we grant that package.
-                    if (!"org.apache.jasper.runtime".equalsIgnoreCase(name.substring(0,dot))){
-                        securityManager.checkPackageAccess(name.substring(0,dot));
+                    if (!"org.apache.jasper.runtime".equalsIgnoreCase(name
+                            .substring(0, dot))) {
+                        securityManager.checkPackageAccess(name.substring(0,
+                                dot));
                     }
                 } catch (SecurityException se) {
-                    String error = "Security Violation, attempt to use " +
-                        "Restricted Class: " + name;
+                    String error = "Security Violation, attempt to use "
+                            + "Restricted Class: " + name;
                     se.printStackTrace();
                     throw new ClassNotFoundException(error);
                 }
             }
         }
 
-        if( !name.startsWith(Constants.JSP_PACKAGE_NAME + '.') ) {
+        if (!name.startsWith(Constants.JSP_PACKAGE_NAME + '.')) {
             // Class is not in org.apache.jsp, therefore, have our
             // parent load it
             clazz = parent.loadClass(name);
-            if( resolve )
+            if (resolve)
                 resolveClass(clazz);
             return clazz;
         }
 
         return findClass(name);
     }
-
 
     /**
      * Delegate to parent
@@ -152,7 +151,6 @@ public class JasperLoader extends URLClassLoader {
         }
         return is;
     }
-
 
     /**
      * Get the Permissions for a CodeSource.

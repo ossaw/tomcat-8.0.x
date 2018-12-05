@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -15,7 +13,6 @@
  * limitations under the License.
  */
 package javax.servlet.jsp.tagext;
-
 
 /**
  * Translation-time information associated with a taglib directive, and its
@@ -29,9 +26,9 @@ public abstract class TagLibraryInfo {
      * TagAttributeInfo after parsing the TLD file.
      *
      * @param prefix
-     *            the prefix actually used by the taglib directive
+     *               the prefix actually used by the taglib directive
      * @param uri
-     *            the URI actually used by the taglib directive
+     *               the URI actually used by the taglib directive
      */
     protected TagLibraryInfo(String prefix, String uri) {
         this.prefix = prefix;
@@ -130,7 +127,7 @@ public abstract class TagLibraryInfo {
      * this tag library.
      *
      * @param shortname
-     *            The short name (no prefix) of the tag
+     *                  The short name (no prefix) of the tag
      * @return the TagInfo for the tag with the specified short name, or null if
      *         no such tag is found
      */
@@ -154,7 +151,7 @@ public abstract class TagLibraryInfo {
      * files in this tag library.
      *
      * @param shortname
-     *            The short name (no prefix) of the tag
+     *                  The short name (no prefix) of the tag
      * @return the TagFileInfo for the specified Tag file, or null if no Tag
      *         file is found
      * @since 2.0
@@ -190,7 +187,7 @@ public abstract class TagLibraryInfo {
      * functions in this tag library.
      *
      * @param name
-     *            The name (no prefix) of the function
+     *             The name (no prefix) of the function
      * @return the FunctionInfo for the function with the given name, or null if
      *         no such function exists
      * @since 2.0

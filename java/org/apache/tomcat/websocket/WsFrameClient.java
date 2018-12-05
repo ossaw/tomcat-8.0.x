@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -31,11 +29,11 @@ import org.apache.tomcat.util.res.StringManager;
 public class WsFrameClient extends WsFrameBase {
 
     private final Log log = LogFactory.getLog(WsFrameClient.class);
-    private static final StringManager sm =
-            StringManager.getManager(Constants.PACKAGE_NAME);
+    private static final StringManager sm = StringManager.getManager(
+            Constants.PACKAGE_NAME);
 
     private final AsyncChannelWrapper channel;
-    private final CompletionHandler<Integer,Void> handler;
+    private final CompletionHandler<Integer, Void> handler;
     // Not final as it may need to be re-sized
     private volatile ByteBuffer response;
 
@@ -47,7 +45,6 @@ public class WsFrameClient extends WsFrameBase {
         this.handler = new WsFrameClientCompletionHandler();
     }
 
-
     void startInputProcessing() {
         try {
             processSocketRead();
@@ -55,7 +52,6 @@ public class WsFrameClient extends WsFrameBase {
             close(e);
         }
     }
-
 
     private void processSocketRead() throws IOException {
 
@@ -80,14 +76,12 @@ public class WsFrameClient extends WsFrameBase {
         }
     }
 
-
     private final void close(Throwable t) {
         CloseReason cr;
         if (t instanceof WsIOException) {
             cr = ((WsIOException) t).getCloseReason();
         } else {
-            cr = new CloseReason(
-                CloseCodes.CLOSED_ABNORMALLY, t.getMessage());
+            cr = new CloseReason(CloseCodes.CLOSED_ABNORMALLY, t.getMessage());
         }
 
         try {
@@ -97,22 +91,19 @@ public class WsFrameClient extends WsFrameBase {
         }
     }
 
-
     @Override
     protected boolean isMasked() {
         // Data is from the server so it is not masked
         return false;
     }
 
-
     @Override
     protected Log getLog() {
         return log;
     }
 
-
-    private class WsFrameClientCompletionHandler
-            implements CompletionHandler<Integer,Void> {
+    private class WsFrameClientCompletionHandler implements
+            CompletionHandler<Integer, Void> {
 
         @Override
         public void completed(Integer result, Void attachment) {

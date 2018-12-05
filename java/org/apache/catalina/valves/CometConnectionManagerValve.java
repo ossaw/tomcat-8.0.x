@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -15,7 +13,6 @@
  * limitations under the License.
  */
 package org.apache.catalina.valves;
-
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -41,46 +38,46 @@ import org.apache.catalina.connector.CometEventImpl;
 import org.apache.catalina.connector.Request;
 import org.apache.catalina.connector.Response;
 
-
 /**
- * <p>Implementation of a Valve that tracks Comet connections, and closes them
- * when the associated session expires or the webapp is reloaded.</p>
+ * <p>
+ * Implementation of a Valve that tracks Comet connections, and closes them
+ * when the associated session expires or the webapp is reloaded.
+ * </p>
  *
- * <p>This Valve should be attached to a Context.</p>
+ * <p>
+ * This Valve should be attached to a Context.
+ * </p>
  *
  * @author Remy Maucherat
  */
-public class CometConnectionManagerValve extends ValveBase
-    implements HttpSessionListener, LifecycleListener {
+public class CometConnectionManagerValve extends ValveBase implements
+        HttpSessionListener, LifecycleListener {
 
     //------------------------------------------------------ Constructor
     public CometConnectionManagerValve() {
         super(false);
     }
 
-
     // ----------------------------------------------------- Instance Variables
 
     /**
      * List of current Comet connections.
      */
-    protected final List<Request> cometRequests =
-        Collections.synchronizedList(new ArrayList<Request>());
-
+    protected final List<Request> cometRequests = Collections.synchronizedList(
+            new ArrayList<Request>());
 
     /**
      * Name of session attribute used to store list of comet connections.
      */
-    protected static final String cometRequestsAttribute =
-        "org.apache.tomcat.comet.connectionList";
-
+    protected static final String cometRequestsAttribute = "org.apache.tomcat.comet.connectionList";
 
     /**
      * Start this component and implement the requirements
      * of {@link org.apache.catalina.util.LifecycleBase#startInternal()}.
      *
      * @exception LifecycleException if this component detects a fatal error
-     *  that prevents this component from being used
+     *                               that prevents this component from being
+     *                               used
      */
     @Override
     protected synchronized void startInternal() throws LifecycleException {
@@ -92,13 +89,13 @@ public class CometConnectionManagerValve extends ValveBase
         setState(LifecycleState.STARTING);
     }
 
-
     /**
      * Stop this component and implement the requirements
      * of {@link org.apache.catalina.util.LifecycleBase#stopInternal()}.
      *
      * @exception LifecycleException if this component detects a fatal error
-     *  that prevents this component from being used
+     *                               that prevents this component from being
+     *                               used
      */
     @Override
     protected synchronized void stopInternal() throws LifecycleException {
@@ -109,7 +106,6 @@ public class CometConnectionManagerValve extends ValveBase
             container.removeLifecycleListener(this);
         }
     }
-
 
     @Override
     public void lifecycleEvent(LifecycleEvent event) {
@@ -132,9 +128,8 @@ public class CometConnectionManagerValve extends ValveBase
                             CometEvent.EventSubType.WEBAPP_RELOAD);
                     getNext().event(request, request.getResponse(), cometEvent);
                 } catch (Exception e) {
-                    container.getLogger().warn(
-                            sm.getString("cometConnectionManagerValve.event"),
-                            e);
+                    container.getLogger().warn(sm.getString(
+                            "cometConnectionManagerValve.event"), e);
                 } finally {
                     try {
                         cometEvent.close();
@@ -148,21 +143,20 @@ public class CometConnectionManagerValve extends ValveBase
         }
     }
 
-
     // --------------------------------------------------------- Public Methods
 
     /**
      * Register requests for tracking, whenever needed.
      *
-     * @param request The servlet request to be processed
+     * @param request  The servlet request to be processed
      * @param response The servlet response to be created
      *
-     * @exception IOException if an input/output error occurs
+     * @exception IOException      if an input/output error occurs
      * @exception ServletException if a servlet error occurs
      */
     @Override
-    public void invoke(Request request, Response response)
-        throws IOException, ServletException {
+    public void invoke(Request request, Response response) throws IOException,
+            ServletException {
         // Perform the request
         getNext().invoke(request, response);
 
@@ -188,8 +182,7 @@ public class CometConnectionManagerValve extends ValveBase
                     session.setAttribute(cometRequestsAttribute,
                             new ConnectionList(requests));
                 } else {
-                    Request[] newRequests =
-                        new Request[requests.length + 1];
+                    Request[] newRequests = new Request[requests.length + 1];
                     for (int i = 0; i < requests.length; i++) {
                         newRequests[i] = requests[i];
                     }
@@ -202,19 +195,18 @@ public class CometConnectionManagerValve extends ValveBase
 
     }
 
-
     /**
      * Use events to update the connection state.
      *
-     * @param request The servlet request to be processed
+     * @param request  The servlet request to be processed
      * @param response The servlet response to be created
      *
-     * @exception IOException if an input/output error occurs
+     * @exception IOException      if an input/output error occurs
      * @exception ServletException if a servlet error occurs
      */
     @Override
     public void event(Request request, Response response, CometEvent event)
-        throws IOException, ServletException {
+            throws IOException, ServletException {
 
         // Perform the request
         boolean ok = false;
@@ -222,11 +214,11 @@ public class CometConnectionManagerValve extends ValveBase
             getNext().event(request, response, event);
             ok = true;
         } finally {
-            if (!ok || response.isClosed()
-                    || (event.getEventType() == CometEvent.EventType.END)
-                    || (event.getEventType() == CometEvent.EventType.ERROR
-                            && !(event.getEventSubType() ==
-                                CometEvent.EventSubType.TIMEOUT))) {
+            if (!ok || response.isClosed() || (event
+                    .getEventType() == CometEvent.EventType.END) || (event
+                            .getEventType() == CometEvent.EventType.ERROR
+                            && !(event
+                                    .getEventSubType() == CometEvent.EventSubType.TIMEOUT))) {
 
                 // Remove the connection from webapp reload tracking
                 cometRequests.remove(request);
@@ -239,9 +231,8 @@ public class CometConnectionManagerValve extends ValveBase
                     synchronized (session) {
                         Request[] reqs = null;
                         try {
-                            ConnectionList list =
-                                    (ConnectionList) session.getAttribute(
-                                            cometRequestsAttribute);
+                            ConnectionList list = (ConnectionList) session
+                                    .getAttribute(cometRequestsAttribute);
                             if (list != null) {
                                 reqs = list.get();
                             }
@@ -256,8 +247,8 @@ public class CometConnectionManagerValve extends ValveBase
                             }
                             if (found) {
                                 if (reqs.length > 1) {
-                                    Request[] newConnectionInfos =
-                                        new Request[reqs.length - 1];
+                                    Request[] newConnectionInfos = new Request[reqs.length
+                                            - 1];
                                     int pos = 0;
                                     for (int i = 0; i < reqs.length; i++) {
                                         if (reqs[i] != request) {
@@ -291,12 +282,10 @@ public class CometConnectionManagerValve extends ValveBase
 
     }
 
-
     @Override
     public void sessionCreated(HttpSessionEvent se) {
         // NOOP
     }
-
 
     @Override
     public void sessionDestroyed(HttpSessionEvent se) {
@@ -314,8 +303,8 @@ public class CometConnectionManagerValve extends ValveBase
                     CometEventImpl event = req.getEvent();
                     event.setEventType(CometEvent.EventType.END);
                     event.setEventSubType(CometEvent.EventSubType.SESSION_END);
-                    ((CometProcessor)
-                            req.getWrapper().getServlet()).event(event);
+                    ((CometProcessor) req.getWrapper().getServlet()).event(
+                            event);
                     event.close();
                 } catch (Exception e) {
                     req.getWrapper().getParent().getLogger().warn(sm.getString(
@@ -325,18 +314,17 @@ public class CometConnectionManagerValve extends ValveBase
         }
     }
 
-
     private static class ConnectionList implements Serializable {
 
         private static final long serialVersionUID = 1L;
 
         private transient Request[] connectionList = null;
 
-        private ConnectionList(Request[] connectionList){
+        private ConnectionList(Request[] connectionList) {
             this.connectionList = connectionList;
         }
 
-        public Request[] get(){
+        public Request[] get() {
             return connectionList;
         }
     }

@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -24,7 +22,6 @@ import java.util.Set;
 
 import org.apache.tomcat.util.res.StringManager;
 
-
 /**
  * Representation of a servlet definition for a web application, as represented
  * in a <code>&lt;servlet&gt;</code> element in the deployment descriptor.
@@ -34,11 +31,10 @@ public class ServletDef implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private static final StringManager sm =
-        StringManager.getManager(Constants.PACKAGE_NAME);
+    private static final StringManager sm = StringManager.getManager(
+            Constants.PACKAGE_NAME);
 
     // ------------------------------------------------------------- Properties
-
 
     /**
      * The description of this servlet.
@@ -53,7 +49,6 @@ public class ServletDef implements Serializable {
         this.description = description;
     }
 
-
     /**
      * The display name of this servlet.
      */
@@ -66,7 +61,6 @@ public class ServletDef implements Serializable {
     public void setDisplayName(String displayName) {
         this.displayName = displayName;
     }
-
 
     /**
      * The small icon associated with this servlet.
@@ -94,7 +88,6 @@ public class ServletDef implements Serializable {
         this.largeIcon = largeIcon;
     }
 
-
     /**
      * The name of this servlet, which must be unique among the servlets
      * defined for a particular web application.
@@ -107,12 +100,11 @@ public class ServletDef implements Serializable {
 
     public void setServletName(String servletName) {
         if (servletName == null || servletName.equals("")) {
-            throw new IllegalArgumentException(
-                    sm.getString("servletDef.invalidServletName", servletName));
+            throw new IllegalArgumentException(sm.getString(
+                    "servletDef.invalidServletName", servletName));
         }
         this.servletName = servletName;
     }
-
 
     /**
      * The fully qualified name of the Java class that implements this servlet.
@@ -127,7 +119,6 @@ public class ServletDef implements Serializable {
         this.servletClass = servletClass;
     }
 
-
     /**
      * The name of the JSP file to which this servlet definition applies
      */
@@ -140,7 +131,6 @@ public class ServletDef implements Serializable {
     public void setJspFile(String jspFile) {
         this.jspFile = jspFile;
     }
-
 
     /**
      * The set of initialization parameters for this servlet, keyed by
@@ -158,7 +148,7 @@ public class ServletDef implements Serializable {
      * Add an initialization parameter to the set of parameters associated
      * with this servlet.
      *
-     * @param name The initialisation parameter name
+     * @param name  The initialisation parameter name
      * @param value The initialisation parameter value
      */
     public void addInitParameter(String name, String value) {
@@ -185,7 +175,6 @@ public class ServletDef implements Serializable {
         this.loadOnStartup = Integer.valueOf(loadOnStartup);
     }
 
-
     /**
      * The run-as configuration for this servlet
      */
@@ -198,7 +187,6 @@ public class ServletDef implements Serializable {
     public void setRunAs(String runAs) {
         this.runAs = runAs;
     }
-
 
     /**
      * The set of security role references for this servlet
@@ -230,7 +218,6 @@ public class ServletDef implements Serializable {
         this.multipartDef = multipartDef;
     }
 
-
     /**
      * Does this servlet support async.
      */
@@ -244,7 +231,6 @@ public class ServletDef implements Serializable {
         this.asyncSupported = Boolean.valueOf(asyncSupported);
     }
 
-
     /**
      * Is this servlet enabled.
      */
@@ -257,7 +243,6 @@ public class ServletDef implements Serializable {
     public void setEnabled(String enabled) {
         this.enabled = Boolean.valueOf(enabled);
     }
-
 
     /**
      * Can this ServletDef be overridden by an SCI?

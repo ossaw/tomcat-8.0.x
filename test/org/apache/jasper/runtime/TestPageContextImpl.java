@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -45,8 +43,8 @@ public class TestPageContextImpl extends TomcatBaseTest {
 
         ByteChunk res = new ByteChunk();
 
-        int rc = getUrl("http://localhost:" + getPort() +
-                "/test/bug5nnnn/bug53545.jsp", res, null);
+        int rc = getUrl("http://localhost:" + getPort()
+                + "/test/bug5nnnn/bug53545.jsp", res, null);
 
         Assert.assertEquals(HttpServletResponse.SC_OK, rc);
 
@@ -69,7 +67,8 @@ public class TestPageContextImpl extends TomcatBaseTest {
 
         tomcat.start();
 
-        ByteChunk res = getUrl("http://localhost:" + getPort() + "/test/bug56010");
+        ByteChunk res = getUrl("http://localhost:" + getPort()
+                + "/test/bug56010");
 
         String result = res.toString();
         Assert.assertTrue(result.contains("OK"));
@@ -81,7 +80,8 @@ public class TestPageContextImpl extends TomcatBaseTest {
 
         ByteChunk res = new ByteChunk();
 
-        int rc = getUrl("http://localhost:" + getPort() + "/test/jsp/pageContext1.jsp", res, null);
+        int rc = getUrl("http://localhost:" + getPort()
+                + "/test/jsp/pageContext1.jsp", res, null);
 
         Assert.assertEquals(HttpServletResponse.SC_OK, rc);
 
@@ -91,8 +91,8 @@ public class TestPageContextImpl extends TomcatBaseTest {
 
         res = new ByteChunk();
 
-        rc = getUrl("http://localhost:" + getPort() + "/test/jsp/pageContext1.jsp?flush=true", res,
-                null);
+        rc = getUrl("http://localhost:" + getPort()
+                + "/test/jsp/pageContext1.jsp?flush=true", res, null);
 
         Assert.assertEquals(HttpServletResponse.SC_OK, rc);
 
@@ -110,8 +110,9 @@ public class TestPageContextImpl extends TomcatBaseTest {
         protected void doGet(HttpServletRequest req, HttpServletResponse resp)
                 throws ServletException, IOException {
 
-            PageContext pageContext = JspFactory.getDefaultFactory().getPageContext(
-                    this, req, resp, null, false, JspWriter.DEFAULT_BUFFER, true);
+            PageContext pageContext = JspFactory.getDefaultFactory()
+                    .getPageContext(this, req, resp, null, false,
+                            JspWriter.DEFAULT_BUFFER, true);
             JspWriter out = pageContext.getOut();
             if (Constants.DEFAULT_BUFFER_SIZE == out.getBufferSize()) {
                 resp.getWriter().println("OK");

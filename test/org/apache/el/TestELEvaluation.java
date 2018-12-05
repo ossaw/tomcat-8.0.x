@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -66,7 +64,6 @@ public class TestELEvaluation {
         assertEquals("false", evaluateExpression("${false ? true :false}"));
         assertEquals("false", evaluateExpression("${false ? true : false}"));
     }
-
 
     /**
      * Test use nested ternary expressions. This was primarily an EL parser bug.
@@ -152,7 +149,6 @@ public class TestELEvaluation {
         assertEquals("\\$", evaluateExpression("${'\\\\$'}"));
         assertEquals("\\\\$", evaluateExpression("${'\\\\\\\\$'}"));
 
-
         // Can use ''' inside '"' when quoting with '"' and vice versa without
         // escaping
         assertEquals("\\\"", evaluateExpression("${'\\\\\"'}"));
@@ -170,22 +166,23 @@ public class TestELEvaluation {
         assertEquals("''", evaluateExpression("${\"\'\'\"}"));
     }
 
-    private void compareBoth(String msg, int expected, Object o1, Object o2){
+    private void compareBoth(String msg, int expected, Object o1, Object o2) {
         int i1 = ELSupport.compare(null, o1, o2);
         int i2 = ELSupport.compare(null, o2, o1);
-        assertEquals(msg,expected, i1);
-        assertEquals(msg,expected, -i2);
+        assertEquals(msg, expected, i1);
+        assertEquals(msg, expected, -i2);
     }
 
     @Test
-    public void testElSupportCompare(){
+    public void testElSupportCompare() {
         compareBoth("Nulls should compare equal", 0, null, null);
         compareBoth("Null should compare equal to \"\"", 0, "", null);
-        compareBoth("Null should be less than File()",-1, null, new File(""));
-        compareBoth("Null should be less than Date()",-1, null, new Date());
-        compareBoth("Date(0) should be less than Date(1)",-1, new Date(0), new Date(1));
+        compareBoth("Null should be less than File()", -1, null, new File(""));
+        compareBoth("Null should be less than Date()", -1, null, new Date());
+        compareBoth("Date(0) should be less than Date(1)", -1, new Date(0),
+                new Date(1));
         try {
-            compareBoth("Should not compare",0, new Date(), new File(""));
+            compareBoth("Should not compare", 0, new Date(), new File(""));
             fail("Expecting ClassCastException");
         } catch (ClassCastException expected) {
             // Expected
@@ -232,7 +229,6 @@ public class TestELEvaluation {
     public void testBug49081d() {
         Assert.assertEquals("$2", evaluateExpression("$#{1+1}"));
     }
-
 
     // ************************************************************************
 

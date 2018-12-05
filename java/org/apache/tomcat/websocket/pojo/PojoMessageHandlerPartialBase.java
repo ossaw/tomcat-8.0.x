@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -30,22 +28,20 @@ import org.apache.tomcat.websocket.WsSession;
  * Common implementation code for the POJO partial message handlers. All
  * the real work is done in this class and in the superclass.
  *
- * @param <T>   The type of message to handle
+ * @param <T> The type of message to handle
  */
-public abstract class PojoMessageHandlerPartialBase<T>
-        extends PojoMessageHandlerBase<T> implements MessageHandler.Partial<T> {
+public abstract class PojoMessageHandlerPartialBase<T> extends
+        PojoMessageHandlerBase<T> implements MessageHandler.Partial<T> {
 
     private final int indexBoolean;
 
     public PojoMessageHandlerPartialBase(Object pojo, Method method,
-            Session session, Object[] params, int indexPayload,
-            boolean convert, int indexBoolean, int indexSession,
-            long maxMessageSize) {
+            Session session, Object[] params, int indexPayload, boolean convert,
+            int indexBoolean, int indexSession, long maxMessageSize) {
         super(pojo, method, session, params, indexPayload, convert,
                 indexSession, maxMessageSize);
         this.indexBoolean = indexBoolean;
     }
-
 
     @Override
     public final void onMessage(T message, boolean last) {

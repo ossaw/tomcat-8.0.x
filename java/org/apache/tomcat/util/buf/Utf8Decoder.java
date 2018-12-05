@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -45,32 +43,31 @@ public class Utf8Decoder extends CharsetDecoder {
     // 1111ouuu 1ouuzzzz 1oyyyyyy 1oxxxxxx 000uuuuu zzzzyyyy yyxxxxxx
     private static final int remainingBytes[] = {
             // 1owwwwww
-            -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
-            -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
-            -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
-            -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+            -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+            -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+            -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+            -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
             // 11oyyyyy
-            -1, -1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-            1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+            -1, -1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+            1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
             // 111ozzzz
             2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
             // 1111ouuu
             3, 3, 3, 3, 3, -1, -1, -1,
             // > 11110111
-            -1, -1, -1, -1, -1, -1, -1, -1};
-    private static final int remainingNumbers[] = {0, // 0 1 2 3
+            -1, -1, -1, -1, -1, -1, -1, -1 };
+    private static final int remainingNumbers[] = { 0, // 0 1 2 3
             4224, // (01o00000b << 6)+(1o000000b)
             401536, // (011o0000b << 12)+(1o000000b << 6)+(1o000000b)
             29892736 // (0111o000b << 18)+(1o000000b << 12)+(1o000000b <<
                      // 6)+(1o000000b)
     };
-    private static final int lowerEncodingLimit[] = {-1, 0x80, 0x800, 0x10000};
-
+    private static final int lowerEncodingLimit[] = { -1, 0x80, 0x800,
+            0x10000 };
 
     public Utf8Decoder() {
         super(StandardCharsets.UTF_8, 1.0f, 1.0f);
     }
-
 
     @Override
     protected CoderResult decodeLoop(ByteBuffer in, CharBuffer out) {
@@ -79,7 +76,6 @@ public class Utf8Decoder extends CharsetDecoder {
         }
         return decodeNotHasArray(in, out);
     }
-
 
     private CoderResult decodeNotHasArray(ByteBuffer in, CharBuffer out) {
         int outRemaining = out.remaining();
@@ -144,7 +140,6 @@ public class Utf8Decoder extends CharsetDecoder {
         }
     }
 
-
     private CoderResult decodeHasArray(ByteBuffer in, CharBuffer out) {
         int outRemaining = out.remaining();
         int pos = in.position();
@@ -173,8 +168,8 @@ public class Utf8Decoder extends CharsetDecoder {
                 int tailAvailable = inIndexLimit - inIndex - 1;
                 if (tailAvailable > 0) {
                     // First byte C2..DF, second byte 80..BF
-                    if (jchar > 0x41 && jchar < 0x60 &&
-                            (bArr[inIndex + 1] & 0xC0) != 0x80) {
+                    if (jchar > 0x41 && jchar < 0x60 && (bArr[inIndex + 1]
+                            & 0xC0) != 0x80) {
                         in.position(inIndex - in.arrayOffset());
                         out.position(outIndex - out.arrayOffset());
                         return CoderResult.malformedForLength(1);
@@ -186,8 +181,8 @@ public class Utf8Decoder extends CharsetDecoder {
                         return CoderResult.malformedForLength(1);
                     }
                     // First byte E1..EC, second byte 80..BF
-                    if (jchar > 0x60 && jchar < 0x6D &&
-                            (bArr[inIndex + 1] & 0xC0) != 0x80) {
+                    if (jchar > 0x60 && jchar < 0x6D && (bArr[inIndex + 1]
+                            & 0xC0) != 0x80) {
                         in.position(inIndex - in.arrayOffset());
                         out.position(outIndex - out.arrayOffset());
                         return CoderResult.malformedForLength(1);
@@ -199,30 +194,28 @@ public class Utf8Decoder extends CharsetDecoder {
                         return CoderResult.malformedForLength(1);
                     }
                     // First byte EE..EF, second byte 80..BF
-                    if (jchar > 0x6D && jchar < 0x70 &&
-                            (bArr[inIndex + 1] & 0xC0) != 0x80) {
+                    if (jchar > 0x6D && jchar < 0x70 && (bArr[inIndex + 1]
+                            & 0xC0) != 0x80) {
                         in.position(inIndex - in.arrayOffset());
                         out.position(outIndex - out.arrayOffset());
                         return CoderResult.malformedForLength(1);
                     }
                     // First byte F0, second byte 90..BF
-                    if (jchar == 0x70 &&
-                            ((bArr[inIndex + 1] & 0xFF) < 0x90 ||
-                            (bArr[inIndex + 1] & 0xFF) > 0xBF)) {
+                    if (jchar == 0x70 && ((bArr[inIndex + 1] & 0xFF) < 0x90
+                            || (bArr[inIndex + 1] & 0xFF) > 0xBF)) {
                         in.position(inIndex - in.arrayOffset());
                         out.position(outIndex - out.arrayOffset());
                         return CoderResult.malformedForLength(1);
                     }
                     // First byte F1..F3, second byte 80..BF
-                    if (jchar > 0x70 && jchar < 0x74 &&
-                            (bArr[inIndex + 1] & 0xC0) != 0x80) {
+                    if (jchar > 0x70 && jchar < 0x74 && (bArr[inIndex + 1]
+                            & 0xC0) != 0x80) {
                         in.position(inIndex - in.arrayOffset());
                         out.position(outIndex - out.arrayOffset());
                         return CoderResult.malformedForLength(1);
                     }
                     // First byte F4, second byte 80..8F
-                    if (jchar == 0x74 &&
-                            (bArr[inIndex + 1] & 0xF0) != 0x80) {
+                    if (jchar == 0x74 && (bArr[inIndex + 1] & 0xF0) != 0x80) {
                         in.position(inIndex - in.arrayOffset());
                         out.position(outIndex - out.arrayOffset());
                         return CoderResult.malformedForLength(1);
@@ -287,8 +280,8 @@ public class Utf8Decoder extends CharsetDecoder {
         }
         in.position(inIndex - in.arrayOffset());
         out.position(outIndex - out.arrayOffset());
-        return (outRemaining == 0 && inIndex < inIndexLimit) ?
-                CoderResult.OVERFLOW :
-                CoderResult.UNDERFLOW;
+        return (outRemaining == 0 && inIndex < inIndexLimit)
+                ? CoderResult.OVERFLOW
+                : CoderResult.UNDERFLOW;
     }
 }

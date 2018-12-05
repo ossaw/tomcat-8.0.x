@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -15,9 +13,7 @@
  * limitations under the License.
  */
 
-
 package org.apache.catalina.ant.jmx;
-
 
 import javax.management.Attribute;
 import javax.management.MBeanAttributeInfo;
@@ -26,7 +22,6 @@ import javax.management.MBeanServerConnection;
 import javax.management.ObjectName;
 
 import org.apache.tools.ant.BuildException;
-
 
 /**
  * Access <em>JMX</em> JSR 160 MBeans Server.
@@ -40,6 +35,7 @@ import org.apache.tools.ant.BuildException;
  * Set a Mbean Manager attribute maxActiveSessions.
  * Set this attribute with fresh jmx connection without save reference
  * </p>
+ * 
  * <pre>
  *   &lt;jmx:set
  *           host="127.0.0.1"
@@ -53,7 +49,8 @@ import org.apache.tools.ant.BuildException;
  *       /&gt;
  * </pre>
  * <p>
- * First call to a remote MBeanserver save the JMXConnection a referenz <em>jmx.server</em>
+ * First call to a remote MBeanserver save the JMXConnection a referenz
+ * <em>jmx.server</em>
  * </p>
  * These tasks require Ant 1.6 or later interface.
  *
@@ -67,7 +64,7 @@ public class JMXAccessorSetTask extends JMXAccessorTask {
     private String attribute;
     private String value;
     private String type;
-    private boolean convert = false ;
+    private boolean convert = false;
 
     // ------------------------------------------------------------- Properties
 
@@ -91,13 +88,13 @@ public class JMXAccessorSetTask extends JMXAccessorTask {
     public String getValue() {
         return value;
     }
+
     /**
      * @param value The value to set.
      */
     public void setValue(String value) {
         this.value = value;
     }
-
 
     /**
      * @return Returns the type.
@@ -113,13 +110,13 @@ public class JMXAccessorSetTask extends JMXAccessorTask {
         this.type = valueType;
     }
 
-
     /**
      * @return Returns the convert.
      */
     public boolean isConvert() {
         return convert;
     }
+
     /**
      * @param convert The convert to set.
      */
@@ -134,11 +131,11 @@ public class JMXAccessorSetTask extends JMXAccessorTask {
      * executed successfully or not.
      *
      * @exception Exception
-     *                if an error occurs
+     *                      if an error occurs
      */
     @Override
     public String jmxExecute(MBeanServerConnection jmxServerConnection)
-        throws Exception {
+            throws Exception {
 
         if (getName() == null) {
             throw new BuildException("Must specify a 'name'");
@@ -147,8 +144,8 @@ public class JMXAccessorSetTask extends JMXAccessorTask {
             throw new BuildException(
                     "Must specify a 'attribute' and 'value' for set");
         }
-        return  jmxSet(jmxServerConnection, getName());
-     }
+        return jmxSet(jmxServerConnection, getName());
+    }
 
     /**
      * @param jmxServerConnection
@@ -173,9 +170,9 @@ public class JMXAccessorSetTask extends JMXAccessorTask {
         return null;
     }
 
-
     /**
      * Get MBean Attribute from Mbean Server
+     * 
      * @param jmxServerConnection
      * @param name
      * @param attribute
@@ -183,8 +180,7 @@ public class JMXAccessorSetTask extends JMXAccessorTask {
      * @throws Exception
      */
     protected String getMBeanAttributeType(
-            MBeanServerConnection jmxServerConnection,
-            String name,
+            MBeanServerConnection jmxServerConnection, String name,
             String attribute) throws Exception {
         ObjectName oname = new ObjectName(name);
         String mattrType = null;
@@ -196,4 +192,4 @@ public class JMXAccessorSetTask extends JMXAccessorTask {
         }
         return mattrType;
     }
- }
+}

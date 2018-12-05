@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -15,9 +13,7 @@
  * limitations under the License.
  */
 
-
 package org.apache.catalina.ant;
-
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -31,7 +27,6 @@ import org.apache.tomcat.util.digester.Digester;
 import org.apache.tools.ant.BuildException;
 import org.xml.sax.InputSource;
 
-
 /**
  * Task for validating a web application deployment descriptor, using XML
  * schema validation.
@@ -41,12 +36,9 @@ import org.xml.sax.InputSource;
  */
 public class ValidatorTask extends BaseRedirectorHelperTask {
 
-
     // ----------------------------------------------------- Instance Variables
 
-
     // ------------------------------------------------------------- Properties
-
 
     /**
      * The path to the webapp directory.
@@ -61,12 +53,10 @@ public class ValidatorTask extends BaseRedirectorHelperTask {
         this.path = path;
     }
 
-
     // --------------------------------------------------------- Public Methods
 
-
     /**
-     * Execute the specified command.  This logic only performs the common
+     * Execute the specified command. This logic only performs the common
      * attribute validation required by all subclasses; it does not perform
      * any functional logic directly.
      *
@@ -86,15 +76,17 @@ public class ValidatorTask extends BaseRedirectorHelperTask {
 
         // Commons-logging likes having the context classloader set
         ClassLoader oldCL = Thread.currentThread().getContextClassLoader();
-        Thread.currentThread().setContextClassLoader
-            (ValidatorTask.class.getClassLoader());
+        Thread.currentThread().setContextClassLoader(ValidatorTask.class
+                .getClassLoader());
 
         // Called through trusted manager interface. If running under a
         // SecurityManager assume that untrusted applications may be deployed.
-        Digester digester = DigesterFactory.newDigester(
-                true, true, null, Globals.IS_SECURITY_ENABLED);
-        try (InputStream stream = new BufferedInputStream(new FileInputStream(file.getCanonicalFile()));) {
-            InputSource is = new InputSource(file.toURI().toURL().toExternalForm());
+        Digester digester = DigesterFactory.newDigester(true, true, null,
+                Globals.IS_SECURITY_ENABLED);
+        try (InputStream stream = new BufferedInputStream(new FileInputStream(
+                file.getCanonicalFile()));) {
+            InputSource is = new InputSource(file.toURI().toURL()
+                    .toExternalForm());
             is.setByteStream(stream);
             digester.parse(is);
             handleOutput("web.xml validated");
@@ -110,6 +102,5 @@ public class ValidatorTask extends BaseRedirectorHelperTask {
         }
 
     }
-
 
 }

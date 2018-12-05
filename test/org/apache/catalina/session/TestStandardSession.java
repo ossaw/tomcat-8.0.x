@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -40,7 +38,6 @@ public class TestStandardSession {
         TEST_MANAGER.setContext(new StandardContext());
     }
 
-
     @Test
     public void testSerializationEmpty() throws Exception {
 
@@ -50,7 +47,6 @@ public class TestStandardSession {
 
         validateSame(s1, s2, 0);
     }
-
 
     @Test
     public void testSerializationSimple01() throws Exception {
@@ -64,7 +60,6 @@ public class TestStandardSession {
         validateSame(s1, s2, 1);
     }
 
-
     @Test
     public void testSerializationSimple02() throws Exception {
 
@@ -76,7 +71,6 @@ public class TestStandardSession {
 
         validateSame(s1, s2, 0);
     }
-
 
     @Test
     public void testSerializationSimple03() throws Exception {
@@ -90,7 +84,6 @@ public class TestStandardSession {
 
         validateSame(s1, s2, 1);
     }
-
 
     /*
      * See Bug 58284
@@ -114,9 +107,9 @@ public class TestStandardSession {
 
         Assert.assertNull(s2.getAttribute(nestedNonSerializableKey));
         Assert.assertNull(s2.getAttribute(nonSerializableKey));
-        Assert.assertEquals(serializableValue, s2.getAttribute(serializableKey));
+        Assert.assertEquals(serializableValue, s2.getAttribute(
+                serializableKey));
     }
-
 
     private StandardSession serializeThenDeserialize(StandardSession source)
             throws IOException, ClassNotFoundException {
@@ -125,30 +118,29 @@ public class TestStandardSession {
         source.writeObjectData(oos);
 
         StandardSession dest = new StandardSession(TEST_MANAGER);
-        ByteArrayInputStream bais = new ByteArrayInputStream(baos.toByteArray());
+        ByteArrayInputStream bais = new ByteArrayInputStream(baos
+                .toByteArray());
         ObjectInputStream ois = new ObjectInputStream(bais);
         dest.readObjectData(ois);
 
         return dest;
     }
 
-
-    private void validateSame(StandardSession s1, StandardSession s2, int expectedCount) {
+    private void validateSame(StandardSession s1, StandardSession s2,
+            int expectedCount) {
         int count = 0;
         Enumeration<String> names = s1.getAttributeNames();
         while (names.hasMoreElements()) {
-            count ++;
+            count++;
             String name = names.nextElement();
             Object v1 = s1.getAttribute(name);
             Object v2 = s2.getAttribute(name);
 
-            Assert.assertEquals(v1,  v2);
+            Assert.assertEquals(v1, v2);
         }
 
         Assert.assertEquals(expectedCount, count);
     }
 
-
-    private static class NonSerializable {
-    }
+    private static class NonSerializable {}
 }

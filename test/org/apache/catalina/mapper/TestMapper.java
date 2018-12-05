@@ -1,18 +1,16 @@
 /*
- *  Licensed to the Apache Software Foundation (ASF) under one or more
- *  contributor license agreements.  See the NOTICE file distributed with
- *  this work for additional information regarding copyright ownership.
- *  The ASF licenses this file to You under the Apache License, Version 2.0
- *  (the "License"); you may not use this file except in compliance with
- *  the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements. See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.apache.catalina.mapper;
 
@@ -84,8 +82,10 @@ public class TestMapper extends LoggingBaseTest {
         mapper.addHost("ohewoihfewoih", new String[0], createHost("blah8"));
         mapper.addHost("fewohfoweoih", new String[0], createHost("blah9"));
         mapper.addHost("ttthtiuhwoih", new String[0], createHost("blah10"));
-        mapper.addHost("lkwefjwojweffewoih", new String[0], createHost("blah11"));
-        mapper.addHost("zzzuyopjvewpovewjhfewoih", new String[0], createHost("blah12"));
+        mapper.addHost("lkwefjwojweffewoih", new String[0], createHost(
+                "blah11"));
+        mapper.addHost("zzzuyopjvewpovewjhfewoih", new String[0], createHost(
+                "blah12"));
         mapper.addHost("xxxxgqwiwoih", new String[0], createHost("blah13"));
         mapper.addHost("qwigqwiwoih", new String[0], createHost("blah14"));
         mapper.addHostAlias("iowejoiejfoiew", "iowejoiejfoiew_alias");
@@ -97,44 +97,38 @@ public class TestMapper extends LoggingBaseTest {
         welcomes[1] = "bobou";
 
         Host host = createHost("blah7");
-        mapper.addContextVersion("iowejoiejfoiew", host, "",
-                "0", createContext("context0"), new String[0], null, null);
-        mapper.addContextVersion("iowejoiejfoiew", host, "/foo",
-                "0", createContext("context1"), new String[0], null, null);
-        mapper.addContextVersion("iowejoiejfoiew", host, "/foo/bar",
-                "0", createContext("context2"), welcomes, null, null);
+        mapper.addContextVersion("iowejoiejfoiew", host, "", "0", createContext(
+                "context0"), new String[0], null, null);
+        mapper.addContextVersion("iowejoiejfoiew", host, "/foo", "0",
+                createContext("context1"), new String[0], null, null);
+        mapper.addContextVersion("iowejoiejfoiew", host, "/foo/bar", "0",
+                createContext("context2"), welcomes, null, null);
 
-        mapper.addWrappers("iowejoiejfoiew", "/foo", "0", Arrays
-                .asList(new WrapperMappingInfo[] {
-                        new WrapperMappingInfo("/",
-                                createWrapper("context1-defaultWrapper"), false, false) }));
-        mapper.addWrappers("iowejoiejfoiew", "/foo/bar", "0", Arrays
-                .asList(new WrapperMappingInfo[] {
-                        new WrapperMappingInfo("/fo/*",
-                                createWrapper("wrapper0"), false, false),
+        mapper.addWrappers("iowejoiejfoiew", "/foo", "0", Arrays.asList(
+                new WrapperMappingInfo[] { new WrapperMappingInfo("/",
+                        createWrapper("context1-defaultWrapper"), false,
+                        false) }));
+        mapper.addWrappers("iowejoiejfoiew", "/foo/bar", "0", Arrays.asList(
+                new WrapperMappingInfo[] { new WrapperMappingInfo("/fo/*",
+                        createWrapper("wrapper0"), false, false),
                         new WrapperMappingInfo("/", createWrapper("wrapper1"),
-                                false, false),
-                        new WrapperMappingInfo("/blh",
-                                createWrapper("wrapper2"), false, false),
-                        new WrapperMappingInfo("*.jsp",
-                                createWrapper("wrapper3"), false, false),
-                        new WrapperMappingInfo("/blah/bou/*",
-                                createWrapper("wrapper4"), false, false),
-                        new WrapperMappingInfo("/blah/bobou/*",
-                                createWrapper("wrapper5"), false, false),
-                        new WrapperMappingInfo("*.htm",
-                                createWrapper("wrapper6"), false, false) }));
+                                false, false), new WrapperMappingInfo("/blh",
+                                        createWrapper("wrapper2"), false,
+                                        false), new WrapperMappingInfo("*.jsp",
+                                                createWrapper("wrapper3"),
+                                                false, false),
+                        new WrapperMappingInfo("/blah/bou/*", createWrapper(
+                                "wrapper4"), false, false),
+                        new WrapperMappingInfo("/blah/bobou/*", createWrapper(
+                                "wrapper5"), false, false),
+                        new WrapperMappingInfo("*.htm", createWrapper(
+                                "wrapper6"), false, false) }));
 
-        mapper.addContextVersion(
-                "iowejoiejfoiew",
-                host,
-                "/foo/bar/bla",
-                "0",
-                createContext("context3"),
-                new String[0],
-                null,
-                Arrays.asList(new WrapperMappingInfo[] { new WrapperMappingInfo(
-                        "/bobou/*", createWrapper("wrapper7"), false, false) }));
+        mapper.addContextVersion("iowejoiejfoiew", host, "/foo/bar/bla", "0",
+                createContext("context3"), new String[0], null, Arrays.asList(
+                        new WrapperMappingInfo[] { new WrapperMappingInfo(
+                                "/bobou/*", createWrapper("wrapper7"), false,
+                                false) }));
     }
 
     @Test
@@ -308,7 +302,8 @@ public class TestMapper extends LoggingBaseTest {
         Context oldContext = mappedContext.versions[0].object;
         assertEquals("context2", oldContext.getName());
 
-        Context oldContext1 = mappedHost.contextList.contexts[contextPos - 1].versions[0].object;
+        Context oldContext1 = mappedHost.contextList.contexts[contextPos
+                - 1].versions[0].object;
         assertEquals("context1", oldContext1.getName());
 
         mappingData.recycle();
@@ -321,16 +316,10 @@ public class TestMapper extends LoggingBaseTest {
         assertEquals("wrapper5", mappingData.wrapper.getName());
 
         Context newContext = createContext("newContext");
-        mapper.addContextVersion(
-                hostName,
-                oldHost,
-                contextPath,
-                "1",
-                newContext,
-                null,
-                null,
-                Arrays.asList(new WrapperMappingInfo[] { new WrapperMappingInfo(
-                        "/", createWrapper("newContext-default"), false, false) }));
+        mapper.addContextVersion(hostName, oldHost, contextPath, "1",
+                newContext, null, null, Arrays.asList(new WrapperMappingInfo[] {
+                        new WrapperMappingInfo("/", createWrapper(
+                                "newContext-default"), false, false) }));
 
         assertEquals(2, mappedContext.versions.length);
         assertEquals("0", mappedContext.versions[0].name);
@@ -357,8 +346,10 @@ public class TestMapper extends LoggingBaseTest {
 
         mapper.removeContextVersion(oldContext, hostName, contextPath, "1");
 
-        assertNotSame(mappedContext, mappedHost.contextList.contexts[contextPos]);
-        assertEquals("/foo/bar/bla", mappedHost.contextList.contexts[contextPos].name);
+        assertNotSame(mappedContext,
+                mappedHost.contextList.contexts[contextPos]);
+        assertEquals("/foo/bar/bla",
+                mappedHost.contextList.contexts[contextPos].name);
         mappingData.recycle();
         mapper.map(hostMB, uriMB, null, mappingData);
         assertEquals("context1", mappingData.context.getName());
@@ -367,16 +358,11 @@ public class TestMapper extends LoggingBaseTest {
         mapper.map(oldContext1, uriMB, mappingData);
         assertEquals("context1-defaultWrapper", mappingData.wrapper.getName());
 
-        mapper.addContextVersion(
-                hostName,
-                oldHost,
-                contextPath,
-                "0",
-                newContext,
-                null,
-                null,
-                Arrays.asList(new WrapperMappingInfo[] { new WrapperMappingInfo(
-                        "/", createWrapper("newContext-defaultWrapper2"), false, false) }));
+        mapper.addContextVersion(hostName, oldHost, contextPath, "0",
+                newContext, null, null, Arrays.asList(new WrapperMappingInfo[] {
+                        new WrapperMappingInfo("/", createWrapper(
+                                "newContext-defaultWrapper2"), false,
+                                false) }));
         mappedContext = mappedHost.contextList.contexts[contextPos];
 
         assertEquals(contextPath, mappedContext.name);
@@ -385,10 +371,12 @@ public class TestMapper extends LoggingBaseTest {
         mappingData.recycle();
         mapper.map(hostMB, uriMB, null, mappingData);
         assertEquals("newContext", mappingData.context.getName());
-        assertEquals("newContext-defaultWrapper2", mappingData.wrapper.getName());
+        assertEquals("newContext-defaultWrapper2", mappingData.wrapper
+                .getName());
         mappingData.recycle();
         mapper.map(newContext, uriMB, mappingData);
-        assertEquals("newContext-defaultWrapper2", mappingData.wrapper.getName());
+        assertEquals("newContext-defaultWrapper2", mappingData.wrapper
+                .getName());
     }
 
     @Test
@@ -415,7 +403,8 @@ public class TestMapper extends LoggingBaseTest {
         Context oldContext = mappedContext.versions[0].object;
         assertEquals("context2", oldContext.getName());
 
-        Context oldContext1 = mappedHost.contextList.contexts[contextPos - 1].versions[0].object;
+        Context oldContext1 = mappedHost.contextList.contexts[contextPos
+                - 1].versions[0].object;
         assertEquals("context1", oldContext1.getName());
 
         mappingData.recycle();
@@ -444,16 +433,10 @@ public class TestMapper extends LoggingBaseTest {
 
         // Re-add the same context, but different list of wrappers
         // This is what happens when context reload completes
-        mapper.addContextVersion(
-                hostName,
-                oldHost,
-                contextPath,
-                "0",
-                oldContext,
-                null,
-                null,
-                Arrays.asList(new WrapperMappingInfo[] { new WrapperMappingInfo(
-                        "/", createWrapper("newDefaultWrapper"), false, false) }));
+        mapper.addContextVersion(hostName, oldHost, contextPath, "0",
+                oldContext, null, null, Arrays.asList(new WrapperMappingInfo[] {
+                        new WrapperMappingInfo("/", createWrapper(
+                                "newDefaultWrapper"), false, false) }));
 
         mappedContext = mappedHost.contextList.contexts[contextPos];
         assertEquals(contextPath, mappedContext.name);

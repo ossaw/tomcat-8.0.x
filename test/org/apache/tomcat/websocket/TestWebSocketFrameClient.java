@@ -1,18 +1,16 @@
 /*
- *  Licensed to the Apache Software Foundation (ASF) under one or more
- *  contributor license agreements.  See the NOTICE file distributed with
- *  this work for additional information regarding copyright ownership.
- *  The ASF licenses this file to You under the Apache License, Version 2.0
- *  (the "License"); you may not use this file except in compliance with
- *  the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements. See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.apache.tomcat.websocket;
 
@@ -49,17 +47,16 @@ public class TestWebSocketFrameClient extends WebSocketBaseTest {
 
         tomcat.start();
 
-        WebSocketContainer wsContainer =
-                ContainerProvider.getWebSocketContainer();
-        ClientEndpointConfig clientEndpointConfig =
-                ClientEndpointConfig.Builder.create().build();
+        WebSocketContainer wsContainer = ContainerProvider
+                .getWebSocketContainer();
+        ClientEndpointConfig clientEndpointConfig = ClientEndpointConfig.Builder
+                .create().build();
         Session wsSession = wsContainer.connectToServer(
-                TesterProgrammaticEndpoint.class,
-                clientEndpointConfig,
-                new URI("ws://localhost:" + getPort() +
-                        TesterFirehoseServer.Config.PATH));
-        CountDownLatch latch =
-                new CountDownLatch(TesterFirehoseServer.MESSAGE_COUNT);
+                TesterProgrammaticEndpoint.class, clientEndpointConfig, new URI(
+                        "ws://localhost:" + getPort()
+                                + TesterFirehoseServer.Config.PATH));
+        CountDownLatch latch = new CountDownLatch(
+                TesterFirehoseServer.MESSAGE_COUNT);
         BasicText handler = new BasicText(latch);
         wsSession.addMessageHandler(handler);
         wsSession.getBasicRemote().sendText("Hello");
@@ -72,8 +69,8 @@ public class TestWebSocketFrameClient extends WebSocketBaseTest {
                 TimeUnit.MILLISECONDS);
 
         Queue<String> messages = handler.getMessages();
-        Assert.assertEquals(
-                TesterFirehoseServer.MESSAGE_COUNT, messages.size());
+        Assert.assertEquals(TesterFirehoseServer.MESSAGE_COUNT, messages
+                .size());
         for (String message : messages) {
             Assert.assertEquals(TesterFirehoseServer.MESSAGE, message);
         }
@@ -106,16 +103,14 @@ public class TestWebSocketFrameClient extends WebSocketBaseTest {
     }
 
     public void echoTester(String path) throws Exception {
-        WebSocketContainer wsContainer =
-                ContainerProvider.getWebSocketContainer();
-        ClientEndpointConfig clientEndpointConfig =
-                ClientEndpointConfig.Builder.create().build();
+        WebSocketContainer wsContainer = ContainerProvider
+                .getWebSocketContainer();
+        ClientEndpointConfig clientEndpointConfig = ClientEndpointConfig.Builder
+                .create().build();
         Session wsSession = wsContainer.connectToServer(
-                TesterProgrammaticEndpoint.class,
-                clientEndpointConfig,
-                new URI("ws://localhost:" + getPort() + path));
-        CountDownLatch latch =
-                new CountDownLatch(1);
+                TesterProgrammaticEndpoint.class, clientEndpointConfig, new URI(
+                        "ws://localhost:" + getPort() + path));
+        CountDownLatch latch = new CountDownLatch(1);
         BasicText handler = new BasicText(latch);
         wsSession.addMessageHandler(handler);
         wsSession.getBasicRemote().sendText("Hello");

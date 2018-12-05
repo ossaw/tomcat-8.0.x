@@ -1,18 +1,16 @@
 /*
- *  Licensed to the Apache Software Foundation (ASF) under one or more
- *  contributor license agreements.  See the NOTICE file distributed with
- *  this work for additional information regarding copyright ownership.
- *  The ASF licenses this file to You under the Apache License, Version 2.0
- *  (the "License"); you may not use this file except in compliance with
- *  the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements. See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.apache.coyote.ajp;
 
@@ -39,11 +37,11 @@ import org.apache.tomcat.util.net.SocketWrapper;
 public class AjpProcessor extends AbstractAjpProcessor<Socket> {
 
     private static final Log log = LogFactory.getLog(AjpProcessor.class);
+
     @Override
     protected Log getLog() {
         return log;
     }
-
 
     public AjpProcessor(int packetSize, JIoEndpoint endpoint) {
 
@@ -52,11 +50,9 @@ public class AjpProcessor extends AbstractAjpProcessor<Socket> {
         response.setOutputBuffer(new SocketOutputBuffer());
     }
 
-
     protected InputStream input;
 
     protected OutputStream output;
-
 
     @Override
     public void recycle(boolean socketClosing) {
@@ -66,7 +62,6 @@ public class AjpProcessor extends AbstractAjpProcessor<Socket> {
             output = null;
         }
     }
-
 
     @Override
     protected void registerForEvent(boolean read, boolean write) {
@@ -79,7 +74,6 @@ public class AjpProcessor extends AbstractAjpProcessor<Socket> {
         //        SocketWrapper for async timeouts.
     }
 
-
     @Override
     protected void setupSocket(SocketWrapper<Socket> socketWrapper)
             throws IOException {
@@ -87,13 +81,11 @@ public class AjpProcessor extends AbstractAjpProcessor<Socket> {
         output = socketWrapper.getSocket().getOutputStream();
     }
 
-
     @Override
-    protected void setTimeout(SocketWrapper<Socket> socketWrapper,
-            int timeout) throws IOException {
+    protected void setTimeout(SocketWrapper<Socket> socketWrapper, int timeout)
+            throws IOException {
         socketWrapper.getSocket().setSoTimeout(timeout);
     }
-
 
     @Override
     protected int output(byte[] src, int offset, int length, boolean block)
@@ -102,10 +94,9 @@ public class AjpProcessor extends AbstractAjpProcessor<Socket> {
         return length;
     }
 
-
     @Override
     protected boolean read(byte[] buf, int pos, int n, boolean blockFirstRead)
-        throws IOException {
+            throws IOException {
 
         int read = 0;
         int res = 0;

@@ -1,18 +1,16 @@
 /*
- *  Licensed to the Apache Software Foundation (ASF) under one or more
- *  contributor license agreements.  See the NOTICE file distributed with
- *  this work for additional information regarding copyright ownership.
- *  The ASF licenses this file to You under the Apache License, Version 2.0
- *  (the "License"); you may not use this file except in compliance with
- *  the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements. See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.apache.tomcat.util.http;
 
@@ -39,27 +37,27 @@ import org.apache.tomcat.util.res.StringManager;
  */
 public final class Parameters {
 
-    private static final org.apache.juli.logging.Log log =
-        org.apache.juli.logging.LogFactory.getLog(Parameters.class );
+    private static final org.apache.juli.logging.Log log = org.apache.juli.logging.LogFactory
+            .getLog(Parameters.class);
 
     private static final UserDataHelper userDataLog = new UserDataHelper(log);
 
-    private static final UserDataHelper maxParamCountLog = new UserDataHelper(log);
+    private static final UserDataHelper maxParamCountLog = new UserDataHelper(
+            log);
 
-    private static final StringManager sm =
-        StringManager.getManager("org.apache.tomcat.util.http");
+    private static final StringManager sm = StringManager.getManager(
+            "org.apache.tomcat.util.http");
 
-    private final Map<String,ArrayList<String>> paramHashValues =
-            new LinkedHashMap<>();
-    private boolean didQueryParameters=false;
+    private final Map<String, ArrayList<String>> paramHashValues = new LinkedHashMap<>();
+    private boolean didQueryParameters = false;
 
     private MessageBytes queryMB;
 
     private UDecoder urlDec;
     private final MessageBytes decodedQuery = MessageBytes.newInstance();
 
-    private String encoding=null;
-    private String queryStringEncoding=null;
+    private String encoding = null;
+    private String queryStringEncoding = null;
 
     private int limit = -1;
     private int parameterCount = 0;
@@ -74,8 +72,8 @@ public final class Parameters {
         // NO-OP
     }
 
-    public void setQuery( MessageBytes queryMB ) {
-        this.queryMB=queryMB;
+    public void setQuery(MessageBytes queryMB) {
+        this.queryMB = queryMB;
     }
 
     public void setLimit(int limit) {
@@ -86,30 +84,27 @@ public final class Parameters {
         return encoding;
     }
 
-    public void setEncoding( String s ) {
-        encoding=s;
-        if(log.isDebugEnabled()) {
-            log.debug( "Set encoding to " + s );
+    public void setEncoding(String s) {
+        encoding = s;
+        if (log.isDebugEnabled()) {
+            log.debug("Set encoding to " + s);
         }
     }
 
-    public void setQueryStringEncoding( String s ) {
-        queryStringEncoding=s;
-        if(log.isDebugEnabled()) {
-            log.debug( "Set query string encoding to " + s );
+    public void setQueryStringEncoding(String s) {
+        queryStringEncoding = s;
+        if (log.isDebugEnabled()) {
+            log.debug("Set query string encoding to " + s);
         }
     }
-
 
     public boolean isParseFailed() {
         return parseFailedReason != null;
     }
 
-
     public FailReason getParseFailedReason() {
         return parseFailedReason;
     }
-
 
     public void setParseFailedReason(FailReason failReason) {
         if (this.parseFailedReason == null) {
@@ -117,16 +112,14 @@ public final class Parameters {
         }
     }
 
-
     public void recycle() {
         parameterCount = 0;
         paramHashValues.clear();
-        didQueryParameters=false;
-        encoding=null;
+        didQueryParameters = false;
+        encoding = null;
         decodedQuery.recycle();
         parseFailedReason = null;
     }
-
 
     // -------------------- Data access --------------------
     // Access to the current name/values, no side effect ( processing ).
@@ -147,11 +140,11 @@ public final class Parameters {
         return Collections.enumeration(paramHashValues.keySet());
     }
 
-    public String getParameter(String name ) {
+    public String getParameter(String name) {
         handleQueryParameters();
         ArrayList<String> values = paramHashValues.get(name);
         if (values != null) {
-            if(values.size() == 0) {
+            if (values.size() == 0) {
                 return "";
             }
             return values.get(0);
@@ -159,43 +152,44 @@ public final class Parameters {
             return null;
         }
     }
+
     // -------------------- Processing --------------------
-    /** Process the query string into parameters
+    /**
+     * Process the query string into parameters
      */
     public void handleQueryParameters() {
-        if( didQueryParameters ) {
+        if (didQueryParameters) {
             return;
         }
 
-        didQueryParameters=true;
+        didQueryParameters = true;
 
-        if( queryMB==null || queryMB.isNull() ) {
+        if (queryMB == null || queryMB.isNull()) {
             return;
         }
 
-        if(log.isDebugEnabled()) {
-            log.debug("Decoding query " + decodedQuery + " " +
-                    queryStringEncoding);
+        if (log.isDebugEnabled()) {
+            log.debug("Decoding query " + decodedQuery + " "
+                    + queryStringEncoding);
         }
 
         try {
-            decodedQuery.duplicate( queryMB );
+            decodedQuery.duplicate(queryMB);
         } catch (IOException e) {
             // Can't happen, as decodedQuery can't overflow
             e.printStackTrace();
         }
-        processParameters( decodedQuery, queryStringEncoding );
+        processParameters(decodedQuery, queryStringEncoding);
     }
 
-
-    public void addParameter( String key, String value )
+    public void addParameter(String key, String value)
             throws IllegalStateException {
 
-        if( key==null ) {
+        if (key == null) {
             return;
         }
 
-        parameterCount ++;
+        parameterCount++;
         if (limit > -1 && parameterCount > limit) {
             // Processing this parameter will push us over the limit. ISE is
             // what Request.parseParts() uses for requests that are too big
@@ -212,32 +206,30 @@ public final class Parameters {
         values.add(value);
     }
 
-    public void setURLDecoder( UDecoder u ) {
-        urlDec=u;
+    public void setURLDecoder(UDecoder u) {
+        urlDec = u;
     }
 
     // -------------------- Parameter parsing --------------------
     // we are called from a single thread - we can do it the hard way
     // if needed
-    private final ByteChunk tmpName=new ByteChunk();
-    private final ByteChunk tmpValue=new ByteChunk();
-    private final ByteChunk origName=new ByteChunk();
-    private final ByteChunk origValue=new ByteChunk();
+    private final ByteChunk tmpName = new ByteChunk();
+    private final ByteChunk tmpValue = new ByteChunk();
+    private final ByteChunk origName = new ByteChunk();
+    private final ByteChunk origValue = new ByteChunk();
     public static final String DEFAULT_ENCODING = "ISO-8859-1";
-    private static final Charset DEFAULT_CHARSET =
-            StandardCharsets.ISO_8859_1;
+    private static final Charset DEFAULT_CHARSET = StandardCharsets.ISO_8859_1;
 
-
-    public void processParameters( byte bytes[], int start, int len ) {
+    public void processParameters(byte bytes[], int start, int len) {
         processParameters(bytes, start, len, getCharset(encoding));
     }
 
     private void processParameters(byte bytes[], int start, int len,
-                                  Charset charset) {
+            Charset charset) {
 
-        if(log.isDebugEnabled()) {
-            log.debug(sm.getString("parameters.bytes",
-                    new String(bytes, start, len, DEFAULT_CHARSET)));
+        if (log.isDebugEnabled()) {
+            log.debug(sm.getString("parameters.bytes", new String(bytes, start,
+                    len, DEFAULT_CHARSET)));
         }
 
         int decodeFailCount = 0;
@@ -245,7 +237,7 @@ public final class Parameters {
         int pos = start;
         int end = start + len;
 
-        while(pos < end) {
+        while (pos < end) {
             int nameStart = pos;
             int nameEnd = -1;
             int valueStart = -1;
@@ -257,7 +249,7 @@ public final class Parameters {
             boolean parameterComplete = false;
 
             do {
-                switch(bytes[pos]) {
+                switch (bytes[pos]) {
                     case '=':
                         if (parsingName) {
                             // Name finished. Value starts from next character
@@ -275,7 +267,7 @@ public final class Parameters {
                             nameEnd = pos;
                         } else {
                             // Value finished
-                            valueEnd  = pos;
+                            valueEnd = pos;
                         }
                         parameterComplete = true;
                         pos++;
@@ -288,10 +280,10 @@ public final class Parameters {
                         } else {
                             decodeValue = true;
                         }
-                        pos ++;
+                        pos++;
                         break;
                     default:
-                        pos ++;
+                        pos++;
                         break;
                 }
             } while (!parameterComplete && pos < end);
@@ -299,19 +291,19 @@ public final class Parameters {
             if (pos == end) {
                 if (nameEnd == -1) {
                     nameEnd = pos;
-                } else if (valueStart > -1 && valueEnd == -1){
+                } else if (valueStart > -1 && valueEnd == -1) {
                     valueEnd = pos;
                 }
             }
 
             if (log.isDebugEnabled() && valueStart == -1) {
-                log.debug(sm.getString("parameters.noequal",
-                        Integer.valueOf(nameStart), Integer.valueOf(nameEnd),
-                        new String(bytes, nameStart, nameEnd-nameStart,
+                log.debug(sm.getString("parameters.noequal", Integer.valueOf(
+                        nameStart), Integer.valueOf(nameEnd), new String(bytes,
+                                nameStart, nameEnd - nameStart,
                                 DEFAULT_CHARSET)));
             }
 
-            if (nameEnd <= nameStart ) {
+            if (nameEnd <= nameStart) {
                 if (valueStart == -1) {
                     // &&
                     if (log.isDebugEnabled()) {
@@ -331,8 +323,8 @@ public final class Parameters {
                         extract = "";
                     }
                     String message = sm.getString("parameters.invalidChunk",
-                            Integer.valueOf(nameStart),
-                            Integer.valueOf(valueEnd), extract);
+                            Integer.valueOf(nameStart), Integer.valueOf(
+                                    valueEnd), extract);
                     switch (logMode) {
                         case INFO_THEN_DEBUG:
                             message += sm.getString("parameters.fallToDebug");
@@ -363,7 +355,8 @@ public final class Parameters {
                 try {
                     origName.append(bytes, nameStart, nameEnd - nameStart);
                     if (valueStart >= 0) {
-                        origValue.append(bytes, valueStart, valueEnd - valueStart);
+                        origValue.append(bytes, valueStart, valueEnd
+                                - valueStart);
                     } else {
                         origValue.append(bytes, 0, 0);
                     }
@@ -398,7 +391,8 @@ public final class Parameters {
                 } catch (IllegalStateException ise) {
                     // Hitting limit stops processing further params but does
                     // not cause request to fail.
-                    UserDataHelper.Mode logMode = maxParamCountLog.getNextMode();
+                    UserDataHelper.Mode logMode = maxParamCountLog
+                            .getNextMode();
                     if (logMode != null) {
                         String message = ise.getMessage();
                         switch (logMode) {
@@ -426,11 +420,12 @@ public final class Parameters {
                         UserDataHelper.Mode logMode = userDataLog.getNextMode();
                         if (logMode != null) {
                             String message = sm.getString(
-                                    "parameters.decodeFail.info",
-                                    tmpName.toString(), tmpValue.toString());
+                                    "parameters.decodeFail.info", tmpName
+                                            .toString(), tmpValue.toString());
                             switch (logMode) {
                                 case INFO_THEN_DEBUG:
-                                    message += sm.getString("parameters.fallToDebug");
+                                    message += sm.getString(
+                                            "parameters.fallToDebug");
                                     //$FALL-THROUGH$
                                 case INFO:
                                     log.info(message);
@@ -455,8 +450,7 @@ public final class Parameters {
         if (decodeFailCount > 1 && !log.isDebugEnabled()) {
             UserDataHelper.Mode logMode = userDataLog.getNextMode();
             if (logMode != null) {
-                String message = sm.getString(
-                        "parameters.multipleDecodingFail",
+                String message = sm.getString("parameters.multipleDecodingFail",
                         Integer.valueOf(decodeFailCount));
                 switch (logMode) {
                     case INFO_THEN_DEBUG:
@@ -472,25 +466,24 @@ public final class Parameters {
         }
     }
 
-    private void urlDecode(ByteChunk bc)
-        throws IOException {
-        if( urlDec==null ) {
-            urlDec=new UDecoder();
+    private void urlDecode(ByteChunk bc) throws IOException {
+        if (urlDec == null) {
+            urlDec = new UDecoder();
         }
         urlDec.convert(bc, true);
     }
 
-    public void processParameters( MessageBytes data, String encoding ) {
-        if( data==null || data.isNull() || data.getLength() <= 0 ) {
+    public void processParameters(MessageBytes data, String encoding) {
+        if (data == null || data.isNull() || data.getLength() <= 0) {
             return;
         }
 
-        if( data.getType() != MessageBytes.T_BYTES ) {
+        if (data.getType() != MessageBytes.T_BYTES) {
             data.toBytes();
         }
-        ByteChunk bc=data.getByteChunk();
-        processParameters( bc.getBytes(), bc.getOffset(),
-                           bc.getLength(), getCharset(encoding));
+        ByteChunk bc = data.getByteChunk();
+        processParameters(bc.getBytes(), bc.getOffset(), bc.getLength(),
+                getCharset(encoding));
     }
 
     private Charset getCharset(String encoding) {
@@ -510,7 +503,8 @@ public final class Parameters {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        for (Map.Entry<String, ArrayList<String>> e : paramHashValues.entrySet()) {
+        for (Map.Entry<String, ArrayList<String>> e : paramHashValues
+                .entrySet()) {
             sb.append(e.getKey()).append('=');
             ArrayList<String> values = e.getValue();
             for (String value : values) {
@@ -521,17 +515,9 @@ public final class Parameters {
         return sb.toString();
     }
 
-
     public enum FailReason {
-        CLIENT_DISCONNECT,
-        MULTIPART_CONFIG_INVALID,
-        INVALID_CONTENT_TYPE,
-        IO_ERROR,
-        NO_NAME,
-        POST_TOO_LARGE,
-        REQUEST_BODY_INCOMPLETE,
-        TOO_MANY_PARAMETERS,
-        UNKNOWN,
-        URL_DECODING
+        CLIENT_DISCONNECT, MULTIPART_CONFIG_INVALID, INVALID_CONTENT_TYPE,
+        IO_ERROR, NO_NAME, POST_TOO_LARGE, REQUEST_BODY_INCOMPLETE,
+        TOO_MANY_PARAMETERS, UNKNOWN, URL_DECODING
     }
 }

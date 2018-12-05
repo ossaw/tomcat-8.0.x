@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -59,8 +57,9 @@ public class TestGroupChannelOptionFlag {
         channel.addInterceptor(i);
         try {
             channel.start(Channel.DEFAULT);
-        }catch ( ChannelException x ) {
-            if ( x.getMessage().indexOf("option flag conflict") >= 0 ) error = true;
+        } catch (ChannelException x) {
+            if (x.getMessage().indexOf("option flag conflict") >= 0)
+                error = true;
         }
         assertTrue(error);
     }
@@ -80,8 +79,9 @@ public class TestGroupChannelOptionFlag {
         channel.addInterceptor(i);
         try {
             channel.start(Channel.DEFAULT);
-        }catch ( ChannelException x ) {
-            if ( x.getMessage().indexOf("option flag conflict") >= 0 ) error = true;
+        } catch (ChannelException x) {
+            if (x.getMessage().indexOf("option flag conflict") >= 0)
+                error = true;
         }
         assertFalse(error);
     }
@@ -89,6 +89,5 @@ public class TestGroupChannelOptionFlag {
     public static class TestInterceptor extends ChannelInterceptorBase {
         // Just use base class
     }
-
 
 }

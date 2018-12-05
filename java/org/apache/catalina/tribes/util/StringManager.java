@@ -1,18 +1,16 @@
 /*
- *  Licensed to the Apache Software Foundation (ASF) under one or more
- *  contributor license agreements.  See the NOTICE file distributed with
- *  this work for additional information regarding copyright ownership.
- *  The ASF licenses this file to You under the Apache License, Version 2.0
- *  (the "License"); you may not use this file except in compliance with
- *  the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements. See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package org.apache.catalina.tribes.util;
@@ -29,17 +27,20 @@ import java.util.ResourceBundle;
  * common cases of message formating which otherwise require the
  * creation of Object arrays and such.
  *
- * <p>The StringManager operates on a package basis. One StringManager
+ * <p>
+ * The StringManager operates on a package basis. One StringManager
  * per package can be created and accessed via the getManager method
  * call.
  *
- * <p>The StringManager will look for a ResourceBundle named by
+ * <p>
+ * The StringManager will look for a ResourceBundle named by
  * the package name given plus the suffix of "LocalStrings". In
  * practice, this means that the localized information will be contained
  * in a LocalStrings.properties file located in the package
  * directory of the classpath.
  *
- * <p>Please see the documentation for java.util.ResourceBundle for
+ * <p>
+ * Please see the documentation for java.util.ResourceBundle for
  * more information.
  *
  * @author James Duncan Davidson [duncan@eng.sun.com]
@@ -69,16 +70,16 @@ public class StringManager {
         String bundleName = packageName + ".LocalStrings";
         try {
             b = ResourceBundle.getBundle(bundleName, Locale.getDefault());
-        } catch( MissingResourceException ex ) {
+        } catch (MissingResourceException ex) {
             // Try from the current loader (that's the case for trusted apps)
             // Should only be required if using a TC5 style classloader structure
             // where common != shared != server
             ClassLoader cl = Thread.currentThread().getContextClassLoader();
-            if( cl != null ) {
+            if (cl != null) {
                 try {
-                    b = ResourceBundle.getBundle(
-                            bundleName, Locale.getDefault(), cl);
-                } catch(MissingResourceException ex2) {
+                    b = ResourceBundle.getBundle(bundleName, Locale
+                            .getDefault(), cl);
+                } catch (MissingResourceException ex2) {
                     // Ignore
                 }
             }
@@ -93,16 +94,16 @@ public class StringManager {
     }
 
     /**
-        Get a string from the underlying resource bundle or return
-        null if the String is not found.
-
-        @param key to desired resource String
-        @return resource String matching <i>key</i> from underlying
-                bundle or null if not found.
-        @throws IllegalArgumentException if <i>key</i> is null.
+     * Get a string from the underlying resource bundle or return
+     * null if the String is not found.
+     * 
+     * @param key to desired resource String
+     * @return resource String matching <i>key</i> from underlying
+     *         bundle or null if not found.
+     * @throws IllegalArgumentException if <i>key</i> is null.
      */
     public String getString(String key) {
-        if(key == null){
+        if (key == null) {
             String msg = "key may not have a null value";
 
             throw new IllegalArgumentException(msg);
@@ -112,7 +113,7 @@ public class StringManager {
 
         try {
             str = bundle.getString(key);
-        } catch(MissingResourceException mre) {
+        } catch (MissingResourceException mre) {
             //bad: shouldn't mask an exception the following way:
             //   str = "[cannot find message associated with key '" + key + "' due to " + mre + "]";
             //     because it hides the fact that the String was missing
@@ -151,8 +152,7 @@ public class StringManager {
     // STATIC SUPPORT METHODS
     // --------------------------------------------------------------
 
-    private static final Hashtable<String, StringManager> managers =
-        new Hashtable<>();
+    private static final Hashtable<String, StringManager> managers = new Hashtable<>();
 
     /**
      * Get the StringManager for a particular package. If a manager for
@@ -161,7 +161,8 @@ public class StringManager {
      *
      * @param packageName The package name
      */
-    public static final synchronized StringManager getManager(String packageName) {
+    public static final synchronized StringManager getManager(
+            String packageName) {
         StringManager mgr = managers.get(packageName);
         if (mgr == null) {
             mgr = new StringManager(packageName);

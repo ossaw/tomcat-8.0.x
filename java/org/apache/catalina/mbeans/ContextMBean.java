@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -36,8 +34,9 @@ public class ContextMBean extends ContainerMBean {
         super();
     }
 
-     /**
+    /**
      * Return the set of application parameters for this application.
+     * 
      * @return a string array with a representation of each parameter
      * @throws MBeanException propagated from the managed resource access
      */
@@ -45,7 +44,7 @@ public class ContextMBean extends ContainerMBean {
 
         Context context;
         try {
-            context = (Context)getManagedResource();
+            context = (Context) getManagedResource();
         } catch (InstanceNotFoundException e) {
             throw new MBeanException(e);
         } catch (RuntimeOperationsException e) {
@@ -56,8 +55,8 @@ public class ContextMBean extends ContainerMBean {
 
         ApplicationParameter[] params = context.findApplicationParameters();
         String[] stringParams = new String[params.length];
-        for(int counter=0; counter < params.length; counter++){
-           stringParams[counter]=params[counter].toString();
+        for (int counter = 0; counter < params.length; counter++) {
+            stringParams[counter] = params[counter].toString();
         }
 
         return stringParams;
@@ -67,15 +66,16 @@ public class ContextMBean extends ContainerMBean {
     /**
      * Return the security constraints for this web application.
      * If there are none, a zero-length array is returned.
+     * 
      * @return a string array with a representation of each
-     *  security constraint
+     *         security constraint
      * @throws MBeanException propagated from the managed resource access
      */
     public String[] findConstraints() throws MBeanException {
 
         Context context;
         try {
-            context = (Context)getManagedResource();
+            context = (Context) getManagedResource();
         } catch (InstanceNotFoundException e) {
             throw new MBeanException(e);
         } catch (RuntimeOperationsException e) {
@@ -86,8 +86,8 @@ public class ContextMBean extends ContainerMBean {
 
         SecurityConstraint[] constraints = context.findConstraints();
         String[] stringConstraints = new String[constraints.length];
-        for(int counter=0; counter < constraints.length; counter++){
-            stringConstraints[counter]=constraints[counter].toString();
+        for (int counter = 0; counter < constraints.length; counter++) {
+            stringConstraints[counter] = constraints[counter].toString();
         }
 
         return stringConstraints;
@@ -106,7 +106,7 @@ public class ContextMBean extends ContainerMBean {
 
         Context context;
         try {
-            context = (Context)getManagedResource();
+            context = (Context) getManagedResource();
         } catch (InstanceNotFoundException e) {
             throw new MBeanException(e);
         } catch (RuntimeOperationsException e) {
@@ -131,7 +131,7 @@ public class ContextMBean extends ContainerMBean {
 
         Context context;
         try {
-            context = (Context)getManagedResource();
+            context = (Context) getManagedResource();
         } catch (InstanceNotFoundException e) {
             throw new MBeanException(e);
         } catch (RuntimeOperationsException e) {
@@ -147,6 +147,7 @@ public class ContextMBean extends ContainerMBean {
     /**
      * Return the set of defined error pages for all specified error codes
      * and exception types.
+     * 
      * @return a string array with a representation of each error page
      * @throws MBeanException propagated from the managed resource access
      */
@@ -154,7 +155,7 @@ public class ContextMBean extends ContainerMBean {
 
         Context context;
         try {
-            context = (Context)getManagedResource();
+            context = (Context) getManagedResource();
         } catch (InstanceNotFoundException e) {
             throw new MBeanException(e);
         } catch (RuntimeOperationsException e) {
@@ -165,8 +166,8 @@ public class ContextMBean extends ContainerMBean {
 
         ErrorPage[] pages = context.findErrorPages();
         String[] stringPages = new String[pages.length];
-        for(int counter=0; counter < pages.length; counter++){
-            stringPages[counter]=pages[counter].toString();
+        for (int counter = 0; counter < pages.length; counter++) {
+            stringPages[counter] = pages[counter].toString();
         }
 
         return stringPages;
@@ -185,7 +186,7 @@ public class ContextMBean extends ContainerMBean {
 
         Context context;
         try {
-            context = (Context)getManagedResource();
+            context = (Context) getManagedResource();
         } catch (InstanceNotFoundException e) {
             throw new MBeanException(e);
         } catch (RuntimeOperationsException e) {
@@ -201,15 +202,16 @@ public class ContextMBean extends ContainerMBean {
 
     /**
      * Return the set of defined filters for this Context.
+     * 
      * @return a string array with a representation of all
-     *  the filter definitions
+     *         the filter definitions
      * @throws MBeanException propagated from the managed resource access
      */
     public String[] findFilterDefs() throws MBeanException {
 
         Context context;
         try {
-            context = (Context)getManagedResource();
+            context = (Context) getManagedResource();
         } catch (InstanceNotFoundException e) {
             throw new MBeanException(e);
         } catch (RuntimeOperationsException e) {
@@ -220,8 +222,8 @@ public class ContextMBean extends ContainerMBean {
 
         FilterDef[] filterDefs = context.findFilterDefs();
         String[] stringFilters = new String[filterDefs.length];
-        for(int counter=0; counter < filterDefs.length; counter++){
-            stringFilters[counter]=filterDefs[counter].toString();
+        for (int counter = 0; counter < filterDefs.length; counter++) {
+            stringFilters[counter] = filterDefs[counter].toString();
         }
 
         return stringFilters;
@@ -230,6 +232,7 @@ public class ContextMBean extends ContainerMBean {
 
     /**
      * Return the set of filter mappings for this Context.
+     * 
      * @return a string array with a representation of all the filter mappings
      * @throws MBeanException propagated from the managed resource access
      */
@@ -237,7 +240,7 @@ public class ContextMBean extends ContainerMBean {
 
         Context context;
         try {
-            context = (Context)getManagedResource();
+            context = (Context) getManagedResource();
         } catch (InstanceNotFoundException e) {
             throw new MBeanException(e);
         } catch (RuntimeOperationsException e) {
@@ -248,8 +251,8 @@ public class ContextMBean extends ContainerMBean {
 
         FilterMap[] maps = context.findFilterMaps();
         String[] stringMaps = new String[maps.length];
-        for(int counter=0; counter < maps.length; counter++){
-            stringMaps[counter]=maps[counter].toString();
+        for (int counter = 0; counter < maps.length; counter++) {
+            stringMaps[counter] = maps[counter].toString();
         }
 
         return stringMaps;

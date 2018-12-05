@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -37,12 +35,15 @@ import org.apache.juli.logging.LogFactory;
  * information available to Tomcat, some additional configuration is required.
  * In httpd, mod_headers is used to add the SSL information as HTTP headers. In
  * Tomcat, this valve is used to read the information from the HTTP headers and
- * insert it into the request.<p>
+ * insert it into the request.
+ * <p>
  *
  * <b>Note: Ensure that the headers are always set by httpd for all requests to
- * prevent a client spoofing SSL information by sending fake headers. </b><p>
+ * prevent a client spoofing SSL information by sending fake headers. </b>
+ * <p>
  *
  * In httpd.conf add the following:
+ * 
  * <pre>
  * &lt;IfModule ssl_module&gt;
  *   RequestHeader set SSL_CLIENT_CERT "%{SSL_CLIENT_CERT}s"
@@ -53,6 +54,7 @@ import org.apache.juli.logging.LogFactory;
  * </pre>
  *
  * In server.xml, configure this valve under the Engine element in server.xml:
+ * 
  * <pre>
  * &lt;Engine ...&gt;
  *   &lt;Valve className="org.apache.catalina.valves.SSLValve" /&gt;
@@ -73,7 +75,6 @@ public class SSLValve extends ValveBase {
     public SSLValve() {
         super(true);
     }
-
 
     public String getSslClientCertHeader() {
         return sslClientCertHeader;
@@ -103,10 +104,10 @@ public class SSLValve extends ValveBase {
         return sslCipherUserKeySizeHeader;
     }
 
-    public void setSslCipherUserKeySizeHeader(String sslCipherUserKeySizeHeader) {
+    public void setSslCipherUserKeySizeHeader(
+            String sslCipherUserKeySizeHeader) {
         this.sslCipherUserKeySizeHeader = sslCipherUserKeySizeHeader;
     }
-
 
     public String mygetHeader(Request request, String header) {
         String strcert0 = request.getHeader(header);
@@ -119,21 +120,25 @@ public class SSLValve extends ValveBase {
         }
         return strcert0;
     }
-    @Override
-    public void invoke(Request request, Response response)
-        throws IOException, ServletException {
 
-        /* mod_header converts the '\n' into ' ' so we have to rebuild the client certificate */
+    @Override
+    public void invoke(Request request, Response response) throws IOException,
+            ServletException {
+
+        /*
+         * mod_header converts the '\n' into ' ' so we have to rebuild the
+         * client certificate
+         */
         String strcert0 = mygetHeader(request, sslClientCertHeader);
-        if (strcert0 != null && strcert0.length()>28) {
+        if (strcert0 != null && strcert0.length() > 28) {
             String strcert1 = strcert0.replace(' ', '\n');
-            String strcert2 = strcert1.substring(28, strcert1.length()-26);
+            String strcert2 = strcert1.substring(28, strcert1.length() - 26);
             String strcert3 = "-----BEGIN CERTIFICATE-----\n";
             String strcert4 = strcert3.concat(strcert2);
             String strcerts = strcert4.concat("\n-----END CERTIFICATE-----\n");
             // ByteArrayInputStream bais = new ByteArrayInputStream(strcerts.getBytes("UTF-8"));
-            ByteArrayInputStream bais = new ByteArrayInputStream(
-                    strcerts.getBytes(StandardCharsets.ISO_8859_1));
+            ByteArrayInputStream bais = new ByteArrayInputStream(strcerts
+                    .getBytes(StandardCharsets.ISO_8859_1));
             X509Certificate jsseCerts[] = null;
             String providerName = (String) request.getConnector().getProperty(
                     "clientCertProvider");
@@ -144,14 +149,15 @@ public class SSLValve extends ValveBase {
                 } else {
                     cf = CertificateFactory.getInstance("X.509", providerName);
                 }
-                X509Certificate cert = (X509Certificate) cf.generateCertificate(bais);
+                X509Certificate cert = (X509Certificate) cf.generateCertificate(
+                        bais);
                 jsseCerts = new X509Certificate[1];
                 jsseCerts[0] = cert;
             } catch (java.security.cert.CertificateException e) {
                 log.warn(sm.getString("sslValve.certError", strcerts), e);
             } catch (NoSuchProviderException e) {
-                log.error(sm.getString(
-                        "sslValve.invalidProvider", providerName), e);
+                log.error(sm.getString("sslValve.invalidProvider",
+                        providerName), e);
             }
             request.setAttribute(Globals.CERTIFICATES_ATTR, jsseCerts);
         }
@@ -165,8 +171,8 @@ public class SSLValve extends ValveBase {
         }
         strcert0 = mygetHeader(request, sslCipherUserKeySizeHeader);
         if (strcert0 != null) {
-            request.setAttribute(Globals.KEY_SIZE_ATTR,
-                    Integer.valueOf(strcert0));
+            request.setAttribute(Globals.KEY_SIZE_ATTR, Integer.valueOf(
+                    strcert0));
         }
         getNext().invoke(request, response);
     }

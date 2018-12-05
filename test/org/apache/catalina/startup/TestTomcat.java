@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -100,8 +98,8 @@ public class TestTomcat extends TomcatBaseTest {
 
             try {
                 javax.naming.Context initCtx = new InitialContext();
-                javax.naming.Context envCtx =
-                        (javax.naming.Context) initCtx.lookup("java:comp/env");
+                javax.naming.Context envCtx = (javax.naming.Context) initCtx
+                        .lookup("java:comp/env");
                 name = (String) envCtx.lookup(JNDI_ENV_NAME);
             } catch (NamingException e) {
                 throw new IOException(e);
@@ -120,7 +118,7 @@ public class TestTomcat extends TomcatBaseTest {
 
         @Override
         public void doGet(HttpServletRequest req, HttpServletResponse res)
-        throws IOException {
+                throws IOException {
             URL url = req.getServletContext().getResource("/WEB-INF/web.xml");
 
             res.getWriter().write("The URL obtained for /WEB-INF/web.xml was ");
@@ -128,7 +126,8 @@ public class TestTomcat extends TomcatBaseTest {
                 res.getWriter().write("null");
             } else {
                 res.getWriter().write(url.toString() + "\n");
-                res.getWriter().write("The first 20 characters of that resource are:\n");
+                res.getWriter().write(
+                        "The first 20 characters of that resource are:\n");
 
                 // Read some content from the resource
                 URLConnection conn = url.openConnection();
@@ -174,12 +173,10 @@ public class TestTomcat extends TomcatBaseTest {
         }
     }
 
-
     /*
      * Start tomcat with a single context and one
      * servlet - all programmatic, no server.xml or
      * web.xml used.
-     *
      * @throws Exception
      */
     @Test
@@ -204,13 +201,13 @@ public class TestTomcat extends TomcatBaseTest {
 
         File appDir = new File(getBuildDirectory(), "webapps/examples");
         // app dir is relative to server home
-        Context ctxt = tomcat.addWebapp(
-                null, "/examples", appDir.getAbsolutePath());
+        Context ctxt = tomcat.addWebapp(null, "/examples", appDir
+                .getAbsolutePath());
         ctxt.addApplicationListener(WsContextListener.class.getName());
         tomcat.start();
 
-        ByteChunk res = getUrl("http://localhost:" + getPort() +
-                "/examples/servlets/servlet/HelloWorldExample");
+        ByteChunk res = getUrl("http://localhost:" + getPort()
+                + "/examples/servlets/servlet/HelloWorldExample");
         String text = res.toString();
         assertTrue(text, text.indexOf("<a href=\"../helloworld.html\">") > 0);
     }
@@ -221,14 +218,14 @@ public class TestTomcat extends TomcatBaseTest {
 
         File appDir = new File(getBuildDirectory(), "webapps/examples");
         // app dir is relative to server home
-        Context ctxt = tomcat.addWebapp(
-                null, "/examples", appDir.getAbsolutePath());
+        Context ctxt = tomcat.addWebapp(null, "/examples", appDir
+                .getAbsolutePath());
         ctxt.addApplicationListener(WsContextListener.class.getName());
 
         tomcat.start();
 
-        ByteChunk res = getUrl("http://localhost:" + getPort() +
-                "/examples/jsp/jsp2/el/basic-arithmetic.jsp");
+        ByteChunk res = getUrl("http://localhost:" + getPort()
+                + "/examples/jsp/jsp2/el/basic-arithmetic.jsp");
         String text = res.toString();
         assertTrue(text, text.indexOf("<td>${(1==2) ? 3 : 4}</td>") > 0);
     }
@@ -257,8 +254,7 @@ public class TestTomcat extends TomcatBaseTest {
         tomcat.start();
         log.info("Tomcat started in [" + (System.currentTimeMillis() - t0)
                 + "] ms");
-     }
-
+    }
 
     /*
      * Test for enabling JNDI.
@@ -305,7 +301,8 @@ public class TestTomcat extends TomcatBaseTest {
         environment.setType("java.lang.String");
         environment.setName("globalTest");
         environment.setValue("Tomcat User");
-        tomcat.getServer().getGlobalNamingResources().addEnvironment(environment);
+        tomcat.getServer().getGlobalNamingResources().addEnvironment(
+                environment);
 
         ContextResourceLink link = new ContextResourceLink();
         link.setGlobal("globalTest");
@@ -322,7 +319,6 @@ public class TestTomcat extends TomcatBaseTest {
         assertEquals("Hello, Tomcat User", res.toString());
     }
 
-
     /*
      * Test for https://bz.apache.org/bugzilla/show_bug.cgi?id=47866
      */
@@ -334,8 +330,8 @@ public class TestTomcat extends TomcatBaseTest {
 
         File appDir = new File(getBuildDirectory(), "webapps" + contextPath);
         // app dir is relative to server home
-        Context ctx =
-            tomcat.addWebapp(null, "/examples", appDir.getAbsolutePath());
+        Context ctx = tomcat.addWebapp(null, "/examples", appDir
+                .getAbsolutePath());
         ctx.addApplicationListener(WsContextListener.class.getName());
 
         Tomcat.addServlet(ctx, "testGetResource", new GetResource());
@@ -345,8 +341,8 @@ public class TestTomcat extends TomcatBaseTest {
 
         ByteChunk res = new ByteChunk();
 
-        int rc =getUrl("http://localhost:" + getPort() + contextPath +
-                "/testGetResource", res, null);
+        int rc = getUrl("http://localhost:" + getPort() + contextPath
+                + "/testGetResource", res, null);
         assertEquals(HttpServletResponse.SC_OK, rc);
         assertTrue(res.toString().contains("<?xml version=\"1.0\" "));
     }
@@ -392,25 +388,29 @@ public class TestTomcat extends TomcatBaseTest {
     @Test
     public void testGetWebappConfigFileFromDirectory() {
         Tomcat tomcat = new Tomcat();
-        assertNotNull(tomcat.getWebappConfigFile("test/deployment/dirContext", ""));
+        assertNotNull(tomcat.getWebappConfigFile("test/deployment/dirContext",
+                ""));
     }
 
     @Test
     public void testGetWebappConfigFileFromDirectoryNegative() {
         Tomcat tomcat = new Tomcat();
-        assertNull(tomcat.getWebappConfigFile("test/deployment/dirNoContext", ""));
+        assertNull(tomcat.getWebappConfigFile("test/deployment/dirNoContext",
+                ""));
     }
 
     @Test
     public void testGetWebappConfigFileFromJar() {
         Tomcat tomcat = new Tomcat();
-        assertNotNull(tomcat.getWebappConfigFile("test/deployment/context.war", ""));
+        assertNotNull(tomcat.getWebappConfigFile("test/deployment/context.war",
+                ""));
     }
 
     @Test
     public void testGetWebappConfigFileFromJarNegative() {
         Tomcat tomcat = new Tomcat();
-        assertNull(tomcat.getWebappConfigFile("test/deployment/noContext.war", ""));
+        assertNull(tomcat.getWebappConfigFile("test/deployment/noContext.war",
+                ""));
     }
 
     @Test
@@ -418,8 +418,8 @@ public class TestTomcat extends TomcatBaseTest {
         Tomcat tomcat = getTomcatInstance();
 
         File appFile = new File("test/deployment/context.war");
-        StandardContext context = (StandardContext) tomcat.addWebapp(null, "/test",
-                appFile.getAbsolutePath());
+        StandardContext context = (StandardContext) tomcat.addWebapp(null,
+                "/test", appFile.getAbsolutePath());
 
         tomcat.start();
 
@@ -431,8 +431,8 @@ public class TestTomcat extends TomcatBaseTest {
         Tomcat tomcat = getTomcatInstance();
 
         File appFile = new File("test/deployment/context.war");
-        Context context = tomcat.addWebapp(null,
-                "/test", appFile.getAbsolutePath());
+        Context context = tomcat.addWebapp(null, "/test", appFile
+                .getAbsolutePath());
 
         assertEquals(StandardContext.class.getName(), context.getClass()
                 .getName());
@@ -465,8 +465,8 @@ public class TestTomcat extends TomcatBaseTest {
         }
 
         File appFile = new File("test/deployment/context.war");
-        Context context = tomcat.addWebapp(null, "/test",
-                appFile.getAbsolutePath());
+        Context context = tomcat.addWebapp(null, "/test", appFile
+                .getAbsolutePath());
 
         assertEquals(ReplicatedContext.class.getName(), context.getClass()
                 .getName());
@@ -482,14 +482,14 @@ public class TestTomcat extends TomcatBaseTest {
         }
 
         File appFile = new File("test/deployment/context.war");
-        Context context = tomcat.addWebapp(host, "/test",
-                appFile.getAbsolutePath());
+        Context context = tomcat.addWebapp(host, "/test", appFile
+                .getAbsolutePath());
 
         assertEquals(ReplicatedContext.class.getName(), context.getClass()
                 .getName());
     }
 
-        @Test
+    @Test
     public void testGetDefaultContextPerAddContext() {
         Tomcat tomcat = getTomcatInstance();
 

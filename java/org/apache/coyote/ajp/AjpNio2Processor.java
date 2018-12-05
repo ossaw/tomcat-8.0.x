@@ -1,18 +1,16 @@
 /*
- *  Licensed to the Apache Software Foundation (ASF) under one or more
- *  contributor license agreements.  See the NOTICE file distributed with
- *  this work for additional information regarding copyright ownership.
- *  The ASF licenses this file to You under the Apache License, Version 2.0
- *  (the "License"); you may not use this file except in compliance with
- *  the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements. See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.apache.coyote.ajp;
 
@@ -36,6 +34,7 @@ import org.apache.tomcat.util.net.SocketWrapper;
 public class AjpNio2Processor extends AbstractAjpProcessor<Nio2Channel> {
 
     private static final Log log = LogFactory.getLog(AjpNio2Processor.class);
+
     @Override
     protected Log getLog() {
         return log;
@@ -61,11 +60,13 @@ public class AjpNio2Processor extends AbstractAjpProcessor<Nio2Channel> {
         response.setOutputBuffer(new SocketOutputBuffer());
         this.writeCompletionHandler = new CompletionHandler<Integer, SocketWrapper<Nio2Channel>>() {
             @Override
-            public void completed(Integer nBytes, SocketWrapper<Nio2Channel> attachment) {
+            public void completed(Integer nBytes,
+                    SocketWrapper<Nio2Channel> attachment) {
                 boolean notify = false;
                 synchronized (writeCompletionHandler) {
                     if (nBytes.intValue() < 0) {
-                        failed(new IOException(sm.getString("ajpprocessor.failedsend")), attachment);
+                        failed(new IOException(sm.getString(
+                                "ajpprocessor.failedsend")), attachment);
                         return;
                     }
                     writePending = false;
@@ -74,14 +75,18 @@ public class AjpNio2Processor extends AbstractAjpProcessor<Nio2Channel> {
                     }
                 }
                 if (notify) {
-                    endpoint.processSocket(attachment, SocketStatus.OPEN_WRITE, false);
+                    endpoint.processSocket(attachment, SocketStatus.OPEN_WRITE,
+                            false);
                 }
             }
+
             @Override
-            public void failed(Throwable exc, SocketWrapper<Nio2Channel> attachment) {
+            public void failed(Throwable exc,
+                    SocketWrapper<Nio2Channel> attachment) {
                 attachment.setError(true);
                 writePending = false;
-                endpoint.processSocket(attachment, SocketStatus.DISCONNECT, true);
+                endpoint.processSocket(attachment, SocketStatus.DISCONNECT,
+                        true);
             }
         };
     }
@@ -104,8 +109,8 @@ public class AjpNio2Processor extends AbstractAjpProcessor<Nio2Channel> {
         // The NIO connector uses the timeout configured on the wrapper in the
         // poller. Therefore, it needs to be reset once asycn processing has
         // finished.
-        if (!getErrorState().isError() && socketWrapper != null &&
-                asyncStateMachine.isAsyncDispatching()) {
+        if (!getErrorState().isError() && socketWrapper != null
+                && asyncStateMachine.isAsyncDispatching()) {
             long soTimeout = endpoint.getSoTimeout();
 
             //reset the timeout
@@ -118,20 +123,17 @@ public class AjpNio2Processor extends AbstractAjpProcessor<Nio2Channel> {
 
     }
 
-
     @Override
     protected void setupSocket(SocketWrapper<Nio2Channel> socketWrapper)
             throws IOException {
         // NO-OP
     }
 
-
     @Override
     protected void setTimeout(SocketWrapper<Nio2Channel> socketWrapper,
             int timeout) throws IOException {
         socketWrapper.setTimeout(timeout);
     }
-
 
     @Override
     protected int output(byte[] src, int offset, int length, boolean block)
@@ -140,8 +142,8 @@ public class AjpNio2Processor extends AbstractAjpProcessor<Nio2Channel> {
         if (socketWrapper == null || socketWrapper.getSocket() == null)
             return -1;
 
-        ByteBuffer writeBuffer =
-                socketWrapper.getSocket().getBufHandler().getWriteBuffer();
+        ByteBuffer writeBuffer = socketWrapper.getSocket().getBufHandler()
+                .getWriteBuffer();
         int toWrite = Math.min(length, writeBuffer.capacity());
 
         int result = 0;
@@ -150,11 +152,13 @@ public class AjpNio2Processor extends AbstractAjpProcessor<Nio2Channel> {
             writeBuffer.put(src, offset, toWrite);
             writeBuffer.flip();
             try {
-                result = socketWrapper.getSocket().write(writeBuffer)
-                        .get(socketWrapper.getTimeout(), TimeUnit.MILLISECONDS).intValue();
+                result = socketWrapper.getSocket().write(writeBuffer).get(
+                        socketWrapper.getTimeout(), TimeUnit.MILLISECONDS)
+                        .intValue();
             } catch (InterruptedException | ExecutionException
                     | TimeoutException e) {
-                throw new IOException(sm.getString("ajpprocessor.failedsend"), e);
+                throw new IOException(sm.getString("ajpprocessor.failedsend"),
+                        e);
             }
         } else {
             synchronized (writeCompletionHandler) {
@@ -164,8 +168,9 @@ public class AjpNio2Processor extends AbstractAjpProcessor<Nio2Channel> {
                     writeBuffer.flip();
                     writePending = true;
                     Nio2Endpoint.startInline();
-                    socketWrapper.getSocket().write(writeBuffer, socketWrapper.getTimeout(),
-                            TimeUnit.MILLISECONDS, socketWrapper, writeCompletionHandler);
+                    socketWrapper.getSocket().write(writeBuffer, socketWrapper
+                            .getTimeout(), TimeUnit.MILLISECONDS, socketWrapper,
+                            writeCompletionHandler);
                     Nio2Endpoint.endInline();
                     result = toWrite;
                 }
@@ -174,10 +179,9 @@ public class AjpNio2Processor extends AbstractAjpProcessor<Nio2Channel> {
         return result;
     }
 
-
     @Override
     protected boolean read(byte[] buf, int pos, int n, boolean blockFirstRead)
-        throws IOException {
+            throws IOException {
 
         int read = 0;
         int res = 0;
@@ -197,12 +201,11 @@ public class AjpNio2Processor extends AbstractAjpProcessor<Nio2Channel> {
         return true;
     }
 
-
     private int readSocket(byte[] buf, int pos, int n, boolean block)
             throws IOException {
         int nRead = 0;
-        ByteBuffer readBuffer =
-                socketWrapper.getSocket().getBufHandler().getReadBuffer();
+        ByteBuffer readBuffer = socketWrapper.getSocket().getBufHandler()
+                .getReadBuffer();
 
         if (block) {
             if (!flipped) {
@@ -223,11 +226,13 @@ public class AjpNio2Processor extends AbstractAjpProcessor<Nio2Channel> {
                     readBuffer.limit(n);
                 }
                 try {
-                    nRead = socketWrapper.getSocket().read(readBuffer)
-                            .get(socketWrapper.getTimeout(), TimeUnit.MILLISECONDS).intValue();
+                    nRead = socketWrapper.getSocket().read(readBuffer).get(
+                            socketWrapper.getTimeout(), TimeUnit.MILLISECONDS)
+                            .intValue();
                 } catch (InterruptedException | ExecutionException
                         | TimeoutException e) {
-                    throw new IOException(sm.getString("ajpprocessor.failedread"), e);
+                    throw new IOException(sm.getString(
+                            "ajpprocessor.failedread"), e);
                 }
                 if (nRead > 0) {
                     if (!flipped) {

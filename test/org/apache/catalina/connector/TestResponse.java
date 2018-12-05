@@ -1,18 +1,16 @@
 /*
- *  Licensed to the Apache Software Foundation (ASF) under one or more
- *  contributor license agreements.  See the NOTICE file distributed with
- *  this work for additional information regarding copyright ownership.
- *  The ASF licenses this file to You under the Apache License, Version 2.0
- *  (the "License"); you may not use this file except in compliance with
- *  the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements. See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package org.apache.catalina.connector;
@@ -60,16 +58,16 @@ public class TestResponse extends TomcatBaseTest {
 
         tomcat.start();
 
-        Map<String,List<String>> headers = new HashMap<>();
+        Map<String, List<String>> headers = new HashMap<>();
         getUrl("http://localhost:" + getPort() + "/", new ByteChunk(), headers);
 
         // Check for headers without a name
-        for (Map.Entry<String,List<String>> header : headers.entrySet()) {
+        for (Map.Entry<String, List<String>> header : headers.entrySet()) {
             if (header.getKey() == null) {
                 // Expected if this is the response line
                 List<String> values = header.getValue();
-                if (values.size() == 1 &&
-                        values.get(0).startsWith("HTTP/1.1")) {
+                if (values.size() == 1 && values.get(0).startsWith(
+                        "HTTP/1.1")) {
                     continue;
                 }
                 fail("Null header name detected for value " + values);
@@ -80,7 +78,7 @@ public class TestResponse extends TomcatBaseTest {
         int count = 0;
         for (String headerName : headers.keySet()) {
             if ("Set-Cookie".equals(headerName)) {
-                count ++;
+                count++;
             }
         }
         assertEquals(1, count);
@@ -98,7 +96,6 @@ public class TestResponse extends TomcatBaseTest {
         }
 
     }
-
 
     /*
      * Tests an issue noticed during the investigation of BZ 52811.
@@ -141,7 +138,6 @@ public class TestResponse extends TomcatBaseTest {
 
     }
 
-
     @Test
     public void testBug52811() throws Exception {
         // Setup Tomcat instance
@@ -160,7 +156,6 @@ public class TestResponse extends TomcatBaseTest {
         assertEquals("OK", bc.toString());
     }
 
-
     @Test
     public void testBug53062a() throws Exception {
         Request req = new TesterRequest();
@@ -173,7 +168,6 @@ public class TestResponse extends TomcatBaseTest {
                 result);
     }
 
-
     @Test
     public void testBug53062b() throws Exception {
         Request req = new TesterRequest();
@@ -184,7 +178,6 @@ public class TestResponse extends TomcatBaseTest {
 
         Assert.assertEquals("http://localhost:8080/level1/level2/", result);
     }
-
 
     @Test
     public void testBug53062c() throws Exception {
@@ -197,7 +190,6 @@ public class TestResponse extends TomcatBaseTest {
         Assert.assertEquals("http://localhost:8080/level1/", result);
     }
 
-
     @Test
     public void testBug53062d() throws Exception {
         Request req = new TesterRequest();
@@ -209,8 +201,7 @@ public class TestResponse extends TomcatBaseTest {
         Assert.assertEquals("http://localhost:8080/", result);
     }
 
-
-    @Test(expected=IllegalArgumentException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void testBug53062e() throws Exception {
         Request req = new TesterRequest();
         Response resp = new Response();
@@ -218,7 +209,6 @@ public class TestResponse extends TomcatBaseTest {
 
         resp.toAbsolute("../../..");
     }
-
 
     @Test
     public void testBug53062f() throws Exception {
@@ -228,10 +218,9 @@ public class TestResponse extends TomcatBaseTest {
 
         String result = resp.toAbsolute("bar.html");
 
-        Assert.assertEquals(
-                "http://localhost:8080/level1/level2/bar.html", result);
+        Assert.assertEquals("http://localhost:8080/level1/level2/bar.html",
+                result);
     }
-
 
     @Test
     public void testBug53062g() throws Exception {
@@ -244,7 +233,6 @@ public class TestResponse extends TomcatBaseTest {
         Assert.assertEquals(
                 "http://localhost:8080/level1/level2/bar.html?x=/../", result);
     }
-
 
     @Test
     public void testBug53062h() throws Exception {
@@ -259,7 +247,6 @@ public class TestResponse extends TomcatBaseTest {
                 result);
     }
 
-
     @Test
     public void testBug53062i() throws Exception {
         Request req = new TesterRequest();
@@ -268,10 +255,9 @@ public class TestResponse extends TomcatBaseTest {
 
         String result = resp.toAbsolute("./.?x=/../../");
 
-        Assert.assertEquals(
-                "http://localhost:8080/level1/level2/?x=/../../", result);
+        Assert.assertEquals("http://localhost:8080/level1/level2/?x=/../../",
+                result);
     }
-
 
     @Test
     public void testBug53062j() throws Exception {
@@ -284,7 +270,6 @@ public class TestResponse extends TomcatBaseTest {
         Assert.assertEquals("http://localhost:8080/level1/?x=/../../", result);
     }
 
-
     @Test
     public void testBug53062k() throws Exception {
         Request req = new TesterRequest();
@@ -293,11 +278,8 @@ public class TestResponse extends TomcatBaseTest {
 
         String result = resp.toAbsolute("./..?x=/../..");
 
-        Assert.assertEquals(
-                "http://localhost:8080/level1/?x=/../..",
-                result);
+        Assert.assertEquals("http://localhost:8080/level1/?x=/../..", result);
     }
-
 
     @Test
     public void testBug53062l() throws Exception {
@@ -307,10 +289,9 @@ public class TestResponse extends TomcatBaseTest {
 
         String result = resp.toAbsolute("bar.html#/../");
 
-        Assert.assertEquals(
-                "http://localhost:8080/level1/level2/bar.html#/../", result);
+        Assert.assertEquals("http://localhost:8080/level1/level2/bar.html#/../",
+                result);
     }
-
 
     @Test
     public void testBug53062m() throws Exception {
@@ -324,7 +305,6 @@ public class TestResponse extends TomcatBaseTest {
                 "http://localhost:8080/level1/level2/bar.html#/../../", result);
     }
 
-
     @Test
     public void testBug53062n() throws Exception {
         Request req = new TesterRequest();
@@ -333,10 +313,9 @@ public class TestResponse extends TomcatBaseTest {
 
         String result = resp.toAbsolute("./.#/../../");
 
-        Assert.assertEquals(
-                "http://localhost:8080/level1/level2/#/../../", result);
+        Assert.assertEquals("http://localhost:8080/level1/level2/#/../../",
+                result);
     }
-
 
     @Test
     public void testBug53062o() throws Exception {
@@ -349,7 +328,6 @@ public class TestResponse extends TomcatBaseTest {
         Assert.assertEquals("http://localhost:8080/level1/#/../../", result);
     }
 
-
     @Test
     public void testBug53062p() throws Exception {
         Request req = new TesterRequest();
@@ -360,7 +338,6 @@ public class TestResponse extends TomcatBaseTest {
 
         Assert.assertEquals("http://localhost:8080/level1/#/../..", result);
     }
-
 
     private void doTestEncodeURL(String location, String expected) {
         Request req = new TesterRequest(true);
@@ -373,101 +350,85 @@ public class TestResponse extends TomcatBaseTest {
         Assert.assertEquals(expected, result);
     }
 
-
     @Test
     public void testEncodeURL01() throws Exception {
         doTestEncodeURL("./bar.html", "./bar.html;jsessionid=1234");
     }
-
 
     @Test
     public void testEncodeURL02() throws Exception {
         doTestEncodeURL(".", ".;jsessionid=1234");
     }
 
-
     @Test
     public void testEncodeURL03() throws Exception {
         doTestEncodeURL("..", "..;jsessionid=1234");
     }
-
 
     @Test
     public void testEncodeURL04() throws Exception {
         doTestEncodeURL(".././..", ".././..;jsessionid=1234");
     }
 
-
     public void testEncodeURL05() throws Exception {
         doTestEncodeURL("../../..", "../../..");
     }
-
 
     @Test
     public void testEncodeURL06() throws Exception {
         doTestEncodeURL("bar.html", "bar.html;jsessionid=1234");
     }
 
-
     @Test
     public void testEncodeURL07() throws Exception {
         doTestEncodeURL("bar.html?x=/../", "bar.html;jsessionid=1234?x=/../");
     }
 
-
     @Test
     public void testEncodeURL08() throws Exception {
-        doTestEncodeURL("bar.html?x=/../../", "bar.html;jsessionid=1234?x=/../../");
+        doTestEncodeURL("bar.html?x=/../../",
+                "bar.html;jsessionid=1234?x=/../../");
     }
-
 
     @Test
     public void testEncodeURL09() throws Exception {
         doTestEncodeURL("./.?x=/../../", "./.;jsessionid=1234?x=/../../");
     }
 
-
     @Test
     public void testEncodeURL10() throws Exception {
         doTestEncodeURL("./..?x=/../../", "./..;jsessionid=1234?x=/../../");
     }
-
 
     @Test
     public void testEncodeURL11() throws Exception {
         doTestEncodeURL("./..?x=/../..", "./..;jsessionid=1234?x=/../..");
     }
 
-
     @Test
     public void testEncodeURL12() throws Exception {
         doTestEncodeURL("bar.html#/../", "bar.html;jsessionid=1234#/../");
     }
-
 
     @Test
     public void testEncodeURL13() throws Exception {
         doTestEncodeURL("bar.html#/../../", "bar.html;jsessionid=1234#/../../");
     }
 
-
     @Test
     public void testEncodeURL14() throws Exception {
         doTestEncodeURL("./.#/../../", "./.;jsessionid=1234#/../../");
     }
-
 
     @Test
     public void testEncodeURL15() throws Exception {
         doTestEncodeURL("./..#/../../", "./..;jsessionid=1234#/../../");
     }
 
-
     @Test
     public void testEncodeURL16() throws Exception {
         doTestEncodeURL("./..#/../..", "./..;jsessionid=1234#/../..");
     }
-
 
     private void doTestEncodeRedirectURL(String location, String expected) {
         Request req = new TesterRequest(true);
@@ -480,119 +441,110 @@ public class TestResponse extends TomcatBaseTest {
         Assert.assertEquals(expected, result);
     }
 
-
     @Test
     public void testEncodeRedirectURL01() throws Exception {
         doTestEncodeRedirectURL("./bar.html", "./bar.html;jsessionid=1234");
     }
-
 
     @Test
     public void testEncodeRedirectURL02() throws Exception {
         doTestEncodeRedirectURL(".", ".;jsessionid=1234");
     }
 
-
     @Test
     public void testEncodeRedirectURL03() throws Exception {
         doTestEncodeRedirectURL("..", "..;jsessionid=1234");
     }
-
 
     @Test
     public void testEncodeRedirectURL04() throws Exception {
         doTestEncodeRedirectURL(".././..", ".././..;jsessionid=1234");
     }
 
-
-    @Test(expected=IllegalArgumentException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void testEncodeRedirectURL05() throws Exception {
         doTestEncodeRedirectURL("../../..", "throws IAE");
     }
-
 
     @Test
     public void testEncodeRedirectURL06() throws Exception {
         doTestEncodeRedirectURL("bar.html", "bar.html;jsessionid=1234");
     }
 
-
     @Test
     public void testEncodeRedirectURL07() throws Exception {
-        doTestEncodeRedirectURL("bar.html?x=/../", "bar.html;jsessionid=1234?x=/../");
+        doTestEncodeRedirectURL("bar.html?x=/../",
+                "bar.html;jsessionid=1234?x=/../");
     }
-
 
     @Test
     public void testEncodeRedirectURL08() throws Exception {
-        doTestEncodeRedirectURL("bar.html?x=/../../", "bar.html;jsessionid=1234?x=/../../");
+        doTestEncodeRedirectURL("bar.html?x=/../../",
+                "bar.html;jsessionid=1234?x=/../../");
     }
-
 
     @Test
     public void testEncodeRedirectURL09() throws Exception {
-        doTestEncodeRedirectURL("./.?x=/../../", "./.;jsessionid=1234?x=/../../");
+        doTestEncodeRedirectURL("./.?x=/../../",
+                "./.;jsessionid=1234?x=/../../");
     }
-
 
     @Test
     public void testEncodeRedirectURL10() throws Exception {
-        doTestEncodeRedirectURL("./..?x=/../../", "./..;jsessionid=1234?x=/../../");
+        doTestEncodeRedirectURL("./..?x=/../../",
+                "./..;jsessionid=1234?x=/../../");
     }
-
 
     @Test
     public void testEncodeRedirectURL11() throws Exception {
-        doTestEncodeRedirectURL("./..?x=/../..", "./..;jsessionid=1234?x=/../..");
+        doTestEncodeRedirectURL("./..?x=/../..",
+                "./..;jsessionid=1234?x=/../..");
     }
-
 
     @Test
     public void testEncodeRedirectURL12() throws Exception {
-        doTestEncodeRedirectURL("bar.html#/../", "bar.html;jsessionid=1234#/../");
+        doTestEncodeRedirectURL("bar.html#/../",
+                "bar.html;jsessionid=1234#/../");
     }
-
 
     @Test
     public void testEncodeRedirectURL13() throws Exception {
-        doTestEncodeRedirectURL("bar.html#/../../", "bar.html;jsessionid=1234#/../../");
+        doTestEncodeRedirectURL("bar.html#/../../",
+                "bar.html;jsessionid=1234#/../../");
     }
-
 
     @Test
     public void testEncodeRedirectURL14() throws Exception {
         doTestEncodeRedirectURL("./.#/../../", "./.;jsessionid=1234#/../../");
     }
 
-
     @Test
     public void testEncodeRedirectURL15() throws Exception {
         doTestEncodeRedirectURL("./..#/../../", "./..;jsessionid=1234#/../../");
     }
 
-
     @Test
     public void testEncodeRedirectURL16() throws Exception {
         doTestEncodeURL("./..#/../..", "./..;jsessionid=1234#/../..");
-    }    @Test
+    }
+
+    @Test
     public void testSendRedirect01() throws Exception {
         doTestSendRedirect("../foo", "../foo");
     }
-
 
     @Test
     public void testSendRedirect02() throws Exception {
         doTestSendRedirect("../foo bar", "../foo bar");
     }
 
-
     @Test
     public void testSendRedirect03() throws Exception {
         doTestSendRedirect("../foo%20bar", "../foo%20bar");
     }
 
-
-    private void doTestSendRedirect(String input, String expectedLocation) throws Exception {
+    private void doTestSendRedirect(String input, String expectedLocation)
+            throws Exception {
         // Set-up.
         // Note: Not sufficient for testing relative -> absolute
         Connector connector = new Connector();
@@ -609,9 +561,8 @@ public class TestResponse extends TomcatBaseTest {
         // Do test
         response.sendRedirect(input);
         String location = response.getHeader("Location");
-        Assert.assertEquals(expectedLocation,  location);
+        Assert.assertEquals(expectedLocation, location);
     }
-
 
     @Test
     public void testBug53469a() throws Exception {
@@ -624,7 +575,6 @@ public class TestResponse extends TomcatBaseTest {
         Assert.assertEquals("../bar.html", result);
     }
 
-
     @Test
     public void testBug53469b() throws Exception {
         Request req = new TesterRequest();
@@ -636,7 +586,6 @@ public class TestResponse extends TomcatBaseTest {
         Assert.assertEquals("../../../../bar.html", result);
     }
 
-
     private static final class Bug52811Servlet extends HttpServlet {
         private static final long serialVersionUID = 1L;
 
@@ -644,10 +593,10 @@ public class TestResponse extends TomcatBaseTest {
         protected void doGet(HttpServletRequest req, HttpServletResponse resp)
                 throws ServletException, IOException {
 
-            resp.setContentType("multipart/related;" +
-                    "boundary=1_4F50BD36_CDF8C28;" +
-                    "Start=\"<31671603.smil>\";" +
-                    "Type=\"application/smil;charset=UTF-8\"");
+            resp.setContentType("multipart/related;"
+                    + "boundary=1_4F50BD36_CDF8C28;"
+                    + "Start=\"<31671603.smil>\";"
+                    + "Type=\"application/smil;charset=UTF-8\"");
 
             // Should be ISO-8859-1 because the charset in the above is part
             // of the Type parameter

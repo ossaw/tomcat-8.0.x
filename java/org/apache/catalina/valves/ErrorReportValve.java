@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -33,12 +31,18 @@ import org.apache.tomcat.util.ExceptionUtils;
 import org.apache.tomcat.util.res.StringManager;
 
 /**
- * <p>Implementation of a Valve that outputs HTML error pages.</p>
+ * <p>
+ * Implementation of a Valve that outputs HTML error pages.
+ * </p>
  *
- * <p>This Valve should be attached at the Host level, although it will work
- * if attached to a Context.</p>
+ * <p>
+ * This Valve should be attached at the Host level, although it will work
+ * if attached to a Context.
+ * </p>
  *
- * <p>HTML code from the Cocoon 2 project.</p>
+ * <p>
+ * HTML code from the Cocoon 2 project.
+ * </p>
  *
  * @author Remy Maucherat
  * @author Craig R. McClanahan
@@ -57,7 +61,6 @@ public class ErrorReportValve extends ValveBase {
         super(true);
     }
 
-
     // --------------------------------------------------------- Public Methods
 
     /**
@@ -66,14 +69,15 @@ public class ErrorReportValve extends ValveBase {
      * or an uncaught exception was thrown then the error handling will be
      * triggered.
      *
-     * @param request The servlet request to be processed
+     * @param request  The servlet request to be processed
      * @param response The servlet response to be created
      *
-     * @exception IOException if an input/output error occurs
+     * @exception IOException      if an input/output error occurs
      * @exception ServletException if a servlet error occurs
      */
     @Override
-    public void invoke(Request request, Response response) throws IOException, ServletException {
+    public void invoke(Request request, Response response) throws IOException,
+            ServletException {
 
         // Perform the request
         getNext().invoke(request, response);
@@ -95,7 +99,8 @@ public class ErrorReportValve extends ValveBase {
             return;
         }
 
-        Throwable throwable = (Throwable) request.getAttribute(RequestDispatcher.ERROR_EXCEPTION);
+        Throwable throwable = (Throwable) request.getAttribute(
+                RequestDispatcher.ERROR_EXCEPTION);
 
         // If an async request is in progress and is not going to end once this
         // container thread finishes, do not process any error page here.
@@ -125,19 +130,18 @@ public class ErrorReportValve extends ValveBase {
         }
     }
 
-
     // ------------------------------------------------------ Protected Methods
-
 
     /**
      * Prints out an error report.
      *
-     * @param request The request being processed
-     * @param response The response being generated
+     * @param request   The request being processed
+     * @param response  The response being generated
      * @param throwable The exception that occurred (which possibly wraps
-     *  a root cause exception
+     *                  a root cause exception
      */
-    protected void report(Request request, Response response, Throwable throwable) {
+    protected void report(Request request, Response response,
+            Throwable throwable) {
 
         int statusCode = response.getStatus();
 
@@ -145,7 +149,8 @@ public class ErrorReportValve extends ValveBase {
         // Do nothing if anything has been written already
         // Do nothing if the response hasn't been explicitly marked as in error
         //    and that error has not been reported.
-        if (statusCode < 400 || response.getContentWritten() > 0 || !response.setErrorReported()) {
+        if (statusCode < 400 || response.getContentWritten() > 0 || !response
+                .setErrorReported()) {
             return;
         }
         String message = RequestUtil.filter(response.getMessage());
@@ -153,7 +158,8 @@ public class ErrorReportValve extends ValveBase {
             if (throwable != null) {
                 String exceptionMessage = throwable.getMessage();
                 if (exceptionMessage != null && exceptionMessage.length() > 0) {
-                    message = RequestUtil.filter((new Scanner(exceptionMessage)).nextLine());
+                    message = RequestUtil.filter((new Scanner(exceptionMessage))
+                            .nextLine());
                 }
             }
             if (message == null) {
@@ -164,8 +170,8 @@ public class ErrorReportValve extends ValveBase {
         // Do nothing if there is no report for the specified status code and
         // no error message provided
         String report = null;
-        StringManager smClient = StringManager.getManager(
-                Constants.Package, request.getLocales());
+        StringManager smClient = StringManager.getManager(Constants.Package,
+                request.getLocales());
         response.setLocale(smClient.getLocale());
         try {
             report = smClient.getString("http." + statusCode);
@@ -183,9 +189,9 @@ public class ErrorReportValve extends ValveBase {
         StringBuilder sb = new StringBuilder();
 
         sb.append("<!DOCTYPE html><html><head>");
-        if(showServerInfo || showReport){
+        if (showServerInfo || showReport) {
             sb.append("<title>");
-            if(showServerInfo) {
+            if (showServerInfo) {
                 sb.append(ServerInfo.getServerInfo()).append(" - ");
             }
             sb.append(smClient.getString("errorReportValve.errorReport"));
@@ -200,13 +206,14 @@ public class ErrorReportValve extends ValveBase {
         }
         sb.append("</head><body>");
         sb.append("<h1>");
-        sb.append(smClient.getString("errorReportValve.statusHeader",
-                String.valueOf(statusCode), message)).append("</h1>");
+        sb.append(smClient.getString("errorReportValve.statusHeader", String
+                .valueOf(statusCode), message)).append("</h1>");
         if (showReport) {
             sb.append("<div class=\"line\"></div>");
             sb.append("<p><b>type</b> ");
             if (throwable != null) {
-                sb.append(smClient.getString("errorReportValve.exceptionReport"));
+                sb.append(smClient.getString(
+                        "errorReportValve.exceptionReport"));
             } else {
                 sb.append(smClient.getString("errorReportValve.statusReport"));
             }
@@ -247,14 +254,15 @@ public class ErrorReportValve extends ValveBase {
                 sb.append(smClient.getString("errorReportValve.note"));
                 sb.append("</b> <u>");
                 sb.append(smClient.getString("errorReportValve.rootCauseInLogs",
-                        showServerInfo?ServerInfo.getServerInfo():""));
+                        showServerInfo ? ServerInfo.getServerInfo() : ""));
                 sb.append("</u></p>");
 
             }
             sb.append("<hr class=\"line\">");
         }
         if (showServerInfo) {
-            sb.append("<h3>").append(ServerInfo.getServerInfo()).append("</h3>");
+            sb.append("<h3>").append(ServerInfo.getServerInfo()).append(
+                    "</h3>");
         }
         sb.append("</body></html>");
 
@@ -283,7 +291,6 @@ public class ErrorReportValve extends ValveBase {
 
     }
 
-
     /**
      * Print out a partial servlet stack trace (truncating at the last
      * occurrence of javax.servlet.).
@@ -294,16 +301,17 @@ public class ErrorReportValve extends ValveBase {
         StackTraceElement[] elements = t.getStackTrace();
         int pos = elements.length;
         for (int i = elements.length - 1; i >= 0; i--) {
-            if ((elements[i].getClassName().startsWith
-                 ("org.apache.catalina.core.ApplicationFilterChain"))
-                && (elements[i].getMethodName().equals("internalDoFilter"))) {
+            if ((elements[i].getClassName().startsWith(
+                    "org.apache.catalina.core.ApplicationFilterChain"))
+                    && (elements[i].getMethodName().equals(
+                            "internalDoFilter"))) {
                 pos = i;
                 break;
             }
         }
         for (int i = 0; i < pos; i++) {
-            if (!(elements[i].getClassName().startsWith
-                  ("org.apache.catalina.core."))) {
+            if (!(elements[i].getClassName().startsWith(
+                    "org.apache.catalina.core."))) {
                 trace.append('\t').append(elements[i].toString()).append('\n');
             }
         }

@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -40,19 +38,18 @@ public final class ApplicationFilterFactory {
         // Prevent instance creation. This is a utility class.
     }
 
-
     /**
      * Construct and return a FilterChain implementation that will wrap the
-     * execution of the specified servlet instance.  If we should not execute
+     * execution of the specified servlet instance. If we should not execute
      * a filter chain at all, return <code>null</code>.
      *
      * @param request The servlet request we are processing
      * @param servlet The servlet instance to be wrapped
-
+     * 
      */
     @SuppressWarnings("deprecation")
-    public static ApplicationFilterChain createFilterChain
-        (ServletRequest request, Wrapper wrapper, Servlet servlet) {
+    public static ApplicationFilterChain createFilterChain(
+            ServletRequest request, Wrapper wrapper, Servlet servlet) {
 
         // get the dispatcher type
         DispatcherType dispatcher = null;
@@ -64,7 +61,7 @@ public final class ApplicationFilterFactory {
         Object attribute = request.getAttribute(
                 Globals.DISPATCHER_REQUEST_PATH_ATTR);
 
-        if (attribute != null){
+        if (attribute != null) {
             requestPath = attribute.toString();
         }
 
@@ -99,8 +96,8 @@ public final class ApplicationFilterFactory {
 
         filterChain.setServlet(servlet);
 
-        filterChain.setSupport
-            (((StandardWrapper)wrapper).getInstanceSupport());
+        filterChain.setSupport(((StandardWrapper) wrapper)
+                .getInstanceSupport());
 
         // Acquire the filter mappings for this Context
         StandardContext context = (StandardContext) wrapper.getParent();
@@ -115,13 +112,13 @@ public final class ApplicationFilterFactory {
 
         // Add the relevant path-mapped filters to this filter chain
         for (int i = 0; i < filterMaps.length; i++) {
-            if (!matchDispatcher(filterMaps[i] ,dispatcher)) {
+            if (!matchDispatcher(filterMaps[i], dispatcher)) {
                 continue;
             }
             if (!matchFiltersURL(filterMaps[i], requestPath))
                 continue;
-            ApplicationFilterConfig filterConfig = (ApplicationFilterConfig)
-                context.findFilterConfig(filterMaps[i].getFilterName());
+            ApplicationFilterConfig filterConfig = (ApplicationFilterConfig) context
+                    .findFilterConfig(filterMaps[i].getFilterName());
             if (filterConfig == null) {
                 // FIXME - log configuration problem
                 continue;
@@ -129,12 +126,14 @@ public final class ApplicationFilterFactory {
             boolean isCometFilter = false;
             if (comet) {
                 try {
-                    isCometFilter = filterConfig.getFilter() instanceof CometFilter;
+                    isCometFilter = filterConfig
+                            .getFilter() instanceof CometFilter;
                 } catch (Exception e) {
                     // Note: The try catch is there because getFilter has a lot of
                     // declared exceptions. However, the filter is allocated much
                     // earlier
-                    Throwable t = ExceptionUtils.unwrapInvocationTargetException(e);
+                    Throwable t = ExceptionUtils
+                            .unwrapInvocationTargetException(e);
                     ExceptionUtils.handleThrowable(t);
                 }
                 if (isCometFilter) {
@@ -147,13 +146,13 @@ public final class ApplicationFilterFactory {
 
         // Add filters that match on servlet name second
         for (int i = 0; i < filterMaps.length; i++) {
-            if (!matchDispatcher(filterMaps[i] ,dispatcher)) {
+            if (!matchDispatcher(filterMaps[i], dispatcher)) {
                 continue;
             }
             if (!matchFiltersServlet(filterMaps[i], servletName))
                 continue;
-            ApplicationFilterConfig filterConfig = (ApplicationFilterConfig)
-                context.findFilterConfig(filterMaps[i].getFilterName());
+            ApplicationFilterConfig filterConfig = (ApplicationFilterConfig) context
+                    .findFilterConfig(filterMaps[i].getFilterName());
             if (filterConfig == null) {
                 // FIXME - log configuration problem
                 continue;
@@ -161,7 +160,8 @@ public final class ApplicationFilterFactory {
             boolean isCometFilter = false;
             if (comet) {
                 try {
-                    isCometFilter = filterConfig.getFilter() instanceof CometFilter;
+                    isCometFilter = filterConfig
+                            .getFilter() instanceof CometFilter;
                 } catch (Exception e) {
                     // Note: The try catch is there because getFilter has a lot of
                     // declared exceptions. However, the filter is allocated much
@@ -180,19 +180,18 @@ public final class ApplicationFilterFactory {
 
     }
 
-
     // -------------------------------------------------------- Private Methods
-
 
     /**
      * Return <code>true</code> if the context-relative request path
      * matches the requirements of the specified filter mapping;
      * otherwise, return <code>false</code>.
      *
-     * @param filterMap Filter mapping being checked
+     * @param filterMap   Filter mapping being checked
      * @param requestPath Context-relative request path of this request
      */
-    private static boolean matchFiltersURL(FilterMap filterMap, String requestPath) {
+    private static boolean matchFiltersURL(FilterMap filterMap,
+            String requestPath) {
 
         // Check the specific "*" special URL pattern, which also matches
         // named dispatches
@@ -216,16 +215,16 @@ public final class ApplicationFilterFactory {
 
     }
 
-
     /**
      * Return <code>true</code> if the context-relative request path
      * matches the requirements of the specified filter mapping;
      * otherwise, return <code>false</code>.
      *
-     * @param testPath URL mapping being checked
+     * @param testPath    URL mapping being checked
      * @param requestPath Context-relative request path of this request
      */
-    private static boolean matchFiltersURL(String testPath, String requestPath) {
+    private static boolean matchFiltersURL(String testPath,
+            String requestPath) {
 
         if (testPath == null)
             return (false);
@@ -238,8 +237,8 @@ public final class ApplicationFilterFactory {
         if (testPath.equals("/*"))
             return (true);
         if (testPath.endsWith("/*")) {
-            if (testPath.regionMatches(0, requestPath, 0,
-                                       testPath.length() - 2)) {
+            if (testPath.regionMatches(0, requestPath, 0, testPath.length()
+                    - 2)) {
                 if (requestPath.length() == (testPath.length() - 2)) {
                     return (true);
                 } else if ('/' == requestPath.charAt(testPath.length() - 2)) {
@@ -253,12 +252,11 @@ public final class ApplicationFilterFactory {
         if (testPath.startsWith("*.")) {
             int slash = requestPath.lastIndexOf('/');
             int period = requestPath.lastIndexOf('.');
-            if ((slash >= 0) && (period > slash)
-                && (period != requestPath.length() - 1)
-                && ((requestPath.length() - period)
-                    == (testPath.length() - 1))) {
+            if ((slash >= 0) && (period > slash) && (period != requestPath
+                    .length() - 1) && ((requestPath.length()
+                            - period) == (testPath.length() - 1))) {
                 return (testPath.regionMatches(2, requestPath, period + 1,
-                                               testPath.length() - 2));
+                        testPath.length() - 2));
             }
         }
 
@@ -267,17 +265,16 @@ public final class ApplicationFilterFactory {
 
     }
 
-
     /**
      * Return <code>true</code> if the specified servlet name matches
      * the requirements of the specified filter mapping; otherwise
      * return <code>false</code>.
      *
-     * @param filterMap Filter mapping being checked
+     * @param filterMap   Filter mapping being checked
      * @param servletName Servlet name being checked
      */
     private static boolean matchFiltersServlet(FilterMap filterMap,
-                                        String servletName) {
+            String servletName) {
 
         if (servletName == null) {
             return (false);
@@ -297,34 +294,37 @@ public final class ApplicationFilterFactory {
 
     }
 
-
     /**
-     * Convenience method which returns true if  the dispatcher type
+     * Convenience method which returns true if the dispatcher type
      * matches the dispatcher types specified in the FilterMap
      */
-    private static boolean matchDispatcher(FilterMap filterMap, DispatcherType type) {
+    private static boolean matchDispatcher(FilterMap filterMap,
+            DispatcherType type) {
         switch (type) {
-            case FORWARD :
-                if ((filterMap.getDispatcherMapping() & FilterMap.FORWARD) > 0) {
-                        return true;
-                }
-                break;
-            case INCLUDE :
-                if ((filterMap.getDispatcherMapping() & FilterMap.INCLUDE) > 0) {
+            case FORWARD:
+                if ((filterMap.getDispatcherMapping()
+                        & FilterMap.FORWARD) > 0) {
                     return true;
                 }
                 break;
-            case REQUEST :
-                if ((filterMap.getDispatcherMapping() & FilterMap.REQUEST) > 0) {
+            case INCLUDE:
+                if ((filterMap.getDispatcherMapping()
+                        & FilterMap.INCLUDE) > 0) {
                     return true;
                 }
                 break;
-            case ERROR :
+            case REQUEST:
+                if ((filterMap.getDispatcherMapping()
+                        & FilterMap.REQUEST) > 0) {
+                    return true;
+                }
+                break;
+            case ERROR:
                 if ((filterMap.getDispatcherMapping() & FilterMap.ERROR) > 0) {
                     return true;
                 }
                 break;
-            case ASYNC :
+            case ASYNC:
                 if ((filterMap.getDispatcherMapping() & FilterMap.ASYNC) > 0) {
                     return true;
                 }

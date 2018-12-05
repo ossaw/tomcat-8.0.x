@@ -1,18 +1,16 @@
 /*
- *  Licensed to the Apache Software Foundation (ASF) under one or more
- *  contributor license agreements.  See the NOTICE file distributed with
- *  this work for additional information regarding copyright ownership.
- *  The ASF licenses this file to You under the Apache License, Version 2.0
- *  (the "License"); you may not use this file except in compliance with
- *  the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements. See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.apache.tomcat.util.descriptor.web;
 
@@ -42,7 +40,7 @@ public class TestWebXmlOrdering {
     private WebXml d;
     private WebXml e;
     private WebXml f;
-    private Map<String,WebXml> fragments;
+    private Map<String, WebXml> fragments;
     private int posA;
     private int posB;
     private int posC;
@@ -67,12 +65,12 @@ public class TestWebXmlOrdering {
         f.setName("f");
         // Control the input order
         fragments = new LinkedHashMap<>();
-        fragments.put("a",a);
-        fragments.put("b",b);
-        fragments.put("c",c);
-        fragments.put("d",d);
-        fragments.put("e",e);
-        fragments.put("f",f);
+        fragments.put("a", a);
+        fragments.put("b", b);
+        fragments.put("c", c);
+        fragments.put("d", d);
+        fragments.put("e", e);
+        fragments.put("f", f);
     }
 
     @Test
@@ -86,11 +84,11 @@ public class TestWebXmlOrdering {
         Set<WebXml> ordered = WebXml.orderWebFragments(app, fragments, null);
 
         Iterator<WebXml> iter = ordered.iterator();
-        assertEquals(c,iter.next());
-        assertEquals(a,iter.next());
-        assertEquals(b,iter.next());
-        assertEquals(e,iter.next());
-        assertEquals(d,iter.next());
+        assertEquals(c, iter.next());
+        assertEquals(a, iter.next());
+        assertEquals(b, iter.next());
+        assertEquals(e, iter.next());
+        assertEquals(d, iter.next());
         assertFalse(iter.hasNext());
     }
 
@@ -102,8 +100,8 @@ public class TestWebXmlOrdering {
         Set<WebXml> ordered = WebXml.orderWebFragments(app, fragments, null);
 
         Iterator<WebXml> iter = ordered.iterator();
-        assertEquals(c,iter.next());
-        assertEquals(a,iter.next());
+        assertEquals(c, iter.next());
+        assertEquals(a, iter.next());
         assertFalse(iter.hasNext());
     }
 
@@ -127,8 +125,8 @@ public class TestWebXmlOrdering {
             assertTrue(others.contains(o));
             others.remove(o);
         }
-        assertEquals(b,iter.next());
-        assertEquals(d,iter.next());
+        assertEquals(b, iter.next());
+        assertEquals(d, iter.next());
         assertFalse(iter.hasNext());
     }
 
@@ -147,14 +145,14 @@ public class TestWebXmlOrdering {
         Set<WebXml> ordered = WebXml.orderWebFragments(app, fragments, null);
 
         Iterator<WebXml> iter = ordered.iterator();
-        assertEquals(b,iter.next());
+        assertEquals(b, iter.next());
 
         while (others.size() > 0) {
             WebXml o = iter.next();
             assertTrue(others.contains(o));
             others.remove(o);
         }
-        assertEquals(d,iter.next());
+        assertEquals(d, iter.next());
         assertFalse(iter.hasNext());
     }
 
@@ -163,8 +161,8 @@ public class TestWebXmlOrdering {
         app.addAbsoluteOrdering("a");
         app.addAbsoluteOrdering("z");
         Set<WebXml> ordered = WebXml.orderWebFragments(app, fragments, null);
-        assertEquals(1,ordered.size());
-        assertEquals(fragments.get("a"),ordered.toArray()[0]);
+        assertEquals(1, ordered.size());
+        assertEquals(fragments.get("a"), ordered.toArray()[0]);
     }
 
     @Test
@@ -182,8 +180,8 @@ public class TestWebXmlOrdering {
         Set<WebXml> ordered = WebXml.orderWebFragments(app, fragments, null);
 
         Iterator<WebXml> iter = ordered.iterator();
-        assertEquals(b,iter.next());
-        assertEquals(d,iter.next());
+        assertEquals(b, iter.next());
+        assertEquals(d, iter.next());
 
         while (others.size() > 0) {
             WebXml o = iter.next();
@@ -208,8 +206,7 @@ public class TestWebXmlOrdering {
                             runner.init();
                             ArrayList<WebXml> source = new ArrayList<>();
                             source.addAll(fragments.values());
-                            Map<String,WebXml> input =
-                                    new LinkedHashMap<>();
+                            Map<String, WebXml> input = new LinkedHashMap<>();
 
                             WebXml one = source.remove(i);
                             input.put(one.getName(), one);
@@ -230,14 +227,14 @@ public class TestWebXmlOrdering {
                             input.put(six.getName(), six);
 
                             /*
-                            String order = one.getName() + two.getName() +
-                                    three.getName() + four.getName() +
-                                    five.getName() + six.getName();
-                            orders.add(order);
-                            */
+                             * String order = one.getName() + two.getName() +
+                             * three.getName() + four.getName() +
+                             * five.getName() + six.getName();
+                             * orders.add(order);
+                             */
 
-                            Set<WebXml> ordered =
-                                    WebXml.orderWebFragments(app, input, null);
+                            Set<WebXml> ordered = WebXml.orderWebFragments(app,
+                                    input, null);
                             populatePositions(ordered);
 
                             runner.validate(getOrder(ordered));
@@ -335,7 +332,7 @@ public class TestWebXmlOrdering {
         doRelativeOrderingTest(new RelativeTestRunner11());
     }
 
-    @Test(expected=IllegalArgumentException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void testOrderWebFragmentsrelativeCircular1() {
         a.addBeforeOrdering("b");
         b.addBeforeOrdering("a");
@@ -343,7 +340,7 @@ public class TestWebXmlOrdering {
         WebXml.orderWebFragments(app, fragments, null);
     }
 
-    @Test(expected=IllegalArgumentException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void testOrderWebFragmentsrelativeCircular2() {
         a.addBeforeOrderingOthers();
         b.addAfterOrderingOthers();
@@ -355,6 +352,7 @@ public class TestWebXmlOrdering {
 
     private interface RelativeOrderingTestRunner {
         void init();
+
         void validate(String order);
     }
 

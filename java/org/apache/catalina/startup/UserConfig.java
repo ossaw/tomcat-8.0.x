@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -15,9 +13,7 @@
  * limitations under the License.
  */
 
-
 package org.apache.catalina.startup;
-
 
 import java.io.File;
 import java.util.ArrayList;
@@ -34,69 +30,57 @@ import org.apache.catalina.LifecycleEvent;
 import org.apache.catalina.LifecycleListener;
 import org.apache.tomcat.util.res.StringManager;
 
-
 /**
  * Startup event listener for a <b>Host</b> that configures Contexts (web
  * applications) for all defined "users" who have a web application in a
- * directory with the specified name in their home directories.  The context
+ * directory with the specified name in their home directories. The context
  * path of each deployed application will be set to <code>~xxxxx</code>, where
  * xxxxx is the username of the owning user for that web application
  *
  * @author Craig R. McClanahan
  */
-public final class UserConfig
-    implements LifecycleListener {
+public final class UserConfig implements LifecycleListener {
 
-
-    private static final org.apache.juli.logging.Log log=
-        org.apache.juli.logging.LogFactory.getLog( UserConfig.class );
-
+    private static final org.apache.juli.logging.Log log = org.apache.juli.logging.LogFactory
+            .getLog(UserConfig.class);
 
     // ----------------------------------------------------- Instance Variables
-
 
     /**
      * The Java class name of the Context configuration class we should use.
      */
     private String configClass = "org.apache.catalina.startup.ContextConfig";
 
-
     /**
      * The Java class name of the Context implementation we should use.
      */
     private String contextClass = "org.apache.catalina.core.StandardContext";
-
 
     /**
      * The directory name to be searched for within each user home directory.
      */
     private String directoryName = "public_html";
 
-
     /**
      * The base directory containing user home directories.
      */
     private String homeBase = null;
-
 
     /**
      * The Host we are associated with.
      */
     private Host host = null;
 
-
     /**
      * The string resources for this package.
      */
-    private static final StringManager sm =
-        StringManager.getManager(Constants.Package);
-
+    private static final StringManager sm = StringManager.getManager(
+            Constants.Package);
 
     /**
      * The Java class name of the user database class we should use.
      */
-    private String userClass =
-        "org.apache.catalina.startup.PasswdUserDatabase";
+    private String userClass = "org.apache.catalina.startup.PasswdUserDatabase";
 
     /**
      * A regular expression defining user who deployment is allowed.
@@ -110,7 +94,6 @@ public final class UserConfig
 
     // ------------------------------------------------------------- Properties
 
-
     /**
      * Return the Context configuration class name.
      */
@@ -119,7 +102,6 @@ public final class UserConfig
         return (this.configClass);
 
     }
-
 
     /**
      * Set the Context configuration class name.
@@ -132,7 +114,6 @@ public final class UserConfig
 
     }
 
-
     /**
      * Return the Context implementation class name.
      */
@@ -141,7 +122,6 @@ public final class UserConfig
         return (this.contextClass);
 
     }
-
 
     /**
      * Set the Context implementation class name.
@@ -154,7 +134,6 @@ public final class UserConfig
 
     }
 
-
     /**
      * Return the directory name for user web applications.
      */
@@ -163,7 +142,6 @@ public final class UserConfig
         return (this.directoryName);
 
     }
-
 
     /**
      * Set the directory name for user web applications.
@@ -176,7 +154,6 @@ public final class UserConfig
 
     }
 
-
     /**
      * Return the base directory containing user home directories.
      */
@@ -185,7 +162,6 @@ public final class UserConfig
         return (this.homeBase);
 
     }
-
 
     /**
      * Set the base directory containing user home directories.
@@ -198,7 +174,6 @@ public final class UserConfig
 
     }
 
-
     /**
      * Return the user database class name for this component.
      */
@@ -207,7 +182,6 @@ public final class UserConfig
         return (this.userClass);
 
     }
-
 
     /**
      * Set the user database class name for this component.
@@ -219,16 +193,18 @@ public final class UserConfig
     }
 
     /**
-     * Return the regular expression used to test for user who deployment is allowed.
+     * Return the regular expression used to test for user who deployment is
+     * allowed.
      */
     public String getAllow() {
-        if (allow == null) return null;
+        if (allow == null)
+            return null;
         return allow.toString();
     }
 
-
     /**
-     * Set the regular expression used to test for user who deployment is allowed.
+     * Set the regular expression used to test for user who deployment is
+     * allowed.
      *
      * @param allow The new allow expression
      */
@@ -240,18 +216,19 @@ public final class UserConfig
         }
     }
 
-
     /**
-     * Return the regular expression used to test for user who deployment is denied.
+     * Return the regular expression used to test for user who deployment is
+     * denied.
      */
     public String getDeny() {
-        if (deny == null) return null;
+        if (deny == null)
+            return null;
         return deny.toString();
     }
 
-
     /**
-     * Set the regular expression used to test for user who deployment is denied.
+     * Set the regular expression used to test for user who deployment is
+     * denied.
      *
      * @param deny The new deny expression
      */
@@ -264,7 +241,6 @@ public final class UserConfig
     }
 
     // --------------------------------------------------------- Public Methods
-
 
     /**
      * Process the START event for an associated Host.
@@ -290,9 +266,7 @@ public final class UserConfig
 
     }
 
-
     // -------------------------------------------------------- Private Methods
-
 
     /**
      * Deploy a web application for any user who has a web application present
@@ -321,20 +295,22 @@ public final class UserConfig
         Enumeration<String> users = database.getUsers();
         while (users.hasMoreElements()) {
             String user = users.nextElement();
-            if (!isDeployAllowed(user)) continue;
+            if (!isDeployAllowed(user))
+                continue;
             String home = database.getHome(user);
-            results.add(executor.submit(new DeployUserDirectory(this, user, home)));
+            results.add(executor.submit(new DeployUserDirectory(this, user,
+                    home)));
         }
 
         for (Future<?> result : results) {
             try {
                 result.get();
             } catch (Exception e) {
-                host.getLogger().error(sm.getString("userConfig.deploy.threaded.error"), e);
+                host.getLogger().error(sm.getString(
+                        "userConfig.deploy.threaded.error"), e);
             }
         }
     }
-
 
     /**
      * Deploy a web application for the specified user if they have such an
@@ -353,22 +329,21 @@ public final class UserConfig
         if (!app.exists() || !app.isDirectory())
             return;
         /*
-        File dd = new File(app, "/WEB-INF/web.xml");
-        if (!dd.exists() || !dd.isFile() || !dd.canRead())
-            return;
-        */
+         * File dd = new File(app, "/WEB-INF/web.xml");
+         * if (!dd.exists() || !dd.isFile() || !dd.canRead())
+         * return;
+         */
         host.getLogger().info(sm.getString("userConfig.deploy", user));
 
         // Deploy the web application for this user
         try {
             Class<?> clazz = Class.forName(contextClass);
-            Context context =
-              (Context) clazz.newInstance();
+            Context context = (Context) clazz.newInstance();
             context.setPath(contextPath);
             context.setDocBase(app.toString());
             clazz = Class.forName(configClass);
-            LifecycleListener listener =
-                (LifecycleListener) clazz.newInstance();
+            LifecycleListener listener = (LifecycleListener) clazz
+                    .newInstance();
             context.addLifecycleListener(listener);
             host.addChild(context);
         } catch (Exception e) {
@@ -376,7 +351,6 @@ public final class UserConfig
         }
 
     }
-
 
     /**
      * Process a "start" event for this Host.
@@ -389,7 +363,6 @@ public final class UserConfig
         deploy();
 
     }
-
 
     /**
      * Process a "stop" event for this Host.
@@ -427,10 +400,11 @@ public final class UserConfig
         private String user;
         private String home;
 
-        public DeployUserDirectory(UserConfig config, String user, String home) {
+        public DeployUserDirectory(UserConfig config, String user,
+                String home) {
             this.config = config;
             this.user = user;
-            this.home= home;
+            this.home = home;
         }
 
         @Override

@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -27,10 +25,12 @@ import org.apache.tomcat.dbcp.pool2.BaseObject;
  *
  * @since 2.0
  */
-public abstract class BaseObjectPoolConfig extends BaseObject implements Cloneable {
+public abstract class BaseObjectPoolConfig extends BaseObject implements
+        Cloneable {
 
     /**
      * The default value for the {@code lifo} configuration attribute.
+     * 
      * @see GenericObjectPool#getLifo()
      * @see GenericKeyedObjectPool#getLifo()
      */
@@ -38,6 +38,7 @@ public abstract class BaseObjectPoolConfig extends BaseObject implements Cloneab
 
     /**
      * The default value for the {@code fairness} configuration attribute.
+     * 
      * @see GenericObjectPool#getFairness()
      * @see GenericKeyedObjectPool#getFairness()
      */
@@ -45,6 +46,7 @@ public abstract class BaseObjectPoolConfig extends BaseObject implements Cloneab
 
     /**
      * The default value for the {@code maxWait} configuration attribute.
+     * 
      * @see GenericObjectPool#getMaxWaitMillis()
      * @see GenericKeyedObjectPool#getMaxWaitMillis()
      */
@@ -53,15 +55,17 @@ public abstract class BaseObjectPoolConfig extends BaseObject implements Cloneab
     /**
      * The default value for the {@code minEvictableIdleTimeMillis}
      * configuration attribute.
+     * 
      * @see GenericObjectPool#getMinEvictableIdleTimeMillis()
      * @see GenericKeyedObjectPool#getMinEvictableIdleTimeMillis()
      */
-    public static final long DEFAULT_MIN_EVICTABLE_IDLE_TIME_MILLIS =
-            1000L * 60L * 30L;
+    public static final long DEFAULT_MIN_EVICTABLE_IDLE_TIME_MILLIS = 1000L
+            * 60L * 30L;
 
     /**
      * The default value for the {@code softMinEvictableIdleTimeMillis}
      * configuration attribute.
+     * 
      * @see GenericObjectPool#getSoftMinEvictableIdleTimeMillis()
      * @see GenericKeyedObjectPool#getSoftMinEvictableIdleTimeMillis()
      */
@@ -70,6 +74,7 @@ public abstract class BaseObjectPoolConfig extends BaseObject implements Cloneab
     /**
      * The default value for the {@code numTestsPerEvictionRun} configuration
      * attribute.
+     * 
      * @see GenericObjectPool#getNumTestsPerEvictionRun()
      * @see GenericKeyedObjectPool#getNumTestsPerEvictionRun()
      */
@@ -77,6 +82,7 @@ public abstract class BaseObjectPoolConfig extends BaseObject implements Cloneab
 
     /**
      * The default value for the {@code testOnCreate} configuration attribute.
+     * 
      * @see GenericObjectPool#getTestOnCreate()
      * @see GenericKeyedObjectPool#getTestOnCreate()
      *
@@ -86,6 +92,7 @@ public abstract class BaseObjectPoolConfig extends BaseObject implements Cloneab
 
     /**
      * The default value for the {@code testOnBorrow} configuration attribute.
+     * 
      * @see GenericObjectPool#getTestOnBorrow()
      * @see GenericKeyedObjectPool#getTestOnBorrow()
      */
@@ -93,6 +100,7 @@ public abstract class BaseObjectPoolConfig extends BaseObject implements Cloneab
 
     /**
      * The default value for the {@code testOnReturn} configuration attribute.
+     * 
      * @see GenericObjectPool#getTestOnReturn()
      * @see GenericKeyedObjectPool#getTestOnReturn()
      */
@@ -100,6 +108,7 @@ public abstract class BaseObjectPoolConfig extends BaseObject implements Cloneab
 
     /**
      * The default value for the {@code testWhileIdle} configuration attribute.
+     * 
      * @see GenericObjectPool#getTestWhileIdle()
      * @see GenericKeyedObjectPool#getTestWhileIdle()
      */
@@ -108,6 +117,7 @@ public abstract class BaseObjectPoolConfig extends BaseObject implements Cloneab
     /**
      * The default value for the {@code timeBetweenEvictionRunsMillis}
      * configuration attribute.
+     * 
      * @see GenericObjectPool#getTimeBetweenEvictionRunsMillis()
      * @see GenericKeyedObjectPool#getTimeBetweenEvictionRunsMillis()
      */
@@ -116,6 +126,7 @@ public abstract class BaseObjectPoolConfig extends BaseObject implements Cloneab
     /**
      * The default value for the {@code blockWhenExhausted} configuration
      * attribute.
+     * 
      * @see GenericObjectPool#getBlockWhenExhausted()
      * @see GenericKeyedObjectPool#getBlockWhenExhausted()
      */
@@ -130,6 +141,7 @@ public abstract class BaseObjectPoolConfig extends BaseObject implements Cloneab
     /**
      * The default value for the prefix used to name JMX enabled pools created
      * with a configuration instance.
+     * 
      * @see GenericObjectPool#getJmxName()
      * @see GenericKeyedObjectPool#getJmxName()
      */
@@ -139,6 +151,7 @@ public abstract class BaseObjectPoolConfig extends BaseObject implements Cloneab
      * The default value for the base name to use to name JMX enabled pools
      * created with a configuration instance. The default is <code>null</code>
      * which means the pool will provide the base name to use.
+     * 
      * @see GenericObjectPool#getJmxName()
      * @see GenericKeyedObjectPool#getJmxName()
      */
@@ -147,12 +160,11 @@ public abstract class BaseObjectPoolConfig extends BaseObject implements Cloneab
     /**
      * The default value for the {@code evictionPolicyClassName} configuration
      * attribute.
+     * 
      * @see GenericObjectPool#getEvictionPolicyClassName()
      * @see GenericKeyedObjectPool#getEvictionPolicyClassName()
      */
-    public static final String DEFAULT_EVICTION_POLICY_CLASS_NAME =
-            "org.apache.tomcat.dbcp.pool2.impl.DefaultEvictionPolicy";
-
+    public static final String DEFAULT_EVICTION_POLICY_CLASS_NAME = "org.apache.tomcat.dbcp.pool2.impl.DefaultEvictionPolicy";
 
     private boolean lifo = DEFAULT_LIFO;
 
@@ -160,14 +172,11 @@ public abstract class BaseObjectPoolConfig extends BaseObject implements Cloneab
 
     private long maxWaitMillis = DEFAULT_MAX_WAIT_MILLIS;
 
-    private long minEvictableIdleTimeMillis =
-        DEFAULT_MIN_EVICTABLE_IDLE_TIME_MILLIS;
+    private long minEvictableIdleTimeMillis = DEFAULT_MIN_EVICTABLE_IDLE_TIME_MILLIS;
 
-    private long softMinEvictableIdleTimeMillis =
-            DEFAULT_MIN_EVICTABLE_IDLE_TIME_MILLIS;
+    private long softMinEvictableIdleTimeMillis = DEFAULT_MIN_EVICTABLE_IDLE_TIME_MILLIS;
 
-    private int numTestsPerEvictionRun =
-        DEFAULT_NUM_TESTS_PER_EVICTION_RUN;
+    private int numTestsPerEvictionRun = DEFAULT_NUM_TESTS_PER_EVICTION_RUN;
 
     private String evictionPolicyClassName = DEFAULT_EVICTION_POLICY_CLASS_NAME;
 
@@ -179,8 +188,7 @@ public abstract class BaseObjectPoolConfig extends BaseObject implements Cloneab
 
     private boolean testWhileIdle = DEFAULT_TEST_WHILE_IDLE;
 
-    private long timeBetweenEvictionRunsMillis =
-        DEFAULT_TIME_BETWEEN_EVICTION_RUNS_MILLIS;
+    private long timeBetweenEvictionRunsMillis = DEFAULT_TIME_BETWEEN_EVICTION_RUNS_MILLIS;
 
     private boolean blockWhenExhausted = DEFAULT_BLOCK_WHEN_EXHAUSTED;
 
@@ -191,13 +199,12 @@ public abstract class BaseObjectPoolConfig extends BaseObject implements Cloneab
 
     private String jmxNameBase = DEFAULT_JMX_NAME_BASE;
 
-
     /**
      * Get the value for the {@code lifo} configuration attribute for pools
      * created with this configuration instance.
      *
-     * @return  The current setting of {@code lifo} for this configuration
-     *          instance
+     * @return The current setting of {@code lifo} for this configuration
+     *         instance
      *
      * @see GenericObjectPool#getLifo()
      * @see GenericKeyedObjectPool#getLifo()
@@ -210,8 +217,8 @@ public abstract class BaseObjectPoolConfig extends BaseObject implements Cloneab
      * Get the value for the {@code fairness} configuration attribute for pools
      * created with this configuration instance.
      *
-     * @return  The current setting of {@code fairness} for this configuration
-     *          instance
+     * @return The current setting of {@code fairness} for this configuration
+     *         instance
      *
      * @see GenericObjectPool#getFairness()
      * @see GenericKeyedObjectPool#getFairness()
@@ -225,7 +232,7 @@ public abstract class BaseObjectPoolConfig extends BaseObject implements Cloneab
      * created with this configuration instance.
      *
      * @param lifo The new setting of {@code lifo}
-     *        for this configuration instance
+     *             for this configuration instance
      *
      * @see GenericObjectPool#getLifo()
      * @see GenericKeyedObjectPool#getLifo()
@@ -239,7 +246,7 @@ public abstract class BaseObjectPoolConfig extends BaseObject implements Cloneab
      * created with this configuration instance.
      *
      * @param fairness The new setting of {@code fairness}
-     *        for this configuration instance
+     *                 for this configuration instance
      *
      * @see GenericObjectPool#getFairness()
      * @see GenericKeyedObjectPool#getFairness()
@@ -252,8 +259,8 @@ public abstract class BaseObjectPoolConfig extends BaseObject implements Cloneab
      * Get the value for the {@code maxWait} configuration attribute for pools
      * created with this configuration instance.
      *
-     * @return  The current setting of {@code maxWait} for this
-     *          configuration instance
+     * @return The current setting of {@code maxWait} for this
+     *         configuration instance
      *
      * @see GenericObjectPool#getMaxWaitMillis()
      * @see GenericKeyedObjectPool#getMaxWaitMillis()
@@ -267,7 +274,7 @@ public abstract class BaseObjectPoolConfig extends BaseObject implements Cloneab
      * created with this configuration instance.
      *
      * @param maxWaitMillis The new setting of {@code maxWaitMillis}
-     *        for this configuration instance
+     *                      for this configuration instance
      *
      * @see GenericObjectPool#getMaxWaitMillis()
      * @see GenericKeyedObjectPool#getMaxWaitMillis()
@@ -280,8 +287,8 @@ public abstract class BaseObjectPoolConfig extends BaseObject implements Cloneab
      * Get the value for the {@code minEvictableIdleTimeMillis} configuration
      * attribute for pools created with this configuration instance.
      *
-     * @return  The current setting of {@code minEvictableIdleTimeMillis} for
-     *          this configuration instance
+     * @return The current setting of {@code minEvictableIdleTimeMillis} for
+     *         this configuration instance
      *
      * @see GenericObjectPool#getMinEvictableIdleTimeMillis()
      * @see GenericKeyedObjectPool#getMinEvictableIdleTimeMillis()
@@ -295,12 +302,14 @@ public abstract class BaseObjectPoolConfig extends BaseObject implements Cloneab
      * attribute for pools created with this configuration instance.
      *
      * @param minEvictableIdleTimeMillis The new setting of
-     *        {@code minEvictableIdleTimeMillis} for this configuration instance
+     *                                   {@code minEvictableIdleTimeMillis} for
+     *                                   this configuration instance
      *
      * @see GenericObjectPool#getMinEvictableIdleTimeMillis()
      * @see GenericKeyedObjectPool#getMinEvictableIdleTimeMillis()
      */
-    public void setMinEvictableIdleTimeMillis(final long minEvictableIdleTimeMillis) {
+    public void setMinEvictableIdleTimeMillis(
+            final long minEvictableIdleTimeMillis) {
         this.minEvictableIdleTimeMillis = minEvictableIdleTimeMillis;
     }
 
@@ -309,8 +318,8 @@ public abstract class BaseObjectPoolConfig extends BaseObject implements Cloneab
      * configuration attribute for pools created with this configuration
      * instance.
      *
-     * @return  The current setting of {@code softMinEvictableIdleTimeMillis}
-     *          for this configuration instance
+     * @return The current setting of {@code softMinEvictableIdleTimeMillis}
+     *         for this configuration instance
      *
      * @see GenericObjectPool#getSoftMinEvictableIdleTimeMillis()
      * @see GenericKeyedObjectPool#getSoftMinEvictableIdleTimeMillis()
@@ -325,8 +334,9 @@ public abstract class BaseObjectPoolConfig extends BaseObject implements Cloneab
      * instance.
      *
      * @param softMinEvictableIdleTimeMillis The new setting of
-     *        {@code softMinEvictableIdleTimeMillis} for this configuration
-     *        instance
+     *                                       {@code softMinEvictableIdleTimeMillis}
+     *                                       for this configuration
+     *                                       instance
      *
      * @see GenericObjectPool#getSoftMinEvictableIdleTimeMillis()
      * @see GenericKeyedObjectPool#getSoftMinEvictableIdleTimeMillis()
@@ -340,8 +350,8 @@ public abstract class BaseObjectPoolConfig extends BaseObject implements Cloneab
      * Get the value for the {@code numTestsPerEvictionRun} configuration
      * attribute for pools created with this configuration instance.
      *
-     * @return  The current setting of {@code numTestsPerEvictionRun} for this
-     *          configuration instance
+     * @return The current setting of {@code numTestsPerEvictionRun} for this
+     *         configuration instance
      *
      * @see GenericObjectPool#getNumTestsPerEvictionRun()
      * @see GenericKeyedObjectPool#getNumTestsPerEvictionRun()
@@ -355,7 +365,8 @@ public abstract class BaseObjectPoolConfig extends BaseObject implements Cloneab
      * attribute for pools created with this configuration instance.
      *
      * @param numTestsPerEvictionRun The new setting of
-     *        {@code numTestsPerEvictionRun} for this configuration instance
+     *                               {@code numTestsPerEvictionRun} for this
+     *                               configuration instance
      *
      * @see GenericObjectPool#getNumTestsPerEvictionRun()
      * @see GenericKeyedObjectPool#getNumTestsPerEvictionRun()
@@ -368,8 +379,8 @@ public abstract class BaseObjectPoolConfig extends BaseObject implements Cloneab
      * Get the value for the {@code testOnCreate} configuration attribute for
      * pools created with this configuration instance.
      *
-     * @return  The current setting of {@code testOnCreate} for this
-     *          configuration instance
+     * @return The current setting of {@code testOnCreate} for this
+     *         configuration instance
      *
      * @see GenericObjectPool#getTestOnCreate()
      * @see GenericKeyedObjectPool#getTestOnCreate()
@@ -385,7 +396,7 @@ public abstract class BaseObjectPoolConfig extends BaseObject implements Cloneab
      * pools created with this configuration instance.
      *
      * @param testOnCreate The new setting of {@code testOnCreate}
-     *        for this configuration instance
+     *                     for this configuration instance
      *
      * @see GenericObjectPool#getTestOnCreate()
      * @see GenericKeyedObjectPool#getTestOnCreate()
@@ -400,8 +411,8 @@ public abstract class BaseObjectPoolConfig extends BaseObject implements Cloneab
      * Get the value for the {@code testOnBorrow} configuration attribute for
      * pools created with this configuration instance.
      *
-     * @return  The current setting of {@code testOnBorrow} for this
-     *          configuration instance
+     * @return The current setting of {@code testOnBorrow} for this
+     *         configuration instance
      *
      * @see GenericObjectPool#getTestOnBorrow()
      * @see GenericKeyedObjectPool#getTestOnBorrow()
@@ -415,7 +426,7 @@ public abstract class BaseObjectPoolConfig extends BaseObject implements Cloneab
      * pools created with this configuration instance.
      *
      * @param testOnBorrow The new setting of {@code testOnBorrow}
-     *        for this configuration instance
+     *                     for this configuration instance
      *
      * @see GenericObjectPool#getTestOnBorrow()
      * @see GenericKeyedObjectPool#getTestOnBorrow()
@@ -428,8 +439,8 @@ public abstract class BaseObjectPoolConfig extends BaseObject implements Cloneab
      * Get the value for the {@code testOnReturn} configuration attribute for
      * pools created with this configuration instance.
      *
-     * @return  The current setting of {@code testOnReturn} for this
-     *          configuration instance
+     * @return The current setting of {@code testOnReturn} for this
+     *         configuration instance
      *
      * @see GenericObjectPool#getTestOnReturn()
      * @see GenericKeyedObjectPool#getTestOnReturn()
@@ -443,7 +454,7 @@ public abstract class BaseObjectPoolConfig extends BaseObject implements Cloneab
      * pools created with this configuration instance.
      *
      * @param testOnReturn The new setting of {@code testOnReturn}
-     *        for this configuration instance
+     *                     for this configuration instance
      *
      * @see GenericObjectPool#getTestOnReturn()
      * @see GenericKeyedObjectPool#getTestOnReturn()
@@ -456,8 +467,8 @@ public abstract class BaseObjectPoolConfig extends BaseObject implements Cloneab
      * Get the value for the {@code testWhileIdle} configuration attribute for
      * pools created with this configuration instance.
      *
-     * @return  The current setting of {@code testWhileIdle} for this
-     *          configuration instance
+     * @return The current setting of {@code testWhileIdle} for this
+     *         configuration instance
      *
      * @see GenericObjectPool#getTestWhileIdle()
      * @see GenericKeyedObjectPool#getTestWhileIdle()
@@ -471,7 +482,7 @@ public abstract class BaseObjectPoolConfig extends BaseObject implements Cloneab
      * pools created with this configuration instance.
      *
      * @param testWhileIdle The new setting of {@code testWhileIdle}
-     *        for this configuration instance
+     *                      for this configuration instance
      *
      * @see GenericObjectPool#getTestWhileIdle()
      * @see GenericKeyedObjectPool#getTestWhileIdle()
@@ -484,8 +495,8 @@ public abstract class BaseObjectPoolConfig extends BaseObject implements Cloneab
      * Get the value for the {@code timeBetweenEvictionRunsMillis} configuration
      * attribute for pools created with this configuration instance.
      *
-     * @return  The current setting of {@code timeBetweenEvictionRunsMillis} for
-     *          this configuration instance
+     * @return The current setting of {@code timeBetweenEvictionRunsMillis} for
+     *         this configuration instance
      *
      * @see GenericObjectPool#getTimeBetweenEvictionRunsMillis()
      * @see GenericKeyedObjectPool#getTimeBetweenEvictionRunsMillis()
@@ -499,8 +510,9 @@ public abstract class BaseObjectPoolConfig extends BaseObject implements Cloneab
      * attribute for pools created with this configuration instance.
      *
      * @param timeBetweenEvictionRunsMillis The new setting of
-     *        {@code timeBetweenEvictionRunsMillis} for this configuration
-     *        instance
+     *                                      {@code timeBetweenEvictionRunsMillis}
+     *                                      for this configuration
+     *                                      instance
      *
      * @see GenericObjectPool#getTimeBetweenEvictionRunsMillis()
      * @see GenericKeyedObjectPool#getTimeBetweenEvictionRunsMillis()
@@ -514,8 +526,8 @@ public abstract class BaseObjectPoolConfig extends BaseObject implements Cloneab
      * Get the value for the {@code evictionPolicyClassName} configuration
      * attribute for pools created with this configuration instance.
      *
-     * @return  The current setting of {@code evictionPolicyClassName} for this
-     *          configuration instance
+     * @return The current setting of {@code evictionPolicyClassName} for this
+     *         configuration instance
      *
      * @see GenericObjectPool#getEvictionPolicyClassName()
      * @see GenericKeyedObjectPool#getEvictionPolicyClassName()
@@ -529,12 +541,14 @@ public abstract class BaseObjectPoolConfig extends BaseObject implements Cloneab
      * attribute for pools created with this configuration instance.
      *
      * @param evictionPolicyClassName The new setting of
-     *        {@code evictionPolicyClassName} for this configuration instance
+     *                                {@code evictionPolicyClassName} for this
+     *                                configuration instance
      *
      * @see GenericObjectPool#getEvictionPolicyClassName()
      * @see GenericKeyedObjectPool#getEvictionPolicyClassName()
      */
-    public void setEvictionPolicyClassName(final String evictionPolicyClassName) {
+    public void setEvictionPolicyClassName(
+            final String evictionPolicyClassName) {
         this.evictionPolicyClassName = evictionPolicyClassName;
     }
 
@@ -542,8 +556,8 @@ public abstract class BaseObjectPoolConfig extends BaseObject implements Cloneab
      * Get the value for the {@code blockWhenExhausted} configuration attribute
      * for pools created with this configuration instance.
      *
-     * @return  The current setting of {@code blockWhenExhausted} for this
-     *          configuration instance
+     * @return The current setting of {@code blockWhenExhausted} for this
+     *         configuration instance
      *
      * @see GenericObjectPool#getBlockWhenExhausted()
      * @see GenericKeyedObjectPool#getBlockWhenExhausted()
@@ -557,7 +571,7 @@ public abstract class BaseObjectPoolConfig extends BaseObject implements Cloneab
      * for pools created with this configuration instance.
      *
      * @param blockWhenExhausted The new setting of {@code blockWhenExhausted}
-     *        for this configuration instance
+     *                           for this configuration instance
      *
      * @see GenericObjectPool#getBlockWhenExhausted()
      * @see GenericKeyedObjectPool#getBlockWhenExhausted()
@@ -570,8 +584,8 @@ public abstract class BaseObjectPoolConfig extends BaseObject implements Cloneab
      * Gets the value of the flag that determines if JMX will be enabled for
      * pools created with this configuration instance.
      *
-     * @return  The current setting of {@code jmxEnabled} for this configuration
-     *          instance
+     * @return The current setting of {@code jmxEnabled} for this configuration
+     *         instance
      */
     public boolean getJmxEnabled() {
         return jmxEnabled;
@@ -582,7 +596,7 @@ public abstract class BaseObjectPoolConfig extends BaseObject implements Cloneab
      * pools created with this configuration instance.
      *
      * @param jmxEnabled The new setting of {@code jmxEnabled}
-     *        for this configuration instance
+     *                   for this configuration instance
      */
     public void setJmxEnabled(final boolean jmxEnabled) {
         this.jmxEnabled = jmxEnabled;
@@ -594,8 +608,8 @@ public abstract class BaseObjectPoolConfig extends BaseObject implements Cloneab
      * instance. A value of <code>null</code> means that the pool will define
      * the JMX name base.
      *
-     * @return  The current setting of {@code jmxNameBase} for this
-     *          configuration instance
+     * @return The current setting of {@code jmxNameBase} for this
+     *         configuration instance
      */
     public String getJmxNameBase() {
         return jmxNameBase;
@@ -608,7 +622,7 @@ public abstract class BaseObjectPoolConfig extends BaseObject implements Cloneab
      * the JMX name base.
      *
      * @param jmxNameBase The new setting of {@code jmxNameBase}
-     *        for this configuration instance
+     *                    for this configuration instance
      */
     public void setJmxNameBase(final String jmxNameBase) {
         this.jmxNameBase = jmxNameBase;
@@ -619,8 +633,8 @@ public abstract class BaseObjectPoolConfig extends BaseObject implements Cloneab
      * name assigned to JMX enabled pools created with this configuration
      * instance.
      *
-     * @return  The current setting of {@code jmxNamePrefix} for this
-     *          configuration instance
+     * @return The current setting of {@code jmxNamePrefix} for this
+     *         configuration instance
      */
     public String getJmxNamePrefix() {
         return jmxNamePrefix;
@@ -632,7 +646,7 @@ public abstract class BaseObjectPoolConfig extends BaseObject implements Cloneab
      * instance.
      *
      * @param jmxNamePrefix The new setting of {@code jmxNamePrefix}
-     *        for this configuration instance
+     *                      for this configuration instance
      */
     public void setJmxNamePrefix(final String jmxNamePrefix) {
         this.jmxNamePrefix = jmxNamePrefix;

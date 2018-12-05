@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -40,7 +38,7 @@ public class ELException extends Exception {
      * Creates an ELException with the provided detail message.
      *
      * @param pMessage
-     *            the detail message
+     *                 the detail message
      **/
     public ELException(String pMessage) {
         super(pMessage);
@@ -50,7 +48,7 @@ public class ELException extends Exception {
      * Creates an ELException with the given root cause.
      *
      * @param pRootCause
-     *            the originating cause of this exception
+     *                   the originating cause of this exception
      **/
     public ELException(Throwable pRootCause) {
         super(pRootCause);
@@ -61,9 +59,9 @@ public class ELException extends Exception {
      * Creates an ELException with the given detail message and root cause.
      *
      * @param pMessage
-     *            the detail message
+     *                   the detail message
      * @param pRootCause
-     *            the originating cause of this exception
+     *                   the originating cause of this exception
      **/
     public ELException(String pMessage, Throwable pRootCause) {
         super(pMessage, pRootCause);

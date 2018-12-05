@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -47,7 +45,8 @@ public class TldRuleSet extends RuleSetBase {
         digester.addRule(PREFIX, new Rule() {
             // for TLD 2.0 and later, jsp-version is set by version attribute
             @Override
-            public void begin(String namespace, String name, Attributes attributes) {
+            public void begin(String namespace, String name,
+                    Attributes attributes) {
                 TaglibXml taglibXml = (TaglibXml) digester.peek();
                 taglibXml.setJspVersion(attributes.getValue("version"));
             }
@@ -59,16 +58,20 @@ public class TldRuleSet extends RuleSetBase {
         digester.addCallMethod(PREFIX + "/uri", "setUri", 0);
         digester.addCallMethod(PREFIX + "/info", "setInfo", 0);
         digester.addCallMethod(PREFIX + "/description", "setInfo", 0);
-        digester.addCallMethod(PREFIX + "/listener/listener-class", "addListener", 0);
+        digester.addCallMethod(PREFIX + "/listener/listener-class",
+                "addListener", 0);
 
         // validator
-        digester.addObjectCreate(VALIDATOR_PREFIX, ValidatorXml.class.getName());
-        digester.addCallMethod(VALIDATOR_PREFIX + "/validator-class", "setValidatorClass", 0);
-        digester.addCallMethod(VALIDATOR_PREFIX + "/init-param", "addInitParam", 2);
+        digester.addObjectCreate(VALIDATOR_PREFIX, ValidatorXml.class
+                .getName());
+        digester.addCallMethod(VALIDATOR_PREFIX + "/validator-class",
+                "setValidatorClass", 0);
+        digester.addCallMethod(VALIDATOR_PREFIX + "/init-param", "addInitParam",
+                2);
         digester.addCallParam(VALIDATOR_PREFIX + "/init-param/param-name", 0);
         digester.addCallParam(VALIDATOR_PREFIX + "/init-param/param-value", 1);
-        digester.addSetNext(VALIDATOR_PREFIX, "setValidator", ValidatorXml.class.getName());
-
+        digester.addSetNext(VALIDATOR_PREFIX, "setValidator", ValidatorXml.class
+                .getName());
 
         // tag
         digester.addObjectCreate(TAG_PREFIX, TagXml.class.getName());
@@ -78,31 +81,39 @@ public class TldRuleSet extends RuleSetBase {
         digester.addCallMethod(TAG_PREFIX + "/tag-class", "setTagClass", 0);
         digester.addCallMethod(TAG_PREFIX + "/teiclass", "setTeiClass", 0);
         digester.addCallMethod(TAG_PREFIX + "/tei-class", "setTeiClass", 0);
-        digester.addCallMethod(TAG_PREFIX + "/bodycontent", "setBodyContent", 0);
-        digester.addCallMethod(TAG_PREFIX + "/body-content", "setBodyContent", 0);
+        digester.addCallMethod(TAG_PREFIX + "/bodycontent", "setBodyContent",
+                0);
+        digester.addCallMethod(TAG_PREFIX + "/body-content", "setBodyContent",
+                0);
 
         digester.addRule(TAG_PREFIX + "/variable", new ScriptVariableRule());
-        digester.addCallMethod(TAG_PREFIX + "/variable/name-given", "setNameGiven", 0);
+        digester.addCallMethod(TAG_PREFIX + "/variable/name-given",
+                "setNameGiven", 0);
         digester.addCallMethod(TAG_PREFIX + "/variable/name-from-attribute",
                 "setNameFromAttribute", 0);
-        digester.addCallMethod(TAG_PREFIX + "/variable/variable-class", "setClassName", 0);
+        digester.addCallMethod(TAG_PREFIX + "/variable/variable-class",
+                "setClassName", 0);
         digester.addRule(TAG_PREFIX + "/variable/declare",
                 new GenericBooleanRule(Variable.class, "setDeclare"));
         digester.addCallMethod(TAG_PREFIX + "/variable/scope", "setScope", 0);
 
         digester.addRule(TAG_PREFIX + "/attribute", new TagAttributeRule());
-        digester.addCallMethod(TAG_PREFIX + "/attribute/description", "setDescription", 0);
+        digester.addCallMethod(TAG_PREFIX + "/attribute/description",
+                "setDescription", 0);
         digester.addCallMethod(TAG_PREFIX + "/attribute/name", "setName", 0);
         digester.addRule(TAG_PREFIX + "/attribute/required",
                 new GenericBooleanRule(Attribute.class, "setRequired"));
         digester.addRule(TAG_PREFIX + "/attribute/rtexprvalue",
                 new GenericBooleanRule(Attribute.class, "setRequestTime"));
         digester.addCallMethod(TAG_PREFIX + "/attribute/type", "setType", 0);
-        digester.addCallMethod(TAG_PREFIX + "/attribute/deferred-value", "setDeferredValue");
+        digester.addCallMethod(TAG_PREFIX + "/attribute/deferred-value",
+                "setDeferredValue");
         digester.addCallMethod(TAG_PREFIX + "/attribute/deferred-value/type",
                 "setExpectedTypeName", 0);
-        digester.addCallMethod(TAG_PREFIX + "/attribute/deferred-method", "setDeferredMethod");
-        digester.addCallMethod(TAG_PREFIX + "/attribute/deferred-method/method-signature",
+        digester.addCallMethod(TAG_PREFIX + "/attribute/deferred-method",
+                "setDeferredMethod");
+        digester.addCallMethod(TAG_PREFIX
+                + "/attribute/deferred-method/method-signature",
                 "setMethodSignature", 0);
         digester.addRule(TAG_PREFIX + "/attribute/fragment",
                 new GenericBooleanRule(Attribute.class, "setFragment"));
@@ -116,7 +127,8 @@ public class TldRuleSet extends RuleSetBase {
         addDescriptionGroup(digester, TAGFILE_PREFIX);
         digester.addCallMethod(TAGFILE_PREFIX + "/name", "setName", 0);
         digester.addCallMethod(TAGFILE_PREFIX + "/path", "setPath", 0);
-        digester.addSetNext(TAGFILE_PREFIX, "addTagFile", TagFileXml.class.getName());
+        digester.addSetNext(TAGFILE_PREFIX, "addTagFile", TagFileXml.class
+                .getName());
 
         // function
         digester.addCallMethod(FUNCTION_PREFIX, "addFunction", 3);
@@ -138,9 +150,12 @@ public class TldRuleSet extends RuleSetBase {
 
     private static class TagAttributeRule extends Rule {
         @Override
-        public void begin(String namespace, String name, Attributes attributes) throws Exception {
-            TaglibXml taglibXml = (TaglibXml) digester.peek(digester.getCount() - 1);
-            digester.push(new Attribute("1.2".equals(taglibXml.getJspVersion())));
+        public void begin(String namespace, String name, Attributes attributes)
+                throws Exception {
+            TaglibXml taglibXml = (TaglibXml) digester.peek(digester.getCount()
+                    - 1);
+            digester.push(new Attribute("1.2".equals(taglibXml
+                    .getJspVersion())));
         }
 
         @Override
@@ -269,23 +284,16 @@ public class TldRuleSet extends RuleSetBase {
                 type = "java.lang.String";
             }
 
-            return new TagAttributeInfo(
-                    name,
-                    required,
-                    type,
-                    requestTime,
-                    fragment,
-                    description,
-                    deferredValue,
-                    deferredMethod,
-                    expectedTypeName,
-                    methodSignature);
+            return new TagAttributeInfo(name, required, type, requestTime,
+                    fragment, description, deferredValue, deferredMethod,
+                    expectedTypeName, methodSignature);
         }
     }
 
     private static class ScriptVariableRule extends Rule {
         @Override
-        public void begin(String namespace, String name, Attributes attributes) throws Exception {
+        public void begin(String namespace, String name, Attributes attributes)
+                throws Exception {
             digester.push(new Variable());
         }
 
@@ -335,7 +343,8 @@ public class TldRuleSet extends RuleSetBase {
         }
 
         public TagVariableInfo toTagVariableInfo() {
-            return new TagVariableInfo(nameGiven, nameFromAttribute, className, declare, scope);
+            return new TagVariableInfo(nameGiven, nameFromAttribute, className,
+                    declare, scope);
         }
     }
 
@@ -351,10 +360,12 @@ public class TldRuleSet extends RuleSetBase {
         }
 
         @Override
-        public void body(String namespace, String name, String text) throws Exception {
-            if(null != text)
+        public void body(String namespace, String name, String text)
+                throws Exception {
+            if (null != text)
                 text = text.trim();
-            boolean value = "true".equalsIgnoreCase(text) || "yes".equalsIgnoreCase(text);
+            boolean value = "true".equalsIgnoreCase(text) || "yes"
+                    .equalsIgnoreCase(text);
             setter.invoke(digester.peek(), Boolean.valueOf(value));
         }
     }

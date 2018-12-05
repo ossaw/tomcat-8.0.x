@@ -1,18 +1,16 @@
 /*
- *  Licensed to the Apache Software Foundation (ASF) under one or more
- *  contributor license agreements.  See the NOTICE file distributed with
- *  this work for additional information regarding copyright ownership.
- *  The ASF licenses this file to You under the Apache License, Version 2.0
- *  (the "License"); you may not use this file except in compliance with
- *  the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements. See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.apache.coyote.http11;
 
@@ -42,13 +40,13 @@ import org.apache.tomcat.util.net.SocketWrapper;
 /**
  * Output buffer implementation for NIO2.
  */
-public class InternalNio2InputBuffer extends AbstractNioInputBuffer<Nio2Channel> {
+public class InternalNio2InputBuffer extends
+        AbstractNioInputBuffer<Nio2Channel> {
 
-    private static final Log log =
-            LogFactory.getLog(InternalNio2InputBuffer.class);
+    private static final Log log = LogFactory.getLog(
+            InternalNio2InputBuffer.class);
 
     // ----------------------------------------------------------- Constructors
-
 
     public InternalNio2InputBuffer(Request request, int headerBufferSize) {
         super(request, headerBufferSize);
@@ -97,7 +95,6 @@ public class InternalNio2InputBuffer extends AbstractNioInputBuffer<Nio2Channel>
         return log;
     }
 
-
     /**
      * Recycle the input buffer. This should be called when closing the
      * connection.
@@ -111,7 +108,6 @@ public class InternalNio2InputBuffer extends AbstractNioInputBuffer<Nio2Channel>
         interest = false;
         e = null;
     }
-
 
     /**
      * End processing of current HTTP request.
@@ -133,7 +129,8 @@ public class InternalNio2InputBuffer extends AbstractNioInputBuffer<Nio2Channel>
 
     @Override
     protected void init(SocketWrapper<Nio2Channel> socketWrapper,
-            AbstractEndpoint<Nio2Channel> associatedEndpoint) throws IOException {
+            AbstractEndpoint<Nio2Channel> associatedEndpoint)
+            throws IOException {
 
         endpoint = associatedEndpoint;
         socket = socketWrapper;
@@ -141,8 +138,8 @@ public class InternalNio2InputBuffer extends AbstractNioInputBuffer<Nio2Channel>
             // Socket has been closed in another thread
             throw new IOException(sm.getString("iib.socketClosed"));
         }
-        socketReadBufferSize =
-            socket.getSocket().getBufHandler().getReadBuffer().capacity();
+        socketReadBufferSize = socket.getSocket().getBufHandler()
+                .getReadBuffer().capacity();
 
         int bufLength = headerBufferSize + socketReadBufferSize;
         if (buf == null || buf.length < bufLength) {
@@ -153,26 +150,31 @@ public class InternalNio2InputBuffer extends AbstractNioInputBuffer<Nio2Channel>
         this.completionHandler = new CompletionHandler<Integer, SocketWrapper<Nio2Channel>>() {
 
             @Override
-            public void completed(Integer nBytes, SocketWrapper<Nio2Channel> attachment) {
+            public void completed(Integer nBytes,
+                    SocketWrapper<Nio2Channel> attachment) {
                 boolean notify = false;
                 synchronized (completionHandler) {
                     if (nBytes.intValue() < 0) {
-                        failed(new EOFException(sm.getString("iib.eof.error")), attachment);
+                        failed(new EOFException(sm.getString("iib.eof.error")),
+                                attachment);
                     } else {
                         readPending = false;
-                        if ((request.getReadListener() == null || interest) && !Nio2Endpoint.isInline()) {
+                        if ((request.getReadListener() == null || interest)
+                                && !Nio2Endpoint.isInline()) {
                             interest = false;
                             notify = true;
                         }
                     }
                 }
                 if (notify) {
-                    endpoint.processSocket(attachment, SocketStatus.OPEN_READ, false);
+                    endpoint.processSocket(attachment, SocketStatus.OPEN_READ,
+                            false);
                 }
             }
 
             @Override
-            public void failed(Throwable exc, SocketWrapper<Nio2Channel> attachment) {
+            public void failed(Throwable exc,
+                    SocketWrapper<Nio2Channel> attachment) {
                 attachment.setError(true);
                 if (exc instanceof IOException) {
                     e = (IOException) exc;
@@ -181,7 +183,8 @@ public class InternalNio2InputBuffer extends AbstractNioInputBuffer<Nio2Channel>
                 }
                 request.setAttribute(RequestDispatcher.ERROR_EXCEPTION, e);
                 readPending = false;
-                endpoint.processSocket(attachment, SocketStatus.OPEN_READ, true);
+                endpoint.processSocket(attachment, SocketStatus.OPEN_READ,
+                        true);
             }
         };
     }
@@ -193,15 +196,16 @@ public class InternalNio2InputBuffer extends AbstractNioInputBuffer<Nio2Channel>
         }
         if (parsingHeader) {
             if (lastValid > headerBufferSize) {
-                throw new IllegalArgumentException
-                    (sm.getString("iib.requestheadertoolarge.error"));
+                throw new IllegalArgumentException(sm.getString(
+                        "iib.requestheadertoolarge.error"));
             }
         } else {
             lastValid = pos = end;
         }
         // Now fill the internal buffer
         int nRead = 0;
-        ByteBuffer byteBuffer = socket.getSocket().getBufHandler().getReadBuffer();
+        ByteBuffer byteBuffer = socket.getSocket().getBufHandler()
+                .getReadBuffer();
         if (block) {
             if (!flipped) {
                 byteBuffer.flip();
@@ -223,7 +227,8 @@ public class InternalNio2InputBuffer extends AbstractNioInputBuffer<Nio2Channel>
                 Future<Integer> future = null;
                 try {
                     future = socket.getSocket().read(byteBuffer);
-                    nRead = future.get(socket.getTimeout(), TimeUnit.MILLISECONDS).intValue();
+                    nRead = future.get(socket.getTimeout(),
+                            TimeUnit.MILLISECONDS).intValue();
                 } catch (ExecutionException e) {
                     if (e.getCause() instanceof IOException) {
                         throw (IOException) e.getCause();
@@ -272,7 +277,8 @@ public class InternalNio2InputBuffer extends AbstractNioInputBuffer<Nio2Channel>
                         readPending = true;
                         Nio2Endpoint.startInline();
                         socket.getSocket().read(byteBuffer, socket.getTimeout(),
-                                    TimeUnit.MILLISECONDS, socket, completionHandler);
+                                TimeUnit.MILLISECONDS, socket,
+                                completionHandler);
                         Nio2Endpoint.endInline();
                         // Return the number of bytes that have been placed into the buffer
                         if (!readPending) {
@@ -299,7 +305,6 @@ public class InternalNio2InputBuffer extends AbstractNioInputBuffer<Nio2Channel>
         }
     }
 
-
     public void registerReadInterest() {
         synchronized (completionHandler) {
             if (readPending) {
@@ -311,24 +316,19 @@ public class InternalNio2InputBuffer extends AbstractNioInputBuffer<Nio2Channel>
         }
     }
 
-
     // ------------------------------------- InputStreamInputBuffer Inner Class
-
 
     /**
      * This class is an input buffer which will read its data from an input
      * stream.
      */
-    protected class SocketInputBuffer
-        implements InputBuffer {
-
+    protected class SocketInputBuffer implements InputBuffer {
 
         /**
          * Read bytes into the specified chunk.
          */
         @Override
-        public int doRead(ByteChunk chunk, Request req )
-            throws IOException {
+        public int doRead(ByteChunk chunk, Request req) throws IOException {
 
             if (pos >= lastValid) {
                 if (!fill(true)) //read body, must be blocking, as the thread is inside the app

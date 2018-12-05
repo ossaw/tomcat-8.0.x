@@ -1,18 +1,16 @@
 /*
- *  Licensed to the Apache Software Foundation (ASF) under one or more
- *  contributor license agreements.  See the NOTICE file distributed with
- *  this work for additional information regarding copyright ownership.
- *  The ASF licenses this file to You under the Apache License, Version 2.0
- *  (the "License"); you may not use this file except in compliance with
- *  the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements. See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.apache.tomcat.util.buf;
 
@@ -34,7 +32,6 @@ public final class UriUtil {
         // Utility class. Hide default constructor
     }
 
-
     /**
      * Determine if the character is allowed in the scheme of a URI.
      * See RFC 2396, Section 3.1
@@ -42,12 +39,11 @@ public final class UriUtil {
      * @param c The character to test
      *
      * @return {@code true} if a the character is allowed, otherwise {code
-     *         @false}
+     * @false}
      */
     private static boolean isSchemeChar(char c) {
         return Character.isLetterOrDigit(c) || c == '+' || c == '-' || c == '.';
     }
-
 
     /**
      * Determine if a URI string has a <code>scheme</code> component.
@@ -58,34 +54,33 @@ public final class UriUtil {
      */
     public static boolean hasScheme(CharSequence uri) {
         int len = uri.length();
-        for(int i=0; i < len ; i++) {
+        for (int i = 0; i < len; i++) {
             char c = uri.charAt(i);
-            if(c == ':') {
+            if (c == ':') {
                 return i > 0;
-            } else if(!UriUtil.isSchemeChar(c)) {
+            } else if (!UriUtil.isSchemeChar(c)) {
                 return false;
             }
         }
         return false;
     }
 
-
     public static URL buildJarUrl(File jarFile) throws MalformedURLException {
         return buildJarUrl(jarFile, null);
     }
 
-
-    public static URL buildJarUrl(File jarFile, String entryPath) throws MalformedURLException {
+    public static URL buildJarUrl(File jarFile, String entryPath)
+            throws MalformedURLException {
         return buildJarUrl(jarFile.toURI().toString(), entryPath);
     }
 
-
-    public static URL buildJarUrl(String fileUrlString) throws MalformedURLException {
+    public static URL buildJarUrl(String fileUrlString)
+            throws MalformedURLException {
         return buildJarUrl(fileUrlString, null);
     }
 
-
-    public static URL buildJarUrl(String fileUrlString, String entryPath) throws MalformedURLException {
+    public static URL buildJarUrl(String fileUrlString, String entryPath)
+            throws MalformedURLException {
         String safeString = makeSafeForJarUrl(fileUrlString);
         StringBuilder sb = new StringBuilder();
         sb.append("jar:");
@@ -97,24 +92,20 @@ public final class UriUtil {
         return new URL(sb.toString());
     }
 
-
     public static URL buildJarSafeUrl(File file) throws MalformedURLException {
         String safe = makeSafeForJarUrl(file.toURI().toString());
         return new URL(safe);
     }
 
-
     /*
      * When testing on markt's desktop each iteration was taking ~1420ns when
      * using String.replaceAll().
-     *
      * Switching the implementation to use pre-compiled patterns and
      * Pattern.matcher(input).replaceAll(replacement) reduced this by ~10%.
-     *
      * Note: Given the very small absolute time of a single iteration, even for
-     *       a web application with 1000 JARs this is only going to add ~3ms.
-     *       It is therefore unlikely that further optimisation will be
-     *       necessary.
+     * a web application with 1000 JARs this is only going to add ~3ms.
+     * It is therefore unlikely that further optimisation will be
+     * necessary.
      */
     /*
      * Pulled out into a separate method in case we need to handle other unusual

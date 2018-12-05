@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -82,7 +80,6 @@ public class TestWsWebSocketContainer extends WebSocketBaseTest {
         MESSAGE_TEXT_4K = sb.toString();
     }
 
-
     @Test
     public void testConnectToServerEndpoint() throws Exception {
         Tomcat tomcat = getTomcatInstance();
@@ -94,16 +91,16 @@ public class TestWsWebSocketContainer extends WebSocketBaseTest {
 
         tomcat.start();
 
-        WebSocketContainer wsContainer =
-                ContainerProvider.getWebSocketContainer();
+        WebSocketContainer wsContainer = ContainerProvider
+                .getWebSocketContainer();
         // Set this artificially small to trigger
         // https://bz.apache.org/bugzilla/show_bug.cgi?id=57054
         wsContainer.setDefaultMaxBinaryMessageBufferSize(64);
         Session wsSession = wsContainer.connectToServer(
-                TesterProgrammaticEndpoint.class,
-                ClientEndpointConfig.Builder.create().build(),
-                new URI("ws://" + getHostName() + ":" + getPort() +
-                        TesterEchoServer.Config.PATH_ASYNC));
+                TesterProgrammaticEndpoint.class, ClientEndpointConfig.Builder
+                        .create().build(), new URI("ws://" + getHostName() + ":"
+                                + getPort()
+                                + TesterEchoServer.Config.PATH_ASYNC));
         CountDownLatch latch = new CountDownLatch(1);
         BasicText handler = new BasicText(latch);
         wsSession.addMessageHandler(handler);
@@ -120,8 +117,7 @@ public class TestWsWebSocketContainer extends WebSocketBaseTest {
         ((WsWebSocketContainer) wsContainer).destroy();
     }
 
-
-    @Test(expected=javax.websocket.DeploymentException.class)
+    @Test(expected = javax.websocket.DeploymentException.class)
     public void testConnectToServerEndpointInvalidScheme() throws Exception {
         Tomcat tomcat = getTomcatInstance();
         // No file system docBase required
@@ -130,16 +126,15 @@ public class TestWsWebSocketContainer extends WebSocketBaseTest {
 
         tomcat.start();
 
-        WebSocketContainer wsContainer =
-                ContainerProvider.getWebSocketContainer();
+        WebSocketContainer wsContainer = ContainerProvider
+                .getWebSocketContainer();
         wsContainer.connectToServer(TesterProgrammaticEndpoint.class,
-                ClientEndpointConfig.Builder.create().build(),
-                new URI("ftp://" + getHostName() + ":" + getPort() +
-                        TesterEchoServer.Config.PATH_ASYNC));
+                ClientEndpointConfig.Builder.create().build(), new URI("ftp://"
+                        + getHostName() + ":" + getPort()
+                        + TesterEchoServer.Config.PATH_ASYNC));
     }
 
-
-    @Test(expected=javax.websocket.DeploymentException.class)
+    @Test(expected = javax.websocket.DeploymentException.class)
     public void testConnectToServerEndpointNoHost() throws Exception {
         Tomcat tomcat = getTomcatInstance();
         // No file system docBase required
@@ -148,61 +143,52 @@ public class TestWsWebSocketContainer extends WebSocketBaseTest {
 
         tomcat.start();
 
-        WebSocketContainer wsContainer =
-                ContainerProvider.getWebSocketContainer();
+        WebSocketContainer wsContainer = ContainerProvider
+                .getWebSocketContainer();
         wsContainer.connectToServer(TesterProgrammaticEndpoint.class,
-                ClientEndpointConfig.Builder.create().build(),
-                new URI("ws://" + TesterEchoServer.Config.PATH_ASYNC));
+                ClientEndpointConfig.Builder.create().build(), new URI("ws://"
+                        + TesterEchoServer.Config.PATH_ASYNC));
     }
-
 
     @Test
     public void testSmallTextBufferClientTextMessage() throws Exception {
         doBufferTest(true, false, true, false);
     }
 
-
     @Test
     public void testSmallTextBufferClientBinaryMessage() throws Exception {
         doBufferTest(true, false, false, true);
     }
-
 
     @Test
     public void testSmallTextBufferServerTextMessage() throws Exception {
         doBufferTest(true, true, true, false);
     }
 
-
     @Test
     public void testSmallTextBufferServerBinaryMessage() throws Exception {
         doBufferTest(true, true, false, true);
     }
-
 
     @Test
     public void testSmallBinaryBufferClientTextMessage() throws Exception {
         doBufferTest(false, false, true, true);
     }
 
-
     @Test
     public void testSmallBinaryBufferClientBinaryMessage() throws Exception {
         doBufferTest(false, false, false, false);
     }
-
 
     @Test
     public void testSmallBinaryBufferServerTextMessage() throws Exception {
         doBufferTest(false, true, true, true);
     }
 
-
     @Test
     public void testSmallBinaryBufferServerBinaryMessage() throws Exception {
         doBufferTest(false, true, false, false);
     }
-
 
     private void doBufferTest(boolean isTextBuffer, boolean isServerBuffer,
             boolean isTextMessage, boolean pass) throws Exception {
@@ -214,19 +200,17 @@ public class TestWsWebSocketContainer extends WebSocketBaseTest {
         Tomcat.addServlet(ctx, "default", new DefaultServlet());
         ctx.addServletMappingDecoded("/", "default");
 
-        WebSocketContainer wsContainer =
-                ContainerProvider.getWebSocketContainer();
+        WebSocketContainer wsContainer = ContainerProvider
+                .getWebSocketContainer();
 
         if (isServerBuffer) {
             if (isTextBuffer) {
                 ctx.addParameter(
-                        org.apache.tomcat.websocket.server.Constants.
-                                TEXT_BUFFER_SIZE_SERVLET_CONTEXT_INIT_PARAM,
+                        org.apache.tomcat.websocket.server.Constants.TEXT_BUFFER_SIZE_SERVLET_CONTEXT_INIT_PARAM,
                         "1024");
             } else {
                 ctx.addParameter(
-                        org.apache.tomcat.websocket.server.Constants.
-                                BINARY_BUFFER_SIZE_SERVLET_CONTEXT_INIT_PARAM,
+                        org.apache.tomcat.websocket.server.Constants.BINARY_BUFFER_SIZE_SERVLET_CONTEXT_INIT_PARAM,
                         "1024");
             }
         } else {
@@ -240,14 +224,14 @@ public class TestWsWebSocketContainer extends WebSocketBaseTest {
         tomcat.start();
 
         Session wsSession = wsContainer.connectToServer(
-                TesterProgrammaticEndpoint.class,
-                ClientEndpointConfig.Builder.create().build(),
-                        new URI("ws://" + getHostName() + ":" + getPort() +
-                                TesterEchoServer.Config.PATH_BASIC));
+                TesterProgrammaticEndpoint.class, ClientEndpointConfig.Builder
+                        .create().build(), new URI("ws://" + getHostName() + ":"
+                                + getPort()
+                                + TesterEchoServer.Config.PATH_BASIC));
         BasicHandler<?> handler;
         CountDownLatch latch = new CountDownLatch(1);
-        TesterEndpoint tep =
-                (TesterEndpoint) wsSession.getUserProperties().get("endpoint");
+        TesterEndpoint tep = (TesterEndpoint) wsSession.getUserProperties().get(
+                "endpoint");
         tep.setLatch(latch);
         if (isTextMessage) {
             handler = new BasicText(latch);
@@ -260,8 +244,8 @@ public class TestWsWebSocketContainer extends WebSocketBaseTest {
             if (isTextMessage) {
                 wsSession.getBasicRemote().sendText(MESSAGE_TEXT_4K);
             } else {
-                wsSession.getBasicRemote().sendBinary(
-                        ByteBuffer.wrap(MESSAGE_BINARY_4K));
+                wsSession.getBasicRemote().sendBinary(ByteBuffer.wrap(
+                        MESSAGE_BINARY_4K));
             }
         } catch (IOException ioe) {
             // Some messages sends are expected to fail. Assertions further on
@@ -279,8 +263,8 @@ public class TestWsWebSocketContainer extends WebSocketBaseTest {
             if (isTextMessage) {
                 Assert.assertEquals(MESSAGE_TEXT_4K, messages.peek());
             } else {
-                Assert.assertEquals(ByteBuffer.wrap(MESSAGE_BINARY_4K),
-                        messages.peek());
+                Assert.assertEquals(ByteBuffer.wrap(MESSAGE_BINARY_4K), messages
+                        .peek());
             }
         } else {
             // When the message exceeds the buffer size, the WebSocket is
@@ -299,18 +283,15 @@ public class TestWsWebSocketContainer extends WebSocketBaseTest {
         }
     }
 
-
     @Test
     public void testWriteTimeoutClientContainer() throws Exception {
         doTestWriteTimeoutClient(true);
     }
 
-
     @Test
     public void testWriteTimeoutClientEndpoint() throws Exception {
         doTestWriteTimeoutClient(false);
     }
-
 
     private void doTestWriteTimeoutClient(boolean setTimeoutOnContainer)
             throws Exception {
@@ -322,8 +303,8 @@ public class TestWsWebSocketContainer extends WebSocketBaseTest {
         Tomcat.addServlet(ctx, "default", new DefaultServlet());
         ctx.addServletMappingDecoded("/", "default");
 
-        WebSocketContainer wsContainer =
-                ContainerProvider.getWebSocketContainer();
+        WebSocketContainer wsContainer = ContainerProvider
+                .getWebSocketContainer();
 
         // Set the async timeout
         if (setTimeoutOnContainer) {
@@ -333,9 +314,9 @@ public class TestWsWebSocketContainer extends WebSocketBaseTest {
         tomcat.start();
 
         Session wsSession = wsContainer.connectToServer(
-                TesterProgrammaticEndpoint.class,
-                ClientEndpointConfig.Builder.create().build(),
-                new URI("ws://" + getHostName() + ":" + getPort() + BlockingConfig.PATH));
+                TesterProgrammaticEndpoint.class, ClientEndpointConfig.Builder
+                        .create().build(), new URI("ws://" + getHostName() + ":"
+                                + getPort() + BlockingConfig.PATH));
 
         if (!setTimeoutOnContainer) {
             wsSession.getAsyncRemote().setSendTimeout(TIMEOUT_MS);
@@ -370,7 +351,7 @@ public class TestWsWebSocketContainer extends WebSocketBaseTest {
         String msg = "Time out was [" + timeout + "] ms";
 
         // Check correct time passed
-        Assert.assertTrue(msg, timeout >= TIMEOUT_MS - MARGIN );
+        Assert.assertTrue(msg, timeout >= TIMEOUT_MS - MARGIN);
 
         // Check the timeout wasn't too long
         Assert.assertTrue(msg, timeout < TIMEOUT_MS * 2);
@@ -378,18 +359,15 @@ public class TestWsWebSocketContainer extends WebSocketBaseTest {
         Assert.assertNotNull(exception);
     }
 
-
     @Test
     public void testWriteTimeoutServerContainer() throws Exception {
         doTestWriteTimeoutServer(true);
     }
 
-
     @Test
     public void testWriteTimeoutServerEndpoint() throws Exception {
         doTestWriteTimeoutServer(false);
     }
-
 
     private static volatile boolean timeoutOnContainer = false;
 
@@ -403,8 +381,8 @@ public class TestWsWebSocketContainer extends WebSocketBaseTest {
 
         /*
          * Note: There are all sorts of horrible uses of statics in this test
-         *       because the API uses classes and the tests really need access
-         *       to the instances which simply isn't possible.
+         * because the API uses classes and the tests really need access
+         * to the instances which simply isn't possible.
          */
         timeoutOnContainer = setTimeoutOnContainer;
 
@@ -416,16 +394,15 @@ public class TestWsWebSocketContainer extends WebSocketBaseTest {
         Tomcat.addServlet(ctx, "default", new DefaultServlet());
         ctx.addServletMappingDecoded("/", "default");
 
-        WebSocketContainer wsContainer =
-                ContainerProvider.getWebSocketContainer();
+        WebSocketContainer wsContainer = ContainerProvider
+                .getWebSocketContainer();
 
         tomcat.start();
 
         Session wsSession = wsContainer.connectToServer(
-                TesterProgrammaticEndpoint.class,
-                ClientEndpointConfig.Builder.create().build(),
-                new URI("ws://" + getHostName() + ":" + getPort() +
-                        ConstantTxConfig.PATH));
+                TesterProgrammaticEndpoint.class, ClientEndpointConfig.Builder
+                        .create().build(), new URI("ws://" + getHostName() + ":"
+                                + getPort() + ConstantTxConfig.PATH));
 
         wsSession.addMessageHandler(new BlockingBinaryHandler());
 
@@ -444,19 +421,18 @@ public class TestWsWebSocketContainer extends WebSocketBaseTest {
 
         // Check the right exception was thrown
         Assert.assertNotNull(ConstantTxEndpoint.getException());
-        Assert.assertEquals(ExecutionException.class,
-                ConstantTxEndpoint.getException().getClass());
+        Assert.assertEquals(ExecutionException.class, ConstantTxEndpoint
+                .getException().getClass());
         Assert.assertNotNull(ConstantTxEndpoint.getException().getCause());
-        Assert.assertEquals(SocketTimeoutException.class,
-                ConstantTxEndpoint.getException().getCause().getClass());
+        Assert.assertEquals(SocketTimeoutException.class, ConstantTxEndpoint
+                .getException().getCause().getClass());
 
         // Check correct time passed
         Assert.assertTrue(ConstantTxEndpoint.getTimeout() >= TIMEOUT_MS);
 
         // Check the timeout wasn't too long
-        Assert.assertTrue(ConstantTxEndpoint.getTimeout() < TIMEOUT_MS*2);
+        Assert.assertTrue(ConstantTxEndpoint.getTimeout() < TIMEOUT_MS * 2);
     }
-
 
     public static class BlockingConfig extends WsContextListener {
 
@@ -465,8 +441,8 @@ public class TestWsWebSocketContainer extends WebSocketBaseTest {
         @Override
         public void contextInitialized(ServletContextEvent sce) {
             super.contextInitialized(sce);
-            ServerContainer sc =
-                    (ServerContainer) sce.getServletContext().getAttribute(
+            ServerContainer sc = (ServerContainer) sce.getServletContext()
+                    .getAttribute(
                             Constants.SERVER_CONTAINER_SERVLET_CONTEXT_ATTRIBUTE);
             try {
                 // Reset blocking state
@@ -477,7 +453,6 @@ public class TestWsWebSocketContainer extends WebSocketBaseTest {
             }
         }
     }
-
 
     @ServerEndpoint("/block")
     public static class BlockingPojo {
@@ -501,6 +476,7 @@ public class TestWsWebSocketContainer extends WebSocketBaseTest {
                 block = true;
             }
         }
+
         @SuppressWarnings("unused")
         @OnMessage
         public void echoTextMessage(Session session, String msg, boolean last) {
@@ -514,7 +490,6 @@ public class TestWsWebSocketContainer extends WebSocketBaseTest {
                 // Ignore
             }
         }
-
 
         @SuppressWarnings("unused")
         @OnMessage
@@ -532,9 +507,8 @@ public class TestWsWebSocketContainer extends WebSocketBaseTest {
         }
     }
 
-
-    public static class BlockingBinaryHandler
-            implements MessageHandler.Partial<ByteBuffer> {
+    public static class BlockingBinaryHandler implements
+            MessageHandler.Partial<ByteBuffer> {
 
         @Override
         public void onMessage(ByteBuffer messagePart, boolean last) {
@@ -546,14 +520,12 @@ public class TestWsWebSocketContainer extends WebSocketBaseTest {
         }
     }
 
-
     public static class ConstantTxEndpoint extends Endpoint {
 
         // Have to be static to be able to retrieve results from test case
         private static volatile long timeout = -1;
         private static volatile Exception exception = null;
         private static volatile boolean running = true;
-
 
         @Override
         public void onOpen(Session session, EndpointConfig config) {
@@ -571,7 +543,8 @@ public class TestWsWebSocketContainer extends WebSocketBaseTest {
             // to fail so reduce the timeout from the default so the test
             // completes faster
             session.getUserProperties().put(
-                    WsRemoteEndpointImplBase.BLOCKING_SEND_TIMEOUT_PROPERTY, Long.valueOf(5000));
+                    WsRemoteEndpointImplBase.BLOCKING_SEND_TIMEOUT_PROPERTY,
+                    Long.valueOf(5000));
 
             // Should send quickly until the network buffers fill up and then
             // block until the timeout kicks in
@@ -603,7 +576,6 @@ public class TestWsWebSocketContainer extends WebSocketBaseTest {
         }
     }
 
-
     public static class ConstantTxConfig extends WsContextListener {
 
         private static final String PATH = "/test";
@@ -611,8 +583,8 @@ public class TestWsWebSocketContainer extends WebSocketBaseTest {
         @Override
         public void contextInitialized(ServletContextEvent sce) {
             super.contextInitialized(sce);
-            ServerContainer sc =
-                    (ServerContainer) sce.getServletContext().getAttribute(
+            ServerContainer sc = (ServerContainer) sce.getServletContext()
+                    .getAttribute(
                             Constants.SERVER_CONTAINER_SERVLET_CONTEXT_ATTRIBUTE);
             try {
                 sc.addEndpoint(ServerEndpointConfig.Builder.create(
@@ -626,7 +598,6 @@ public class TestWsWebSocketContainer extends WebSocketBaseTest {
         }
     }
 
-
     @Test
     public void testGetOpenSessions() throws Exception {
         Tomcat tomcat = getTomcatInstance();
@@ -638,8 +609,8 @@ public class TestWsWebSocketContainer extends WebSocketBaseTest {
 
         tomcat.start();
 
-        WebSocketContainer wsContainer =
-                ContainerProvider.getWebSocketContainer();
+        WebSocketContainer wsContainer = ContainerProvider
+                .getWebSocketContainer();
 
         EndpointA endpointA = new EndpointA();
         Session s1a = connectToEchoServer(wsContainer, endpointA,
@@ -682,7 +653,6 @@ public class TestWsWebSocketContainer extends WebSocketBaseTest {
         s2b.close();
     }
 
-
     @Test
     public void testSessionExpiryContainer() throws Exception {
 
@@ -696,8 +666,8 @@ public class TestWsWebSocketContainer extends WebSocketBaseTest {
         tomcat.start();
 
         // Need access to implementation methods for configuring unit tests
-        WsWebSocketContainer wsContainer = (WsWebSocketContainer)
-                ContainerProvider.getWebSocketContainer();
+        WsWebSocketContainer wsContainer = (WsWebSocketContainer) ContainerProvider
+                .getWebSocketContainer();
 
         // 5 second timeout
         wsContainer.setDefaultMaxSessionIdleTimeout(5000);
@@ -718,7 +688,7 @@ public class TestWsWebSocketContainer extends WebSocketBaseTest {
         int count = 0;
         boolean isOpen = true;
         while (isOpen && count < 8) {
-            count ++;
+            count++;
             Thread.sleep(1000);
             isOpen = false;
             for (Session session : setA) {
@@ -732,14 +702,13 @@ public class TestWsWebSocketContainer extends WebSocketBaseTest {
         if (isOpen) {
             for (Session session : setA) {
                 if (session.isOpen()) {
-                    System.err.println("Session with ID [" + session.getId() +
-                            "] is open");
+                    System.err.println("Session with ID [" + session.getId()
+                            + "] is open");
                 }
             }
             Assert.fail("There were open sessions");
         }
     }
-
 
     @Test
     public void testSessionExpirySession() throws Exception {
@@ -754,8 +723,8 @@ public class TestWsWebSocketContainer extends WebSocketBaseTest {
         tomcat.start();
 
         // Need access to implementation methods for configuring unit tests
-        WsWebSocketContainer wsContainer = (WsWebSocketContainer)
-                ContainerProvider.getWebSocketContainer();
+        WsWebSocketContainer wsContainer = (WsWebSocketContainer) ContainerProvider
+                .getWebSocketContainer();
 
         // 5 second timeout
         wsContainer.setDefaultMaxSessionIdleTimeout(5000);
@@ -781,7 +750,7 @@ public class TestWsWebSocketContainer extends WebSocketBaseTest {
 
             int count = 0;
             while (getOpenCount(setA) == expected && count < 50) {
-                count ++;
+                count++;
                 Thread.sleep(100);
             }
 
@@ -790,7 +759,6 @@ public class TestWsWebSocketContainer extends WebSocketBaseTest {
 
         Assert.assertEquals(0, getOpenCount(setA));
     }
-
 
     private int getOpenCount(Set<Session> sessions) {
         int result = 0;
@@ -805,8 +773,8 @@ public class TestWsWebSocketContainer extends WebSocketBaseTest {
     private Session connectToEchoServer(WebSocketContainer wsContainer,
             Endpoint endpoint, String path) throws Exception {
         return wsContainer.connectToServer(endpoint,
-                ClientEndpointConfig.Builder.create().build(),
-                new URI("ws://" + getHostName() + ":" + getPort() + path));
+                ClientEndpointConfig.Builder.create().build(), new URI("ws://"
+                        + getHostName() + ":" + getPort() + path));
     }
 
     public static final class EndpointA extends Endpoint {
@@ -817,7 +785,6 @@ public class TestWsWebSocketContainer extends WebSocketBaseTest {
         }
     }
 
-
     public static final class EndpointB extends Endpoint {
 
         @Override
@@ -825,7 +792,6 @@ public class TestWsWebSocketContainer extends WebSocketBaseTest {
             // NO-OP
         }
     }
-
 
     @Test
     public void testConnectToServerEndpointSSL() throws Exception {
@@ -841,18 +807,17 @@ public class TestWsWebSocketContainer extends WebSocketBaseTest {
 
         tomcat.start();
 
-        WebSocketContainer wsContainer =
-                ContainerProvider.getWebSocketContainer();
-        ClientEndpointConfig clientEndpointConfig =
-                ClientEndpointConfig.Builder.create().build();
+        WebSocketContainer wsContainer = ContainerProvider
+                .getWebSocketContainer();
+        ClientEndpointConfig clientEndpointConfig = ClientEndpointConfig.Builder
+                .create().build();
         clientEndpointConfig.getUserProperties().put(
                 WsWebSocketContainer.SSL_TRUSTSTORE_PROPERTY,
                 "test/org/apache/tomcat/util/net/ca.jks");
         Session wsSession = wsContainer.connectToServer(
-                TesterProgrammaticEndpoint.class,
-                clientEndpointConfig,
-                new URI("wss://" + getHostName() + ":" + getPort() +
-                        TesterEchoServer.Config.PATH_ASYNC));
+                TesterProgrammaticEndpoint.class, clientEndpointConfig, new URI(
+                        "wss://" + getHostName() + ":" + getPort()
+                                + TesterEchoServer.Config.PATH_ASYNC));
         CountDownLatch latch = new CountDownLatch(1);
         BasicText handler = new BasicText(latch);
         wsSession.addMessageHandler(handler);
@@ -867,13 +832,11 @@ public class TestWsWebSocketContainer extends WebSocketBaseTest {
         Assert.assertEquals(MESSAGE_STRING_1, messages.peek());
     }
 
-
     @Test
     public void testMaxMessageSize01() throws Exception {
         doMaxMessageSize(TesterEchoServer.Config.PATH_BASIC_LIMIT_LOW,
                 TesterEchoServer.BasicLimitLow.MAX_SIZE - 1, true);
     }
-
 
     @Test
     public void testMaxMessageSize02() throws Exception {
@@ -881,13 +844,11 @@ public class TestWsWebSocketContainer extends WebSocketBaseTest {
                 TesterEchoServer.BasicLimitLow.MAX_SIZE, true);
     }
 
-
     @Test
     public void testMaxMessageSize03() throws Exception {
         doMaxMessageSize(TesterEchoServer.Config.PATH_BASIC_LIMIT_LOW,
                 TesterEchoServer.BasicLimitLow.MAX_SIZE + 1, false);
     }
-
 
     @Test
     public void testMaxMessageSize04() throws Exception {
@@ -895,20 +856,17 @@ public class TestWsWebSocketContainer extends WebSocketBaseTest {
                 TesterEchoServer.BasicLimitHigh.MAX_SIZE - 1, true);
     }
 
-
     @Test
     public void testMaxMessageSize05() throws Exception {
         doMaxMessageSize(TesterEchoServer.Config.PATH_BASIC_LIMIT_HIGH,
                 TesterEchoServer.BasicLimitHigh.MAX_SIZE, true);
     }
 
-
     @Test
     public void testMaxMessageSize06() throws Exception {
         doMaxMessageSize(TesterEchoServer.Config.PATH_BASIC_LIMIT_HIGH,
                 TesterEchoServer.BasicLimitHigh.MAX_SIZE + 1, false);
     }
-
 
     private void doMaxMessageSize(String path, long size, boolean expectOpen)
             throws Exception {
@@ -922,8 +880,8 @@ public class TestWsWebSocketContainer extends WebSocketBaseTest {
 
         tomcat.start();
 
-        WebSocketContainer wsContainer =
-                ContainerProvider.getWebSocketContainer();
+        WebSocketContainer wsContainer = ContainerProvider
+                .getWebSocketContainer();
 
         Session s = connectToEchoServer(wsContainer, new EndpointA(), path);
 
@@ -946,8 +904,8 @@ public class TestWsWebSocketContainer extends WebSocketBaseTest {
             open = s.isOpen();
         }
 
-        Assert.assertEquals(Boolean.valueOf(expectOpen),
-                Boolean.valueOf(s.isOpen()));
+        Assert.assertEquals(Boolean.valueOf(expectOpen), Boolean.valueOf(s
+                .isOpen()));
 
         // Close the session if it is expected to be open
         if (expectOpen) {
@@ -958,17 +916,18 @@ public class TestWsWebSocketContainer extends WebSocketBaseTest {
         validateBackgroundProcessCount(0);
     }
 
-
     private void validateBackgroundProcessCount(int expected) throws Exception {
         int count = 0;
         while (count < (START_STOP_WAIT / 100)) {
-            if (BackgroundProcessManager.getInstance().getProcessCount() == expected) {
+            if (BackgroundProcessManager.getInstance()
+                    .getProcessCount() == expected) {
                 break;
             }
             Thread.sleep(100);
             count++;
         }
-        Assert.assertEquals(expected, BackgroundProcessManager.getInstance().getProcessCount());
+        Assert.assertEquals(expected, BackgroundProcessManager.getInstance()
+                .getProcessCount());
 
     }
 
@@ -977,26 +936,23 @@ public class TestWsWebSocketContainer extends WebSocketBaseTest {
         doTestPerMessageDefalteClient(MESSAGE_STRING_1, 1);
     }
 
-
     @Test
     public void testPerMessageDefalteClient02() throws Exception {
         doTestPerMessageDefalteClient(MESSAGE_EMPTY, 1);
     }
-
 
     @Test
     public void testPerMessageDefalteClient03() throws Exception {
         doTestPerMessageDefalteClient(MESSAGE_STRING_1, 2);
     }
 
-
     @Test
     public void testPerMessageDefalteClient04() throws Exception {
         doTestPerMessageDefalteClient(MESSAGE_EMPTY, 2);
     }
 
-
-    private void doTestPerMessageDefalteClient(String msg, int count) throws Exception {
+    private void doTestPerMessageDefalteClient(String msg, int count)
+            throws Exception {
         Tomcat tomcat = getTomcatInstance();
         // No file system docBase required
         Context ctx = tomcat.addContext("", null);
@@ -1010,16 +966,15 @@ public class TestWsWebSocketContainer extends WebSocketBaseTest {
         List<Extension> extensions = new ArrayList<>(1);
         extensions.add(perMessageDeflate);
 
-        ClientEndpointConfig clientConfig =
-                ClientEndpointConfig.Builder.create().extensions(extensions).build();
+        ClientEndpointConfig clientConfig = ClientEndpointConfig.Builder
+                .create().extensions(extensions).build();
 
-        WebSocketContainer wsContainer =
-                ContainerProvider.getWebSocketContainer();
+        WebSocketContainer wsContainer = ContainerProvider
+                .getWebSocketContainer();
         Session wsSession = wsContainer.connectToServer(
-                TesterProgrammaticEndpoint.class,
-                clientConfig,
-                new URI("ws://" + getHostName() + ":" + getPort() +
-                        TesterEchoServer.Config.PATH_ASYNC));
+                TesterProgrammaticEndpoint.class, clientConfig, new URI("ws://"
+                        + getHostName() + ":" + getPort()
+                        + TesterEchoServer.Config.PATH_ASYNC));
         CountDownLatch latch = new CountDownLatch(count);
         BasicText handler = new BasicText(latch, msg);
         wsSession.addMessageHandler(handler);
@@ -1033,7 +988,6 @@ public class TestWsWebSocketContainer extends WebSocketBaseTest {
 
         ((WsWebSocketContainer) wsContainer).destroy();
     }
-
 
     /*
      * Make this possible to override so sub-class can more easily test proxy

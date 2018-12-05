@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -98,7 +96,7 @@ public class StoreDescription {
 
     /**
      * @param external
-     *            The external to set.
+     *                 The external to set.
      */
     public void setExternalAllowed(boolean external) {
         this.externalAllowed = external;
@@ -121,7 +119,7 @@ public class StoreDescription {
 
     /**
      * @param standard
-     *            The standard to set.
+     *                 The standard to set.
      */
     public void setStandard(boolean standard) {
         this.standard = standard;
@@ -136,7 +134,7 @@ public class StoreDescription {
 
     /**
      * @param backup
-     *            The backup to set.
+     *               The backup to set.
      */
     public void setBackup(boolean backup) {
         this.backup = backup;
@@ -151,7 +149,7 @@ public class StoreDescription {
 
     /**
      * @param aDefault
-     *            The myDefault to set.
+     *                 The myDefault to set.
      */
     public void setDefault(boolean aDefault) {
         this.myDefault = aDefault;
@@ -166,7 +164,7 @@ public class StoreDescription {
 
     /**
      * @param storeFactoryClass
-     *            The storeFactory to set.
+     *                          The storeFactory to set.
      */
     public void setStoreFactoryClass(String storeFactoryClass) {
         this.storeFactoryClass = storeFactoryClass;
@@ -181,7 +179,7 @@ public class StoreDescription {
 
     /**
      * @param storeFactory
-     *            The storeFactory to set.
+     *                     The storeFactory to set.
      */
     public void setStoreFactory(IStoreFactory storeFactory) {
         this.storeFactory = storeFactory;
@@ -196,7 +194,7 @@ public class StoreDescription {
 
     /**
      * @param storeWriterClass
-     *            The storeWriterClass to set.
+     *                         The storeWriterClass to set.
      */
     public void setStoreWriterClass(String storeWriterClass) {
         this.storeWriterClass = storeWriterClass;
@@ -226,7 +224,7 @@ public class StoreDescription {
 
     /**
      * @param tagClass
-     *            The tagClass to set.
+     *                 The tagClass to set.
      */
     public void setTagClass(String tagClass) {
         this.tagClass = tagClass;
@@ -241,7 +239,7 @@ public class StoreDescription {
 
     /**
      * @param transientAttributes
-     *            The transientAttributes to set.
+     *                            The transientAttributes to set.
      */
     public void setTransientAttributes(List<String> transientAttributes) {
         this.transientAttributes = transientAttributes;
@@ -267,7 +265,7 @@ public class StoreDescription {
 
     /**
      * @param transientChildren
-     *            The transientChildren to set.
+     *                          The transientChildren to set.
      */
     public void setTransientChildren(List<String> transientChildren) {
         this.transientChildren = transientChildren;
@@ -322,7 +320,7 @@ public class StoreDescription {
 
     /**
      * @param id
-     *            The id to set.
+     *           The id to set.
      */
     public void setId(String id) {
         this.id = id;
@@ -337,7 +335,7 @@ public class StoreDescription {
 
     /**
      * @param attributes
-     *            The attributes to set.
+     *                   The attributes to set.
      */
     public void setAttributes(boolean attributes) {
         this.attributes = attributes;
@@ -363,7 +361,7 @@ public class StoreDescription {
 
     /**
      * @param children
-     *            The children to set.
+     *                 The children to set.
      */
     public void setChildren(boolean children) {
         this.children = children;

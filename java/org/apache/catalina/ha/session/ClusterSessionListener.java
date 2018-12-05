@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -28,13 +26,15 @@ import org.apache.tomcat.util.res.StringManager;
 
 /**
  * Receive replicated SessionMessage form other cluster node.
+ * 
  * @author Peter Rossbach
  */
 public class ClusterSessionListener extends ClusterListener {
 
-    private static final Log log =
-        LogFactory.getLog(ClusterSessionListener.class);
-    private static final StringManager sm = StringManager.getManager(Constants.Package);
+    private static final Log log = LogFactory.getLog(
+            ClusterSessionListener.class);
+    private static final StringManager sm = StringManager.getManager(
+            Constants.Package);
 
     //--Constructor---------------------------------------------
 
@@ -49,7 +49,7 @@ public class ClusterSessionListener extends ClusterListener {
      * broadcast it invoking the messageReceived on the receiver.
      *
      * @param myobj
-     *            ClusterMessage - the message received from the cluster
+     *              ClusterMessage - the message received from the cluster
      */
     @Override
     public void messageReceived(ClusterMessage myobj) {
@@ -58,17 +58,19 @@ public class ClusterSessionListener extends ClusterListener {
             String ctxname = msg.getContextName();
             //check if the message is a EVT_GET_ALL_SESSIONS,
             //if so, wait until we are fully started up
-            Map<String,ClusterManager> managers = cluster.getManagers() ;
+            Map<String, ClusterManager> managers = cluster.getManagers();
             if (ctxname == null) {
-                for (Map.Entry<String, ClusterManager> entry :
-                        managers.entrySet()) {
+                for (Map.Entry<String, ClusterManager> entry : managers
+                        .entrySet()) {
                     if (entry.getValue() != null)
                         entry.getValue().messageDataReceived(msg);
                     else {
                         //this happens a lot before the system has started
                         // up
                         if (log.isDebugEnabled())
-                            log.debug(sm.getString("clusterSessionListener.noManager", entry.getKey()));
+                            log.debug(sm.getString(
+                                    "clusterSessionListener.noManager", entry
+                                            .getKey()));
                     }
                 }
             } else {
@@ -77,14 +79,17 @@ public class ClusterSessionListener extends ClusterListener {
                     mgr.messageDataReceived(msg);
                 } else {
                     if (log.isWarnEnabled())
-                        log.warn(sm.getString("clusterSessionListener.noManager", ctxname));
+                        log.warn(sm.getString(
+                                "clusterSessionListener.noManager", ctxname));
 
                     // A no context manager message is replied in order to avoid
                     // timeout of GET_ALL_SESSIONS sync phase.
                     if (msg.getEventType() == SessionMessage.EVT_GET_ALL_SESSIONS) {
-                        SessionMessage replymsg = new SessionMessageImpl(ctxname,
+                        SessionMessage replymsg = new SessionMessageImpl(
+                                ctxname,
                                 SessionMessage.EVT_ALL_SESSION_NOCONTEXTMANAGER,
-                                null, "NO-CONTEXT-MANAGER","NO-CONTEXT-MANAGER-" + ctxname);
+                                null, "NO-CONTEXT-MANAGER",
+                                "NO-CONTEXT-MANAGER-" + ctxname);
                         cluster.send(replymsg, msg.getAddress());
                     }
                 }
@@ -108,4 +113,3 @@ public class ClusterSessionListener extends ClusterListener {
         return (msg instanceof SessionMessage);
     }
 }
-

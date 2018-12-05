@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -33,12 +31,11 @@ import org.apache.catalina.startup.Tomcat;
 import org.apache.catalina.startup.TomcatBaseTest;
 import org.apache.tomcat.util.buf.ByteChunk;
 
-public class TestOutputBuffer extends TomcatBaseTest{
+public class TestOutputBuffer extends TomcatBaseTest {
 
     /*
      * Expect that the buffered results are slightly slower since Tomcat now has
      * an internal buffer so an extra one just adds overhead.
-     *
      * @see "https://bz.apache.org/bugzilla/show_bug.cgi?id=52328"
      */
     @Test
@@ -47,7 +44,7 @@ public class TestOutputBuffer extends TomcatBaseTest{
 
         Context root = tomcat.addContext("", TEMP_DIR);
 
-        for (int i = 1; i <= WritingServlet.EXPECTED_CONTENT_LENGTH; i*=10) {
+        for (int i = 1; i <= WritingServlet.EXPECTED_CONTENT_LENGTH; i *= 10) {
             WritingServlet servlet = new WritingServlet(i);
             Tomcat.addServlet(root, "servlet" + i, servlet);
             root.addServletMappingDecoded("/servlet" + i, "servlet" + i);
@@ -57,20 +54,20 @@ public class TestOutputBuffer extends TomcatBaseTest{
 
         ByteChunk bc = new ByteChunk();
 
-        for (int i = 1; i <= WritingServlet.EXPECTED_CONTENT_LENGTH; i*=10) {
-            int rc = getUrl("http://localhost:" + getPort() +
-                    "/servlet" + i, bc, null, null);
+        for (int i = 1; i <= WritingServlet.EXPECTED_CONTENT_LENGTH; i *= 10) {
+            int rc = getUrl("http://localhost:" + getPort() + "/servlet" + i,
+                    bc, null, null);
             assertEquals(HttpServletResponse.SC_OK, rc);
-            assertEquals(
-                    WritingServlet.EXPECTED_CONTENT_LENGTH, bc.getLength());
+            assertEquals(WritingServlet.EXPECTED_CONTENT_LENGTH, bc
+                    .getLength());
 
             bc.recycle();
 
-            rc = getUrl("http://localhost:" + getPort() +
-                    "/servlet" + i + "?useBuffer=y", bc, null, null);
+            rc = getUrl("http://localhost:" + getPort() + "/servlet" + i
+                    + "?useBuffer=y", bc, null, null);
             assertEquals(HttpServletResponse.SC_OK, rc);
-            assertEquals(
-                    WritingServlet.EXPECTED_CONTENT_LENGTH, bc.getLength());
+            assertEquals(WritingServlet.EXPECTED_CONTENT_LENGTH, bc
+                    .getLength());
 
             bc.recycle();
         }
@@ -137,9 +134,9 @@ public class TestOutputBuffer extends TomcatBaseTest{
             }
             long lastRunNano = System.nanoTime() - start;
 
-            System.out.println("Write length: " + writeString.length() +
-                    ", Buffered: " + (useBufferStr == null ? "n" : "y") +
-                    ", Time: " + lastRunNano + "ns");
+            System.out.println("Write length: " + writeString.length()
+                    + ", Buffered: " + (useBufferStr == null ? "n" : "y")
+                    + ", Time: " + lastRunNano + "ns");
         }
     }
 

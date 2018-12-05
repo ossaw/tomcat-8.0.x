@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -29,7 +27,8 @@ import org.apache.catalina.tribes.Member;
 /**
  * A <b>membership</b> implementation using simple multicast.
  * This is the representation of a multicast membership.
- * This class is responsible for maintaining a list of active cluster nodes in the cluster.
+ * This class is responsible for maintaining a list of active cluster nodes in
+ * the cluster.
  * If a node fails to send out a heartbeat, the node will be dismissed.
  *
  * @author Peter Rossbach
@@ -65,7 +64,8 @@ public class Membership implements Cloneable {
         synchronized (membersLock) {
             Membership clone = new Membership(local, memberComparator);
             @SuppressWarnings("unchecked")
-            final HashMap<Member, MbrEntry> tmpclone = (HashMap<Member, MbrEntry>) map.clone();
+            final HashMap<Member, MbrEntry> tmpclone = (HashMap<Member, MbrEntry>) map
+                    .clone();
             clone.map = tmpclone;
             clone.members = new Member[members.length];
             System.arraycopy(members, 0, clone.members, 0, members.length);
@@ -75,7 +75,9 @@ public class Membership implements Cloneable {
 
     /**
      * Constructs a new membership
-     * @param local - has to be the name of the local member. Used to filter the local member from the cluster membership
+     * 
+     * @param local        - has to be the name of the local member. Used to
+     *                     filter the local member from the cluster membership
      * @param includeLocal - TBA
      */
     public Membership(Member local, boolean includeLocal) {
@@ -90,7 +92,8 @@ public class Membership implements Cloneable {
         this(local, comp, false);
     }
 
-    public Membership(Member local, Comparator<Member> comp, boolean includeLocal) {
+    public Membership(Member local, Comparator<Member> comp,
+            boolean includeLocal) {
         this.local = local;
         this.memberComparator = comp;
         if (includeLocal) {
@@ -105,7 +108,7 @@ public class Membership implements Cloneable {
     public void reset() {
         synchronized (membersLock) {
             map.clear();
-            members = EMPTY_MEMBERS ;
+            members = EMPTY_MEMBERS;
         }
     }
 
@@ -114,7 +117,7 @@ public class Membership implements Cloneable {
      *
      * @param member - the member that just pinged us
      * @return - true if this member is new to the cluster, false otherwise.<br>
-     * - false if this member is the local member or updated.
+     *         - false if this member is the local member or updated.
      */
     public boolean memberAlive(Member member) {
         // Ignore ourselves
@@ -131,9 +134,11 @@ public class Membership implements Cloneable {
             } else {
                 // Update the member alive time
                 Member updateMember = entry.getMember();
-                if (updateMember.getMemberAliveTime() != member.getMemberAliveTime()) {
+                if (updateMember.getMemberAliveTime() != member
+                        .getMemberAliveTime()) {
                     // Update fields that can change
-                    updateMember.setMemberAliveTime(member.getMemberAliveTime());
+                    updateMember.setMemberAliveTime(member
+                            .getMemberAliveTime());
                     updateMember.setPayload(member.getPayload());
                     updateMember.setCommand(member.getCommand());
                     // Re-order. Can't sort in place since a call to
@@ -159,7 +164,7 @@ public class Membership implements Cloneable {
     public MbrEntry addMember(Member member) {
         MbrEntry entry = new MbrEntry(member);
         synchronized (membersLock) {
-            if (!map.containsKey(member) ) {
+            if (!map.containsKey(member)) {
                 map.put(member, entry);
                 Member results[] = new Member[members.length + 1];
                 System.arraycopy(members, 0, results, 0, members.length);
@@ -186,7 +191,8 @@ public class Membership implements Cloneable {
                     break;
                 }
             }
-            if (n < 0) return;
+            if (n < 0)
+                return;
             Member results[] = new Member[members.length - 1];
             int j = 0;
             for (int i = 0; i < members.length; i++) {
@@ -202,13 +208,15 @@ public class Membership implements Cloneable {
      * Runs a refresh cycle and returns a list of members that has expired.
      * This also removes the members from the membership, in such a way that
      * getMembers() = getMembers() - expire()
-     * @param maxtime - the max time a member can remain unannounced before it is considered dead.
+     * 
+     * @param maxtime - the max time a member can remain unannounced before it
+     *                is considered dead.
      * @return the list of expired members
      */
     public Member[] expire(long maxtime) {
         synchronized (membersLock) {
             if (!hasMembers()) {
-               return EMPTY_MEMBERS;
+                return EMPTY_MEMBERS;
             }
 
             ArrayList<Member> list = null;
@@ -227,12 +235,12 @@ public class Membership implements Cloneable {
             if (list != null) {
                 Member[] result = new Member[list.size()];
                 list.toArray(result);
-                for (int j=0; j<result.length; j++) {
+                for (int j = 0; j < result.length; j++) {
                     removeMember(result[j]);
                 }
                 return result;
             } else {
-                return EMPTY_MEMBERS ;
+                return EMPTY_MEMBERS;
             }
         }
     }
@@ -246,7 +254,6 @@ public class Membership implements Cloneable {
     public boolean hasMembers() {
         return members.length > 0;
     }
-
 
     public Member getMember(Member mbr) {
         Member[] members = this.members;
@@ -282,16 +289,17 @@ public class Membership implements Cloneable {
     @Deprecated
     protected synchronized MbrEntry[] getMemberEntries() {
         MbrEntry[] result = new MbrEntry[map.size()];
-        Iterator<Map.Entry<Member,MbrEntry>> i = map.entrySet().iterator();
+        Iterator<Map.Entry<Member, MbrEntry>> i = map.entrySet().iterator();
         int pos = 0;
-        while ( i.hasNext() )
+        while (i.hasNext())
             result[pos++] = i.next().getValue();
         return result;
     }
 
     // --------------------------------------------- Inner Class
 
-    private static class MemberComparator implements Comparator<Member>, Serializable {
+    private static class MemberComparator implements Comparator<Member>,
+            Serializable {
 
         private static final long serialVersionUID = 1L;
 
@@ -318,14 +326,14 @@ public class Membership implements Cloneable {
         protected long lastHeardFrom;
 
         public MbrEntry(Member mbr) {
-           this.mbr = mbr;
+            this.mbr = mbr;
         }
 
         /**
          * Indicate that this member has been accessed.
          */
-        public void accessed(){
-           lastHeardFrom = System.currentTimeMillis();
+        public void accessed() {
+            lastHeardFrom = System.currentTimeMillis();
         }
 
         /**

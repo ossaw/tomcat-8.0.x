@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -23,8 +21,10 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 import javax.management.MBeanNotificationInfo;
 
 /**
- * <p>Internal configuration information for a <code>Notification</code>
- * descriptor.</p>
+ * <p>
+ * Internal configuration information for a <code>Notification</code>
+ * descriptor.
+ * </p>
  *
  * @author Craig R. McClanahan
  */
@@ -33,7 +33,6 @@ public class NotificationInfo extends FeatureInfo {
     static final long serialVersionUID = -6319885418912650856L;
 
     // ----------------------------------------------------- Instance Variables
-
 
     /**
      * The <code>ModelMBeanNotificationInfo</code> object that corresponds
@@ -44,7 +43,6 @@ public class NotificationInfo extends FeatureInfo {
     protected final ReadWriteLock notifTypesLock = new ReentrantReadWriteLock();
 
     // ------------------------------------------------------------- Properties
-
 
     /**
      * Override the <code>description</code> property setter.
@@ -57,7 +55,6 @@ public class NotificationInfo extends FeatureInfo {
         this.info = null;
     }
 
-
     /**
      * Override the <code>name</code> property setter.
      *
@@ -68,7 +65,6 @@ public class NotificationInfo extends FeatureInfo {
         super.setName(name);
         this.info = null;
     }
-
 
     /**
      * The set of notification types for this MBean.
@@ -83,9 +79,7 @@ public class NotificationInfo extends FeatureInfo {
         }
     }
 
-
     // --------------------------------------------------------- Public Methods
-
 
     /**
      * Add a new notification type to the set managed by an MBean.
@@ -108,7 +102,6 @@ public class NotificationInfo extends FeatureInfo {
         }
     }
 
-
     /**
      * Create and return a <code>ModelMBeanNotificationInfo</code> object that
      * corresponds to the attribute described by this instance.
@@ -120,15 +113,14 @@ public class NotificationInfo extends FeatureInfo {
             return info;
 
         // Create and return a new information object
-        info = new MBeanNotificationInfo
-            (getNotifTypes(), getName(), getDescription());
+        info = new MBeanNotificationInfo(getNotifTypes(), getName(),
+                getDescription());
         //Descriptor descriptor = info.getDescriptor();
         //addFields(descriptor);
         //info.setDescriptor(descriptor);
         return info;
 
     }
-
 
     /**
      * Return a string representation of this notification descriptor.

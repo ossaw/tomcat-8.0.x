@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -58,8 +56,8 @@ public class TesterOpenSSL {
         } else if (versionString.startsWith("OpenSSL 1.0.1")) {
             // Support ends 2016-12-31
             VERSION = 10001;
-        // Note: Release branches 1.0.0 and earlier are no longer supported by
-        //       the OpenSSL team so these tests don't support them either.
+            // Note: Release branches 1.0.0 and earlier are no longer supported by
+            //       the OpenSSL team so these tests don't support them either.
         } else {
             VERSION = -1;
         }
@@ -177,19 +175,27 @@ public class TesterOpenSSL {
             unimplemented.add(Cipher.TLS_DHE_PSK_WITH_CAMELLIA_256_CBC_SHA384);
             unimplemented.add(Cipher.TLS_RSA_PSK_WITH_CAMELLIA_128_CBC_SHA256);
             unimplemented.add(Cipher.TLS_RSA_PSK_WITH_CAMELLIA_256_CBC_SHA384);
-            unimplemented.add(Cipher.TLS_ECDHE_PSK_WITH_CAMELLIA_128_CBC_SHA256);
-            unimplemented.add(Cipher.TLS_ECDHE_PSK_WITH_CAMELLIA_256_CBC_SHA384);
+            unimplemented.add(
+                    Cipher.TLS_ECDHE_PSK_WITH_CAMELLIA_128_CBC_SHA256);
+            unimplemented.add(
+                    Cipher.TLS_ECDHE_PSK_WITH_CAMELLIA_256_CBC_SHA384);
             unimplemented.add(Cipher.TLS_DHE_DSS_WITH_CAMELLIA_256_CBC_SHA256);
             unimplemented.add(Cipher.TLS_DHE_RSA_WITH_CAMELLIA_256_CBC_SHA256);
             unimplemented.add(Cipher.TLS_DHE_DSS_WITH_CAMELLIA_128_CBC_SHA256);
             unimplemented.add(Cipher.TLS_DHE_RSA_WITH_CAMELLIA_128_CBC_SHA256);
-            unimplemented.add(Cipher.TLS_ECDH_ECDSA_WITH_CAMELLIA_256_CBC_SHA384);
+            unimplemented.add(
+                    Cipher.TLS_ECDH_ECDSA_WITH_CAMELLIA_256_CBC_SHA384);
             unimplemented.add(Cipher.TLS_ECDH_RSA_WITH_CAMELLIA_256_CBC_SHA384);
-            unimplemented.add(Cipher.TLS_ECDHE_ECDSA_WITH_CAMELLIA_128_CBC_SHA256);
-            unimplemented.add(Cipher.TLS_ECDHE_RSA_WITH_CAMELLIA_128_CBC_SHA256);
-            unimplemented.add(Cipher.TLS_ECDHE_ECDSA_WITH_CAMELLIA_256_CBC_SHA384);
-            unimplemented.add(Cipher.TLS_ECDH_ECDSA_WITH_CAMELLIA_128_CBC_SHA256);
-            unimplemented.add(Cipher.TLS_ECDHE_RSA_WITH_CAMELLIA_256_CBC_SHA384);
+            unimplemented.add(
+                    Cipher.TLS_ECDHE_ECDSA_WITH_CAMELLIA_128_CBC_SHA256);
+            unimplemented.add(
+                    Cipher.TLS_ECDHE_RSA_WITH_CAMELLIA_128_CBC_SHA256);
+            unimplemented.add(
+                    Cipher.TLS_ECDHE_ECDSA_WITH_CAMELLIA_256_CBC_SHA384);
+            unimplemented.add(
+                    Cipher.TLS_ECDH_ECDSA_WITH_CAMELLIA_128_CBC_SHA256);
+            unimplemented.add(
+                    Cipher.TLS_ECDHE_RSA_WITH_CAMELLIA_256_CBC_SHA384);
             unimplemented.add(Cipher.TLS_ECDH_RSA_WITH_CAMELLIA_128_CBC_SHA256);
             unimplemented.add(Cipher.TLS_RSA_WITH_CAMELLIA_128_CBC_SHA256);
             unimplemented.add(Cipher.TLS_DHE_DSS_WITH_CAMELLIA_128_CBC_SHA256);
@@ -219,11 +225,14 @@ public class TesterOpenSSL {
             unimplemented.add(Cipher.TLS_ECDHE_ECDSA_WITH_AES_256_CCM);
             unimplemented.add(Cipher.TLS_ECDHE_ECDSA_WITH_AES_128_CCM_8);
             unimplemented.add(Cipher.TLS_ECDHE_ECDSA_WITH_AES_256_CCM_8);
-            unimplemented.add(Cipher.TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256);
-            unimplemented.add(Cipher.TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305_SHA256);
+            unimplemented.add(
+                    Cipher.TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256);
+            unimplemented.add(
+                    Cipher.TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305_SHA256);
             unimplemented.add(Cipher.TLS_DHE_RSA_WITH_CHACHA20_POLY1305_SHA256);
             unimplemented.add(Cipher.TLS_PSK_WITH_CHACHA20_POLY1305_SHA256);
-            unimplemented.add(Cipher.TLS_ECDHE_PSK_WITH_CHACHA20_POLY1305_SHA256);
+            unimplemented.add(
+                    Cipher.TLS_ECDHE_PSK_WITH_CHACHA20_POLY1305_SHA256);
             unimplemented.add(Cipher.TLS_DHE_PSK_WITH_CHACHA20_POLY1305_SHA256);
             unimplemented.add(Cipher.TLS_RSA_PSK_WITH_CHACHA20_POLY1305_SHA256);
         } else {
@@ -268,8 +277,10 @@ public class TesterOpenSSL {
             unimplemented.add(Cipher.TLS_ECDH_ECDSA_WITH_AES_256_GCM_SHA384);
             unimplemented.add(Cipher.TLS_ECDH_RSA_WITH_AES_128_GCM_SHA256);
             unimplemented.add(Cipher.TLS_ECDH_RSA_WITH_AES_256_GCM_SHA384);
-            unimplemented.add(Cipher.TLS_ECDH_ECDSA_WITH_CAMELLIA_128_CBC_SHA256);
-            unimplemented.add(Cipher.TLS_ECDH_ECDSA_WITH_CAMELLIA_256_CBC_SHA384);
+            unimplemented.add(
+                    Cipher.TLS_ECDH_ECDSA_WITH_CAMELLIA_128_CBC_SHA256);
+            unimplemented.add(
+                    Cipher.TLS_ECDH_ECDSA_WITH_CAMELLIA_256_CBC_SHA384);
             unimplemented.add(Cipher.TLS_ECDH_RSA_WITH_CAMELLIA_128_CBC_SHA256);
             unimplemented.add(Cipher.TLS_ECDH_RSA_WITH_CAMELLIA_256_CBC_SHA384);
             unimplemented.add(Cipher.TLS_RSA_WITH_RC4_128_MD5);
@@ -298,17 +309,18 @@ public class TesterOpenSSL {
             unimplemented.add(Cipher.TLS_ECDHE_ECDSA_WITH_3DES_EDE_CBC_SHA);
             unimplemented.add(Cipher.TLS_SRP_SHA_RSA_WITH_3DES_EDE_CBC_SHA);
         }
-        OPENSSL_UNIMPLEMENTED_CIPHERS = Collections.unmodifiableSet(unimplemented);
+        OPENSSL_UNIMPLEMENTED_CIPHERS = Collections.unmodifiableSet(
+                unimplemented);
     }
-
 
     private TesterOpenSSL() {
         // Utility class. Hide default constructor.
     }
 
-
-    public static Set<String> getOpenSSLCiphersAsSet(String specification) throws Exception {
-        String[] ciphers = getOpenSSLCiphersAsExpression(specification).trim().split(":");
+    public static Set<String> getOpenSSLCiphersAsSet(String specification)
+            throws Exception {
+        String[] ciphers = getOpenSSLCiphersAsExpression(specification).trim()
+                .split(":");
         Set<String> result = new HashSet<>(ciphers.length);
         for (String cipher : ciphers) {
             result.add(cipher);
@@ -317,13 +329,13 @@ public class TesterOpenSSL {
 
     }
 
-
-    public static String getOpenSSLCiphersAsExpression(String specification) throws Exception {
+    public static String getOpenSSLCiphersAsExpression(String specification)
+            throws Exception {
         String stdout;
         if (specification == null) {
             stdout = executeOpenSSLCommand("ciphers", "-v");
         } else {
-                stdout = executeOpenSSLCommand("ciphers", "-v", specification);
+            stdout = executeOpenSSLCommand("ciphers", "-v", specification);
         }
 
         if (stdout.length() == 0) {
@@ -360,7 +372,6 @@ public class TesterOpenSSL {
         return output.toString();
     }
 
-
     /*
      * Use this method to filter parser results when comparing them to OpenSSL
      * results to take account of unimplemented cipher suites.
@@ -373,8 +384,8 @@ public class TesterOpenSSL {
         }
     }
 
-
-    private static String executeOpenSSLCommand(String... args) throws IOException {
+    private static String executeOpenSSLCommand(String... args)
+            throws IOException {
         String openSSLPath = System.getProperty("tomcat.test.openssl.path");
         if (openSSLPath == null || openSSLPath.length() == 0) {
             openSSLPath = "openssl";
@@ -385,7 +396,8 @@ public class TesterOpenSSL {
             cmd.add(arg);
         }
 
-        ProcessBuilder pb = new ProcessBuilder(cmd.toArray(new String[cmd.size()]));
+        ProcessBuilder pb = new ProcessBuilder(cmd.toArray(new String[cmd
+                .size()]));
         Process p = pb.start();
 
         InputStreamToText stdout = new InputStreamToText(p.getInputStream());

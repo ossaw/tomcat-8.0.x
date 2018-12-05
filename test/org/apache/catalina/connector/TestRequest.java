@@ -1,18 +1,16 @@
 /*
- *  Licensed to the Apache Software Foundation (ASF) under one or more
- *  contributor license agreements.  See the NOTICE file distributed with
- *  this work for additional information regarding copyright ownership.
- *  The ASF licenses this file to You under the Apache License, Version 2.0
- *  (the "License"); you may not use this file except in compliance with
- *  the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements. See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.apache.catalina.connector;
 
@@ -66,7 +64,9 @@ public class TestRequest extends TomcatBaseTest {
     @BeforeClass
     public static void setup() {
         // Some of these tests need this and it used statically so set it once
-        System.setProperty("org.apache.tomcat.util.buf.UDecoder.ALLOW_ENCODED_SLASH", "true");
+        System.setProperty(
+                "org.apache.tomcat.util.buf.UDecoder.ALLOW_ENCODED_SLASH",
+                "true");
     }
 
     /**
@@ -172,7 +172,8 @@ public class TestRequest extends TomcatBaseTest {
         }
 
         private synchronized void init() throws Exception {
-            if (init) return;
+            if (init)
+                return;
 
             Tomcat tomcat = getTomcatInstance();
             Context root = tomcat.addContext("", TEMP_DIR);
@@ -182,8 +183,8 @@ public class TestRequest extends TomcatBaseTest {
             if (createFilter) {
                 FilterDef failedRequestFilter = new FilterDef();
                 failedRequestFilter.setFilterName("failedRequestFilter");
-                failedRequestFilter.setFilterClass(
-                        FailedRequestFilter.class.getName());
+                failedRequestFilter.setFilterClass(FailedRequestFilter.class
+                        .getName());
                 FilterMap failedRequestFilterMap = new FilterMap();
                 failedRequestFilterMap.setFilterName("failedRequestFilter");
                 failedRequestFilterMap.addURLPatternDecoded("/*");
@@ -211,29 +212,21 @@ public class TestRequest extends TomcatBaseTest {
                 // Send request in two parts
                 String[] request = new String[2];
                 if (ucChunkedHead) {
-                    request[0] =
-                        "POST http://localhost:8080/test HTTP/1.1" + CRLF +
-                        "content-type: application/x-www-form-urlencoded" + CRLF +
-                        "Transfer-Encoding: CHUNKED" + CRLF +
-                        "Connection: close" + CRLF +
-                        CRLF +
-                        "3" + CRLF +
-                        "a=1" + CRLF;
+                    request[0] = "POST http://localhost:8080/test HTTP/1.1"
+                            + CRLF
+                            + "content-type: application/x-www-form-urlencoded"
+                            + CRLF + "Transfer-Encoding: CHUNKED" + CRLF
+                            + "Connection: close" + CRLF + CRLF + "3" + CRLF
+                            + "a=1" + CRLF;
                 } else {
-                    request[0] =
-                        "POST http://localhost:8080/test HTTP/1.1" + CRLF +
-                        "content-type: application/x-www-form-urlencoded" + CRLF +
-                        "Transfer-Encoding: chunked" + CRLF +
-                        "Connection: close" + CRLF +
-                        CRLF +
-                        "3" + CRLF +
-                        "a=1" + CRLF;
+                    request[0] = "POST http://localhost:8080/test HTTP/1.1"
+                            + CRLF
+                            + "content-type: application/x-www-form-urlencoded"
+                            + CRLF + "Transfer-Encoding: chunked" + CRLF
+                            + "Connection: close" + CRLF + CRLF + "3" + CRLF
+                            + "a=1" + CRLF;
                 }
-                request[1] =
-                    "4" + CRLF +
-                    "&b=2" + CRLF +
-                    "0" + CRLF +
-                    CRLF;
+                request[1] = "4" + CRLF + "&b=2" + CRLF + "0" + CRLF + CRLF;
 
                 setRequest(request);
                 processRequest(); // blocks until response has been read
@@ -312,7 +305,7 @@ public class TestRequest extends TomcatBaseTest {
      * {@link Request#logout()}.
      */
     @Test
-    public void testLoginLogout() throws Exception{
+    public void testLoginLogout() throws Exception {
         // Setup Tomcat instance
         Tomcat tomcat = getTomcatInstance();
 
@@ -369,13 +362,14 @@ public class TestRequest extends TomcatBaseTest {
     @Test
     public void testBug49424NoChunking() throws Exception {
         Tomcat tomcat = getTomcatInstance();
-        Context root = tomcat.addContext("",
-                System.getProperty("java.io.tmpdir"));
+        Context root = tomcat.addContext("", System.getProperty(
+                "java.io.tmpdir"));
         Tomcat.addServlet(root, "Bug37794", new Bug37794Servlet());
         root.addServletMappingDecoded("/", "Bug37794");
         tomcat.start();
 
-        HttpURLConnection conn = getConnection("http://localhost:" + getPort() + "/");
+        HttpURLConnection conn = getConnection("http://localhost:" + getPort()
+                + "/");
         InputStream is = conn.getInputStream();
         assertNotNull(is);
     }
@@ -383,13 +377,14 @@ public class TestRequest extends TomcatBaseTest {
     @Test
     public void testBug49424WithChunking() throws Exception {
         Tomcat tomcat = getTomcatInstance();
-        Context root = tomcat.addContext("",
-                System.getProperty("java.io.tmpdir"));
+        Context root = tomcat.addContext("", System.getProperty(
+                "java.io.tmpdir"));
         Tomcat.addServlet(root, "Bug37794", new Bug37794Servlet());
         root.addServletMappingDecoded("/", "Bug37794");
         tomcat.start();
 
-        HttpURLConnection conn = getConnection("http://localhost:" + getPort() + "/");
+        HttpURLConnection conn = getConnection("http://localhost:" + getPort()
+                + "/");
         conn.setChunkedStreamingMode(8 * 1024);
         InputStream is = conn.getInputStream();
         assertNotNull(is);
@@ -408,11 +403,9 @@ public class TestRequest extends TomcatBaseTest {
         // Make sure GET works properly
         client.doRequest("GET", "foo=bar", null, null, false);
 
-        assertTrue("Non-200 response for GET request",
-                   client.isResponse200());
-        assertEquals("Incorrect response for GET request",
-                     "foo=bar",
-                     client.getResponseBody());
+        assertTrue("Non-200 response for GET request", client.isResponse200());
+        assertEquals("Incorrect response for GET request", "foo=bar", client
+                .getResponseBody());
 
         client.reset();
 
@@ -420,63 +413,60 @@ public class TestRequest extends TomcatBaseTest {
         // Make sure POST works properly
         //
         // POST with separate GET and POST parameters
-        client.doRequest("POST", "foo=bar", "application/x-www-form-urlencoded", "bar=baz", true);
+        client.doRequest("POST", "foo=bar", "application/x-www-form-urlencoded",
+                "bar=baz", true);
 
-        assertTrue("Non-200 response for POST request",
-                   client.isResponse200());
-        assertEquals("Incorrect response for POST request",
-                     "bar=baz,foo=bar",
-                     client.getResponseBody());
+        assertTrue("Non-200 response for POST request", client.isResponse200());
+        assertEquals("Incorrect response for POST request", "bar=baz,foo=bar",
+                client.getResponseBody());
 
         client.reset();
 
         // POST with overlapping GET and POST parameters
-        client.doRequest("POST", "foo=bar&bar=foo", "application/x-www-form-urlencoded", "bar=baz&foo=baz", true);
+        client.doRequest("POST", "foo=bar&bar=foo",
+                "application/x-www-form-urlencoded", "bar=baz&foo=baz", true);
 
-        assertTrue("Non-200 response for POST request",
-                   client.isResponse200());
+        assertTrue("Non-200 response for POST request", client.isResponse200());
         assertEquals("Incorrect response for POST request",
-                     "bar=baz,bar=foo,foo=bar,foo=baz",
-                     client.getResponseBody());
+                "bar=baz,bar=foo,foo=bar,foo=baz", client.getResponseBody());
 
         client.reset();
 
         // PUT without POST-style parsing
-        client.doRequest("PUT", "foo=bar&bar=foo", "application/x-www-form-urlencoded", "bar=baz&foo=baz", false);
+        client.doRequest("PUT", "foo=bar&bar=foo",
+                "application/x-www-form-urlencoded", "bar=baz&foo=baz", false);
 
-        assertTrue("Non-200 response for PUT/noparse request",
-                   client.isResponse200());
-        assertEquals("Incorrect response for PUT request",
-                     "bar=foo,foo=bar",
-                     client.getResponseBody());
+        assertTrue("Non-200 response for PUT/noparse request", client
+                .isResponse200());
+        assertEquals("Incorrect response for PUT request", "bar=foo,foo=bar",
+                client.getResponseBody());
 
         client.reset();
 
         // PUT with POST-style parsing
-        client.doRequest("PUT", "foo=bar&bar=foo", "application/x-www-form-urlencoded", "bar=baz&foo=baz", true);
+        client.doRequest("PUT", "foo=bar&bar=foo",
+                "application/x-www-form-urlencoded", "bar=baz&foo=baz", true);
 
-        assertTrue("Non-200 response for PUT request",
-                   client.isResponse200());
+        assertTrue("Non-200 response for PUT request", client.isResponse200());
         assertEquals("Incorrect response for PUT/parse request",
-                     "bar=baz,bar=foo,foo=bar,foo=baz",
-                     client.getResponseBody());
+                "bar=baz,bar=foo,foo=bar,foo=baz", client.getResponseBody());
 
         client.reset();
 
         /*
-        private Exception doRequest(String method,
-                                    String queryString,
-                                    String contentType,
-                                    String requestBody,
-                                    boolean allowBody) {
-        */
+         * private Exception doRequest(String method,
+         * String queryString,
+         * String contentType,
+         * String requestBody,
+         * boolean allowBody) {
+         */
     }
 
     @Test
     public void testBug54984() throws Exception {
         Tomcat tomcat = getTomcatInstance();
-        Context root = tomcat.addContext("",
-                System.getProperty("java.io.tmpdir"));
+        Context root = tomcat.addContext("", System.getProperty(
+                "java.io.tmpdir"));
         root.setAllowCasualMultipartParsing(true);
         Tomcat.addServlet(root, "Bug54984", new Bug54984Servlet());
         root.addServletMappingDecoded("/", "Bug54984");
@@ -513,26 +503,25 @@ public class TestRequest extends TomcatBaseTest {
          */
         @Override
         protected void service(HttpServletRequest req, HttpServletResponse resp)
-            throws ServletException, IOException {
+                throws ServletException, IOException {
             // Just echo the parameters and values back as plain text
             resp.setContentType("text/plain");
             resp.setCharacterEncoding("UTF-8");
 
             PrintWriter out = resp.getWriter();
 
-            TreeMap<String,String[]> parameters =
-                    new TreeMap<>(req.getParameterMap());
+            TreeMap<String, String[]> parameters = new TreeMap<>(req
+                    .getParameterMap());
 
             boolean first = true;
 
-            for(String name: parameters.keySet()) {
+            for (String name : parameters.keySet()) {
                 String[] values = req.getParameterValues(name);
 
                 java.util.Arrays.sort(values);
 
-                for(int i=0; i<values.length; ++i)
-                {
-                    if(first)
+                for (int i = 0; i < values.length; ++i) {
+                    if (first)
                         first = false;
                     else
                         out.print(",");
@@ -551,11 +540,13 @@ public class TestRequest extends TomcatBaseTest {
         private boolean init;
 
         private synchronized void init() throws Exception {
-            if (init) return;
+            if (init)
+                return;
 
             Tomcat tomcat = getTomcatInstance();
             Context root = tomcat.addContext("", TEMP_DIR);
-            Tomcat.addServlet(root, "EchoParameters", new EchoParametersServlet());
+            Tomcat.addServlet(root, "EchoParameters",
+                    new EchoParametersServlet());
             root.addServletMappingDecoded("/echo", "EchoParameters");
             tomcat.start();
 
@@ -564,16 +555,13 @@ public class TestRequest extends TomcatBaseTest {
             init = true;
         }
 
-        private Exception doRequest(String method,
-                                    String queryString,
-                                    String contentType,
-                                    String requestBody,
-                                    boolean allowBody) {
+        private Exception doRequest(String method, String queryString,
+                String contentType, String requestBody, boolean allowBody) {
             Tomcat tomcat = getTomcatInstance();
 
             try {
                 init();
-                if(allowBody)
+                if (allowBody)
                     tomcat.getConnector().setParseBodyMethods(method);
                 else
                     tomcat.getConnector().setParseBodyMethods(""); // never parse
@@ -582,24 +570,21 @@ public class TestRequest extends TomcatBaseTest {
                 connect();
 
                 // Re-encode the request body so that bytes = characters
-                if(null != requestBody)
-                    requestBody = new String(requestBody.getBytes("UTF-8"), "ASCII");
+                if (null != requestBody)
+                    requestBody = new String(requestBody.getBytes("UTF-8"),
+                            "ASCII");
 
                 // Send specified request body using method
-                String[] request = {
-                    (
-                     method + " http://localhost:" + getPort() + "/echo"
-                     + (null == queryString ? "" : ("?" + queryString))
-                     + " HTTP/1.1" + CRLF
-                     + "Host: localhost" + CRLF
-                     + (null == contentType ? ""
-                        : ("Content-Type: " + contentType + CRLF))
-                     + "Connection: close" + CRLF
-                     + (null == requestBody ? "" : "Content-Length: " + requestBody.length() + CRLF)
-                     + CRLF
-                     + (null == requestBody ? "" : requestBody)
-                     )
-                };
+                String[] request = { (method + " http://localhost:" + getPort()
+                        + "/echo" + (null == queryString ? ""
+                                : ("?" + queryString)) + " HTTP/1.1" + CRLF
+                        + "Host: localhost" + CRLF + (null == contentType ? ""
+                                : ("Content-Type: " + contentType + CRLF))
+                        + "Connection: close" + CRLF + (null == requestBody ? ""
+                                : "Content-Length: " + requestBody.length()
+                                        + CRLF) + CRLF + (null == requestBody
+                                                ? ""
+                                                : requestBody)) };
 
                 setRequest(request);
                 processRequest(); // blocks until response has been read
@@ -641,7 +626,8 @@ public class TestRequest extends TomcatBaseTest {
                 throws ServletException, IOException {
             req.setCharacterEncoding("UTF-8");
 
-            if (req.getRequestURI().endsWith("parseParametersBeforeParseParts")) {
+            if (req.getRequestURI().endsWith(
+                    "parseParametersBeforeParseParts")) {
                 req.getParameterNames();
             }
 
@@ -657,10 +643,11 @@ public class TestRequest extends TomcatBaseTest {
     private void prepareRequestBug54984(HttpURLConnection conn)
             throws Exception {
         String boundary = "-----" + System.currentTimeMillis();
-        conn.setRequestProperty("Content-Type",
-                "multipart/form-data; boundary=" + boundary);
+        conn.setRequestProperty("Content-Type", "multipart/form-data; boundary="
+                + boundary);
 
-        try (OutputStreamWriter osw = new OutputStreamWriter(conn.getOutputStream(), "UTF-8");
+        try (OutputStreamWriter osw = new OutputStreamWriter(conn
+                .getOutputStream(), "UTF-8");
                 PrintWriter writer = new PrintWriter(osw, true)) {
             writer.append("--" + boundary).append("\r\n");
             writer.append("Content-Disposition: form-data; name=\"part\"\r\n");
@@ -681,7 +668,8 @@ public class TestRequest extends TomcatBaseTest {
         List<String> response = new ArrayList<>();
         int status = conn.getResponseCode();
         if (status == HttpURLConnection.HTTP_OK) {
-            try (InputStreamReader isr = new InputStreamReader(conn.getInputStream(), "UTF-8");
+            try (InputStreamReader isr = new InputStreamReader(conn
+                    .getInputStream(), "UTF-8");
                     BufferedReader reader = new BufferedReader(isr)) {
                 String line = null;
                 while ((line = reader.readLine()) != null) {
@@ -819,8 +807,8 @@ public class TestRequest extends TomcatBaseTest {
         doBug56501("/path", "/foo/..%2fpath", "/foo/..%2fpath");
     }
 
-    private void doBug56501(String deployPath, String requestPath, String expected)
-            throws Exception {
+    private void doBug56501(String deployPath, String requestPath,
+            String expected) throws Exception {
 
         // Setup Tomcat instance
         Tomcat tomcat = getTomcatInstance();
@@ -882,7 +870,6 @@ public class TestRequest extends TomcatBaseTest {
 
         Assert.assertEquals(expected, actual);
     }
-
 
     @Test
     @Ignore("Used to check performance of different parsing approaches")

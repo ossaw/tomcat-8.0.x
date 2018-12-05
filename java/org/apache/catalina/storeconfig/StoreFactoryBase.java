@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -38,8 +36,8 @@ public class StoreFactoryBase implements IStoreFactory {
     /**
      * The string manager for this package.
      */
-    protected static final StringManager sm = StringManager
-            .getManager(Constants.Package);
+    protected static final StringManager sm = StringManager.getManager(
+            Constants.Package);
 
     /**
      * The descriptive information string for this implementation.
@@ -67,7 +65,7 @@ public class StoreFactoryBase implements IStoreFactory {
 
     /**
      * @param storeAppender
-     *            The storeAppender to set.
+     *                      The storeAppender to set.
      */
     @Override
     public void setStoreAppender(StoreAppender storeAppender) {
@@ -76,8 +74,9 @@ public class StoreFactoryBase implements IStoreFactory {
 
     /*
      * set Registry
-     *
-     * @see org.apache.catalina.config.IStoreFactory#setRegistry(org.apache.catalina.config.ConfigurationRegistry)
+     * @see
+     * org.apache.catalina.config.IStoreFactory#setRegistry(org.apache.catalina.
+     * config.ConfigurationRegistry)
      */
     @Override
     public void setRegistry(StoreRegistry aRegistry) {
@@ -87,7 +86,6 @@ public class StoreFactoryBase implements IStoreFactory {
 
     /*
      * get Registry
-     *
      * @see org.apache.catalina.config.IStoreFactory#getRegistry()
      */
     @Override
@@ -106,21 +104,21 @@ public class StoreFactoryBase implements IStoreFactory {
 
     /*
      * Store a server.xml element with attributes and children
-     *
-     * @see org.apache.catalina.storeconfig.IStoreFactory#store(java.io.PrintWriter,
-     *      int, java.lang.Object)
+     * @see
+     * org.apache.catalina.storeconfig.IStoreFactory#store(java.io.PrintWriter,
+     * int, java.lang.Object)
      */
     @Override
     public void store(PrintWriter aWriter, int indent, Object aElement)
             throws Exception {
 
-        StoreDescription elementDesc = getRegistry().findDescription(
-                aElement.getClass());
+        StoreDescription elementDesc = getRegistry().findDescription(aElement
+                .getClass());
 
         if (elementDesc != null) {
             if (log.isDebugEnabled())
-                log.debug(sm.getString("factory.storeTag",
-                        elementDesc.getTag(), aElement));
+                log.debug(sm.getString("factory.storeTag", elementDesc.getTag(),
+                        aElement));
             getStoreAppender().printIndent(aWriter, indent + 2);
             if (!elementDesc.isChildren()) {
                 getStoreAppender().printTag(aWriter, indent, aElement,
@@ -146,15 +144,14 @@ public class StoreFactoryBase implements IStoreFactory {
      * @param elementDesc
      */
     public void storeChildren(PrintWriter aWriter, int indent, Object aElement,
-            StoreDescription elementDesc) throws Exception {
-    }
+            StoreDescription elementDesc) throws Exception {}
 
     /**
      * Store only elements from storeChildren methods that are not a transient
      * child.
      *
-     * @param aWriter current output writer
-     * @param indent indentation level
+     * @param aWriter     current output writer
+     * @param indent      indentation level
      * @param aTagElement current tomcat element
      * @throws Exception
      */

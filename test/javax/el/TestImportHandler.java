@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -37,7 +35,6 @@ public class TestImportHandler {
         Assert.assertEquals(String.class, result);
     }
 
-
     /**
      * Resolve an unknown class
      */
@@ -49,7 +46,6 @@ public class TestImportHandler {
 
         Assert.assertNull(result);
     }
-
 
     /**
      * Conflict on resolution.
@@ -72,7 +68,6 @@ public class TestImportHandler {
         }
     }
 
-
     /**
      * Multiple package imports with a single match.
      * https://bz.apache.org/bugzilla/show_bug.cgi?id=57113
@@ -88,7 +83,6 @@ public class TestImportHandler {
 
         Assert.assertEquals(ArrayList.class, clazz);
     }
-
 
     /**
      * Attempting to resolve something that isn't a simple class name
@@ -134,7 +128,6 @@ public class TestImportHandler {
         Assert.assertEquals(StringManager.class, result);
     }
 
-
     /**
      * Import an invalid class.
      */
@@ -145,7 +138,6 @@ public class TestImportHandler {
         Class<?> result = handler.resolveClass("StringManagerX");
         Assert.assertNull(result);
     }
-
 
     /**
      * Import conflicting classes
@@ -166,7 +158,6 @@ public class TestImportHandler {
         }
     }
 
-
     /**
      * Import duplicate classes (i.e. the same class twice).
      */
@@ -182,7 +173,6 @@ public class TestImportHandler {
         Assert.assertEquals(StringManager.class, result);
     }
 
-
     /**
      * Import an invalid package.
      */
@@ -194,7 +184,6 @@ public class TestImportHandler {
 
         // No exception is expected
     }
-
 
     /**
      * Import a valid static field.
@@ -210,17 +199,15 @@ public class TestImportHandler {
         Assert.assertEquals(org.apache.tomcat.util.buf.Constants.class, result);
     }
 
-
     /**
      * Import an invalid static field - does not exist.
      */
-    @Test(expected=ELException.class)
+    @Test(expected = ELException.class)
     public void testImportStatic02() {
         ImportHandler handler = new ImportHandler();
 
         handler.importStatic("org.apache.tomcat.util.buf.Constants.PackageXX");
     }
-
 
     /**
      * Import an invalid static field - non-public.
@@ -236,7 +223,6 @@ public class TestImportHandler {
         Assert.assertEquals(org.apache.tomcat.util.buf.Ascii.class, result);
     }
 
-
     /**
      * Import an invalid static field - conflict.
      */
@@ -247,7 +233,8 @@ public class TestImportHandler {
         handler.importStatic("org.apache.tomcat.util.buf.Constants.Package");
         for (int i = 1; i <= 3; i++) {
             try {
-                handler.importStatic("org.apache.tomcat.util.scan.Constants.Package");
+                handler.importStatic(
+                        "org.apache.tomcat.util.scan.Constants.Package");
                 Assert.fail("Expected ELException but got none on iteration "
                         + i);
             } catch (ELException ex) {
@@ -255,7 +242,6 @@ public class TestImportHandler {
             }
         }
     }
-
 
     /**
      * Package imports with conflicts due to non-public classes should not

@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -55,7 +53,6 @@ public class CachedResource implements WebResource {
     private volatile Boolean cachedIsVirtual = null;
     private volatile Long cachedContentLength = null;
 
-
     public CachedResource(Cache cache, StandardRoot root, String path, long ttl,
             int objectMaxSizeBytes) {
         this.cache = cache;
@@ -71,8 +68,8 @@ public class CachedResource implements WebResource {
         if (webResource == null) {
             synchronized (this) {
                 if (webResource == null) {
-                    webResource = root.getResourceInternal(
-                            webAppPath, useClassLoaderResources);
+                    webResource = root.getResourceInternal(webAppPath,
+                            useClassLoaderResources);
                     getLastModified();
                     getContentLength();
                     nextCheck = ttl + now;
@@ -92,22 +89,24 @@ public class CachedResource implements WebResource {
             return true;
         }
 
-        WebResource webResourceInternal = root.getResourceInternal(
-                webAppPath, useClassLoaderResources);
+        WebResource webResourceInternal = root.getResourceInternal(webAppPath,
+                useClassLoaderResources);
         if (!webResource.exists() && webResourceInternal.exists()) {
             return false;
         }
 
         // If modified date or length change - resource has changed / been
         // removed etc.
-        if (webResource.getLastModified() != getLastModified() ||
-                webResource.getContentLength() != getContentLength()) {
+        if (webResource.getLastModified() != getLastModified() || webResource
+                .getContentLength() != getContentLength()) {
             return false;
         }
 
         // Has a resource been inserted / removed in a different resource set
-        if (webResource.getLastModified() != webResourceInternal.getLastModified() ||
-                webResource.getContentLength() != webResourceInternal.getContentLength()) {
+        if (webResource.getLastModified() != webResourceInternal
+                .getLastModified() || webResource
+                        .getContentLength() != webResourceInternal
+                                .getContentLength()) {
             return false;
         }
 
@@ -121,8 +120,8 @@ public class CachedResource implements WebResource {
         if (webResources == null) {
             synchronized (this) {
                 if (webResources == null) {
-                    webResources = root.getResourcesInternal(
-                            webAppPath, useClassLoaderResources);
+                    webResources = root.getResourcesInternal(webAppPath,
+                            useClassLoaderResources);
                     nextCheck = ttl + now;
                     return true;
                 }
@@ -146,8 +145,7 @@ public class CachedResource implements WebResource {
     public long getLastModified() {
         Long cachedLastModified = this.cachedLastModified;
         if (cachedLastModified == null) {
-            cachedLastModified =
-                    Long.valueOf(webResource.getLastModified());
+            cachedLastModified = Long.valueOf(webResource.getLastModified());
             this.cachedLastModified = cachedLastModified;
         }
         return cachedLastModified.longValue();

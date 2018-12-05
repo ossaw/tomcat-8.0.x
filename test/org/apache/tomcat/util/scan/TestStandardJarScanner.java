@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -43,13 +41,14 @@ public class TestStandardJarScanner {
 
         LoggingCallback callback = new LoggingCallback();
 
-        scanner.scan(JarScanType.PLUGGABILITY, new TesterServletContext(), callback);
+        scanner.scan(JarScanType.PLUGGABILITY, new TesterServletContext(),
+                callback);
 
         List<String> callbacks = callback.getCallbacks();
 
         ClassLoader cl = TesterServletContext.class.getClassLoader();
         if (cl instanceof URLClassLoader) {
-            URL[] urls =  ((URLClassLoader) cl).getURLs();
+            URL[] urls = ((URLClassLoader) cl).getURLs();
 
             int size;
             if (urls == null) {
@@ -62,17 +61,19 @@ public class TestStandardJarScanner {
             // Manifest. These JARs are not returned in ClassLoader.getURLs().
             // Therefore, this test looks for at least as many JARs as there are
             // URLs but it can't check for an exact match.
-            Assert.assertTrue("[" + callbacks.size() + "] callbacks but expected at least [" +
-                    size + "]", callbacks.size() >= size);
+            Assert.assertTrue("[" + callbacks.size()
+                    + "] callbacks but expected at least [" + size + "]",
+                    callbacks.size() >= size);
 
         } else {
-            Assert.fail("Unexpected class loader type: " + cl.getClass().getName());
+            Assert.fail("Unexpected class loader type: " + cl.getClass()
+                    .getName());
         }
     }
 
-
     /**
-     * Tomcat should ignore URLs which do not have a file part and do not use the file scheme.
+     * Tomcat should ignore URLs which do not have a file part and do not use
+     * the file scheme.
      */
     @Test
     public void skipsInvalidClasspathURLNoFilePartNoFileScheme() {
@@ -83,8 +84,8 @@ public class TestStandardJarScanner {
             public ClassLoader getClassLoader() {
                 URLClassLoader urlClassLoader;
                 try {
-                    urlClassLoader = new URLClassLoader(
-                            new URL[] { new URL("http://felix.extensions:9/") });
+                    urlClassLoader = new URLClassLoader(new URL[] { new URL(
+                            "http://felix.extensions:9/") });
                 } catch (MalformedURLException e) {
                     throw new RuntimeException(e);
                 }
@@ -94,27 +95,29 @@ public class TestStandardJarScanner {
         scanner.scan(JarScanType.PLUGGABILITY, context, callback);
     }
 
-
     private static class LoggingCallback implements JarScannerCallback {
 
         List<String> callbacks = new ArrayList<>();
 
         @Override
-        public void scan(Jar jar, String webappPath,
-                boolean isWebapp) throws IOException {
-            callbacks.add(jar.getJarFileURL().toString() + "::" + webappPath + "::" + isWebapp);
+        public void scan(Jar jar, String webappPath, boolean isWebapp)
+                throws IOException {
+            callbacks.add(jar.getJarFileURL().toString() + "::" + webappPath
+                    + "::" + isWebapp);
         }
 
         @Override
         public void scan(JarURLConnection urlConn, String webappPath,
                 boolean isWebapp) throws IOException {
-            callbacks.add(urlConn.toString() + "::" + webappPath + "::" + isWebapp);
+            callbacks.add(urlConn.toString() + "::" + webappPath + "::"
+                    + isWebapp);
         }
 
         @Override
         public void scan(File file, String webappPath, boolean isWebapp)
                 throws IOException {
-            callbacks.add(file.toString() + "::" + webappPath + "::" + isWebapp);
+            callbacks.add(file.toString() + "::" + webappPath + "::"
+                    + isWebapp);
         }
 
         @Override

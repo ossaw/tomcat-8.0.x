@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -81,7 +79,8 @@ import org.apache.tools.ant.Project;
  * </p>
  * All JMXAccessorXXXTask support the attribute <em>if</em> and
  * <em>unless</em>. With <em>if</em> the task is only execute when property
- * exist and with <em>unless</em> when property not exists. <br><b>NOTE
+ * exist and with <em>unless</em> when property not exists. <br>
+ * <b>NOTE
  * </b>: These tasks require Ant 1.6 or later interface.
  *
  * @author Peter Rossbach
@@ -174,7 +173,7 @@ public class JMXAccessorTask extends BaseRedirectorHelperTask {
 
     /**
      * @param echo
-     *            The echo to set.
+     *             The echo to set.
      */
     public void setEcho(boolean echo) {
         this.echo = echo;
@@ -189,7 +188,7 @@ public class JMXAccessorTask extends BaseRedirectorHelperTask {
 
     /**
      * @param separateArrayResults
-     *            The separatearrayresults to set.
+     *                             The separatearrayresults to set.
      */
     public void setSeparatearrayresults(boolean separateArrayResults) {
         this.separatearrayresults = separateArrayResults;
@@ -316,7 +315,7 @@ public class JMXAccessorTask extends BaseRedirectorHelperTask {
      * functional logic directly.
      *
      * @exception BuildException
-     *                if a validation error occurs
+     *                           if a validation error occurs
      */
     @Override
     public void execute() throws BuildException {
@@ -412,14 +411,14 @@ public class JMXAccessorTask extends BaseRedirectorHelperTask {
             try {
                 jmxServerConnection = (MBeanServerConnection) pref;
             } catch (ClassCastException cce) {
-                project.log("wrong object reference " + refId + " - "
-                            + pref.getClass());
+                project.log("wrong object reference " + refId + " - " + pref
+                        .getClass());
                 return null;
             }
         }
         if (jmxServerConnection == null) {
-            jmxServerConnection = createJMXConnection(url, host, port,
-                    username, password);
+            jmxServerConnection = createJMXConnection(url, host, port, username,
+                    password);
         }
         if (isRef && jmxServerConnection != null) {
             project.addReference(refId, jmxServerConnection);
@@ -441,16 +440,15 @@ public class JMXAccessorTask extends BaseRedirectorHelperTask {
 
         MBeanServerConnection jmxServerConnection = null;
         if (isUseRef()) {
-            Object pref = null ;
-            if(getProject() != null) {
+            Object pref = null;
+            if (getProject() != null) {
                 pref = getProject().getReference(getRef());
                 if (pref != null) {
                     try {
                         jmxServerConnection = (MBeanServerConnection) pref;
                     } catch (ClassCastException cce) {
-                        getProject().log(
-                            "Wrong object reference " + getRef() + " - "
-                                    + pref.getClass());
+                        getProject().log("Wrong object reference " + getRef()
+                                + " - " + pref.getClass());
                         return null;
                     }
                 }
@@ -473,7 +471,7 @@ public class JMXAccessorTask extends BaseRedirectorHelperTask {
      * executed successfully or not.
      *
      * @exception Exception
-     *                if an error occurs
+     *                      if an error occurs
      */
     public String jmxExecute(MBeanServerConnection jmxServerConnection)
             throws Exception {
@@ -490,7 +488,7 @@ public class JMXAccessorTask extends BaseRedirectorHelperTask {
      * Convert string to datatype FIXME How we can transfer values from ant
      * project reference store (ref)?
      *
-     * @param value The value
+     * @param value     The value
      * @param valueType The type
      * @return The converted object
      */
@@ -506,35 +504,35 @@ public class JMXAccessorTask extends BaseRedirectorHelperTask {
                 if (isEcho())
                     handleErrorOutput("Unable to convert to integer:" + value);
             }
-        } else if ("java.lang.Long".equals(valueType)
-                || "long".equals(valueType)) {
+        } else if ("java.lang.Long".equals(valueType) || "long".equals(
+                valueType)) {
             try {
                 convertValue = Long.valueOf(value);
             } catch (NumberFormatException ex) {
                 if (isEcho())
                     handleErrorOutput("Unable to convert to long:" + value);
             }
-        } else if ("java.lang.Boolean".equals(valueType)
-                || "boolean".equals(valueType)) {
+        } else if ("java.lang.Boolean".equals(valueType) || "boolean".equals(
+                valueType)) {
             convertValue = Boolean.valueOf(value);
-        } else if ("java.lang.Float".equals(valueType)
-                || "float".equals(valueType)) {
+        } else if ("java.lang.Float".equals(valueType) || "float".equals(
+                valueType)) {
             try {
                 convertValue = Float.valueOf(value);
             } catch (NumberFormatException ex) {
                 if (isEcho())
                     handleErrorOutput("Unable to convert to float:" + value);
             }
-        } else if ("java.lang.Double".equals(valueType)
-                || "double".equals(valueType)) {
+        } else if ("java.lang.Double".equals(valueType) || "double".equals(
+                valueType)) {
             try {
                 convertValue = Double.valueOf(value);
             } catch (NumberFormatException ex) {
                 if (isEcho())
                     handleErrorOutput("Unable to convert to double:" + value);
             }
-        } else if ("javax.management.ObjectName".equals(valueType)
-                || "name".equals(valueType)) {
+        } else if ("javax.management.ObjectName".equals(valueType) || "name"
+                .equals(valueType)) {
             try {
                 convertValue = new ObjectName(value);
             } catch (MalformedObjectNameException e) {
@@ -554,7 +552,7 @@ public class JMXAccessorTask extends BaseRedirectorHelperTask {
     }
 
     /**
-     * @param name context of result
+     * @param name   context of result
      * @param result
      */
     protected void echoResult(String name, Object result) {
@@ -610,9 +608,11 @@ public class JMXAccessorTask extends BaseRedirectorHelperTask {
             }
         } else if (result instanceof TabularDataSupport) {
             TabularDataSupport data = (TabularDataSupport) result;
-            for (Iterator<Object> iter = data.keySet().iterator(); iter.hasNext();) {
+            for (Iterator<Object> iter = data.keySet().iterator(); iter
+                    .hasNext();) {
                 Object key = iter.next();
-                for (Iterator<?> iter1 = ((List<?>) key).iterator(); iter1.hasNext();) {
+                for (Iterator<?> iter1 = ((List<?>) key).iterator(); iter1
+                        .hasNext();) {
                     Object key1 = iter1.next();
                     CompositeData valuedata = data.get(new Object[] { key1 });
                     Object value = valuedata.get("value");
@@ -635,8 +635,8 @@ public class JMXAccessorTask extends BaseRedirectorHelperTask {
                     }
                 }
                 if (size > 0) {
-                    setProperty(propertyPrefix + ".Length", Integer
-                            .toString(size));
+                    setProperty(propertyPrefix + ".Length", Integer.toString(
+                            size));
                 }
             }
         } else {
@@ -652,8 +652,8 @@ public class JMXAccessorTask extends BaseRedirectorHelperTask {
                     }
                 }
                 if (size > 0)
-                    setProperty(propertyPrefix + ".Length", Integer
-                            .toString(size));
+                    setProperty(propertyPrefix + ".Length", Integer.toString(
+                            size));
             } else {
                 setProperty(propertyPrefix, result.toString());
             }
@@ -662,6 +662,7 @@ public class JMXAccessorTask extends BaseRedirectorHelperTask {
 
     /**
      * Get Property
+     * 
      * @param property name
      * @return The property value
      */
@@ -676,7 +677,7 @@ public class JMXAccessorTask extends BaseRedirectorHelperTask {
 
     /**
      * @param property The property
-     * @param value The value
+     * @param value    The value
      * @return True if successful
      */
     public boolean setProperty(String property, Object value) {

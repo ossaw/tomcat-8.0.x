@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -25,8 +23,10 @@ import javax.management.MBeanOperationInfo;
 import javax.management.MBeanParameterInfo;
 
 /**
- * <p>Internal configuration information for an <code>Operation</code>
- * descriptor.</p>
+ * <p>
+ * Internal configuration information for an <code>Operation</code>
+ * descriptor.
+ * </p>
  *
  * @author Craig R. McClanahan
  */
@@ -43,14 +43,12 @@ public class OperationInfo extends FeatureInfo {
         super();
     }
 
-
     // ----------------------------------------------------- Instance Variables
 
     protected String impact = "UNKNOWN";
     protected String role = "operation";
     protected final ReadWriteLock parametersLock = new ReentrantReadWriteLock();
     protected ParameterInfo parameters[] = new ParameterInfo[0];
-
 
     // ------------------------------------------------------------- Properties
 
@@ -69,7 +67,6 @@ public class OperationInfo extends FeatureInfo {
             this.impact = impact.toUpperCase(Locale.ENGLISH);
     }
 
-
     /**
      * The role of this operation ("getter", "setter", "operation", or
      * "constructor").
@@ -82,13 +79,12 @@ public class OperationInfo extends FeatureInfo {
         this.role = role;
     }
 
-
     /**
      * The fully qualified Java class name of the return type for this
      * operation.
      */
     public String getReturnType() {
-        if(type == null) {
+        if (type == null) {
             type = "void";
         }
         return type;
@@ -113,7 +109,6 @@ public class OperationInfo extends FeatureInfo {
 
     // --------------------------------------------------------- Public Methods
 
-
     /**
      * Add a new parameter to the set of arguments for this operation.
      *
@@ -134,7 +129,6 @@ public class OperationInfo extends FeatureInfo {
         }
     }
 
-
     /**
      * Create and return a <code>ModelMBeanOperationInfo</code> object that
      * corresponds to the attribute described by this instance.
@@ -153,16 +147,14 @@ public class OperationInfo extends FeatureInfo {
                 impact = MBeanOperationInfo.INFO;
 
             info = new MBeanOperationInfo(getName(), getDescription(),
-                                          getMBeanParameterInfo(),
-                                          getReturnType(), impact);
+                    getMBeanParameterInfo(), getReturnType(), impact);
         }
-        return (MBeanOperationInfo)info;
+        return (MBeanOperationInfo) info;
     }
 
     protected MBeanParameterInfo[] getMBeanParameterInfo() {
         ParameterInfo params[] = getSignature();
-        MBeanParameterInfo parameters[] =
-            new MBeanParameterInfo[params.length];
+        MBeanParameterInfo parameters[] = new MBeanParameterInfo[params.length];
         for (int i = 0; i < params.length; i++)
             parameters[i] = params[i].createParameterInfo();
         return parameters;

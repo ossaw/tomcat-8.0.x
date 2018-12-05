@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -15,11 +13,9 @@
  * limitations under the License.
  */
 
-
 package org.apache.tomcat.util.descriptor.web;
 
 import java.io.Serializable;
-
 
 /**
  * Representation of a the multipart configuration for a servlet.
@@ -39,7 +35,6 @@ public class MultipartDef implements Serializable {
         this.location = location;
     }
 
-
     private String maxFileSize;
 
     public String getMaxFileSize() {
@@ -49,7 +44,6 @@ public class MultipartDef implements Serializable {
     public void setMaxFileSize(String maxFileSize) {
         this.maxFileSize = maxFileSize;
     }
-
 
     private String maxRequestSize;
 
@@ -61,7 +55,6 @@ public class MultipartDef implements Serializable {
         this.maxRequestSize = maxRequestSize;
     }
 
-
     private String fileSizeThreshold;
 
     public String getFileSizeThreshold() {
@@ -72,23 +65,20 @@ public class MultipartDef implements Serializable {
         this.fileSizeThreshold = fileSizeThreshold;
     }
 
-
     // ---------------------------------------------------------- Object methods
 
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime
-                * result
-                + ((fileSizeThreshold == null) ? 0 : fileSizeThreshold
-                        .hashCode());
-        result = prime * result
-                + ((location == null) ? 0 : location.hashCode());
-        result = prime * result
-                + ((maxFileSize == null) ? 0 : maxFileSize.hashCode());
-        result = prime * result
-                + ((maxRequestSize == null) ? 0 : maxRequestSize.hashCode());
+        result = prime * result + ((fileSizeThreshold == null) ? 0
+                : fileSizeThreshold.hashCode());
+        result = prime * result + ((location == null) ? 0
+                : location.hashCode());
+        result = prime * result + ((maxFileSize == null) ? 0
+                : maxFileSize.hashCode());
+        result = prime * result + ((maxRequestSize == null) ? 0
+                : maxRequestSize.hashCode());
         return result;
     }
 

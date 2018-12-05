@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -16,7 +14,6 @@
  */
 
 package org.apache.catalina.mbeans;
-
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -35,73 +32,63 @@ import org.apache.tomcat.util.modeler.ManagedBean;
 import org.apache.tomcat.util.modeler.Registry;
 
 /**
- * <p>A <strong>ModelMBean</strong> implementation for the
- * <code>org.apache.catalina.users.MemoryUserDatabase</code> component.</p>
+ * <p>
+ * A <strong>ModelMBean</strong> implementation for the
+ * <code>org.apache.catalina.users.MemoryUserDatabase</code> component.
+ * </p>
  *
  * @author Craig R. McClanahan
  */
 public class MemoryUserDatabaseMBean extends BaseModelMBean {
 
-
     // ----------------------------------------------------------- Constructors
-
 
     /**
      * Construct a <code>ModelMBean</code> with default
      * <code>ModelMBeanInfo</code> information.
      *
-     * @exception MBeanException if the initializer of an object
-     *  throws an exception
+     * @exception MBeanException             if the initializer of an object
+     *                                       throws an exception
      * @exception RuntimeOperationsException if an IllegalArgumentException
-     *  occurs
+     *                                       occurs
      */
-    public MemoryUserDatabaseMBean()
-        throws MBeanException, RuntimeOperationsException {
+    public MemoryUserDatabaseMBean() throws MBeanException,
+            RuntimeOperationsException {
 
         super();
 
     }
 
-
     // ----------------------------------------------------- Instance Variables
-
 
     /**
      * The configuration information registry for our managed beans.
      */
     protected final Registry registry = MBeanUtils.createRegistry();
 
-
     /**
      * The <code>ManagedBean</code> information describing this MBean.
      */
-    protected final ManagedBean managed =
-        registry.findManagedBean("MemoryUserDatabase");
-
-
-    /**
-     * The <code>ManagedBean</code> information describing Group MBeans.
-     */
-    protected final ManagedBean managedGroup =
-        registry.findManagedBean("Group");
-
+    protected final ManagedBean managed = registry.findManagedBean(
+            "MemoryUserDatabase");
 
     /**
      * The <code>ManagedBean</code> information describing Group MBeans.
      */
-    protected final ManagedBean managedRole =
-        registry.findManagedBean("Role");
+    protected final ManagedBean managedGroup = registry.findManagedBean(
+            "Group");
 
+    /**
+     * The <code>ManagedBean</code> information describing Group MBeans.
+     */
+    protected final ManagedBean managedRole = registry.findManagedBean("Role");
 
     /**
      * The <code>ManagedBean</code> information describing User MBeans.
      */
-    protected final ManagedBean managedUser =
-        registry.findManagedBean("User");
-
+    protected final ManagedBean managedUser = registry.findManagedBean("User");
 
     // ------------------------------------------------------------- Attributes
-
 
     /**
      * @return the MBean Names of all groups defined in this database.
@@ -119,7 +106,6 @@ public class MemoryUserDatabaseMBean extends BaseModelMBean {
 
     }
 
-
     /**
      * @return the MBean Names of all roles defined in this database.
      */
@@ -135,7 +121,6 @@ public class MemoryUserDatabaseMBean extends BaseModelMBean {
         return results.toArray(new String[results.size()]);
 
     }
-
 
     /**
      * @return the MBean Names of all users defined in this database.
@@ -153,14 +138,12 @@ public class MemoryUserDatabaseMBean extends BaseModelMBean {
 
     }
 
-
     // ------------------------------------------------------------- Operations
-
 
     /**
      * Create a new Group and return the corresponding MBean Name.
      *
-     * @param groupname Group name of the new group
+     * @param groupname   Group name of the new group
      * @param description Description of the new group
      * @return the new group object name
      */
@@ -171,8 +154,8 @@ public class MemoryUserDatabaseMBean extends BaseModelMBean {
         try {
             MBeanUtils.createMBean(group);
         } catch (Exception e) {
-            IllegalArgumentException iae = new IllegalArgumentException
-                ("Exception creating group [" + groupname + "] MBean");
+            IllegalArgumentException iae = new IllegalArgumentException(
+                    "Exception creating group [" + groupname + "] MBean");
             iae.initCause(e);
             throw iae;
         }
@@ -180,11 +163,10 @@ public class MemoryUserDatabaseMBean extends BaseModelMBean {
 
     }
 
-
     /**
      * Create a new Role and return the corresponding MBean Name.
      *
-     * @param rolename Group name of the new group
+     * @param rolename    Group name of the new group
      * @param description Description of the new group
      * @return the new role object name
      */
@@ -195,15 +177,14 @@ public class MemoryUserDatabaseMBean extends BaseModelMBean {
         try {
             MBeanUtils.createMBean(role);
         } catch (Exception e) {
-            IllegalArgumentException iae = new IllegalArgumentException
-                ("Exception creating role [" + rolename + "] MBean");
+            IllegalArgumentException iae = new IllegalArgumentException(
+                    "Exception creating role [" + rolename + "] MBean");
             iae.initCause(e);
             throw iae;
         }
         return (findRole(rolename));
 
     }
-
 
     /**
      * Create a new User and return the corresponding MBean Name.
@@ -214,22 +195,21 @@ public class MemoryUserDatabaseMBean extends BaseModelMBean {
      * @return the new user object name
      */
     public String createUser(String username, String password,
-                             String fullName) {
+            String fullName) {
 
         UserDatabase database = (UserDatabase) this.resource;
         User user = database.createUser(username, password, fullName);
         try {
             MBeanUtils.createMBean(user);
         } catch (Exception e) {
-            IllegalArgumentException iae = new IllegalArgumentException
-                ("Exception creating user [" + username + "] MBean");
+            IllegalArgumentException iae = new IllegalArgumentException(
+                    "Exception creating user [" + username + "] MBean");
             iae.initCause(e);
             throw iae;
         }
         return (findUser(username));
 
     }
-
 
     /**
      * Return the MBean Name for the specified group name (if any);
@@ -246,18 +226,17 @@ public class MemoryUserDatabaseMBean extends BaseModelMBean {
             return (null);
         }
         try {
-            ObjectName oname =
-                MBeanUtils.createObjectName(managedGroup.getDomain(), group);
+            ObjectName oname = MBeanUtils.createObjectName(managedGroup
+                    .getDomain(), group);
             return (oname.toString());
         } catch (MalformedObjectNameException e) {
-            IllegalArgumentException iae = new IllegalArgumentException
-                ("Cannot create object name for group [" + groupname + "]");
+            IllegalArgumentException iae = new IllegalArgumentException(
+                    "Cannot create object name for group [" + groupname + "]");
             iae.initCause(e);
             throw iae;
         }
 
     }
-
 
     /**
      * Return the MBean Name for the specified role name (if any);
@@ -274,18 +253,17 @@ public class MemoryUserDatabaseMBean extends BaseModelMBean {
             return (null);
         }
         try {
-            ObjectName oname =
-                MBeanUtils.createObjectName(managedRole.getDomain(), role);
+            ObjectName oname = MBeanUtils.createObjectName(managedRole
+                    .getDomain(), role);
             return (oname.toString());
         } catch (MalformedObjectNameException e) {
-            IllegalArgumentException iae = new IllegalArgumentException
-                ("Cannot create object name for role [" + rolename + "]");
+            IllegalArgumentException iae = new IllegalArgumentException(
+                    "Cannot create object name for role [" + rolename + "]");
             iae.initCause(e);
             throw iae;
         }
 
     }
-
 
     /**
      * Return the MBean Name for the specified user name (if any);
@@ -302,18 +280,17 @@ public class MemoryUserDatabaseMBean extends BaseModelMBean {
             return (null);
         }
         try {
-            ObjectName oname =
-                MBeanUtils.createObjectName(managedUser.getDomain(), user);
+            ObjectName oname = MBeanUtils.createObjectName(managedUser
+                    .getDomain(), user);
             return (oname.toString());
         } catch (MalformedObjectNameException e) {
-            IllegalArgumentException iae = new IllegalArgumentException
-                ("Cannot create object name for user [" + username + "]");
+            IllegalArgumentException iae = new IllegalArgumentException(
+                    "Cannot create object name for user [" + username + "]");
             iae.initCause(e);
             throw iae;
         }
 
     }
-
 
     /**
      * Remove an existing group and destroy the corresponding MBean.
@@ -331,14 +308,13 @@ public class MemoryUserDatabaseMBean extends BaseModelMBean {
             MBeanUtils.destroyMBean(group);
             database.removeGroup(group);
         } catch (Exception e) {
-            IllegalArgumentException iae = new IllegalArgumentException
-                ("Exception destroying group [" + groupname + "] MBean");
+            IllegalArgumentException iae = new IllegalArgumentException(
+                    "Exception destroying group [" + groupname + "] MBean");
             iae.initCause(e);
             throw iae;
         }
 
     }
-
 
     /**
      * Remove an existing role and destroy the corresponding MBean.
@@ -356,14 +332,13 @@ public class MemoryUserDatabaseMBean extends BaseModelMBean {
             MBeanUtils.destroyMBean(role);
             database.removeRole(role);
         } catch (Exception e) {
-            IllegalArgumentException iae = new IllegalArgumentException
-                ("Exception destroying role [" + rolename + "] MBean");
+            IllegalArgumentException iae = new IllegalArgumentException(
+                    "Exception destroying role [" + rolename + "] MBean");
             iae.initCause(e);
             throw iae;
         }
 
     }
-
 
     /**
      * Remove an existing user and destroy the corresponding MBean.
@@ -381,13 +356,12 @@ public class MemoryUserDatabaseMBean extends BaseModelMBean {
             MBeanUtils.destroyMBean(user);
             database.removeUser(user);
         } catch (Exception e) {
-            IllegalArgumentException iae = new IllegalArgumentException
-                ("Exception destroying user [" + username + "] MBean");
+            IllegalArgumentException iae = new IllegalArgumentException(
+                    "Exception destroying user [" + username + "] MBean");
             iae.initCause(e);
             throw iae;
         }
 
     }
-
 
 }

@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -77,7 +75,6 @@ public abstract class LoggingBaseTest {
     /*
      * Helper method that returns the path of the temporary directory used by
      * the test runs. The directory is configured during {@link #setUp()}.
-     *
      * <p>
      * It is used as <code>${catalina.base}</code> for the instance of Tomcat
      * that is being started, but can be used to store other temporary files as
@@ -95,7 +92,7 @@ public abstract class LoggingBaseTest {
      * cleanup.
      *
      * @param file
-     *            File or directory
+     *             File or directory
      */
     public void addDeleteOnTearDown(File file) {
         deleteOnTearDown.add(file);
@@ -106,20 +103,22 @@ public abstract class LoggingBaseTest {
         // Configure logging
         System.setProperty("java.util.logging.manager",
                 "org.apache.juli.ClassLoaderLogManager");
-        System.setProperty("java.util.logging.config.file",
-                new File(System.getProperty("tomcat.test.basedir"),
-                        "conf/logging.properties").toString());
+        System.setProperty("java.util.logging.config.file", new File(System
+                .getProperty("tomcat.test.basedir"), "conf/logging.properties")
+                        .toString());
 
     }
 
     @Before
     public void setUp() throws Exception {
         // Create catalina.base directory
-        File tempBase = new File(System.getProperty("tomcat.test.temp", "output/tmp"));
+        File tempBase = new File(System.getProperty("tomcat.test.temp",
+                "output/tmp"));
         if (!tempBase.mkdirs() && !tempBase.isDirectory()) {
             fail("Unable to create base temporary directory for tests");
         }
-        Path tempBasePath = FileSystems.getDefault().getPath(tempBase.getAbsolutePath());
+        Path tempBasePath = FileSystems.getDefault().getPath(tempBase
+                .getAbsolutePath());
         tempDir = Files.createTempDirectory(tempBasePath, "test").toFile();
 
         System.setProperty("catalina.base", tempDir.getAbsolutePath());

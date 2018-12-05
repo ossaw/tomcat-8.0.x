@@ -1,18 +1,16 @@
 /*
- *  Licensed to the Apache Software Foundation (ASF) under one or more
- *  contributor license agreements.  See the NOTICE file distributed with
- *  this work for additional information regarding copyright ownership.
- *  The ASF licenses this file to You under the Apache License, Version 2.0
- *  (the "License"); you may not use this file except in compliance with
- *  the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements. See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package org.apache.catalina.startup;
@@ -39,8 +37,7 @@ import java.util.Locale;
  * is to do the bare minimum for the unit tests.
  */
 public abstract class SimpleHttpClient {
-    public static final String TEMP_DIR =
-            System.getProperty("java.io.tmpdir");
+    public static final String TEMP_DIR = System.getProperty("java.io.tmpdir");
 
     public static final String CR = "\r";
     public static final String LF = "\n";
@@ -59,20 +56,19 @@ public abstract class SimpleHttpClient {
     public static final String FAIL_500 = "HTTP/1.1 500";
     public static final String FAIL_501 = "HTTP/1.1 501";
 
-    private static final String CONTENT_LENGTH_HEADER_PREFIX =
-            "Content-Length: ";
+    private static final String CONTENT_LENGTH_HEADER_PREFIX = "Content-Length: ";
 
     protected static final String SESSION_COOKIE_NAME = "JSESSIONID";
-    protected static final String SESSION_PARAMETER_NAME =
-            SESSION_COOKIE_NAME.toLowerCase(Locale.ENGLISH);
+    protected static final String SESSION_PARAMETER_NAME = SESSION_COOKIE_NAME
+            .toLowerCase(Locale.ENGLISH);
 
     private static final String COOKIE_HEADER_PREFIX = "Set-Cookie: ";
-    private static final String SESSION_COOKIE_HEADER_PREFIX =
-            COOKIE_HEADER_PREFIX + SESSION_COOKIE_NAME + "=";
+    private static final String SESSION_COOKIE_HEADER_PREFIX = COOKIE_HEADER_PREFIX
+            + SESSION_COOKIE_NAME + "=";
 
     private static final String REDIRECT_HEADER_PREFIX = "Location: ";
-    protected static final String SESSION_PATH_PARAMETER_PREFIX =
-            SESSION_PARAMETER_NAME + "=";
+    protected static final String SESSION_PATH_PARAMETER_PREFIX = SESSION_PARAMETER_NAME
+            + "=";
     protected static final String SESSION_PATH_PARAMETER_TAILS = CRLF + ";?";
 
     private static final String ELEMENT_HEAD = "<";
@@ -175,28 +171,29 @@ public abstract class SimpleHttpClient {
     }
 
     public void connect(int connectTimeout, int soTimeout)
-           throws UnknownHostException, IOException {
+            throws UnknownHostException, IOException {
         final String encoding = "ISO-8859-1";
         SocketAddress addr = new InetSocketAddress("localhost", port);
         socket = new Socket();
         socket.setSoTimeout(soTimeout);
-        socket.connect(addr,connectTimeout);
+        socket.connect(addr, connectTimeout);
         OutputStream os = socket.getOutputStream();
         writer = new OutputStreamWriter(os, encoding);
         InputStream is = socket.getInputStream();
         Reader r = new InputStreamReader(is, encoding);
         reader = new BufferedReader(r);
     }
+
     public void connect() throws UnknownHostException, IOException {
-        connect(0,0);
+        connect(0, 0);
     }
 
     public void processRequest() throws IOException, InterruptedException {
         processRequest(true);
     }
 
-    public void processRequest(boolean wantBody)
-            throws IOException, InterruptedException {
+    public void processRequest(boolean wantBody) throws IOException,
+            InterruptedException {
         sendRequest();
 
         readResponse(wantBody);
@@ -213,8 +210,7 @@ public abstract class SimpleHttpClient {
             if (requestPart != null) {
                 if (first) {
                     first = false;
-                }
-                else {
+                } else {
                     Thread.sleep(requestPause);
                 }
                 writer.write(requestPart);
@@ -272,16 +268,14 @@ public abstract class SimpleHttpClient {
             responseHeaders.add(line);
             if (line.startsWith(CONTENT_LENGTH_HEADER_PREFIX)) {
                 contentLength = Integer.parseInt(line.substring(16));
-            }
-            else if (line.startsWith(COOKIE_HEADER_PREFIX)) {
+            } else if (line.startsWith(COOKIE_HEADER_PREFIX)) {
                 if (useCookies) {
-                    String temp = line.substring(
-                            SESSION_COOKIE_HEADER_PREFIX.length());
+                    String temp = line.substring(SESSION_COOKIE_HEADER_PREFIX
+                            .length());
                     temp = temp.substring(0, temp.indexOf(';'));
                     setSessionId(temp);
                 }
-            }
-            else if (line.startsWith(REDIRECT_HEADER_PREFIX)) {
+            } else if (line.startsWith(REDIRECT_HEADER_PREFIX)) {
                 redirectUri = line.substring(REDIRECT_HEADER_PREFIX.length());
             }
             line = readLine();
@@ -300,8 +294,7 @@ public abstract class SimpleHttpClient {
                 char[] body = new char[contentLength];
                 reader.read(body);
                 builder.append(body);
-            }
-            else {
+            } else {
                 // not using content length, so just read it line by line
                 String line = null;
                 while ((line = readLine()) != null) {
@@ -326,11 +319,12 @@ public abstract class SimpleHttpClient {
         bodyUriElements = new ArrayList<>();
         if (responseBody.length() > 0) {
             int ix = 0;
-            while ((ix = extractUriElement(responseBody, ix, RESOURCE_TAG)) > 0){
+            while ((ix = extractUriElement(responseBody, ix,
+                    RESOURCE_TAG)) > 0) {
                 // loop
             }
             ix = 0;
-            while ((ix = extractUriElement(responseBody, ix, LOGIN_TAG)) > 0){
+            while ((ix = extractUriElement(responseBody, ix, LOGIN_TAG)) > 0) {
                 // loop
             }
         }
@@ -341,22 +335,22 @@ public abstract class SimpleHttpClient {
      * given index into the source string. If any are found, simply
      * accumulate them as literal strings, including angle brackets.
      * note: nested elements will not be collected.
-     *
      * @param body HTTP body of the response
      * @param startIx offset into the body to resume the scan (for iteration)
      * @param elementName to scan for (only one at a time)
      * @returns the index into the body to continue the scan (for iteration)
      */
-    private int extractUriElement(String body, int startIx, String elementName) {
+    private int extractUriElement(String body, int startIx,
+            String elementName) {
         String detector = ELEMENT_HEAD + elementName + " ";
         int iStart = body.indexOf(detector, startIx);
         if (iStart > -1) {
             int iEnd = body.indexOf(ELEMENT_TAIL, iStart);
             if (iEnd < 0) {
                 throw new IllegalArgumentException(
-                        "Response body check failure.\n"
-                        + "element [" + detector + "] is not terminated with ["
-                        + ELEMENT_TAIL + "]\nActual: [" + body + "]");
+                        "Response body check failure.\n" + "element ["
+                                + detector + "] is not terminated with ["
+                                + ELEMENT_TAIL + "]\nActual: [" + body + "]");
             }
             String element = body.substring(iStart, iEnd);
             bodyUriElements.add(element);

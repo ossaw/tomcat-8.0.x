@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -34,7 +32,6 @@ import org.apache.el.lang.EvaluationContext;
 import org.apache.el.stream.Optional;
 import org.apache.el.util.MessageFactory;
 import org.apache.el.util.ReflectionUtil;
-
 
 /**
  * @author Jacob Hookom [jacob@hookom.net]
@@ -83,16 +80,15 @@ public final class AstValue extends SimpleNode {
         // Evaluate any properties or methods before our target
         ELResolver resolver = ctx.getELResolver();
         while (i < propCount) {
-            if (i + 2 < propCount &&
-                    this.children[i + 1] instanceof AstMethodParameters) {
+            if (i + 2 < propCount && this.children[i
+                    + 1] instanceof AstMethodParameters) {
                 // Method call not at end of expression
-                base = resolver.invoke(ctx, base,
-                        this.children[i].getValue(ctx), null,
-                        ((AstMethodParameters)
-                                this.children[i + 1]).getParameters(ctx));
+                base = resolver.invoke(ctx, base, this.children[i].getValue(
+                        ctx), null, ((AstMethodParameters) this.children[i + 1])
+                                .getParameters(ctx));
                 i += 2;
-            } else if (i + 2 == propCount &&
-                    this.children[i + 1] instanceof AstMethodParameters) {
+            } else if (i + 2 == propCount && this.children[i
+                    + 1] instanceof AstMethodParameters) {
                 // Method call at end of expression
                 ctx.setPropertyResolved(false);
                 property = this.children[i].getValue(ctx);
@@ -141,24 +137,24 @@ public final class AstValue extends SimpleNode {
         ELResolver resolver = ctx.getELResolver();
         while (base != null && i < propCount) {
             suffix = this.children[i].getValue(ctx);
-            if (i + 1 < propCount &&
-                    (this.children[i+1] instanceof AstMethodParameters)) {
-                AstMethodParameters mps =
-                    (AstMethodParameters) this.children[i+1];
-                if (base instanceof Optional && "orElseGet".equals(suffix) &&
-                        mps.jjtGetNumChildren() == 1) {
+            if (i + 1 < propCount && (this.children[i
+                    + 1] instanceof AstMethodParameters)) {
+                AstMethodParameters mps = (AstMethodParameters) this.children[i
+                        + 1];
+                if (base instanceof Optional && "orElseGet".equals(suffix)
+                        && mps.jjtGetNumChildren() == 1) {
                     Node paramFoOptional = mps.jjtGetChild(0);
-                    if (!(paramFoOptional instanceof AstLambdaExpression ||
-                            paramFoOptional instanceof LambdaExpression)) {
+                    if (!(paramFoOptional instanceof AstLambdaExpression
+                            || paramFoOptional instanceof LambdaExpression)) {
                         throw new ELException(MessageFactory.get(
                                 "stream.optional.paramNotLambda", suffix));
                     }
                 }
                 // This is a method
                 Object[] paramValues = mps.getParameters(ctx);
-                base = resolver.invoke(ctx, base, suffix,
-                        getTypesFromValues(paramValues), paramValues);
-                i+=2;
+                base = resolver.invoke(ctx, base, suffix, getTypesFromValues(
+                        paramValues), paramValues);
+                i += 2;
             } else {
                 // This is a property
                 if (suffix == null) {
@@ -181,8 +177,8 @@ public final class AstValue extends SimpleNode {
     public boolean isReadOnly(EvaluationContext ctx) throws ELException {
         Target t = getTarget(ctx);
         ctx.setPropertyResolved(false);
-        boolean result =
-            ctx.getELResolver().isReadOnly(ctx, t.base, t.property);
+        boolean result = ctx.getELResolver().isReadOnly(ctx, t.base,
+                t.property);
         if (!ctx.isPropertyResolved()) {
             throw new PropertyNotFoundException(MessageFactory.get(
                     "error.resolver.unhandled", t.base, t.property));
@@ -199,8 +195,8 @@ public final class AstValue extends SimpleNode {
 
         // coerce to the expected type
         Class<?> targetClass = resolver.getType(ctx, t.base, t.property);
-        resolver.setValue(ctx, t.base, t.property,
-                ELSupport.coerceToType(ctx, value, targetClass));
+        resolver.setValue(ctx, t.base, t.property, ELSupport.coerceToType(ctx,
+                value, targetClass));
         if (!ctx.isPropertyResolved()) {
             throw new PropertyNotFoundException(MessageFactory.get(
                     "error.resolver.unhandled", t.base, t.property));
@@ -213,8 +209,8 @@ public final class AstValue extends SimpleNode {
             @SuppressWarnings("rawtypes") Class[] paramTypes)
             throws ELException {
         Target t = getTarget(ctx);
-        Method m = ReflectionUtil.getMethod(
-                ctx, t.base, t.property, paramTypes, null);
+        Method m = ReflectionUtil.getMethod(ctx, t.base, t.property, paramTypes,
+                null);
         return new MethodInfo(m.getName(), m.getReturnType(), m
                 .getParameterTypes());
     }
@@ -230,8 +226,8 @@ public final class AstValue extends SimpleNode {
         Object[] values = null;
         Class<?>[] types = null;
         if (isParametersProvided()) {
-            values = ((AstMethodParameters) this.jjtGetChild(
-                    this.jjtGetNumChildren() - 1)).getParameters(ctx);
+            values = ((AstMethodParameters) this.jjtGetChild(this
+                    .jjtGetNumChildren() - 1)).getParameters(ctx);
             types = getTypesFromValues(values);
         } else {
             values = paramValues;
@@ -262,7 +258,8 @@ public final class AstValue extends SimpleNode {
         return result;
     }
 
-    private Object[] convertArgs(EvaluationContext ctx, Object[] src, Method m) {
+    private Object[] convertArgs(EvaluationContext ctx, Object[] src,
+            Method m) {
         Class<?>[] types = m.getParameterTypes();
         if (types.length == 0) {
             // Treated as if parameters have been provided so src is ignored
@@ -271,20 +268,21 @@ public final class AstValue extends SimpleNode {
 
         int paramCount = types.length;
 
-        if (m.isVarArgs() && paramCount > 1 && (src == null || paramCount > src.length) ||
-                !m.isVarArgs() && (paramCount > 0 && src == null ||
-                        src != null && src.length != paramCount)) {
+        if (m.isVarArgs() && paramCount > 1 && (src == null
+                || paramCount > src.length) || !m.isVarArgs() && (paramCount > 0
+                        && src == null || src != null
+                                && src.length != paramCount)) {
             String srcCount = null;
             if (src != null) {
                 srcCount = Integer.toString(src.length);
             }
             String msg;
             if (m.isVarArgs()) {
-                msg = MessageFactory.get("error.invoke.tooFewParams",
-                        m.getName(), srcCount, Integer.toString(paramCount));
+                msg = MessageFactory.get("error.invoke.tooFewParams", m
+                        .getName(), srcCount, Integer.toString(paramCount));
             } else {
-                msg = MessageFactory.get("error.invoke.wrongParams",
-                        m.getName(), srcCount, Integer.toString(paramCount));
+                msg = MessageFactory.get("error.invoke.wrongParams", m
+                        .getName(), srcCount, Integer.toString(paramCount));
             }
             throw new IllegalArgumentException(msg);
         }
@@ -303,17 +301,17 @@ public final class AstValue extends SimpleNode {
         }
 
         if (m.isVarArgs()) {
-            Object[] varArgs = (Object[]) Array.newInstance(
-                    m.getParameterTypes()[paramCount - 1].getComponentType(),
+            Object[] varArgs = (Object[]) Array.newInstance(m
+                    .getParameterTypes()[paramCount - 1].getComponentType(),
                     src.length - (paramCount - 1));
-            for (int i = 0; i < src.length - (paramCount - 1); i ++) {
-                varArgs[i] = ELSupport.coerceToType(ctx, src[paramCount - 1 + i],
-                        types[paramCount - 1].getComponentType());
+            for (int i = 0; i < src.length - (paramCount - 1); i++) {
+                varArgs[i] = ELSupport.coerceToType(ctx, src[paramCount - 1
+                        + i], types[paramCount - 1].getComponentType());
             }
             dest[paramCount - 1] = varArgs;
         } else {
-            dest[paramCount - 1] = ELSupport.coerceToType(
-                    ctx, src[paramCount - 1], types[paramCount - 1]);
+            dest[paramCount - 1] = ELSupport.coerceToType(ctx, src[paramCount
+                    - 1], types[paramCount - 1]);
         }
 
         return dest;
@@ -335,22 +333,20 @@ public final class AstValue extends SimpleNode {
         return result;
     }
 
-
     /**
      * @since EL 2.2
      */
     @Override
     public ValueReference getValueReference(EvaluationContext ctx) {
         // Check this is a reference to a base and a property
-        if (this.children.length > 2 &&
-                this.jjtGetChild(2) instanceof AstMethodParameters) {
+        if (this.children.length > 2 && this.jjtGetChild(
+                2) instanceof AstMethodParameters) {
             // This is a method call
             return null;
         }
         Target t = getTarget(ctx);
         return new ValueReference(t.base, t.property);
     }
-
 
     /**
      * @since EL 2.2

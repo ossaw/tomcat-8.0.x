@@ -1,18 +1,16 @@
 /*
- *  Licensed to the Apache Software Foundation (ASF) under one or more
- *  contributor license agreements.  See the NOTICE file distributed with
- *  this work for additional information regarding copyright ownership.
- *  The ASF licenses this file to You under the Apache License, Version 2.0
- *  (the "License"); you may not use this file except in compliance with
- *  the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements. See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.apache.tomcat.util.buf;
 
@@ -25,12 +23,12 @@ import org.junit.Test;
 
 public class TestB2CConverter {
 
-    private static final byte[] UTF16_MESSAGE =
-            new byte[] {-2, -1, 0, 65, 0, 66, 0, 67};
+    private static final byte[] UTF16_MESSAGE = new byte[] { -2, -1, 0, 65, 0,
+            66, 0, 67 };
 
-    private static final byte[] UTF8_INVALID = new byte[] {-8, -69, -73, -77};
+    private static final byte[] UTF8_INVALID = new byte[] { -8, -69, -73, -77 };
 
-    private static final byte[] UTF8_PARTIAL = new byte[] {-50};
+    private static final byte[] UTF8_PARTIAL = new byte[] { -50 };
 
     @Test
     public void testSingleMessage() throws Exception {
@@ -52,7 +50,6 @@ public class TestB2CConverter {
 
         ByteChunk bc = new ByteChunk();
         CharChunk cc = new CharChunk(32);
-
 
         for (int i = 0; i < msgCount; i++) {
             bc.append(UTF16_MESSAGE, 0, UTF16_MESSAGE.length);
@@ -88,8 +85,8 @@ public class TestB2CConverter {
                 charsetName = charset.name();
             }
         }
-        Assert.assertTrue("Limit needs to be at least " + maxLeftover +
-                " (used in charset '" + charsetName + "')",
+        Assert.assertTrue("Limit needs to be at least " + maxLeftover
+                + " (used in charset '" + charsetName + "')",
                 maxLeftover <= B2CConverter.LEFTOVER_SIZE);
     }
 
@@ -107,7 +104,7 @@ public class TestB2CConverter {
         conv.convert(bc, cc, false);
     }
 
-    @Test(expected=MalformedInputException.class)
+    @Test(expected = MalformedInputException.class)
     public void testBug54602b() throws Exception {
         // Check partial input is rejected
         B2CConverter conv = new B2CConverter("UTF-8");

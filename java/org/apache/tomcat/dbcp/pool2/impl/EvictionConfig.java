@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -35,16 +33,16 @@ public class EvictionConfig {
      * Create a new eviction configuration with the specified parameters.
      * Instances are immutable.
      *
-     * @param poolIdleEvictTime Expected to be provided by
-     *        {@link BaseGenericObjectPool#getMinEvictableIdleTimeMillis()}
+     * @param poolIdleEvictTime     Expected to be provided by
+     *                              {@link BaseGenericObjectPool#getMinEvictableIdleTimeMillis()}
      * @param poolIdleSoftEvictTime Expected to be provided by
-     *        {@link BaseGenericObjectPool#getSoftMinEvictableIdleTimeMillis()}
-     * @param minIdle Expected to be provided by
-     *        {@link GenericObjectPool#getMinIdle()} or
-     *        {@link GenericKeyedObjectPool#getMinIdlePerKey()}
+     *                              {@link BaseGenericObjectPool#getSoftMinEvictableIdleTimeMillis()}
+     * @param minIdle               Expected to be provided by
+     *                              {@link GenericObjectPool#getMinIdle()} or
+     *                              {@link GenericKeyedObjectPool#getMinIdlePerKey()}
      */
-    public EvictionConfig(final long poolIdleEvictTime, final long poolIdleSoftEvictTime,
-            final int minIdle) {
+    public EvictionConfig(final long poolIdleEvictTime,
+            final long poolIdleSoftEvictTime, final int minIdle) {
         if (poolIdleEvictTime > 0) {
             idleEvictTime = poolIdleEvictTime;
         } else {
@@ -53,7 +51,7 @@ public class EvictionConfig {
         if (poolIdleSoftEvictTime > 0) {
             idleSoftEvictTime = poolIdleSoftEvictTime;
         } else {
-            idleSoftEvictTime  = Long.MAX_VALUE;
+            idleSoftEvictTime = Long.MAX_VALUE;
         }
         this.minIdle = minIdle;
     }

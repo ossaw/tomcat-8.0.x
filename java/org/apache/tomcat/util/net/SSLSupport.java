@@ -1,18 +1,16 @@
 /*
- *  Licensed to the Apache Software Foundation (ASF) under one or more
- *  contributor license agreements.  See the NOTICE file distributed with
- *  this work for additional information regarding copyright ownership.
- *  The ASF licenses this file to You under the Apache License, Version 2.0
- *  (the "License"); you may not use this file except in compliance with
- *  the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements. See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package org.apache.tomcat.util.net;
@@ -27,8 +25,7 @@ public interface SSLSupport {
     /**
      * The Request attribute key for the cipher suite.
      */
-    public static final String CIPHER_SUITE_KEY =
-            "javax.servlet.request.cipher_suite";
+    public static final String CIPHER_SUITE_KEY = "javax.servlet.request.cipher_suite";
 
     /**
      * The Request attribute key for the key size.
@@ -38,29 +35,25 @@ public interface SSLSupport {
     /**
      * The Request attribute key for the client certificate chain.
      */
-    public static final String CERTIFICATE_KEY =
-            "javax.servlet.request.X509Certificate";
+    public static final String CERTIFICATE_KEY = "javax.servlet.request.X509Certificate";
 
     /**
      * The Request attribute key for the session id.
      * This one is a Tomcat extension to the Servlet spec.
      */
-    public static final String SESSION_ID_KEY =
-            "javax.servlet.request.ssl_session_id";
+    public static final String SESSION_ID_KEY = "javax.servlet.request.ssl_session_id";
 
     /**
      * The request attribute key for the session manager.
      * This one is a Tomcat extension to the Servlet spec.
      */
-    public static final String SESSION_MGR =
-            "javax.servlet.request.ssl_session_mgr";
+    public static final String SESSION_MGR = "javax.servlet.request.ssl_session_mgr";
 
     /**
      * The request attribute key under which the String indicating the protocol
      * that created the SSL socket is recorded - e.g. TLSv1 or TLSv1.2 etc.
      */
-    public static final String PROTOCOL_VERSION_KEY =
-            "org.apache.tomcat.util.net.secure_protocol_version";
+    public static final String PROTOCOL_VERSION_KEY = "org.apache.tomcat.util.net.secure_protocol_version";
 
     /**
      * The cipher suite being used on this connection.
@@ -74,7 +67,8 @@ public interface SSLSupport {
      *              request a client certificate if a client certificate has not
      *              already been requested.
      */
-    public X509Certificate[] getPeerCertificateChain(boolean force) throws IOException;
+    public X509Certificate[] getPeerCertificateChain(boolean force)
+            throws IOException;
 
     /**
      * Get the keysize.
@@ -90,8 +84,7 @@ public interface SSLSupport {
      *
      * Unfortunately, all of these values are nonsensical.
      **/
-    public Integer getKeySize()
-        throws IOException;
+    public Integer getKeySize() throws IOException;
 
     /**
      * The current session Id.
@@ -100,8 +93,7 @@ public interface SSLSupport {
 
     /**
      * @return the protocol String indicating how the SSL socket was created
-     *  e.g. TLSv1 or TLSv1.2 etc.
+     *         e.g. TLSv1 or TLSv1.2 etc.
      */
     public String getProtocol() throws IOException;
 }
-

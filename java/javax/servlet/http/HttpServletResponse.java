@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -27,7 +25,8 @@ import javax.servlet.ServletResponse;
  * HTTP headers and cookies.
  * <p>
  * The servlet container creates an <code>HttpServletResponse</code> object and
- * passes it as an argument to the servlet's service methods (<code>doGet</code>, <code>doPost</code>, etc).
+ * passes it as an argument to the servlet's service methods
+ * (<code>doGet</code>, <code>doPost</code>, etc).
  *
  * @see javax.servlet.ServletResponse
  */
@@ -38,7 +37,7 @@ public interface HttpServletResponse extends ServletResponse {
      * multiple times to set more than one cookie.
      *
      * @param cookie
-     *            the Cookie to return to the client
+     *               the Cookie to return to the client
      */
     public void addCookie(Cookie cookie);
 
@@ -47,7 +46,7 @@ public interface HttpServletResponse extends ServletResponse {
      * already been set.
      *
      * @param name
-     *            the header name
+     *             the header name
      * @return <code>true</code> if the named response header has already been
      *         set; <code>false</code> otherwise
      */
@@ -133,9 +132,9 @@ public interface HttpServletResponse extends ServletResponse {
      * @param msg
      *            the descriptive message
      * @exception IOException
-     *                If an input or output exception occurs
+     *                                  If an input or output exception occurs
      * @exception IllegalStateException
-     *                If the response was committed
+     *                                  If the response was committed
      */
     public void sendError(int sc, String msg) throws IOException;
 
@@ -145,11 +144,12 @@ public interface HttpServletResponse extends ServletResponse {
      * String)} with the same status code and <code>null</code> for the message.
      *
      * @param sc
-     *            the error status code
+     *           the error status code
      * @exception IOException
-     *                If an input or output exception occurs
+     *                                  If an input or output exception occurs
      * @exception IllegalStateException
-     *                If the response was committed before this method call
+     *                                  If the response was committed before
+     *                                  this method call
      */
     public void sendError(int sc) throws IOException;
 
@@ -167,12 +167,13 @@ public interface HttpServletResponse extends ServletResponse {
      * considered to be committed and should not be written to.
      *
      * @param location
-     *            the redirect location URL
+     *                 the redirect location URL
      * @exception IOException
-     *                If an input or output exception occurs
+     *                                  If an input or output exception occurs
      * @exception IllegalStateException
-     *                If the response was committed or if a partial URL is given
-     *                and cannot be converted into a valid URL
+     *                                  If the response was committed or if a
+     *                                  partial URL is given
+     *                                  and cannot be converted into a valid URL
      */
     public void sendRedirect(String location) throws IOException;
 
@@ -184,9 +185,9 @@ public interface HttpServletResponse extends ServletResponse {
      * of a header before setting its value.
      *
      * @param name
-     *            the name of the header to set
+     *             the name of the header to set
      * @param date
-     *            the assigned date value
+     *             the assigned date value
      * @see #containsHeader
      * @see #addDateHeader
      */
@@ -198,9 +199,9 @@ public interface HttpServletResponse extends ServletResponse {
      * response headers to have multiple values.
      *
      * @param name
-     *            the name of the header to set
+     *             the name of the header to set
      * @param date
-     *            the additional date value
+     *             the additional date value
      * @see #setDateHeader
      */
     public void addDateHeader(String name, long date);
@@ -212,11 +213,11 @@ public interface HttpServletResponse extends ServletResponse {
      * of a header before setting its value.
      *
      * @param name
-     *            the name of the header
+     *              the name of the header
      * @param value
-     *            the header value If it contains octet string, it should be
-     *            encoded according to RFC 2047
-     *            (http://www.ietf.org/rfc/rfc2047.txt)
+     *              the header value If it contains octet string, it should be
+     *              encoded according to RFC 2047
+     *              (http://www.ietf.org/rfc/rfc2047.txt)
      * @see #containsHeader
      * @see #addHeader
      */
@@ -227,11 +228,11 @@ public interface HttpServletResponse extends ServletResponse {
      * response headers to have multiple values.
      *
      * @param name
-     *            the name of the header
+     *              the name of the header
      * @param value
-     *            the additional header value If it contains octet string, it
-     *            should be encoded according to RFC 2047
-     *            (http://www.ietf.org/rfc/rfc2047.txt)
+     *              the additional header value If it contains octet string, it
+     *              should be encoded according to RFC 2047
+     *              (http://www.ietf.org/rfc/rfc2047.txt)
      * @see #setHeader
      */
     public void addHeader(String name, String value);
@@ -243,9 +244,9 @@ public interface HttpServletResponse extends ServletResponse {
      * presence of a header before setting its value.
      *
      * @param name
-     *            the name of the header
+     *              the name of the header
      * @param value
-     *            the assigned integer value
+     *              the assigned integer value
      * @see #containsHeader
      * @see #addIntHeader
      */
@@ -256,9 +257,9 @@ public interface HttpServletResponse extends ServletResponse {
      * allows response headers to have multiple values.
      *
      * @param name
-     *            the name of the header
+     *              the name of the header
      * @param value
-     *            the assigned integer value
+     *              the assigned integer value
      * @see #setIntHeader
      */
     public void addIntHeader(String name, int value);
@@ -274,7 +275,7 @@ public interface HttpServletResponse extends ServletResponse {
      * cookies and other headers.
      *
      * @param sc
-     *            the status code
+     *           the status code
      * @see #sendError
      */
     public void setStatus(int sc);
@@ -283,9 +284,9 @@ public interface HttpServletResponse extends ServletResponse {
      * Sets the status code and message for this response.
      *
      * @param sc
-     *            the status code
+     *           the status code
      * @param sm
-     *            the status message
+     *           the status message
      * @deprecated As of version 2.1, due to ambiguous meaning of the message
      *             parameter. To set a status code use
      *             <code>setStatus(int)</code>, to send an error with a
@@ -306,7 +307,7 @@ public interface HttpServletResponse extends ServletResponse {
 
     /**
      * Return the value for the specified header, or <code>null</code> if this
-     * header has not been set.  If more than one value was added for this
+     * header has not been set. If more than one value was added for this
      * name, only the first is returned; use {@link #getHeaders(String)} to
      * retrieve all of them.
      *

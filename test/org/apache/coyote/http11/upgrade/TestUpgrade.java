@@ -1,18 +1,16 @@
 /*
- *  Licensed to the Apache Software Foundation (ASF) under one or more
- *  contributor license agreements.  See the NOTICE file distributed with
- *  this work for additional information regarding copyright ownership.
- *  The ASF licenses this file to You under the Apache License, Version 2.0
- *  (the "License"); you may not use this file except in compliance with
- *  the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements. See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.apache.coyote.http11.upgrade;
 
@@ -104,7 +102,7 @@ public class TestUpgrade extends TomcatBaseTest {
 
     private void doTestCheckClosed(
             Class<? extends HttpUpgradeHandler> upgradeHandlerClass)
-                    throws Exception {
+            throws Exception {
         UpgradeConnection conn = doUpgrade(upgradeHandlerClass);
 
         Reader r = conn.getReader();
@@ -115,7 +113,7 @@ public class TestUpgrade extends TomcatBaseTest {
 
     private void doTestFixedResponse(
             Class<? extends HttpUpgradeHandler> upgradeHandlerClass)
-                    throws Exception {
+            throws Exception {
         UpgradeConnection conn = doUpgrade(upgradeHandlerClass);
 
         Reader r = conn.getReader();
@@ -124,7 +122,7 @@ public class TestUpgrade extends TomcatBaseTest {
         Assert.assertEquals(FixedResponseNonBlocking.FIXED_RESPONSE, c);
     }
 
-    private void doTestMessages (
+    private void doTestMessages(
             Class<? extends HttpUpgradeHandler> upgradeHandlerClass)
             throws Exception {
         UpgradeConnection uc = doUpgrade(upgradeHandlerClass);
@@ -150,9 +148,9 @@ public class TestUpgrade extends TomcatBaseTest {
         uc.shutdownInput();
     }
 
-
     private UpgradeConnection doUpgrade(
-            Class<? extends HttpUpgradeHandler> upgradeHandlerClass) throws Exception {
+            Class<? extends HttpUpgradeHandler> upgradeHandlerClass)
+            throws Exception {
         // Setup Tomcat instance
         Tomcat tomcat = getTomcatInstance();
 
@@ -167,8 +165,8 @@ public class TestUpgrade extends TomcatBaseTest {
 
         // Use raw socket so the necessary control is available after the HTTP
         // upgrade
-        Socket socket =
-                SocketFactory.getDefault().createSocket("localhost", getPort());
+        Socket socket = SocketFactory.getDefault().createSocket("localhost",
+                getPort());
 
         socket.setSoTimeout(5000);
 
@@ -200,7 +198,8 @@ public class TestUpgrade extends TomcatBaseTest {
 
         private final Class<? extends HttpUpgradeHandler> upgradeHandlerClass;
 
-        public UpgradeServlet(Class<? extends HttpUpgradeHandler> upgradeHandlerClass) {
+        public UpgradeServlet(
+                Class<? extends HttpUpgradeHandler> upgradeHandlerClass) {
             this.upgradeHandlerClass = upgradeHandlerClass;
         }
 
@@ -228,7 +227,8 @@ public class TestUpgrade extends TomcatBaseTest {
                 throw new IllegalArgumentException(ioe);
             }
 
-            BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+            BufferedReader reader = new BufferedReader(new InputStreamReader(
+                    is));
             Writer writer = new OutputStreamWriter(os);
 
             this.writer = writer;
@@ -253,13 +253,12 @@ public class TestUpgrade extends TomcatBaseTest {
         }
     }
 
-
     public static class EchoBlocking implements HttpUpgradeHandler {
         @Override
         public void init(WebConnection connection) {
 
             try (ServletInputStream sis = connection.getInputStream();
-                 ServletOutputStream sos = connection.getOutputStream()){
+                    ServletOutputStream sos = connection.getOutputStream()) {
 
                 IOTools.flow(sis, sos);
             } catch (IOException ioe) {
@@ -272,7 +271,6 @@ public class TestUpgrade extends TomcatBaseTest {
             // NO-OP
         }
     }
-
 
     public static class EchoNonBlocking implements HttpUpgradeHandler {
 
@@ -311,8 +309,8 @@ public class TestUpgrade extends TomcatBaseTest {
                             if (sos.isReady()) {
                                 sos.write(buffer, 0, read);
                             } else {
-                                throw new IOException("Unable to echo data. " +
-                                        "isReady() returned false");
+                                throw new IOException("Unable to echo data. "
+                                        + "isReady() returned false");
                             }
                         }
                     }
@@ -322,7 +320,6 @@ public class TestUpgrade extends TomcatBaseTest {
             }
         }
     }
-
 
     public static class SetNullReadListener implements HttpUpgradeHandler {
 
@@ -343,7 +340,6 @@ public class TestUpgrade extends TomcatBaseTest {
         }
     }
 
-
     public static class SetNullWriteListener implements HttpUpgradeHandler {
 
         @Override
@@ -362,7 +358,6 @@ public class TestUpgrade extends TomcatBaseTest {
             // NO-OP
         }
     }
-
 
     public static class SetReadListenerTwice implements HttpUpgradeHandler {
 
@@ -388,7 +383,6 @@ public class TestUpgrade extends TomcatBaseTest {
         }
     }
 
-
     public static class SetWriteListenerTwice implements HttpUpgradeHandler {
 
         @Override
@@ -412,7 +406,6 @@ public class TestUpgrade extends TomcatBaseTest {
             // NO-OP
         }
     }
-
 
     public static class FixedResponseNonBlocking implements HttpUpgradeHandler {
 
@@ -453,7 +446,6 @@ public class TestUpgrade extends TomcatBaseTest {
         }
     }
 
-
     private static class NoOpReadListener implements ReadListener {
 
         @Override
@@ -471,7 +463,6 @@ public class TestUpgrade extends TomcatBaseTest {
             // NO-OP
         }
     }
-
 
     private static class NoOpWriteListener implements WriteListener {
 

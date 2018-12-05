@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -46,50 +44,60 @@ public final class Streams {
     /**
      * Copies the contents of the given {@link InputStream}
      * to the given {@link OutputStream}. Shortcut for
+     * 
      * <pre>
-     *   copy(pInputStream, pOutputStream, new byte[8192]);
+     * copy(pInputStream, pOutputStream, new byte[8192]);
      * </pre>
      *
-     * @param inputStream The input stream, which is being read.
-     * It is guaranteed, that {@link InputStream#close()} is called
-     * on the stream.
-     * @param outputStream The output stream, to which data should
-     * be written. May be null, in which case the input streams
-     * contents are simply discarded.
-     * @param closeOutputStream True guarantees, that {@link OutputStream#close()}
-     * is called on the stream. False indicates, that only
-     * {@link OutputStream#flush()} should be called finally.
+     * @param inputStream       The input stream, which is being read.
+     *                          It is guaranteed, that
+     *                          {@link InputStream#close()} is called
+     *                          on the stream.
+     * @param outputStream      The output stream, to which data should
+     *                          be written. May be null, in which case the input
+     *                          streams
+     *                          contents are simply discarded.
+     * @param closeOutputStream True guarantees, that
+     *                          {@link OutputStream#close()}
+     *                          is called on the stream. False indicates, that
+     *                          only
+     *                          {@link OutputStream#flush()} should be called
+     *                          finally.
      *
      * @return Number of bytes, which have been copied.
      * @throws IOException An I/O error occurred.
      */
-    public static long copy(InputStream inputStream, OutputStream outputStream, boolean closeOutputStream)
-            throws IOException {
-        return copy(inputStream, outputStream, closeOutputStream, new byte[DEFAULT_BUFFER_SIZE]);
+    public static long copy(InputStream inputStream, OutputStream outputStream,
+            boolean closeOutputStream) throws IOException {
+        return copy(inputStream, outputStream, closeOutputStream,
+                new byte[DEFAULT_BUFFER_SIZE]);
     }
 
     /**
      * Copies the contents of the given {@link InputStream}
      * to the given {@link OutputStream}.
      *
-     * @param inputStream The input stream, which is being read.
-     *   It is guaranteed, that {@link InputStream#close()} is called
-     *   on the stream.
-     * @param outputStream The output stream, to which data should
-     *   be written. May be null, in which case the input streams
-     *   contents are simply discarded.
-     * @param closeOutputStream True guarantees, that {@link OutputStream#close()}
-     *   is called on the stream. False indicates, that only
-     *   {@link OutputStream#flush()} should be called finally.
-     * @param buffer Temporary buffer, which is to be used for
-     *   copying data.
+     * @param inputStream       The input stream, which is being read.
+     *                          It is guaranteed, that
+     *                          {@link InputStream#close()} is called
+     *                          on the stream.
+     * @param outputStream      The output stream, to which data should
+     *                          be written. May be null, in which case the input
+     *                          streams
+     *                          contents are simply discarded.
+     * @param closeOutputStream True guarantees, that
+     *                          {@link OutputStream#close()}
+     *                          is called on the stream. False indicates, that
+     *                          only
+     *                          {@link OutputStream#flush()} should be called
+     *                          finally.
+     * @param buffer            Temporary buffer, which is to be used for
+     *                          copying data.
      * @return Number of bytes, which have been copied.
      * @throws IOException An I/O error occurred.
      */
-    public static long copy(InputStream inputStream,
-            OutputStream outputStream, boolean closeOutputStream,
-            byte[] buffer)
-    throws IOException {
+    public static long copy(InputStream inputStream, OutputStream outputStream,
+            boolean closeOutputStream, byte[] buffer) throws IOException {
         OutputStream out = outputStream;
         InputStream in = inputStream;
         try {
@@ -148,12 +156,13 @@ public final class Streams {
      * content into a string, using the given character encoding.
      *
      * @param inputStream The input stream to read.
-     * @param encoding The character encoding, typically "UTF-8".
+     * @param encoding    The character encoding, typically "UTF-8".
      * @see #asString(InputStream)
      * @return The streams contents, as a string.
      * @throws IOException An I/O error occurred.
      */
-    public static String asString(InputStream inputStream, String encoding) throws IOException {
+    public static String asString(InputStream inputStream, String encoding)
+            throws IOException {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         copy(inputStream, baos, true);
         return baos.toString(encoding);
@@ -170,10 +179,10 @@ public final class Streams {
      * @throws InvalidFileNameException The file name was found to be invalid.
      */
     public static String checkFileName(String fileName) {
-        if (fileName != null  &&  fileName.indexOf('\u0000') != -1) {
+        if (fileName != null && fileName.indexOf('\u0000') != -1) {
             // pFileName.replace("\u0000", "\\0")
             final StringBuilder sb = new StringBuilder();
-            for (int i = 0;  i < fileName.length();  i++) {
+            for (int i = 0; i < fileName.length(); i++) {
                 char c = fileName.charAt(i);
                 switch (c) {
                     case 0:
@@ -184,8 +193,8 @@ public final class Streams {
                         break;
                 }
             }
-            throw new InvalidFileNameException(fileName,
-                    "Invalid file name: " + sb);
+            throw new InvalidFileNameException(fileName, "Invalid file name: "
+                    + sb);
         }
         return fileName;
     }

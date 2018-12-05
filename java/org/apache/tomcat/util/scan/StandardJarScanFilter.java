@@ -1,18 +1,16 @@
 /*
- *  Licensed to the Apache Software Foundation (ASF) under one or more
- *  contributor license agreements.  See the NOTICE file distributed with
- *  this work for additional information regarding copyright ownership.
- *  The ASF licenses this file to You under the Apache License, Version 2.0
- *  (the "License"); you may not use this file except in compliance with
- *  the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements. See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.apache.tomcat.util.scan;
 
@@ -29,8 +27,7 @@ import org.apache.tomcat.util.file.Matcher;
 
 public class StandardJarScanFilter implements JarScanFilter {
 
-    private final ReadWriteLock configurationLock =
-            new ReentrantReadWriteLock();
+    private final ReadWriteLock configurationLock = new ReentrantReadWriteLock();
 
     private static final String defaultSkip;
     private static final String defaultScan;
@@ -62,11 +59,11 @@ public class StandardJarScanFilter implements JarScanFilter {
      * the following filtering rules are used:
      * <ul>
      * <li>JARs that match neither the skip nor the scan list will be included
-     *     in scan results.</li>
+     * in scan results.</li>
      * <li>JARs that match the skip list but not the scan list will be excluded
-     *     from scan results.</li>
+     * from scan results.</li>
      * <li>JARs that match the scan list will be included from scan results.
-     *     </li>
+     * </li>
      * </ul>
      * The default skip list and default scan list are obtained from the system
      * properties {@link Constants#SKIP_JARS_PROPERTY} and
@@ -79,11 +76,11 @@ public class StandardJarScanFilter implements JarScanFilter {
      * type:
      * <ul>
      * <li>JARs that match neither the skip nor the scan list will be excluded
-     *     from scan results.</li>
+     * from scan results.</li>
      * <li>JARs that match the scan list but not the skip list will be included
-     *     in scan results.</li>
+     * in scan results.</li>
      * <li>JARs that match the skip list will be excluded from scan results.
-     *     </li>
+     * </li>
      * </ul>
      */
     public StandardJarScanFilter() {
@@ -97,11 +94,9 @@ public class StandardJarScanFilter implements JarScanFilter {
         pluggabilityScanSet = new HashSet<>(defaultScanSet);
     }
 
-
     public String getTldSkip() {
         return tldSkip;
     }
-
 
     public void setTldSkip(String tldSkip) {
         this.tldSkip = tldSkip;
@@ -114,11 +109,9 @@ public class StandardJarScanFilter implements JarScanFilter {
         }
     }
 
-
     public String getTldScan() {
         return tldScan;
     }
-
 
     public void setTldScan(String tldScan) {
         this.tldScan = tldScan;
@@ -131,21 +124,17 @@ public class StandardJarScanFilter implements JarScanFilter {
         }
     }
 
-
     public boolean isDefaultTldScan() {
         return defaultTldScan;
     }
-
 
     public void setDefaultTldScan(boolean defaultTldScan) {
         this.defaultTldScan = defaultTldScan;
     }
 
-
     public String getPluggabilitySkip() {
         return pluggabilitySkip;
     }
-
 
     public void setPluggabilitySkip(String pluggabilitySkip) {
         this.pluggabilitySkip = pluggabilitySkip;
@@ -158,11 +147,9 @@ public class StandardJarScanFilter implements JarScanFilter {
         }
     }
 
-
     public String getPluggabilityScan() {
         return pluggabilityScan;
     }
-
 
     public void setPluggabilityScan(String pluggabilityScan) {
         this.pluggabilityScan = pluggabilityScan;
@@ -175,16 +162,13 @@ public class StandardJarScanFilter implements JarScanFilter {
         }
     }
 
-
     public boolean isDefaultPluggabilityScan() {
         return defaultPluggabilityScan;
     }
 
-
     public void setDefaultPluggabilityScan(boolean defaultPluggabilityScan) {
         this.defaultPluggabilityScan = defaultPluggabilityScan;
     }
-
 
     @Override
     public boolean check(JarScanType jarScanType, String jarName) {
@@ -238,7 +222,8 @@ public class StandardJarScanFilter implements JarScanFilter {
         }
     }
 
-    private static void populateSetFromAttribute(String attribute, Set<String> set) {
+    private static void populateSetFromAttribute(String attribute,
+            Set<String> set) {
         set.clear();
         if (attribute != null) {
             StringTokenizer tokenizer = new StringTokenizer(attribute, ",");

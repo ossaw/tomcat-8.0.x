@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -69,24 +67,24 @@ public class TestDefaultServlet extends TomcatBaseTest {
 
         final ByteChunk res = new ByteChunk();
 
-        int rc =getUrl("http://localhost:" + getPort() + contextPath +
-                "/WEB-INF/web.xml", res, null);
+        int rc = getUrl("http://localhost:" + getPort() + contextPath
+                + "/WEB-INF/web.xml", res, null);
         assertEquals(HttpServletResponse.SC_NOT_FOUND, rc);
 
-        rc =getUrl("http://localhost:" + getPort() + contextPath +
-                "/WEB-INF/doesntexistanywhere", res, null);
+        rc = getUrl("http://localhost:" + getPort() + contextPath
+                + "/WEB-INF/doesntexistanywhere", res, null);
         assertEquals(HttpServletResponse.SC_NOT_FOUND, rc);
 
-        rc =getUrl("http://localhost:" + getPort() + contextPath +
-                "/WEB-INF/", res, null);
+        rc = getUrl("http://localhost:" + getPort() + contextPath + "/WEB-INF/",
+                res, null);
         assertEquals(HttpServletResponse.SC_NOT_FOUND, rc);
 
-        rc =getUrl("http://localhost:" + getPort() + contextPath +
-                "/META-INF/MANIFEST.MF", res, null);
+        rc = getUrl("http://localhost:" + getPort() + contextPath
+                + "/META-INF/MANIFEST.MF", res, null);
         assertEquals(HttpServletResponse.SC_NOT_FOUND, rc);
 
-        rc =getUrl("http://localhost:" + getPort() + contextPath +
-                "/META-INF/doesntexistanywhere", res, null);
+        rc = getUrl("http://localhost:" + getPort() + contextPath
+                + "/META-INF/doesntexistanywhere", res, null);
         assertEquals(HttpServletResponse.SC_NOT_FOUND, rc);
 
     }
@@ -121,11 +119,9 @@ public class TestDefaultServlet extends TomcatBaseTest {
         TestGzipClient gzipClient = new TestGzipClient(getPort());
 
         gzipClient.reset();
-        gzipClient.setRequest(new String[] {
-                "GET /index.html HTTP/1.1" + CRLF +
-                "Host: localhost" + CRLF +
-                "Connection: Close" + CRLF +
-                "Accept-Encoding: gzip" + CRLF + CRLF });
+        gzipClient.setRequest(new String[] { "GET /index.html HTTP/1.1" + CRLF
+                + "Host: localhost" + CRLF + "Connection: Close" + CRLF
+                + "Accept-Encoding: gzip" + CRLF + CRLF });
         gzipClient.connect();
         gzipClient.processRequest();
         assertTrue(gzipClient.isResponse200());
@@ -133,10 +129,9 @@ public class TestDefaultServlet extends TomcatBaseTest {
         assertTrue(responseHeaders.contains("Content-Length: " + gzipSize));
 
         gzipClient.reset();
-        gzipClient.setRequest(new String[] {
-                "GET /index.html HTTP/1.1" + CRLF +
-                "Host: localhost" + CRLF +
-                "Connection: Close" + CRLF+ CRLF });
+        gzipClient.setRequest(new String[] { "GET /index.html HTTP/1.1" + CRLF
+                + "Host: localhost" + CRLF + "Connection: Close" + CRLF
+                + CRLF });
         gzipClient.connect();
         gzipClient.processRequest();
         assertTrue(gzipClient.isResponse200());
@@ -158,8 +153,8 @@ public class TestDefaultServlet extends TomcatBaseTest {
 
         File appDir = new File(getBuildDirectory(), "webapps" + contextPath);
         // app dir is relative to server home
-        org.apache.catalina.Context ctx =
-            tomcat.addWebapp(null, "/examples", appDir.getAbsolutePath());
+        org.apache.catalina.Context ctx = tomcat.addWebapp(null, "/examples",
+                appDir.getAbsolutePath());
         ctx.addApplicationListener(WsContextListener.class.getName());
 
         // Override the default servlet with our own mappings
@@ -175,44 +170,44 @@ public class TestDefaultServlet extends TomcatBaseTest {
         // Make sure DefaultServlet isn't exposing special directories
         // by remounting the webapp under a sub-path
 
-        int rc =getUrl("http://localhost:" + getPort() + contextPath +
-                "/static/WEB-INF/web.xml", res, null);
+        int rc = getUrl("http://localhost:" + getPort() + contextPath
+                + "/static/WEB-INF/web.xml", res, null);
 
         assertEquals(HttpServletResponse.SC_NOT_FOUND, rc);
-        rc =getUrl("http://localhost:" + getPort() + contextPath +
-                "/static/WEB-INF/doesntexistanywhere", res, null);
+        rc = getUrl("http://localhost:" + getPort() + contextPath
+                + "/static/WEB-INF/doesntexistanywhere", res, null);
         assertEquals(HttpServletResponse.SC_NOT_FOUND, rc);
 
         assertEquals(HttpServletResponse.SC_NOT_FOUND, rc);
-        rc =getUrl("http://localhost:" + getPort() + contextPath +
-                "/static/WEB-INF/", res, null);
+        rc = getUrl("http://localhost:" + getPort() + contextPath
+                + "/static/WEB-INF/", res, null);
         assertEquals(HttpServletResponse.SC_NOT_FOUND, rc);
 
-        rc =getUrl("http://localhost:" + getPort() + contextPath +
-                "/static/META-INF/MANIFEST.MF", res, null);
+        rc = getUrl("http://localhost:" + getPort() + contextPath
+                + "/static/META-INF/MANIFEST.MF", res, null);
         assertEquals(HttpServletResponse.SC_NOT_FOUND, rc);
 
-        rc =getUrl("http://localhost:" + getPort() + contextPath +
-                "/static/META-INF/doesntexistanywhere", res, null);
+        rc = getUrl("http://localhost:" + getPort() + contextPath
+                + "/static/META-INF/doesntexistanywhere", res, null);
         assertEquals(HttpServletResponse.SC_NOT_FOUND, rc);
 
         // Make sure DefaultServlet is serving resources relative to the
         // context root regardless of where the it is mapped
 
         final ByteChunk rootResource = new ByteChunk();
-        rc =getUrl("http://localhost:" + getPort() + contextPath +
-                "/index.html", rootResource, null);
+        rc = getUrl("http://localhost:" + getPort() + contextPath
+                + "/index.html", rootResource, null);
         assertEquals(HttpServletResponse.SC_OK, rc);
 
         final ByteChunk subpathResource = new ByteChunk();
-        rc =getUrl("http://localhost:" + getPort() + contextPath +
-                "/servlets/index.html", subpathResource, null);
+        rc = getUrl("http://localhost:" + getPort() + contextPath
+                + "/servlets/index.html", subpathResource, null);
         assertEquals(HttpServletResponse.SC_OK, rc);
 
         assertFalse(rootResource.toString().equals(subpathResource.toString()));
 
-        rc =getUrl("http://localhost:" + getPort() + contextPath +
-                "/static/index.html", res, null);
+        rc = getUrl("http://localhost:" + getPort() + contextPath
+                + "/static/index.html", res, null);
         assertEquals(HttpServletResponse.SC_NOT_FOUND, rc);
 
     }
@@ -255,12 +250,12 @@ public class TestDefaultServlet extends TomcatBaseTest {
         tomcat.addWebapp(null, contextPath, appDir.getAbsolutePath());
         tomcat.start();
 
-        TestCustomErrorClient client =
-                new TestCustomErrorClient(tomcat.getConnector().getLocalPort());
+        TestCustomErrorClient client = new TestCustomErrorClient(tomcat
+                .getConnector().getLocalPort());
 
         client.reset();
-        client.setRequest(new String[] {
-                "GET /MyApp/missing HTTP/1.0" +CRLF + CRLF });
+        client.setRequest(new String[] { "GET /MyApp/missing HTTP/1.0" + CRLF
+                + CRLF });
         client.connect();
         client.processRequest();
         assertTrue(client.isResponse404());
@@ -269,17 +264,15 @@ public class TestDefaultServlet extends TomcatBaseTest {
         SimpleDateFormat format = new SimpleDateFormat(
                 "EEE, dd MMM yyyy HH:mm:ss zzz", Locale.US);
         format.setTimeZone(TimeZone.getTimeZone("GMT"));
-        String tomorrow = format.format(new Date(System.currentTimeMillis()
-                + 24 * 60 * 60 * 1000));
+        String tomorrow = format.format(new Date(System.currentTimeMillis() + 24
+                * 60 * 60 * 1000));
 
         // https://bz.apache.org/bugzilla/show_bug.cgi?id=50413
         //
         client.reset();
-        client.setRequest(new String[] {
-                "GET /MyApp/missing HTTP/1.1" + CRLF +
-                "Host: localhost" + CRLF +
-                "Connection: close" + CRLF +
-                "If-Modified-Since: " + tomorrow + CRLF + CRLF });
+        client.setRequest(new String[] { "GET /MyApp/missing HTTP/1.1" + CRLF
+                + "Host: localhost" + CRLF + "Connection: close" + CRLF
+                + "If-Modified-Since: " + tomorrow + CRLF + CRLF });
         client.connect();
         client.processRequest();
         assertTrue(client.isResponse404());
@@ -288,11 +281,9 @@ public class TestDefaultServlet extends TomcatBaseTest {
         // https://bz.apache.org/bugzilla/show_bug.cgi?id=50413#c6
         //
         client.reset();
-        client.setRequest(new String[] {
-                "GET /MyApp/missing HTTP/1.1" + CRLF +
-                "Host: localhost" + CRLF +
-                "Connection: close" + CRLF +
-                "Range: bytes=0-100" + CRLF + CRLF });
+        client.setRequest(new String[] { "GET /MyApp/missing HTTP/1.1" + CRLF
+                + "Host: localhost" + CRLF + "Connection: close" + CRLF
+                + "Range: bytes=0-100" + CRLF + CRLF });
         client.connect();
         client.processRequest();
         assertTrue(client.isResponse404());
@@ -331,12 +322,12 @@ public class TestDefaultServlet extends TomcatBaseTest {
         tomcat.addWebapp(null, contextPath, appDir.getAbsolutePath());
         tomcat.start();
 
-        TestCustomErrorClient client =
-                new TestCustomErrorClient(tomcat.getConnector().getLocalPort());
+        TestCustomErrorClient client = new TestCustomErrorClient(tomcat
+                .getConnector().getLocalPort());
 
         client.reset();
-        client.setRequest(new String[] {
-                "GET /MyApp/missing HTTP/1.0" + CRLF + CRLF });
+        client.setRequest(new String[] { "GET /MyApp/missing HTTP/1.0" + CRLF
+                + CRLF });
         client.connect();
         client.processRequest();
         assertTrue(client.isResponse404());
@@ -351,8 +342,9 @@ public class TestDefaultServlet extends TomcatBaseTest {
     public void testBug57601() throws Exception {
         Tomcat tomcat = getTomcatInstanceTestWebapp(false, true);
 
-        Map<String,List<String>> resHeaders= new HashMap<>();
-        String path = "http://localhost:" + getPort() + "/test/bug5nnnn/bug57601.jsp";
+        Map<String, List<String>> resHeaders = new HashMap<>();
+        String path = "http://localhost:" + getPort()
+                + "/test/bug5nnnn/bug57601.jsp";
         ByteChunk out = new ByteChunk();
 
         int rc = getUrl(path, out, resHeaders);

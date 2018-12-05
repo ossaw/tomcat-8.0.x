@@ -1,18 +1,16 @@
 /*
- *  Licensed to the Apache Software Foundation (ASF) under one or more
- *  contributor license agreements.  See the NOTICE file distributed with
- *  this work for additional information regarding copyright ownership.
- *  The ASF licenses this file to You under the Apache License, Version 2.0
- *  (the "License"); you may not use this file except in compliance with
- *  the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements. See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.apache.catalina.connector;
 
@@ -40,15 +38,15 @@ public class TestMaxConnections extends TomcatBaseTest {
     public void testConnector() throws Exception {
         init();
         ConnectThread[] t = new ConnectThread[10];
-        for (int i=0; i<t.length; i++) {
+        for (int i = 0; i < t.length; i++) {
             t[i] = new ConnectThread();
-            t[i].setName("ConnectThread["+i+"]");
+            t[i].setName("ConnectThread[" + i + "]");
         }
-        for (int i=0; i<t.length; i++) {
+        for (int i = 0; i < t.length; i++) {
             t[i].start();
             Thread.sleep(50);
         }
-        for (int i=0; i<t.length; i++) {
+        for (int i = 0; i < t.length; i++) {
             t[i].join();
         }
 
@@ -67,10 +65,10 @@ public class TestMaxConnections extends TomcatBaseTest {
         }
     }
 
-
     private synchronized void init() throws Exception {
         Tomcat tomcat = getTomcatInstance();
-        StandardContext root = (StandardContext) tomcat.addContext("", SimpleHttpClient.TEMP_DIR);
+        StandardContext root = (StandardContext) tomcat.addContext("",
+                SimpleHttpClient.TEMP_DIR);
         root.setUnloadDelay(soTimeout);
         Tomcat.addServlet(root, "Simple", new SimpleServlet());
         root.addServletMappingDecoded("/test", "Simple");
@@ -78,8 +76,8 @@ public class TestMaxConnections extends TomcatBaseTest {
         tomcat.getConnector().setProperty("maxThreads", "10");
         tomcat.getConnector().setProperty("soTimeout", "20000");
         tomcat.getConnector().setProperty("keepAliveTimeout", "50000");
-        tomcat.getConnector().setProperty(
-                "maxConnections", Integer.toString(MAX_CONNECTIONS));
+        tomcat.getConnector().setProperty("maxConnections", Integer.toString(
+                MAX_CONNECTIONS));
         tomcat.getConnector().setProperty("acceptCount", "1");
         tomcat.start();
     }
@@ -91,18 +89,18 @@ public class TestMaxConnections extends TomcatBaseTest {
 
             long start = System.currentTimeMillis();
             // Open connection
-            connect(connectTimeout,soTimeout);
+            connect(connectTimeout, soTimeout);
 
             // Send request in two parts
             String[] request = new String[1];
-            request[0] =
-                "GET /test HTTP/1.0" + CRLF + CRLF;
+            request[0] = "GET /test HTTP/1.0" + CRLF + CRLF;
             setRequest(request);
             boolean passed = false;
             processRequest(false); // blocks until response has been read
             long stop = System.currentTimeMillis();
-            log.info(Thread.currentThread().getName()+" Request complete:"+(stop-start)+" ms.");
-            passed = (this.readLine()==null);
+            log.info(Thread.currentThread().getName() + " Request complete:"
+                    + (stop - start) + " ms.");
+            passed = (this.readLine() == null);
             // Close the connection
             disconnect();
             reset();
@@ -114,7 +112,6 @@ public class TestMaxConnections extends TomcatBaseTest {
             return true;
         }
     }
-
 
     private static class SimpleServlet extends HttpServlet {
 
@@ -129,9 +126,10 @@ public class TestMaxConnections extends TomcatBaseTest {
 
             increment();
 
-            System.out.println("Processing thread: " + Thread.currentThread().getName());
+            System.out.println("Processing thread: " + Thread.currentThread()
+                    .getName());
             try {
-                Thread.sleep(TestMaxConnections.soTimeout*4/5);
+                Thread.sleep(TestMaxConnections.soTimeout * 4 / 5);
             } catch (InterruptedException x) {
 
             }
@@ -151,7 +149,6 @@ public class TestMaxConnections extends TomcatBaseTest {
         private static synchronized void decrement() {
             currentConnections--;
         }
-
 
         public static synchronized int getMaxConnections() {
             return maxConnections;

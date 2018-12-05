@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -15,7 +13,6 @@
  * limitations under the License.
  */
 package org.apache.catalina.ssi;
-
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -34,6 +31,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.catalina.Globals;
+
 /**
  * Servlet to process SSI requests within a webpage. Mapped to a path from
  * within web.xml.
@@ -61,41 +59,43 @@ public class SSIServlet extends HttpServlet {
     /** Allow exec (normally blocked for security) */
     protected boolean allowExec = false;
 
-
     //----------------- Public methods.
     /**
      * Initialize this servlet.
      *
      * @exception ServletException
-     *                if an error occurs
+     *                             if an error occurs
      */
     @Override
     public void init() throws ServletException {
 
         if (getServletConfig().getInitParameter("debug") != null)
-            debug = Integer.parseInt(getServletConfig().getInitParameter("debug"));
+            debug = Integer.parseInt(getServletConfig().getInitParameter(
+                    "debug"));
 
-        isVirtualWebappRelative =
-            Boolean.parseBoolean(getServletConfig().getInitParameter("isVirtualWebappRelative"));
+        isVirtualWebappRelative = Boolean.parseBoolean(getServletConfig()
+                .getInitParameter("isVirtualWebappRelative"));
 
         if (getServletConfig().getInitParameter("expires") != null)
-            expires = Long.valueOf(getServletConfig().getInitParameter("expires"));
+            expires = Long.valueOf(getServletConfig().getInitParameter(
+                    "expires"));
 
-        buffered = Boolean.parseBoolean(getServletConfig().getInitParameter("buffered"));
+        buffered = Boolean.parseBoolean(getServletConfig().getInitParameter(
+                "buffered"));
 
         inputEncoding = getServletConfig().getInitParameter("inputEncoding");
 
         if (getServletConfig().getInitParameter("outputEncoding") != null)
-            outputEncoding = getServletConfig().getInitParameter("outputEncoding");
+            outputEncoding = getServletConfig().getInitParameter(
+                    "outputEncoding");
 
-        allowExec = Boolean.parseBoolean(
-                getServletConfig().getInitParameter("allowExec"));
+        allowExec = Boolean.parseBoolean(getServletConfig().getInitParameter(
+                "allowExec"));
 
         if (debug > 0)
             log("SSIServlet.init() SSI invoker started with 'debug'=" + debug);
 
     }
-
 
     /**
      * Process and forward the GET request to our <code>requestHandler()</code>*
@@ -105,17 +105,17 @@ public class SSIServlet extends HttpServlet {
      * @param res
      *            a value of type 'HttpServletResponse'
      * @exception IOException
-     *                if an error occurs
+     *                             if an error occurs
      * @exception ServletException
-     *                if an error occurs
+     *                             if an error occurs
      */
     @Override
     public void doGet(HttpServletRequest req, HttpServletResponse res)
             throws IOException, ServletException {
-        if (debug > 0) log("SSIServlet.doGet()");
+        if (debug > 0)
+            log("SSIServlet.doGet()");
         requestHandler(req, res);
     }
-
 
     /**
      * Process and forward the POST request to our
@@ -126,17 +126,17 @@ public class SSIServlet extends HttpServlet {
      * @param res
      *            a value of type 'HttpServletResponse'
      * @exception IOException
-     *                if an error occurs
+     *                             if an error occurs
      * @exception ServletException
-     *                if an error occurs
+     *                             if an error occurs
      */
     @Override
     public void doPost(HttpServletRequest req, HttpServletResponse res)
             throws IOException, ServletException {
-        if (debug > 0) log("SSIServlet.doPost()");
+        if (debug > 0)
+            log("SSIServlet.doPost()");
         requestHandler(req, res);
     }
-
 
     /**
      * Process our request and locate right SSI command.
@@ -151,13 +151,14 @@ public class SSIServlet extends HttpServlet {
         ServletContext servletContext = getServletContext();
         String path = SSIServletRequestUtil.getRelativePath(req);
         if (debug > 0)
-            log("SSIServlet.requestHandler()\n" + "Serving "
-                    + (buffered?"buffered ":"unbuffered ") + "resource '"
-                    + path + "'");
+            log("SSIServlet.requestHandler()\n" + "Serving " + (buffered
+                    ? "buffered "
+                    : "unbuffered ") + "resource '" + path + "'");
         // Exclude any resource in the /WEB-INF and /META-INF subdirectories
         // (the "toUpperCase()" avoids problems on Windows systems)
-        if (path == null || path.toUpperCase(Locale.ENGLISH).startsWith("/WEB-INF")
-                || path.toUpperCase(Locale.ENGLISH).startsWith("/META-INF")) {
+        if (path == null || path.toUpperCase(Locale.ENGLISH).startsWith(
+                "/WEB-INF") || path.toUpperCase(Locale.ENGLISH).startsWith(
+                        "/META-INF")) {
             res.sendError(HttpServletResponse.SC_NOT_FOUND, path);
             log("Can't serve file: " + path);
             return;
@@ -181,14 +182,13 @@ public class SSIServlet extends HttpServlet {
         processSSI(req, res, resource);
     }
 
-
     protected void processSSI(HttpServletRequest req, HttpServletResponse res,
             URL resource) throws IOException {
-        SSIExternalResolver ssiExternalResolver =
-            new SSIServletExternalResolver(getServletContext(), req, res,
-                    isVirtualWebappRelative, debug, inputEncoding);
-        SSIProcessor ssiProcessor = new SSIProcessor(ssiExternalResolver,
-                debug, allowExec);
+        SSIExternalResolver ssiExternalResolver = new SSIServletExternalResolver(
+                getServletContext(), req, res, isVirtualWebappRelative, debug,
+                inputEncoding);
+        SSIProcessor ssiProcessor = new SSIProcessor(ssiExternalResolver, debug,
+                allowExec);
         PrintWriter printWriter = null;
         StringWriter stringWriter = null;
         if (buffered) {
@@ -212,8 +212,8 @@ public class SSIServlet extends HttpServlet {
         }
         BufferedReader bufferedReader = new BufferedReader(isr);
 
-        long lastModified = ssiProcessor.process(bufferedReader,
-                resourceInfo.getLastModified(), printWriter);
+        long lastModified = ssiProcessor.process(bufferedReader, resourceInfo
+                .getLastModified(), printWriter);
         if (lastModified > 0) {
             res.setDateHeader("last-modified", lastModified);
         }

@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -28,38 +26,34 @@ import javax.management.modelmbean.InvalidTargetObjectTypeException;
 import org.apache.catalina.connector.Connector;
 import org.apache.tomcat.util.IntrospectionUtils;
 
-
 /**
- * <p>A <strong>ModelMBean</strong> implementation for the
- * <code>org.apache.coyote.tomcat5.CoyoteConnector</code> component.</p>
+ * <p>
+ * A <strong>ModelMBean</strong> implementation for the
+ * <code>org.apache.coyote.tomcat5.CoyoteConnector</code> component.
+ * </p>
  *
  * @author Amy Roh
  */
 public class ConnectorMBean extends ClassNameMBean {
 
-
     // ----------------------------------------------------------- Constructors
-
 
     /**
      * Construct a <code>ModelMBean</code> with default
      * <code>ModelMBeanInfo</code> information.
      *
-     * @exception MBeanException if the initializer of an object
-     *  throws an exception
+     * @exception MBeanException             if the initializer of an object
+     *                                       throws an exception
      * @exception RuntimeOperationsException if an IllegalArgumentException
-     *  occurs
+     *                                       occurs
      */
-    public ConnectorMBean()
-        throws MBeanException, RuntimeOperationsException {
+    public ConnectorMBean() throws MBeanException, RuntimeOperationsException {
 
         super();
 
     }
 
-
     // ------------------------------------------------------------- Attributes
-
 
     /**
      * Obtain and return the value of a specific attribute of this MBean.
@@ -67,11 +61,11 @@ public class ConnectorMBean extends ClassNameMBean {
      * @param name Name of the requested attribute
      *
      * @exception AttributeNotFoundException if this attribute is not
-     *  supported by this MBean
-     * @exception MBeanException if the initializer of an object
-     *  throws an exception
-     * @exception ReflectionException if a Java reflection exception
-     *  occurs when invoking the getter
+     *                                       supported by this MBean
+     * @exception MBeanException             if the initializer of an object
+     *                                       throws an exception
+     * @exception ReflectionException        if a Java reflection exception
+     *                                       occurs when invoking the getter
      */
     @Override
     public Object getAttribute(String name) throws AttributeNotFoundException,
@@ -96,21 +90,20 @@ public class ConnectorMBean extends ClassNameMBean {
 
     }
 
-
     /**
      * Set the value of a specific attribute of this MBean.
      *
      * @param attribute The identification of the attribute to be set
-     *  and the new value
+     *                  and the new value
      *
      * @exception AttributeNotFoundException if this attribute is not
-     *  supported by this MBean
-     * @exception MBeanException if the initializer of an object
-     *  throws an exception
-     * @exception ReflectionException if a Java reflection exception
-     *  occurs when invoking the getter
+     *                                       supported by this MBean
+     * @exception MBeanException             if the initializer of an object
+     *                                       throws an exception
+     * @exception ReflectionException        if a Java reflection exception
+     *                                       occurs when invoking the getter
      */
-     @Override
+    @Override
     public void setAttribute(Attribute attribute)
             throws AttributeNotFoundException, MBeanException,
             ReflectionException {
@@ -127,7 +120,8 @@ public class ConnectorMBean extends ClassNameMBean {
 
         try {
             Connector connector = (Connector) getManagedResource();
-            IntrospectionUtils.setProperty(connector, name, String.valueOf(value));
+            IntrospectionUtils.setProperty(connector, name, String.valueOf(
+                    value));
         } catch (InstanceNotFoundException e) {
             throw new MBeanException(e);
         } catch (InvalidTargetObjectTypeException e) {
@@ -135,6 +129,5 @@ public class ConnectorMBean extends ClassNameMBean {
         }
 
     }
-
 
 }

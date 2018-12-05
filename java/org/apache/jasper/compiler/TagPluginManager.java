@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -41,8 +39,7 @@ import org.xml.sax.SAXException;
  */
 public class TagPluginManager {
 
-    private static final String META_INF_JASPER_TAG_PLUGINS_XML =
-            "META-INF/org.apache.jasper/tagPlugins.xml";
+    private static final String META_INF_JASPER_TAG_PLUGINS_XML = "META-INF/org.apache.jasper/tagPlugins.xml";
     private static final String TAG_PLUGINS_XML = "/WEB-INF/tagPlugins.xml";
     private final ServletContext ctxt;
     private HashMap<String, TagPlugin> tagPlugins;
@@ -84,8 +81,8 @@ public class TagPluginManager {
         }
         try {
             if (Constants.IS_SECURITY_ENABLED) {
-                PrivilegedSetTccl pa =
-                        new PrivilegedSetTccl(TagPluginManager.class.getClassLoader());
+                PrivilegedSetTccl pa = new PrivilegedSetTccl(
+                        TagPluginManager.class.getClassLoader());
                 AccessController.doPrivileged(pa);
             } else {
                 Thread.currentThread().setContextClassLoader(
@@ -94,8 +91,8 @@ public class TagPluginManager {
 
             parser = new TagPluginParser(ctxt, blockExternal);
 
-            Enumeration<URL> urls =
-                    ctxt.getClassLoader().getResources(META_INF_JASPER_TAG_PLUGINS_XML);
+            Enumeration<URL> urls = ctxt.getClassLoader().getResources(
+                    META_INF_JASPER_TAG_PLUGINS_XML);
             while (urls.hasMoreElements()) {
                 URL url = urls.nextElement();
                 parser.parse(url);
@@ -122,7 +119,8 @@ public class TagPluginManager {
             try {
                 String tagClass = entry.getKey();
                 String pluginName = entry.getValue();
-                Class<?> pluginClass = ctxt.getClassLoader().loadClass(pluginName);
+                Class<?> pluginClass = ctxt.getClassLoader().loadClass(
+                        pluginName);
                 TagPlugin plugin = (TagPlugin) pluginClass.newInstance();
                 tagPlugins.put(tagClass, plugin);
             } catch (Exception e) {
@@ -144,7 +142,8 @@ public class TagPluginManager {
             return;
         }
 
-        TagPluginContext tagPluginContext = new TagPluginContextImpl(n, pageInfo);
+        TagPluginContext tagPluginContext = new TagPluginContextImpl(n,
+                pageInfo);
         n.setTagPluginContext(tagPluginContext);
         tagPlugin.doTag(tagPluginContext);
     }
@@ -247,15 +246,13 @@ public class TagPluginManager {
 
         @Override
         public void generateJavaSource(String sourceCode) {
-            curNodes.add(new Node.Scriptlet(sourceCode, node.getStart(),
-                    null));
+            curNodes.add(new Node.Scriptlet(sourceCode, node.getStart(), null));
         }
 
         @Override
         public void generateAttribute(String attributeName) {
             curNodes.add(new Node.AttributeGenerator(node.getStart(),
-                    attributeName,
-                    node));
+                    attributeName, node));
         }
 
         @Override
@@ -288,4 +285,3 @@ public class TagPluginManager {
     }
 
 }
-

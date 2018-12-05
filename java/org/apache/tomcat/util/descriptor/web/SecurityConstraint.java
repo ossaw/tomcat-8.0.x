@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -36,30 +34,29 @@ import javax.servlet.annotation.ServletSecurity.EmptyRoleSemantic;
 import org.apache.juli.logging.Log;
 import org.apache.tomcat.util.res.StringManager;
 
-
 /**
  * Representation of a security constraint element for a web application,
  * as represented in a <code>&lt;security-constraint&gt;</code> element in the
  * deployment descriptor.
  * <p>
- * <b>WARNING</b>:  It is assumed that instances of this class will be created
+ * <b>WARNING</b>: It is assumed that instances of this class will be created
  * and modified only within the context of a single thread, before the instance
- * is made visible to the remainder of the application.  After that, only read
- * access is expected.  Therefore, none of the read and write access within
+ * is made visible to the remainder of the application. After that, only read
+ * access is expected. Therefore, none of the read and write access within
  * this class is synchronized.
  *
  * @author Craig R. McClanahan
  */
-public class SecurityConstraint extends XmlEncodingBase implements Serializable {
+public class SecurityConstraint extends XmlEncodingBase implements
+        Serializable {
 
     private static final long serialVersionUID = 1L;
 
     public static final String ROLE_ALL_ROLES = "*";
     public static final String ROLE_ALL_AUTHENTICATED_USERS = "**";
 
-    private static final StringManager sm =
-            StringManager.getManager(Constants.PACKAGE_NAME);
-
+    private static final StringManager sm = StringManager.getManager(
+            Constants.PACKAGE_NAME);
 
     // ----------------------------------------------------------- Constructors
 
@@ -70,9 +67,7 @@ public class SecurityConstraint extends XmlEncodingBase implements Serializable 
         super();
     }
 
-
     // ----------------------------------------------------- Instance Variables
-
 
     /**
      * Was the "all roles" wildcard - {@link #ROLE_ALL_ROLES} - included in the
@@ -80,14 +75,12 @@ public class SecurityConstraint extends XmlEncodingBase implements Serializable 
      */
     private boolean allRoles = false;
 
-
     /**
      * Was the "all authenticated users" wildcard -
      * {@link #ROLE_ALL_AUTHENTICATED_USERS} - included in the authorization
      * constraints for this security constraint?
      */
     private boolean authenticatedUsers = false;
-
 
     /**
      * Was an authorization constraint included in this security constraint?
@@ -97,13 +90,11 @@ public class SecurityConstraint extends XmlEncodingBase implements Serializable 
      */
     private boolean authConstraint = false;
 
-
     /**
      * The set of roles permitted to access resources protected by this
      * security constraint.
      */
     private String authRoles[] = new String[0];
-
 
     /**
      * The set of web resource collections protected by this security
@@ -111,22 +102,18 @@ public class SecurityConstraint extends XmlEncodingBase implements Serializable 
      */
     private SecurityCollection collections[] = new SecurityCollection[0];
 
-
     /**
      * The display name of this security constraint.
      */
     private String displayName = null;
 
-
     /**
-     * The user data constraint for this security constraint.  Must be NONE,
+     * The user data constraint for this security constraint. Must be NONE,
      * INTEGRAL, or CONFIDENTIAL.
      */
     private String userConstraint = "NONE";
 
-
     // ------------------------------------------------------------- Properties
-
 
     /**
      * Was the "all roles" wildcard included in this authentication
@@ -138,7 +125,6 @@ public class SecurityConstraint extends XmlEncodingBase implements Serializable 
 
     }
 
-
     /**
      * Was the "all authenticated users" wildcard included in this
      * authentication constraint?
@@ -146,7 +132,6 @@ public class SecurityConstraint extends XmlEncodingBase implements Serializable 
     public boolean getAuthenticatedUsers() {
         return this.authenticatedUsers;
     }
-
 
     /**
      * Return the authorization constraint present flag for this security
@@ -158,7 +143,6 @@ public class SecurityConstraint extends XmlEncodingBase implements Serializable 
 
     }
 
-
     /**
      * Set the authorization constraint present flag for this security
      * constraint.
@@ -169,7 +153,6 @@ public class SecurityConstraint extends XmlEncodingBase implements Serializable 
 
     }
 
-
     /**
      * Return the display name of this security constraint.
      */
@@ -178,7 +161,6 @@ public class SecurityConstraint extends XmlEncodingBase implements Serializable 
         return this.displayName;
 
     }
-
 
     /**
      * Set the display name of this security constraint.
@@ -189,7 +171,6 @@ public class SecurityConstraint extends XmlEncodingBase implements Serializable 
 
     }
 
-
     /**
      * Return the user data constraint for this security constraint.
      */
@@ -198,7 +179,6 @@ public class SecurityConstraint extends XmlEncodingBase implements Serializable 
         return userConstraint;
 
     }
-
 
     /**
      * Set the user data constraint for this security constraint.
@@ -211,7 +191,6 @@ public class SecurityConstraint extends XmlEncodingBase implements Serializable 
             this.userConstraint = userConstraint;
 
     }
-
 
     /**
      * Called in the unlikely event that an application defines a role named
@@ -230,9 +209,7 @@ public class SecurityConstraint extends XmlEncodingBase implements Serializable 
         }
     }
 
-
     // --------------------------------------------------------- Public Methods
-
 
     /**
      * Add an authorization role, which is a role name that will be
@@ -263,7 +240,6 @@ public class SecurityConstraint extends XmlEncodingBase implements Serializable 
         authConstraint = true;
     }
 
-
     /**
      * Add a new web resource collection to those protected by this
      * security constraint.
@@ -277,15 +253,14 @@ public class SecurityConstraint extends XmlEncodingBase implements Serializable 
 
         collection.setEncoding(getEncoding());
 
-        SecurityCollection results[] =
-            new SecurityCollection[collections.length + 1];
+        SecurityCollection results[] = new SecurityCollection[collections.length
+                + 1];
         for (int i = 0; i < collections.length; i++)
             results[i] = collections[i];
         results[collections.length] = collection;
         collections = results;
 
     }
-
 
     /**
      * Return <code>true</code> if the specified role is permitted access to
@@ -305,10 +280,9 @@ public class SecurityConstraint extends XmlEncodingBase implements Serializable 
 
     }
 
-
     /**
      * Return the set of roles that are permitted access to the resources
-     * protected by this security constraint.  If none have been defined,
+     * protected by this security constraint. If none have been defined,
      * a zero-length array is returned (which implies that all authenticated
      * users are permitted access).
      */
@@ -317,7 +291,6 @@ public class SecurityConstraint extends XmlEncodingBase implements Serializable 
         return (authRoles);
 
     }
-
 
     /**
      * Return the web resource collection for the specified name, if any;
@@ -337,10 +310,9 @@ public class SecurityConstraint extends XmlEncodingBase implements Serializable 
 
     }
 
-
     /**
      * Return all of the web resource collections protected by this
-     * security constraint.  If there are none, a zero-length array is
+     * security constraint. If there are none, a zero-length array is
      * returned.
      */
     public SecurityCollection[] findCollections() {
@@ -349,12 +321,11 @@ public class SecurityConstraint extends XmlEncodingBase implements Serializable 
 
     }
 
-
     /**
      * Return <code>true</code> if the specified context-relative URI (and
      * associated HTTP method) are protected by this security constraint.
      *
-     * @param uri Context-relative URI to check
+     * @param uri    Context-relative URI to check
      * @param method Request method being used
      */
     public boolean included(String uri, String method) {
@@ -378,7 +349,6 @@ public class SecurityConstraint extends XmlEncodingBase implements Serializable 
         return (false);
 
     }
-
 
     /**
      * Remove the specified role from the set of roles permitted to access
@@ -419,7 +389,6 @@ public class SecurityConstraint extends XmlEncodingBase implements Serializable 
         }
     }
 
-
     /**
      * Remove the specified web resource collection from those protected by
      * this security constraint.
@@ -439,8 +408,8 @@ public class SecurityConstraint extends XmlEncodingBase implements Serializable 
         }
         if (n >= 0) {
             int j = 0;
-            SecurityCollection results[] =
-                new SecurityCollection[collections.length - 1];
+            SecurityCollection results[] = new SecurityCollection[collections.length
+                    - 1];
             for (int i = 0; i < collections.length; i++) {
                 if (i != n)
                     results[j++] = collections[i];
@@ -449,7 +418,6 @@ public class SecurityConstraint extends XmlEncodingBase implements Serializable 
         }
 
     }
-
 
     /**
      * Return a String representation of this security constraint.
@@ -468,17 +436,15 @@ public class SecurityConstraint extends XmlEncodingBase implements Serializable 
 
     }
 
-
     // -------------------------------------------------------- Private Methods
-
 
     /**
      * Does the specified request path match the specified URL pattern?
      * This method follows the same rules (in the same order) as those used
      * for mapping requests to servlets.
      *
-     * @param path Context-relative request path to be checked
-     *  (must start with '/')
+     * @param path    Context-relative request path to be checked
+     *                (must start with '/')
      * @param pattern URL pattern to be compared against
      */
     private boolean matchPattern(String path, String pattern) {
@@ -497,7 +463,7 @@ public class SecurityConstraint extends XmlEncodingBase implements Serializable 
         if (pattern.startsWith("/") && pattern.endsWith("/*")) {
             pattern = pattern.substring(0, pattern.length() - 2);
             if (pattern.length() == 0)
-                return (true);  // "/*" is the same as "/"
+                return (true); // "/*" is the same as "/"
             if (path.endsWith("/"))
                 path = path.substring(0, path.length() - 1);
             while (true) {
@@ -515,8 +481,8 @@ public class SecurityConstraint extends XmlEncodingBase implements Serializable 
         if (pattern.startsWith("*.")) {
             int slash = path.lastIndexOf('/');
             int period = path.lastIndexOf('.');
-            if ((slash >= 0) && (period > slash) &&
-                path.endsWith(pattern.substring(1))) {
+            if ((slash >= 0) && (period > slash) && path.endsWith(pattern
+                    .substring(1))) {
                 return (true);
             }
             return (false);
@@ -530,29 +496,28 @@ public class SecurityConstraint extends XmlEncodingBase implements Serializable 
 
     }
 
-
     /**
      * Convert a {@link ServletSecurityElement} to an array of
      * {@link SecurityConstraint}(s).
      *
-     * @param element       The element to be converted
-     * @param urlPattern    The url pattern that the element should be applied
-     *                      to
-     * @return              The (possibly zero length) array of constraints that
-     *                      are the equivalent to the input
+     * @param element    The element to be converted
+     * @param urlPattern The url pattern that the element should be applied
+     *                   to
+     * @return The (possibly zero length) array of constraints that
+     *         are the equivalent to the input
      */
     public static SecurityConstraint[] createConstraints(
             ServletSecurityElement element, String urlPattern) {
         Set<SecurityConstraint> result = new HashSet<>();
 
         // Add the per method constraints
-        Collection<HttpMethodConstraintElement> methods =
-            element.getHttpMethodConstraints();
+        Collection<HttpMethodConstraintElement> methods = element
+                .getHttpMethodConstraints();
         Iterator<HttpMethodConstraintElement> methodIter = methods.iterator();
         while (methodIter.hasNext()) {
             HttpMethodConstraintElement methodElement = methodIter.next();
-            SecurityConstraint constraint =
-                createConstraint(methodElement, urlPattern, true);
+            SecurityConstraint constraint = createConstraint(methodElement,
+                    urlPattern, true);
             // There will always be a single collection
             SecurityCollection collection = constraint.findCollections()[0];
             collection.addMethod(methodElement.getMethodName());
@@ -560,11 +525,13 @@ public class SecurityConstraint extends XmlEncodingBase implements Serializable 
         }
 
         // Add the constraint for all the other methods
-        SecurityConstraint constraint = createConstraint(element, urlPattern, false);
+        SecurityConstraint constraint = createConstraint(element, urlPattern,
+                false);
         if (constraint != null) {
             // There will always be a single collection
             SecurityCollection collection = constraint.findCollections()[0];
-            Iterator<String> ommittedMethod = element.getMethodNames().iterator();
+            Iterator<String> ommittedMethod = element.getMethodNames()
+                    .iterator();
             while (ommittedMethod.hasNext()) {
                 collection.addOmittedMethod(ommittedMethod.next());
             }
@@ -577,15 +544,17 @@ public class SecurityConstraint extends XmlEncodingBase implements Serializable 
     }
 
     private static SecurityConstraint createConstraint(
-            HttpConstraintElement element, String urlPattern, boolean alwaysCreate) {
+            HttpConstraintElement element, String urlPattern,
+            boolean alwaysCreate) {
 
         SecurityConstraint constraint = new SecurityConstraint();
         SecurityCollection collection = new SecurityCollection();
         boolean create = alwaysCreate;
 
-        if (element.getTransportGuarantee() !=
-                ServletSecurity.TransportGuarantee.NONE) {
-            constraint.setUserConstraint(element.getTransportGuarantee().name());
+        if (element
+                .getTransportGuarantee() != ServletSecurity.TransportGuarantee.NONE) {
+            constraint.setUserConstraint(element.getTransportGuarantee()
+                    .name());
             create = true;
         }
         if (element.getRolesAllowed().length > 0) {
@@ -609,14 +578,13 @@ public class SecurityConstraint extends XmlEncodingBase implements Serializable 
         return null;
     }
 
-
     public static SecurityConstraint[] findUncoveredHttpMethods(
-            SecurityConstraint[] constraints,
-            boolean denyUncoveredHttpMethods, Log log) {
+            SecurityConstraint[] constraints, boolean denyUncoveredHttpMethods,
+            Log log) {
 
         Set<String> coveredPatterns = new HashSet<>();
-        Map<String,Set<String>> urlMethodMap = new HashMap<>();
-        Map<String,Set<String>> urlOmittedMethodMap = new HashMap<>();
+        Map<String, Set<String>> urlMethodMap = new HashMap<>();
+        Map<String, Set<String>> urlOmittedMethodMap = new HashMap<>();
 
         List<SecurityConstraint> newConstraints = new ArrayList<>();
 
@@ -707,8 +675,8 @@ public class SecurityConstraint extends XmlEncodingBase implements Serializable 
                     newConstraints.add(constraint);
                 } else {
                     log.error(sm.getString(
-                            "securityConstraint.uncoveredHttpMethod",
-                            pattern, msg.toString().trim()));
+                            "securityConstraint.uncoveredHttpMethod", pattern,
+                            msg.toString().trim()));
                 }
                 continue;
             }
@@ -744,8 +712,8 @@ public class SecurityConstraint extends XmlEncodingBase implements Serializable 
                 }
             }
         }
-        for (Map.Entry<String, Set<String>> entry :
-                urlOmittedMethodMap.entrySet()) {
+        for (Map.Entry<String, Set<String>> entry : urlOmittedMethodMap
+                .entrySet()) {
             String pattern = entry.getKey();
             if (coveredPatterns.contains(pattern)) {
                 // Fully covered. Ignore any partial coverage
@@ -782,7 +750,7 @@ public class SecurityConstraint extends XmlEncodingBase implements Serializable 
             }
         }
 
-        return newConstraints.toArray(
-                new SecurityConstraint[newConstraints.size()]);
+        return newConstraints.toArray(new SecurityConstraint[newConstraints
+                .size()]);
     }
 }

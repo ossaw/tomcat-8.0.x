@@ -1,18 +1,16 @@
 /*
- *  Licensed to the Apache Software Foundation (ASF) under one or more
- *  contributor license agreements.  See the NOTICE file distributed with
- *  this work for additional information regarding copyright ownership.
- *  The ASF licenses this file to You under the Apache License, Version 2.0
- *  (the "License"); you may not use this file except in compliance with
- *  the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements. See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package org.apache.tomcat.util.net;
@@ -56,12 +54,9 @@ import org.apache.tomcat.util.net.jsse.NioX509KeyManager;
  */
 public class Nio2Endpoint extends AbstractEndpoint<Nio2Channel> {
 
-
     // -------------------------------------------------------------- Constants
 
-
     private static final Log log = LogFactory.getLog(Nio2Endpoint.class);
-
 
     // ----------------------------------------------------------------- Fields
 
@@ -78,7 +73,7 @@ public class Nio2Endpoint extends AbstractEndpoint<Nio2Channel> {
     /**
      * The size of the OOM parachute.
      */
-    private int oomParachute = 1024*1024;
+    private int oomParachute = 1024 * 1024;
 
     /**
      * Allows detecting if a completion handler completes inline.
@@ -102,8 +97,7 @@ public class Nio2Endpoint extends AbstractEndpoint<Nio2Channel> {
     /**
      * Make sure this string has already been allocated
      */
-    private static final String oomParachuteMsg =
-        "SEVERE:Memory usage is low, parachute is non existent, your system may start failing.";
+    private static final String oomParachuteMsg = "SEVERE:Memory usage is low, parachute is non existent, your system may start failing.";
 
     /**
      * Keep track of OOM warning messages.
@@ -116,10 +110,10 @@ public class Nio2Endpoint extends AbstractEndpoint<Nio2Channel> {
     private SynchronizedStack<SocketProcessor> processorCache;
 
     /**
-     * Bytebuffer cache, each channel holds a set of buffers (two, except for SSL holds four)
+     * Bytebuffer cache, each channel holds a set of buffers (two, except for
+     * SSL holds four)
      */
     private SynchronizedStack<Nio2Channel> nioChannels;
-
 
     // ------------------------------------------------------------ Constructor
 
@@ -131,44 +125,71 @@ public class Nio2Endpoint extends AbstractEndpoint<Nio2Channel> {
         }
     }
 
-
     // ------------------------------------------------------------- Properties
 
     /**
-     * Use the object caches to reduce GC at the expense of additional memory use.
+     * Use the object caches to reduce GC at the expense of additional memory
+     * use.
      */
     private boolean useCaches = false;
-    public void setUseCaches(boolean useCaches) { this.useCaches = useCaches; }
-    public boolean getUseCaches() { return useCaches; }
 
+    public void setUseCaches(boolean useCaches) {
+        this.useCaches = useCaches;
+    }
+
+    public boolean getUseCaches() {
+        return useCaches;
+    }
 
     /**
      * Priority of the poller threads.
      */
     private int pollerThreadPriority = Thread.NORM_PRIORITY;
-    public void setPollerThreadPriority(int pollerThreadPriority) { this.pollerThreadPriority = pollerThreadPriority; }
-    public int getPollerThreadPriority() { return pollerThreadPriority; }
 
+    public void setPollerThreadPriority(int pollerThreadPriority) {
+        this.pollerThreadPriority = pollerThreadPriority;
+    }
+
+    public int getPollerThreadPriority() {
+        return pollerThreadPriority;
+    }
 
     /**
      * Handling of accepted sockets.
      */
     private Handler handler = null;
-    public void setHandler(Handler handler ) { this.handler = handler; }
-    public Handler getHandler() { return handler; }
 
+    public void setHandler(Handler handler) {
+        this.handler = handler;
+    }
+
+    public Handler getHandler() {
+        return handler;
+    }
 
     /**
      * Allow comet request handling.
      */
     private boolean useComet = true;
-    public void setUseComet(boolean useComet) { this.useComet = useComet; }
+
+    public void setUseComet(boolean useComet) {
+        this.useComet = useComet;
+    }
+
     @Override
-    public boolean getUseComet() { return useComet; }
+    public boolean getUseComet() {
+        return useComet;
+    }
+
     @Override
-    public boolean getUseCometTimeout() { return getUseComet(); }
+    public boolean getUseCometTimeout() {
+        return getUseComet();
+    }
+
     @Override
-    public boolean getUsePolling() { return true; } // Always supported
+    public boolean getUsePolling() {
+        return true;
+    } // Always supported
 
     public void setSocketProperties(SocketProperties socketProperties) {
         this.socketProperties = socketProperties;
@@ -195,10 +216,16 @@ public class Nio2Endpoint extends AbstractEndpoint<Nio2Channel> {
         this.oomParachuteData = oomParachuteData;
     }
 
-
     private SSLContext sslContext = null;
-    public SSLContext getSSLContext() { return sslContext;}
-    public void setSSLContext(SSLContext c) { sslContext = c;}
+
+    public SSLContext getSSLContext() {
+        return sslContext;
+    }
+
+    public void setSSLContext(SSLContext c) {
+        sslContext = c;
+    }
+
     private String[] enabledCiphers;
     private String[] enabledProtocols;
 
@@ -224,21 +251,20 @@ public class Nio2Endpoint extends AbstractEndpoint<Nio2Channel> {
         }
     }
 
-
     @Override
     public String[] getCiphersUsed() {
         return enabledCiphers;
     }
 
-
     // --------------------------------------------------------- OOM Parachute Methods
 
     protected void checkParachute() {
         boolean para = reclaimParachute(false);
-        if (!para && (System.currentTimeMillis()-lastParachuteCheck)>10000) {
+        if (!para && (System.currentTimeMillis()
+                - lastParachuteCheck) > 10000) {
             try {
                 log.fatal(oomParachuteMsg);
-            }catch (Throwable t) {
+            } catch (Throwable t) {
                 ExceptionUtils.handleThrowable(t);
                 System.err.println(oomParachuteMsg);
             }
@@ -247,8 +273,10 @@ public class Nio2Endpoint extends AbstractEndpoint<Nio2Channel> {
     }
 
     protected boolean reclaimParachute(boolean force) {
-        if ( oomParachuteData != null ) return true;
-        if ( oomParachute > 0 && ( force || (Runtime.getRuntime().freeMemory() > (oomParachute*2))) )
+        if (oomParachuteData != null)
+            return true;
+        if (oomParachute > 0 && (force || (Runtime.getRuntime()
+                .freeMemory() > (oomParachute * 2))))
             oomParachuteData = new byte[oomParachute];
         return oomParachuteData != null;
     }
@@ -258,7 +286,8 @@ public class Nio2Endpoint extends AbstractEndpoint<Nio2Channel> {
             this.nioChannels.clear();
             this.processorCache.clear();
         }
-        if ( handler != null ) handler.recycle();
+        if (handler != null)
+            handler.recycle();
 
     }
 
@@ -272,9 +301,7 @@ public class Nio2Endpoint extends AbstractEndpoint<Nio2Channel> {
         return -1;
     }
 
-
     // ----------------------------------------------- Public Lifecycle Methods
-
 
     /**
      * Initialize the endpoint.
@@ -283,11 +310,12 @@ public class Nio2Endpoint extends AbstractEndpoint<Nio2Channel> {
     public void bind() throws Exception {
 
         // Create worker collection
-        if ( getExecutor() == null ) {
+        if (getExecutor() == null) {
             createExecutor();
         }
         if (getExecutor() instanceof ExecutorService) {
-            threadGroup = AsynchronousChannelGroup.withThreadPool((ExecutorService) getExecutor());
+            threadGroup = AsynchronousChannelGroup.withThreadPool(
+                    (ExecutorService) getExecutor());
         }
         // AsynchronousChannelGroup currently needs exclusive access to its executor service
         if (!internalExecutor) {
@@ -296,8 +324,9 @@ public class Nio2Endpoint extends AbstractEndpoint<Nio2Channel> {
 
         serverSock = AsynchronousServerSocketChannel.open(threadGroup);
         socketProperties.setProperties(serverSock);
-        InetSocketAddress addr = (getAddress()!=null?new InetSocketAddress(getAddress(),getPort()):new InetSocketAddress(getPort()));
-        serverSock.bind(addr,getBacklog());
+        InetSocketAddress addr = (getAddress() != null ? new InetSocketAddress(
+                getAddress(), getPort()) : new InetSocketAddress(getPort()));
+        serverSock.bind(addr, getBacklog());
 
         // Initialize thread count defaults for acceptor, poller
         if (acceptorThreadCount != 1) {
@@ -310,11 +339,11 @@ public class Nio2Endpoint extends AbstractEndpoint<Nio2Channel> {
             SSLUtil sslUtil = handler.getSslImplementation().getSSLUtil(this);
 
             sslContext = sslUtil.createSSLContext();
-            sslContext.init(wrap(sslUtil.getKeyManagers()),
-                    sslUtil.getTrustManagers(), null);
+            sslContext.init(wrap(sslUtil.getKeyManagers()), sslUtil
+                    .getTrustManagers(), null);
 
-            SSLSessionContext sessionContext =
-                sslContext.getServerSessionContext();
+            SSLSessionContext sessionContext = sslContext
+                    .getServerSessionContext();
             if (sessionContext != null) {
                 sslUtil.configureSessionContext(sessionContext);
             }
@@ -323,27 +352,30 @@ public class Nio2Endpoint extends AbstractEndpoint<Nio2Channel> {
             enabledProtocols = sslUtil.getEnableableProtocols(sslContext);
         }
 
-        if (oomParachute>0) reclaimParachute(true);
+        if (oomParachute > 0)
+            reclaimParachute(true);
     }
 
     public KeyManager[] wrap(KeyManager[] managers) {
-        if (managers==null) return null;
+        if (managers == null)
+            return null;
         KeyManager[] result = new KeyManager[managers.length];
-        for (int i=0; i<result.length; i++) {
-            if (managers[i] instanceof X509KeyManager && getKeyAlias()!=null) {
+        for (int i = 0; i < result.length; i++) {
+            if (managers[i] instanceof X509KeyManager
+                    && getKeyAlias() != null) {
                 String keyAlias = getKeyAlias();
                 // JKS keystores always convert the alias name to lower case
                 if ("jks".equalsIgnoreCase(getKeystoreType())) {
                     keyAlias = keyAlias.toLowerCase(Locale.ENGLISH);
                 }
-                result[i] = new NioX509KeyManager((X509KeyManager) managers[i], keyAlias);
+                result[i] = new NioX509KeyManager((X509KeyManager) managers[i],
+                        keyAlias);
             } else {
                 result[i] = managers[i];
             }
         }
         return result;
     }
-
 
     /**
      * Start the NIO endpoint, creating acceptor, poller threads.
@@ -357,14 +389,16 @@ public class Nio2Endpoint extends AbstractEndpoint<Nio2Channel> {
             paused = false;
 
             if (useCaches) {
-                processorCache = new SynchronizedStack<>(SynchronizedStack.DEFAULT_SIZE,
-                        socketProperties.getProcessorCache());
-                nioChannels = new SynchronizedStack<>(SynchronizedStack.DEFAULT_SIZE,
-                        socketProperties.getBufferPool());
+                processorCache = new SynchronizedStack<>(
+                        SynchronizedStack.DEFAULT_SIZE, socketProperties
+                                .getProcessorCache());
+                nioChannels = new SynchronizedStack<>(
+                        SynchronizedStack.DEFAULT_SIZE, socketProperties
+                                .getBufferPool());
             }
 
             // Create worker collection
-            if ( getExecutor() == null ) {
+            if (getExecutor() == null) {
                 createExecutor();
             }
 
@@ -372,13 +406,13 @@ public class Nio2Endpoint extends AbstractEndpoint<Nio2Channel> {
             startAcceptorThreads();
 
             setAsyncTimeout(new AsyncTimeout());
-            Thread timeoutThread = new Thread(getAsyncTimeout(), getName() + "-AsyncTimeout");
+            Thread timeoutThread = new Thread(getAsyncTimeout(), getName()
+                    + "-AsyncTimeout");
             timeoutThread.setPriority(threadPriority);
             timeoutThread.setDaemon(true);
             timeoutThread.start();
         }
     }
-
 
     /**
      * Stop the endpoint. This will cause all processing threads to stop.
@@ -419,7 +453,6 @@ public class Nio2Endpoint extends AbstractEndpoint<Nio2Channel> {
         }
     }
 
-
     /**
      * Deallocate NIO memory pools, and close server socket.
      */
@@ -437,7 +470,6 @@ public class Nio2Endpoint extends AbstractEndpoint<Nio2Channel> {
         releaseCaches();
     }
 
-
     @Override
     public void shutdownExecutor() {
         if (threadGroup != null && internalExecutor) {
@@ -449,15 +481,18 @@ public class Nio2Endpoint extends AbstractEndpoint<Nio2Channel> {
                 }
                 threadGroup.shutdownNow();
                 if (timeout > 0) {
-                    threadGroup.awaitTermination(timeout, TimeUnit.MILLISECONDS);
+                    threadGroup.awaitTermination(timeout,
+                            TimeUnit.MILLISECONDS);
                 }
             } catch (IOException e) {
-                getLog().warn(sm.getString("endpoint.warn.executorShutdown", getName()), e);
+                getLog().warn(sm.getString("endpoint.warn.executorShutdown",
+                        getName()), e);
             } catch (InterruptedException e) {
                 // Ignore
             }
             if (!threadGroup.isTerminated()) {
-                getLog().warn(sm.getString("endpoint.warn.executorShutdown", getName()));
+                getLog().warn(sm.getString("endpoint.warn.executorShutdown",
+                        getName()));
             }
             threadGroup = null;
         }
@@ -465,9 +500,7 @@ public class Nio2Endpoint extends AbstractEndpoint<Nio2Channel> {
         super.shutdownExecutor();
     }
 
-
     // ------------------------------------------------------ Protected Methods
-
 
     public int getWriteBufSize() {
         return socketProperties.getTxBufSize();
@@ -490,12 +523,10 @@ public class Nio2Endpoint extends AbstractEndpoint<Nio2Channel> {
         return oomParachuteData;
     }
 
-
     @Override
     protected AbstractEndpoint.Acceptor createAcceptor() {
         return new Acceptor();
     }
-
 
     /**
      * Process the specified connection.
@@ -510,10 +541,13 @@ public class Nio2Endpoint extends AbstractEndpoint<Nio2Channel> {
                 // SSL setup
                 if (sslContext != null) {
                     SSLEngine engine = createSSLEngine();
-                    int appBufferSize = engine.getSession().getApplicationBufferSize();
-                    NioBufferHandler bufhandler = new NioBufferHandler(
-                            Math.max(appBufferSize, socketProperties.getAppReadBufSize()),
-                            Math.max(appBufferSize, socketProperties.getAppWriteBufSize()),
+                    int appBufferSize = engine.getSession()
+                            .getApplicationBufferSize();
+                    NioBufferHandler bufhandler = new NioBufferHandler(Math.max(
+                            appBufferSize, socketProperties
+                                    .getAppReadBufSize()), Math.max(
+                                            appBufferSize, socketProperties
+                                                    .getAppWriteBufSize()),
                             socketProperties.getDirectBuffer());
                     channel = new SecureNio2Channel(engine, bufhandler, this);
                 } else {
@@ -532,7 +566,8 @@ public class Nio2Endpoint extends AbstractEndpoint<Nio2Channel> {
             Nio2SocketWrapper socketWrapper = new Nio2SocketWrapper(channel);
             channel.reset(socket, socketWrapper);
             socketWrapper.setTimeout(getSocketProperties().getSoTimeout());
-            socketWrapper.setKeepAliveLeft(Nio2Endpoint.this.getMaxKeepAliveRequests());
+            socketWrapper.setKeepAliveLeft(Nio2Endpoint.this
+                    .getMaxKeepAliveRequests());
             socketWrapper.setSecure(isSSLEnabled());
             if (sslContext != null) {
                 // Use the regular processing, as the first handshake needs to be done there
@@ -544,7 +579,7 @@ public class Nio2Endpoint extends AbstractEndpoint<Nio2Channel> {
         } catch (Throwable t) {
             ExceptionUtils.handleThrowable(t);
             try {
-                log.error("",t);
+                log.error("", t);
             } catch (Throwable tt) {
                 ExceptionUtils.handleThrowable(t);
             }
@@ -559,7 +594,8 @@ public class Nio2Endpoint extends AbstractEndpoint<Nio2Channel> {
         if ("false".equals(getClientAuth())) {
             engine.setNeedClientAuth(false);
             engine.setWantClientAuth(false);
-        } else if ("true".equals(getClientAuth()) || "yes".equals(getClientAuth())){
+        } else if ("true".equals(getClientAuth()) || "yes".equals(
+                getClientAuth())) {
             engine.setNeedClientAuth(true);
         } else if ("want".equals(getClientAuth())) {
             engine.setWantClientAuth(true);
@@ -573,15 +609,14 @@ public class Nio2Endpoint extends AbstractEndpoint<Nio2Channel> {
         return engine;
     }
 
-
     /**
      * Returns true if a worker thread is available for processing.
+     * 
      * @return boolean
      */
     protected boolean isWorkerAvailable() {
         return true;
     }
-
 
     @Override
     public void processSocket(SocketWrapper<Nio2Channel> socketWrapper,
@@ -589,7 +624,8 @@ public class Nio2Endpoint extends AbstractEndpoint<Nio2Channel> {
         processSocket0(socketWrapper, socketStatus, dispatch);
     }
 
-    protected boolean processSocket0(SocketWrapper<Nio2Channel> socketWrapper, SocketStatus status, boolean dispatch) {
+    protected boolean processSocket0(SocketWrapper<Nio2Channel> socketWrapper,
+            SocketStatus status, boolean dispatch) {
         try {
             waitingRequests.remove(socketWrapper);
             SocketProcessor sc = (useCaches) ? processorCache.pop() : null;
@@ -605,7 +641,8 @@ public class Nio2Endpoint extends AbstractEndpoint<Nio2Channel> {
                 sc.run();
             }
         } catch (RejectedExecutionException ree) {
-            log.debug(sm.getString("endpoint.executor.fail", socketWrapper), ree);
+            log.debug(sm.getString("endpoint.executor.fail", socketWrapper),
+                    ree);
             return false;
         } catch (Throwable t) {
             ExceptionUtils.handleThrowable(t);
@@ -617,7 +654,8 @@ public class Nio2Endpoint extends AbstractEndpoint<Nio2Channel> {
         return true;
     }
 
-    public void closeSocket(SocketWrapper<Nio2Channel> socket, SocketStatus status) {
+    public void closeSocket(SocketWrapper<Nio2Channel> socket,
+            SocketStatus status) {
         if (socket == null) {
             return;
         }
@@ -635,39 +673,42 @@ public class Nio2Endpoint extends AbstractEndpoint<Nio2Channel> {
             }
         } catch (Throwable e) {
             ExceptionUtils.handleThrowable(e);
-            if (log.isDebugEnabled()) log.error("",e);
+            if (log.isDebugEnabled())
+                log.error("", e);
         }
         try {
             handler.release(socket);
         } catch (Throwable e) {
             ExceptionUtils.handleThrowable(e);
-            if (log.isDebugEnabled()) log.error("",e);
+            if (log.isDebugEnabled())
+                log.error("", e);
         }
         try {
             if (socket.getSocket() != null) {
                 synchronized (socket.getSocket()) {
-                    if (socket.getSocket() != null && socket.getSocket().isOpen()) {
+                    if (socket.getSocket() != null && socket.getSocket()
+                            .isOpen()) {
                         countDownConnection();
                         socket.getSocket().close(true);
                     }
                 }
             }
-        } catch (Exception e){
+        } catch (Exception e) {
             if (log.isDebugEnabled()) {
-                log.debug(sm.getString(
-                        "endpoint.debug.socketCloseFail"), e);
+                log.debug(sm.getString("endpoint.debug.socketCloseFail"), e);
             }
         }
         try {
             Nio2SocketWrapper nio2Socket = (Nio2SocketWrapper) socket;
-            if (nio2Socket.getSendfileData() != null
-                    && nio2Socket.getSendfileData().fchannel != null
-                    && nio2Socket.getSendfileData().fchannel.isOpen()) {
+            if (nio2Socket.getSendfileData() != null && nio2Socket
+                    .getSendfileData().fchannel != null && nio2Socket
+                            .getSendfileData().fchannel.isOpen()) {
                 nio2Socket.getSendfileData().fchannel.close();
             }
         } catch (Throwable e) {
             ExceptionUtils.handleThrowable(e);
-            if (log.isDebugEnabled()) log.error("",e);
+            if (log.isDebugEnabled())
+                log.error("", e);
         }
     }
 
@@ -675,7 +716,6 @@ public class Nio2Endpoint extends AbstractEndpoint<Nio2Channel> {
     protected Log getLog() {
         return log;
     }
-
 
     // --------------------------------------------------- Acceptor Inner Class
 
@@ -755,7 +795,6 @@ public class Nio2Endpoint extends AbstractEndpoint<Nio2Channel> {
 
     }
 
-
     private void closeSocket(AsynchronousSocketChannel socket) {
         try {
             socket.close();
@@ -765,7 +804,6 @@ public class Nio2Endpoint extends AbstractEndpoint<Nio2Channel> {
             }
         }
     }
-
 
     public static class Nio2SocketWrapper extends SocketWrapper<Nio2Channel> {
 
@@ -796,8 +834,13 @@ public class Nio2Endpoint extends AbstractEndpoint<Nio2Channel> {
             return value;
         }
 
-        public void setSendfileData(SendfileData sf) { this.sendfileData = sf; }
-        public SendfileData getSendfileData() { return this.sendfileData; }
+        public void setSendfileData(SendfileData sf) {
+            this.sendfileData = sf;
+        }
+
+        public SendfileData getSendfileData() {
+            return this.sendfileData;
+        }
 
     }
 
@@ -807,24 +850,28 @@ public class Nio2Endpoint extends AbstractEndpoint<Nio2Channel> {
         private ByteBuffer writebuf = null;
 
         public NioBufferHandler(int readsize, int writesize, boolean direct) {
-            if ( direct ) {
+            if (direct) {
                 readbuf = ByteBuffer.allocateDirect(readsize);
                 writebuf = ByteBuffer.allocateDirect(writesize);
-            }else {
+            } else {
                 readbuf = ByteBuffer.allocate(readsize);
                 writebuf = ByteBuffer.allocate(writesize);
             }
         }
 
         @Override
-        public ByteBuffer getReadBuffer() {return readbuf;}
+        public ByteBuffer getReadBuffer() {
+            return readbuf;
+        }
+
         @Override
-        public ByteBuffer getWriteBuffer() {return writebuf;}
+        public ByteBuffer getWriteBuffer() {
+            return writebuf;
+        }
 
     }
 
     // ------------------------------------------------ Handler Inner Interface
-
 
     /**
      * Bare bones interface used for socket processing. Per thread data is to be
@@ -834,19 +881,22 @@ public class Nio2Endpoint extends AbstractEndpoint<Nio2Channel> {
     public interface Handler extends AbstractEndpoint.Handler {
         public SocketState process(SocketWrapper<Nio2Channel> socket,
                 SocketStatus status);
+
         public void release(SocketWrapper<Nio2Channel> socket);
+
         public void closeAll();
+
         public SSLImplementation getSslImplementation();
     }
 
     /**
      * The completion handler used for asynchronous read operations
      */
-    private CompletionHandler<Integer, SocketWrapper<Nio2Channel>> awaitBytes
-            = new CompletionHandler<Integer, SocketWrapper<Nio2Channel>>() {
+    private CompletionHandler<Integer, SocketWrapper<Nio2Channel>> awaitBytes = new CompletionHandler<Integer, SocketWrapper<Nio2Channel>>() {
 
         @Override
-        public synchronized void completed(Integer nBytes, SocketWrapper<Nio2Channel> attachment) {
+        public synchronized void completed(Integer nBytes,
+                SocketWrapper<Nio2Channel> attachment) {
             if (nBytes.intValue() < 0) {
                 failed(new ClosedChannelException(), attachment);
                 return;
@@ -855,7 +905,8 @@ public class Nio2Endpoint extends AbstractEndpoint<Nio2Channel> {
         }
 
         @Override
-        public void failed(Throwable exc, SocketWrapper<Nio2Channel> attachment) {
+        public void failed(Throwable exc,
+                SocketWrapper<Nio2Channel> attachment) {
             processSocket0(attachment, SocketStatus.DISCONNECT, true);
         }
     };
@@ -889,10 +940,11 @@ public class Nio2Endpoint extends AbstractEndpoint<Nio2Channel> {
         if (socket == null || socket.getSocket() == null) {
             return;
         }
-        ByteBuffer byteBuffer = socket.getSocket().getBufHandler().getReadBuffer();
+        ByteBuffer byteBuffer = socket.getSocket().getBufHandler()
+                .getReadBuffer();
         byteBuffer.clear();
         socket.getSocket().read(byteBuffer, socket.getTimeout(),
-               TimeUnit.MILLISECONDS, socket, awaitBytes);
+                TimeUnit.MILLISECONDS, socket, awaitBytes);
     }
 
     private CompletionHandler<Integer, SendfileData> sendfile = new CompletionHandler<Integer, SendfileData>() {
@@ -922,7 +974,8 @@ public class Nio2Endpoint extends AbstractEndpoint<Nio2Channel> {
                         }
                     } else {
                         if (!isInline()) {
-                            processSocket(attachment.socket, SocketStatus.DISCONNECT, false);
+                            processSocket(attachment.socket,
+                                    SocketStatus.DISCONNECT, false);
                         } else {
                             attachment.doneInline = true;
                         }
@@ -940,7 +993,9 @@ public class Nio2Endpoint extends AbstractEndpoint<Nio2Channel> {
                     if (nRead > 0) {
                         attachment.buffer.flip();
                         if (attachment.length < attachment.buffer.remaining()) {
-                            attachment.buffer.limit(attachment.buffer.limit() - attachment.buffer.remaining() + (int) attachment.length);
+                            attachment.buffer.limit(attachment.buffer.limit()
+                                    - attachment.buffer.remaining()
+                                    + (int) attachment.length);
                         }
                         attachment.length -= nRead;
                     } else {
@@ -949,8 +1004,9 @@ public class Nio2Endpoint extends AbstractEndpoint<Nio2Channel> {
                     }
                 }
             }
-            attachment.socket.getSocket().write(attachment.buffer, attachment.socket.getTimeout(),
-                    TimeUnit.MILLISECONDS, attachment, this);
+            attachment.socket.getSocket().write(attachment.buffer,
+                    attachment.socket.getTimeout(), TimeUnit.MILLISECONDS,
+                    attachment, this);
         }
 
         @Override
@@ -976,8 +1032,8 @@ public class Nio2Endpoint extends AbstractEndpoint<Nio2Channel> {
         if (data.fchannel == null || !data.fchannel.isOpen()) {
             java.nio.file.Path path = new File(data.fileName).toPath();
             try {
-                data.fchannel = java.nio.channels.FileChannel
-                        .open(path, StandardOpenOption.READ).position(data.pos);
+                data.fchannel = java.nio.channels.FileChannel.open(path,
+                        StandardOpenOption.READ).position(data.pos);
             } catch (IOException e) {
                 return SendfileState.ERROR;
             }
@@ -998,8 +1054,8 @@ public class Nio2Endpoint extends AbstractEndpoint<Nio2Channel> {
             data.length -= nRead;
             startInline();
             try {
-                socket.getSocket().write(buffer, socket.getTimeout(), TimeUnit.MILLISECONDS,
-                        data, sendfile);
+                socket.getSocket().write(buffer, socket.getTimeout(),
+                        TimeUnit.MILLISECONDS, data, sendfile);
             } finally {
                 endInline();
             }
@@ -1027,11 +1083,13 @@ public class Nio2Endpoint extends AbstractEndpoint<Nio2Channel> {
         private SocketWrapper<Nio2Channel> socket = null;
         private SocketStatus status = null;
 
-        public SocketProcessor(SocketWrapper<Nio2Channel> socket, SocketStatus status) {
-            reset(socket,status);
+        public SocketProcessor(SocketWrapper<Nio2Channel> socket,
+                SocketStatus status) {
+            reset(socket, status);
         }
 
-        public void reset(SocketWrapper<Nio2Channel> socket, SocketStatus status) {
+        public void reset(SocketWrapper<Nio2Channel> socket,
+                SocketStatus status) {
             this.socket = socket;
             this.status = status;
         }
@@ -1041,8 +1099,7 @@ public class Nio2Endpoint extends AbstractEndpoint<Nio2Channel> {
             // Upgraded connections need to allow multiple threads to access the
             // connection at the same time to enable blocking IO to be used when
             // NIO has been configured
-            if (socket.isUpgraded() &&
-                    SocketStatus.OPEN_WRITE == status) {
+            if (socket.isUpgraded() && SocketStatus.OPEN_WRITE == status) {
                 synchronized (socket.getWriteThreadLock()) {
                     doRun();
                 }
@@ -1062,8 +1119,8 @@ public class Nio2Endpoint extends AbstractEndpoint<Nio2Channel> {
                     if (socket.getSocket() != null) {
                         // For STOP there is no point trying to handshake as the
                         // Poller has been stopped.
-                        if (socket.getSocket().isHandshakeComplete() ||
-                                status == SocketStatus.STOP) {
+                        if (socket.getSocket().isHandshakeComplete()
+                                || status == SocketStatus.STOP) {
                             handshake = 0;
                         } else {
                             handshake = socket.getSocket().handshake();
@@ -1103,7 +1160,7 @@ public class Nio2Endpoint extends AbstractEndpoint<Nio2Channel> {
                         socket.access();
                         launch = true;
                     }
-                } else if (handshake == -1 ) {
+                } else if (handshake == -1) {
                     closeSocket(socket, SocketStatus.DISCONNECT);
                     if (useCaches && running && !paused) {
                         nioChannels.push(socket.getSocket());
@@ -1119,7 +1176,7 @@ public class Nio2Endpoint extends AbstractEndpoint<Nio2Channel> {
                     try {
                         System.err.println(oomParachuteMsg);
                         oomt.printStackTrace();
-                    } catch (Throwable letsHopeWeDontGetHere){
+                    } catch (Throwable letsHopeWeDontGetHere) {
                         ExceptionUtils.handleThrowable(letsHopeWeDontGetHere);
                     }
                 }
@@ -1133,7 +1190,8 @@ public class Nio2Endpoint extends AbstractEndpoint<Nio2Channel> {
             } finally {
                 if (launch) {
                     try {
-                        getExecutor().execute(new SocketProcessor(socket, SocketStatus.OPEN_READ));
+                        getExecutor().execute(new SocketProcessor(socket,
+                                SocketStatus.OPEN_READ));
                     } catch (NullPointerException npe) {
                         if (running) {
                             log.error(sm.getString("endpoint.launch.fail"),

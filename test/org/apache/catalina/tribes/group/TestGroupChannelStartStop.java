@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -52,19 +50,23 @@ public class TestGroupChannelStartStop {
         try {
             channel.start(Channel.DEFAULT);
             count++;
-        } catch ( Exception x){x.printStackTrace();}
+        } catch (Exception x) {
+            x.printStackTrace();
+        }
         try {
             channel.start(Channel.DEFAULT);
             count++;
-        } catch ( Exception x){x.printStackTrace();}
-        assertEquals(count,2);
+        } catch (Exception x) {
+            x.printStackTrace();
+        }
+        assertEquals(count, 2);
         channel.stop(Channel.DEFAULT);
     }
 
     @Test
     public void testScrap() throws Exception {
         System.out.println(channel.getChannelReceiver().getClass());
-        ((ReceiverBase)channel.getChannelReceiver()).setMaxThreads(1);
+        ((ReceiverBase) channel.getChannelReceiver()).setMaxThreads(1);
     }
 
     @Test
@@ -75,14 +77,16 @@ public class TestGroupChannelStartStop {
             channel.start(Channel.SND_RX_SEQ);
             channel.start(Channel.MBR_RX_SEQ);
             count++;
-        } catch ( Exception x){x.printStackTrace();}
+        } catch (Exception x) {
+            x.printStackTrace();
+        }
         try {
             channel.start(Channel.MBR_RX_SEQ);
             count++;
-        } catch ( Exception x){
+        } catch (Exception x) {
             // expected
         }
-        assertEquals(count,1);
+        assertEquals(count, 1);
         channel.stop(Channel.DEFAULT);
         //double the membership sender
         count = 0;
@@ -90,42 +94,48 @@ public class TestGroupChannelStartStop {
             channel.start(Channel.SND_RX_SEQ);
             channel.start(Channel.MBR_TX_SEQ);
             count++;
-        } catch ( Exception x){x.printStackTrace();}
+        } catch (Exception x) {
+            x.printStackTrace();
+        }
         try {
             channel.start(Channel.MBR_TX_SEQ);
             count++;
-        } catch ( Exception x){
+        } catch (Exception x) {
             // expected
         }
-        assertEquals(count,1);
+        assertEquals(count, 1);
         channel.stop(Channel.DEFAULT);
 
         count = 0;
         try {
             channel.start(Channel.SND_RX_SEQ);
             count++;
-        } catch ( Exception x){x.printStackTrace();}
+        } catch (Exception x) {
+            x.printStackTrace();
+        }
         try {
             channel.start(Channel.SND_RX_SEQ);
             count++;
-        } catch ( Exception x){
+        } catch (Exception x) {
             // expected
         }
-        assertEquals(count,1);
+        assertEquals(count, 1);
         channel.stop(Channel.DEFAULT);
 
         count = 0;
         try {
             channel.start(Channel.SND_TX_SEQ);
             count++;
-        } catch ( Exception x){x.printStackTrace();}
+        } catch (Exception x) {
+            x.printStackTrace();
+        }
         try {
             channel.start(Channel.SND_TX_SEQ);
             count++;
-        } catch ( Exception x){
+        } catch (Exception x) {
             // expected
         }
-        assertEquals(count,1);
+        assertEquals(count, 1);
         channel.stop(Channel.DEFAULT);
     }
 
@@ -136,20 +146,22 @@ public class TestGroupChannelStartStop {
         try {
             channel.start(flag);
             count++;
-        } catch ( Exception x){x.printStackTrace();}
+        } catch (Exception x) {
+            x.printStackTrace();
+        }
         try {
             channel.start(flag);
             count++;
-        } catch ( Exception x){
+        } catch (Exception x) {
             // expected
         }
-        assertEquals(count,2);
+        assertEquals(count, 2);
         channel.stop(Channel.DEFAULT);
     }
 
     @Test
     public void testUdpReceiverStart() throws Exception {
-        ReceiverBase rb = (ReceiverBase)channel.getChannelReceiver();
+        ReceiverBase rb = (ReceiverBase) channel.getChannelReceiver();
         rb.setUdpPort(udpPort);
         channel.start(Channel.DEFAULT);
         Thread.sleep(1000);

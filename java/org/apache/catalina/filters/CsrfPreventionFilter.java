@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -55,8 +53,8 @@ public class CsrfPreventionFilter extends CsrfPreventionFilterBase {
      * to HTTP GET requests and should not trigger any security sensitive
      * actions.
      *
-     * @param entryPoints   Comma separated list of URLs to be configured as
-     *                      entry points.
+     * @param entryPoints Comma separated list of URLs to be configured as
+     *                    entry points.
      */
     public void setEntryPoints(String entryPoints) {
         String values[] = entryPoints.split(",");
@@ -72,7 +70,7 @@ public class CsrfPreventionFilter extends CsrfPreventionFilterBase {
      * of a previous nonce rather than the current one. If not set, the default
      * value of 5 will be used.
      *
-     * @param nonceCacheSize    The number of nonces to cache
+     * @param nonceCacheSize The number of nonces to cache
      */
     public void setNonceCacheSize(int nonceCacheSize) {
         this.nonceCacheSize = nonceCacheSize;
@@ -84,16 +82,16 @@ public class CsrfPreventionFilter extends CsrfPreventionFilterBase {
 
         ServletResponse wResponse = null;
 
-        if (request instanceof HttpServletRequest &&
-                response instanceof HttpServletResponse) {
+        if (request instanceof HttpServletRequest
+                && response instanceof HttpServletResponse) {
 
             HttpServletRequest req = (HttpServletRequest) request;
             HttpServletResponse res = (HttpServletResponse) response;
 
             boolean skipNonceCheck = false;
 
-            if (Constants.METHOD_GET.equals(req.getMethod())
-                    && entryPoints.contains(getRequestedPath(req))) {
+            if (Constants.METHOD_GET.equals(req.getMethod()) && entryPoints
+                    .contains(getRequestedPath(req))) {
                 skipNonceCheck = true;
             }
 
@@ -105,11 +103,11 @@ public class CsrfPreventionFilter extends CsrfPreventionFilterBase {
                             Constants.CSRF_NONCE_SESSION_ATTR_NAME);
 
             if (!skipNonceCheck) {
-                String previousNonce =
-                    req.getParameter(Constants.CSRF_NONCE_REQUEST_PARAM);
+                String previousNonce = req.getParameter(
+                        Constants.CSRF_NONCE_REQUEST_PARAM);
 
-                if (nonceCache == null || previousNonce == null ||
-                        !nonceCache.contains(previousNonce)) {
+                if (nonceCache == null || previousNonce == null || !nonceCache
+                        .contains(previousNonce)) {
                     res.sendError(getDenyStatus());
                     return;
                 }
@@ -120,8 +118,8 @@ public class CsrfPreventionFilter extends CsrfPreventionFilterBase {
                 if (session == null) {
                     session = req.getSession(true);
                 }
-                session.setAttribute(
-                        Constants.CSRF_NONCE_SESSION_ATTR_NAME, nonceCache);
+                session.setAttribute(Constants.CSRF_NONCE_SESSION_ATTR_NAME,
+                        nonceCache);
             }
 
             String newNonce = generateNonce();
@@ -136,9 +134,8 @@ public class CsrfPreventionFilter extends CsrfPreventionFilterBase {
         chain.doFilter(request, wResponse);
     }
 
-
-    protected static class CsrfResponseWrapper
-            extends HttpServletResponseWrapper {
+    protected static class CsrfResponseWrapper extends
+            HttpServletResponseWrapper {
 
         private final String nonce;
 
@@ -172,7 +169,7 @@ public class CsrfPreventionFilter extends CsrfPreventionFilterBase {
         /**
          * Return the specified URL with the nonce added to the query string.
          *
-         * @param url URL to be modified
+         * @param url   URL to be modified
          * @param nonce The nonce to add
          */
         private String addNonce(String url) {
@@ -195,7 +192,7 @@ public class CsrfPreventionFilter extends CsrfPreventionFilterBase {
                 path = path.substring(0, question);
             }
             StringBuilder sb = new StringBuilder(path);
-            if (query.length() >0) {
+            if (query.length() > 0) {
                 sb.append(query);
                 sb.append('&');
             } else {
@@ -215,13 +212,14 @@ public class CsrfPreventionFilter extends CsrfPreventionFilterBase {
 
         // Although the internal implementation uses a Map, this cache
         // implementation is only concerned with the keys.
-        private final Map<T,T> cache;
+        private final Map<T, T> cache;
 
         public LruCache(final int cacheSize) {
-            cache = new LinkedHashMap<T,T>() {
+            cache = new LinkedHashMap<T, T>() {
                 private static final long serialVersionUID = 1L;
+
                 @Override
-                protected boolean removeEldestEntry(Map.Entry<T,T> eldest) {
+                protected boolean removeEldestEntry(Map.Entry<T, T> eldest) {
                     if (size() > cacheSize) {
                         return true;
                     }

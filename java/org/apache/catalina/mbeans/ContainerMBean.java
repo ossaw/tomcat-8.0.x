@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -46,13 +44,12 @@ public class ContainerMBean extends BaseModelMBean {
      * Construct a <code>ModelMBean</code> with default
      * <code>ModelMBeanInfo</code> information.
      *
-     * @exception MBeanException if the initializer of an object
-     *  throws an exception
+     * @exception MBeanException             if the initializer of an object
+     *                                       throws an exception
      * @exception RuntimeOperationsException if an IllegalArgumentException
-     *  occurs
+     *                                       occurs
      */
-    public ContainerMBean()
-        throws MBeanException, RuntimeOperationsException {
+    public ContainerMBean() throws MBeanException, RuntimeOperationsException {
 
         super();
     }
@@ -67,16 +64,16 @@ public class ContainerMBean extends BaseModelMBean {
      *
      * @exception MBeanException if the child cannot be added
      */
-    public void addChild(String type, String name) throws MBeanException{
+    public void addChild(String type, String name) throws MBeanException {
         Container contained = null;
         try {
-            contained = (Container)Class.forName(type).newInstance();
+            contained = (Container) Class.forName(type).newInstance();
             contained.setName(name);
 
-            if(contained instanceof StandardHost){
+            if (contained instanceof StandardHost) {
                 HostConfig config = new HostConfig();
                 contained.addLifecycleListener(config);
-            } else if(contained instanceof StandardContext){
+            } else if (contained instanceof StandardContext) {
                 ContextConfig config = new ContextConfig();
                 contained.addLifecycleListener(config);
             }
@@ -89,11 +86,11 @@ public class ContainerMBean extends BaseModelMBean {
             throw new MBeanException(e);
         }
 
-        boolean oldValue= true;
+        boolean oldValue = true;
 
         ContainerBase container = null;
         try {
-            container = (ContainerBase)getManagedResource();
+            container = (ContainerBase) getManagedResource();
             oldValue = container.getStartChildren();
             container.setStartChildren(false);
             container.addChild(contained);
@@ -104,10 +101,10 @@ public class ContainerMBean extends BaseModelMBean {
             throw new MBeanException(e);
         } catch (InvalidTargetObjectTypeException e) {
             throw new MBeanException(e);
-        } catch (LifecycleException e){
+        } catch (LifecycleException e) {
             throw new MBeanException(e);
         } finally {
-            if(container != null) {
+            if (container != null) {
                 container.setStartChildren(oldValue);
             }
         }
@@ -120,10 +117,10 @@ public class ContainerMBean extends BaseModelMBean {
      * @param name Name of the existing child Container to be removed
      * @throws MBeanException if the child cannot be removed
      */
-    public void removeChild(String name) throws MBeanException{
-        if(name != null){
+    public void removeChild(String name) throws MBeanException {
+        if (name != null) {
             try {
-                Container container = (Container)getManagedResource();
+                Container container = (Container) getManagedResource();
                 Container contained = container.findChild(name);
                 container.removeChild(contained);
             } catch (InstanceNotFoundException e) {
@@ -143,10 +140,10 @@ public class ContainerMBean extends BaseModelMBean {
      * @return the MBean name of the new valve
      * @throws MBeanException if adding the valve failed
      */
-    public String addValve(String valveType) throws MBeanException{
+    public String addValve(String valveType) throws MBeanException {
         Valve valve = null;
         try {
-            valve = (Valve)Class.forName(valveType).newInstance();
+            valve = (Valve) Class.forName(valveType).newInstance();
         } catch (InstantiationException e) {
             throw new MBeanException(e);
         } catch (IllegalAccessException e) {
@@ -160,7 +157,7 @@ public class ContainerMBean extends BaseModelMBean {
         }
 
         try {
-            Container container = (Container)getManagedResource();
+            Container container = (Container) getManagedResource();
             container.getPipeline().addValve(valve);
         } catch (InstanceNotFoundException e) {
             throw new MBeanException(e);
@@ -171,7 +168,7 @@ public class ContainerMBean extends BaseModelMBean {
         }
 
         if (valve instanceof JmxEnabled) {
-            return ((JmxEnabled)valve).getObjectName().toString();
+            return ((JmxEnabled) valve).getObjectName().toString();
         } else {
             return null;
         }
@@ -184,10 +181,10 @@ public class ContainerMBean extends BaseModelMBean {
      *
      * @exception MBeanException if a component cannot be removed
      */
-    public void removeValve(String valveName) throws MBeanException{
-        Container container=null;
+    public void removeValve(String valveName) throws MBeanException {
+        Container container = null;
         try {
-            container = (Container)getManagedResource();
+            container = (Container) getManagedResource();
         } catch (InstanceNotFoundException e) {
             throw new MBeanException(e);
         } catch (RuntimeOperationsException e) {
@@ -205,12 +202,12 @@ public class ContainerMBean extends BaseModelMBean {
             throw new MBeanException(e);
         }
 
-        if(container != null){
+        if (container != null) {
             Valve[] valves = container.getPipeline().getValves();
             for (int i = 0; i < valves.length; i++) {
                 if (valves[i] instanceof JmxEnabled) {
-                    ObjectName voname =
-                            ((JmxEnabled) valves[i]).getObjectName();
+                    ObjectName voname = ((JmxEnabled) valves[i])
+                            .getObjectName();
                     if (voname.equals(oname)) {
                         container.getPipeline().removeValve(valves[i]);
                     }
@@ -224,11 +221,11 @@ public class ContainerMBean extends BaseModelMBean {
      *
      * @param type ClassName of the listener to add
      * @throws MBeanException if adding the listener failed
-    */
-    public void addLifecycleListener(String type) throws MBeanException{
+     */
+    public void addLifecycleListener(String type) throws MBeanException {
         LifecycleListener listener = null;
         try {
-            listener = (LifecycleListener)Class.forName(type).newInstance();
+            listener = (LifecycleListener) Class.forName(type).newInstance();
         } catch (InstantiationException e) {
             throw new MBeanException(e);
         } catch (IllegalAccessException e) {
@@ -237,9 +234,9 @@ public class ContainerMBean extends BaseModelMBean {
             throw new MBeanException(e);
         }
 
-        if(listener != null){
+        if (listener != null) {
             try {
-                Container container = (Container)getManagedResource();
+                Container container = (Container) getManagedResource();
                 container.addLifecycleListener(listener);
             } catch (InstanceNotFoundException e) {
                 throw new MBeanException(e);
@@ -255,13 +252,14 @@ public class ContainerMBean extends BaseModelMBean {
      * Remove a LifecycleEvent listeners from this component.
      *
      * @param type The ClassName of the listeners to be removed.
-     * Note that all the listeners having given ClassName will be removed.
+     *             Note that all the listeners having given ClassName will be
+     *             removed.
      * @throws MBeanException propagated from the managed resource access
      */
-    public void removeLifecycleListeners(String type) throws MBeanException{
-        Container container=null;
+    public void removeLifecycleListeners(String type) throws MBeanException {
+        Container container = null;
         try {
-            container = (Container)getManagedResource();
+            container = (Container) getManagedResource();
         } catch (InstanceNotFoundException e) {
             throw new MBeanException(e);
         } catch (RuntimeOperationsException e) {
@@ -271,17 +269,17 @@ public class ContainerMBean extends BaseModelMBean {
         }
 
         LifecycleListener[] listeners = container.findLifecycleListeners();
-        for(LifecycleListener listener: listeners){
-            if(listener.getClass().getName().equals(type)){
+        for (LifecycleListener listener : listeners) {
+            if (listener.getClass().getName().equals(type)) {
                 container.removeLifecycleListener(listener);
             }
         }
     }
 
-
     /**
      * List the class name of each of the lifecycle listeners added to this
      * container.
+     * 
      * @return the lifecycle listeners class names
      * @throws MBeanException propagated from the managed resource access
      */
@@ -300,17 +298,17 @@ public class ContainerMBean extends BaseModelMBean {
         }
 
         LifecycleListener[] listeners = container.findLifecycleListeners();
-        for(LifecycleListener listener: listeners){
+        for (LifecycleListener listener : listeners) {
             result.add(listener.getClass().getName());
         }
 
         return result.toArray(new String[result.size()]);
     }
 
-
     /**
      * List the class name of each of the container listeners added to this
      * container.
+     * 
      * @return the container listeners class names
      * @throws MBeanException propagated from the managed resource access
      */
@@ -329,7 +327,7 @@ public class ContainerMBean extends BaseModelMBean {
         }
 
         ContainerListener[] listeners = container.findContainerListeners();
-        for(ContainerListener listener: listeners){
+        for (ContainerListener listener : listeners) {
             result.add(listener.getClass().getName());
         }
 

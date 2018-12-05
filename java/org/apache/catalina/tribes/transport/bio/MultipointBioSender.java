@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -30,7 +28,8 @@ import org.apache.catalina.tribes.io.XByteBuffer;
 import org.apache.catalina.tribes.transport.AbstractSender;
 import org.apache.catalina.tribes.transport.MultiPointSender;
 
-public class MultipointBioSender extends AbstractSender implements MultiPointSender {
+public class MultipointBioSender extends AbstractSender implements
+        MultiPointSender {
     public MultipointBioSender() {
         // NO-OP
     }
@@ -38,45 +37,52 @@ public class MultipointBioSender extends AbstractSender implements MultiPointSen
     protected final HashMap<Member, BioSender> bioSenders = new HashMap<>();
 
     @Override
-    public synchronized void sendMessage(Member[] destination, ChannelMessage msg) throws ChannelException {
-        byte[] data = XByteBuffer.createDataPackage((ChannelData)msg);
+    public synchronized void sendMessage(Member[] destination,
+            ChannelMessage msg) throws ChannelException {
+        byte[] data = XByteBuffer.createDataPackage((ChannelData) msg);
         BioSender[] senders = setupForSend(destination);
         ChannelException cx = null;
-        for ( int i=0; i<senders.length; i++ ) {
+        for (int i = 0; i < senders.length; i++) {
             try {
-                senders[i].sendMessage(data,(msg.getOptions()&Channel.SEND_OPTIONS_USE_ACK)==Channel.SEND_OPTIONS_USE_ACK);
+                senders[i].sendMessage(data, (msg.getOptions()
+                        & Channel.SEND_OPTIONS_USE_ACK) == Channel.SEND_OPTIONS_USE_ACK);
             } catch (Exception x) {
-                if (cx == null) cx = new ChannelException(x);
-                cx.addFaultyMember(destination[i],x);
+                if (cx == null)
+                    cx = new ChannelException(x);
+                cx.addFaultyMember(destination[i], x);
             }
         }
-        if (cx!=null ) throw cx;
+        if (cx != null)
+            throw cx;
     }
 
-
-
-    protected BioSender[] setupForSend(Member[] destination) throws ChannelException {
+    protected BioSender[] setupForSend(Member[] destination)
+            throws ChannelException {
         ChannelException cx = null;
         BioSender[] result = new BioSender[destination.length];
-        for ( int i=0; i<destination.length; i++ ) {
+        for (int i = 0; i < destination.length; i++) {
             try {
                 BioSender sender = bioSenders.get(destination[i]);
                 if (sender == null) {
                     sender = new BioSender();
-                    AbstractSender.transferProperties(this,sender);
+                    AbstractSender.transferProperties(this, sender);
                     sender.setDestination(destination[i]);
                     bioSenders.put(destination[i], sender);
                 }
                 result[i] = sender;
-                if (!result[i].isConnected() ) result[i].connect();
+                if (!result[i].isConnected())
+                    result[i].connect();
                 result[i].keepalive();
-            }catch (Exception x ) {
-                if ( cx== null ) cx = new ChannelException(x);
-                cx.addFaultyMember(destination[i],x);
+            } catch (Exception x) {
+                if (cx == null)
+                    cx = new ChannelException(x);
+                cx.addFaultyMember(destination[i], x);
             }
         }
-        if ( cx!=null ) throw cx;
-        else return result;
+        if (cx != null)
+            throw cx;
+        else
+            return result;
     }
 
     @Override
@@ -85,22 +91,23 @@ public class MultipointBioSender extends AbstractSender implements MultiPointSen
         setConnected(true);
     }
 
-
-    private synchronized void close() throws ChannelException  {
+    private synchronized void close() throws ChannelException {
         ChannelException x = null;
         Object[] members = bioSenders.keySet().toArray();
-        for (int i=0; i<members.length; i++ ) {
-            Member mbr = (Member)members[i];
+        for (int i = 0; i < members.length; i++) {
+            Member mbr = (Member) members[i];
             try {
                 BioSender sender = bioSenders.get(mbr);
                 sender.disconnect();
-            }catch ( Exception e ) {
-                if ( x == null ) x = new ChannelException(e);
-                x.addFaultyMember(mbr,e);
+            } catch (Exception e) {
+                if (x == null)
+                    x = new ChannelException(e);
+                x.addFaultyMember(mbr, e);
             }
             bioSenders.remove(mbr);
         }
-        if ( x != null ) throw x;
+        if (x != null)
+            throw x;
     }
 
     @Override
@@ -114,31 +121,37 @@ public class MultipointBioSender extends AbstractSender implements MultiPointSen
     public void remove(Member member) {
         //disconnect senders
         BioSender sender = bioSenders.remove(member);
-        if ( sender != null ) sender.disconnect();
+        if (sender != null)
+            sender.disconnect();
     }
-
 
     @Override
     public synchronized void disconnect() {
-        try {close(); }catch (Exception x){/* Ignore */}
+        try {
+            close();
+        } catch (Exception x) {
+            /* Ignore */}
         setConnected(false);
     }
 
     @Override
     public void finalize() throws Throwable {
-        try {disconnect(); }catch ( Exception e){/* Ignore */}
+        try {
+            disconnect();
+        } catch (Exception e) {
+            /* Ignore */}
         super.finalize();
     }
-
 
     @Override
     public boolean keepalive() {
         boolean result = false;
         @SuppressWarnings("unchecked")
-        Map.Entry<Member,BioSender>[] entries = bioSenders.entrySet().toArray(new Map.Entry[bioSenders.size()]);
-        for ( int i=0; i<entries.length; i++ ) {
+        Map.Entry<Member, BioSender>[] entries = bioSenders.entrySet().toArray(
+                new Map.Entry[bioSenders.size()]);
+        for (int i = 0; i < entries.length; i++) {
             BioSender sender = entries[i].getValue();
-            if ( sender.keepalive() ) {
+            if (sender.keepalive()) {
                 bioSenders.remove(entries[i].getKey());
             }
         }

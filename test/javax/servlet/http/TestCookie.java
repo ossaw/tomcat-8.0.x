@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -25,8 +23,8 @@ import org.junit.Test;
  * Basic tests for Cookie in default configuration.
  */
 public class TestCookie {
-    public static final BitSet CHAR;  // <any US-ASCII character (octets 0 - 127)>
-    public static final BitSet CTL;   // <any US-ASCII control character (octets 0 - 31) and DEL (127)>
+    public static final BitSet CHAR; // <any US-ASCII character (octets 0 - 127)>
+    public static final BitSet CTL; // <any US-ASCII control character (octets 0 - 31) and DEL (127)>
     public static final BitSet SEPARATORS;
     public static final BitSet TOKEN; // 1*<any CHAR except CTLs or separators>
 
@@ -134,18 +132,21 @@ public class TestCookie {
         Cookie cookie = new Cookie("@Foo", null);
     }
 
-    public static void checkCharInName(CookieNameValidator validator, BitSet allowed) {
+    public static void checkCharInName(CookieNameValidator validator,
+            BitSet allowed) {
         for (char ch = 0; ch < allowed.size(); ch++) {
             boolean expected = allowed.get(ch);
             String name = "X" + ch + "X";
             try {
                 validator.validate(name);
                 if (!expected) {
-                    Assert.fail(String.format("Char %d should not be allowed", Integer.valueOf(ch)));
+                    Assert.fail(String.format("Char %d should not be allowed",
+                            Integer.valueOf(ch)));
                 }
             } catch (IllegalArgumentException e) {
                 if (expected) {
-                    Assert.fail(String.format("Char %d should be allowed", Integer.valueOf(ch)));
+                    Assert.fail(String.format("Char %d should be allowed",
+                            Integer.valueOf(ch)));
                 }
             }
         }

@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -26,14 +24,17 @@ import org.apache.catalina.LifecycleState;
 import org.apache.catalina.connector.Request;
 import org.apache.catalina.connector.Response;
 
-
 /**
- * <p>Implementation of a Valve that limits concurrency.</p>
+ * <p>
+ * Implementation of a Valve that limits concurrency.
+ * </p>
  *
- * <p>This Valve may be attached to any Container, depending on the granularity
+ * <p>
+ * This Valve may be attached to any Container, depending on the granularity
  * of the concurrency control you wish to perform. Note that internally, some
  * async requests may require multiple serial requests to complete what - to the
- * user - appears as a single request.</p>
+ * user - appears as a single request.
+ * </p>
  *
  * @author Remy Maucherat
  */
@@ -44,7 +45,6 @@ public class SemaphoreValve extends ValveBase {
         super(true);
     }
 
-
     // ----------------------------------------------------- Instance Variables
 
     /**
@@ -52,48 +52,67 @@ public class SemaphoreValve extends ValveBase {
      */
     protected Semaphore semaphore = null;
 
-
     // ------------------------------------------------------------- Properties
-
 
     /**
      * Concurrency level of the semaphore.
      */
     protected int concurrency = 10;
-    public int getConcurrency() { return concurrency; }
-    public void setConcurrency(int concurrency) { this.concurrency = concurrency; }
 
+    public int getConcurrency() {
+        return concurrency;
+    }
+
+    public void setConcurrency(int concurrency) {
+        this.concurrency = concurrency;
+    }
 
     /**
      * Fairness of the semaphore.
      */
     protected boolean fairness = false;
-    public boolean getFairness() { return fairness; }
-    public void setFairness(boolean fairness) { this.fairness = fairness; }
 
+    public boolean getFairness() {
+        return fairness;
+    }
+
+    public void setFairness(boolean fairness) {
+        this.fairness = fairness;
+    }
 
     /**
      * Block until a permit is available.
      */
     protected boolean block = true;
-    public boolean getBlock() { return block; }
-    public void setBlock(boolean block) { this.block = block; }
 
+    public boolean getBlock() {
+        return block;
+    }
+
+    public void setBlock(boolean block) {
+        this.block = block;
+    }
 
     /**
      * Block interruptibly until a permit is available.
      */
     protected boolean interruptible = false;
-    public boolean getInterruptible() { return interruptible; }
-    public void setInterruptible(boolean interruptible) { this.interruptible = interruptible; }
 
+    public boolean getInterruptible() {
+        return interruptible;
+    }
+
+    public void setInterruptible(boolean interruptible) {
+        this.interruptible = interruptible;
+    }
 
     /**
      * Start this component and implement the requirements
      * of {@link org.apache.catalina.util.LifecycleBase#startInternal()}.
      *
      * @exception LifecycleException if this component detects a fatal error
-     *  that prevents this component from being used
+     *                               that prevents this component from being
+     *                               used
      */
     @Override
     protected synchronized void startInternal() throws LifecycleException {
@@ -103,13 +122,13 @@ public class SemaphoreValve extends ValveBase {
         setState(LifecycleState.STARTING);
     }
 
-
     /**
      * Stop this component and implement the requirements
      * of {@link org.apache.catalina.util.LifecycleBase#stopInternal()}.
      *
      * @exception LifecycleException if this component detects a fatal error
-     *  that prevents this component from being used
+     *                               that prevents this component from being
+     *                               used
      */
     @Override
     protected synchronized void stopInternal() throws LifecycleException {
@@ -119,21 +138,20 @@ public class SemaphoreValve extends ValveBase {
         semaphore = null;
     }
 
-
     // --------------------------------------------------------- Public Methods
 
     /**
      * Do concurrency control on the request using the semaphore.
      *
-     * @param request The servlet request to be processed
+     * @param request  The servlet request to be processed
      * @param response The servlet response to be created
      *
-     * @exception IOException if an input/output error occurs
+     * @exception IOException      if an input/output error occurs
      * @exception ServletException if a servlet error occurs
      */
     @Override
-    public void invoke(Request request, Response response)
-        throws IOException, ServletException {
+    public void invoke(Request request, Response response) throws IOException,
+            ServletException {
 
         if (controlConcurrency(request, response)) {
             boolean shouldRelease = true;
@@ -169,9 +187,9 @@ public class SemaphoreValve extends ValveBase {
 
     }
 
-
     /**
      * Subclass friendly method to add conditions.
+     * 
      * @param request
      * @param response
      */
@@ -179,19 +197,18 @@ public class SemaphoreValve extends ValveBase {
         return true;
     }
 
-
     /**
      * Subclass friendly method to add error handling when a permit isn't
      * granted.
+     * 
      * @param request
      * @param response
      * @throws IOException
      * @throws ServletException
      */
     public void permitDenied(Request request, Response response)
-        throws IOException, ServletException {
+            throws IOException, ServletException {
         // NO-OP by default
     }
-
 
 }

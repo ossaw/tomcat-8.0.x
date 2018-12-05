@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -33,14 +31,13 @@ public class SmapGenerator {
     // Overview
 
     /*
-     * The SMAP syntax is reasonably straightforward.  The purpose of this
+     * The SMAP syntax is reasonably straightforward. The purpose of this
      * class is currently twofold:
-     *  - to provide a simple but low-level Java interface to build
-     *    a logical SMAP
-     *  - to serialize this logical SMAP for eventual inclusion directly
-     *    into a .class file.
+     * - to provide a simple but low-level Java interface to build
+     * a logical SMAP
+     * - to serialize this logical SMAP for eventual inclusion directly
+     * into a .class file.
      */
-
 
     //*********************************************************************
     // Private state
@@ -56,7 +53,7 @@ public class SmapGenerator {
 
     /**
      * Sets the filename (without path information) for the generated
-     * source file.  E.g., "foo$jsp.java".
+     * source file. E.g., "foo$jsp.java".
      */
     public synchronized void setOutputFileName(String x) {
         outputFileName = x;
@@ -65,17 +62,17 @@ public class SmapGenerator {
     /**
      * Adds the given SmapStratum object, representing a Stratum with
      * logically associated FileSection and LineSection blocks, to
-     * the current SmapGenerator.  If <tt>default</tt> is true, this
+     * the current SmapGenerator. If <tt>default</tt> is true, this
      * stratum is made the default stratum, overriding any previously
      * set default.
      *
-     * @param stratum the SmapStratum object to add
+     * @param stratum        the SmapStratum object to add
      * @param defaultStratum if <tt>true</tt>, this SmapStratum is considered
-     *                to represent the default SMAP stratum unless
-     *                overwritten
+     *                       to represent the default SMAP stratum unless
+     *                       overwritten
      */
     public synchronized void addStratum(SmapStratum stratum,
-                                        boolean defaultStratum) {
+            boolean defaultStratum) {
         strata.add(stratum);
         if (defaultStratum)
             this.defaultStratum = stratum.getStratumName();
@@ -84,19 +81,18 @@ public class SmapGenerator {
     /**
      * Adds the given string as an embedded SMAP with the given stratum name.
      *
-     * @param smap the SMAP to embed
+     * @param smap        the SMAP to embed
      * @param stratumName the name of the stratum output by the compilation
      *                    that produced the <tt>smap</tt> to be embedded
      */
     public synchronized void addSmap(String smap, String stratumName) {
-        embedded.add("*O " + stratumName + "\n"
-                   + smap
-                   + "*C " + stratumName + "\n");
+        embedded.add("*O " + stratumName + "\n" + smap + "*C " + stratumName
+                + "\n");
     }
 
     /**
      * Instructs the SmapGenerator whether to actually print any embedded
-     * SMAPs or not.  Intended for situations without an SMAP resolver.
+     * SMAPs or not. Intended for situations without an SMAP resolver.
      *
      * @param status If <tt>false</tt>, ignore any embedded SMAPs.
      */
@@ -140,7 +136,9 @@ public class SmapGenerator {
     }
 
     @Override
-    public String toString() { return getString(); }
+    public String toString() {
+        return getString();
+    }
 
     //*********************************************************************
     // For testing (and as an example of use)...

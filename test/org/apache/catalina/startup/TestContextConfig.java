@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -49,7 +47,7 @@ public class TestContextConfig extends TomcatBaseTest {
     }
 
     private void doTestOverrideDefaultServletWithSCI(String servletName)
-            throws Exception{
+            throws Exception {
 
         Tomcat tomcat = getTomcatInstance();
 
@@ -59,8 +57,8 @@ public class TestContextConfig extends TomcatBaseTest {
         ctxt.setDefaultWebXml(new File("conf/web.xml").getAbsolutePath());
         ctxt.addLifecycleListener(new ContextConfig());
 
-        ctxt.addServletContainerInitializer(
-                new CustomDefaultServletSCI(servletName), null);
+        ctxt.addServletContainerInitializer(new CustomDefaultServletSCI(
+                servletName), null);
 
         tomcat.start();
 
@@ -71,7 +69,7 @@ public class TestContextConfig extends TomcatBaseTest {
     public void testBug51396() throws Exception {
         Tomcat tomcat = getTomcatInstance();
 
-        File appDir =  new File("test/webapp-fragments");
+        File appDir = new File("test/webapp-fragments");
         // app dir is relative to server home
         tomcat.addWebapp(null, "/test", appDir.getAbsolutePath());
 
@@ -97,8 +95,8 @@ public class TestContextConfig extends TomcatBaseTest {
 
         assertPageContains("/test/resourceA.jsp",
                 "resourceA.jsp in resources.jar");
-        assertPageContains("/test/resources/HelloWorldExample",
-                null, HttpServletResponse.SC_NOT_FOUND);
+        assertPageContains("/test/resources/HelloWorldExample", null,
+                HttpServletResponse.SC_NOT_FOUND);
     }
 
     @Test
@@ -106,8 +104,8 @@ public class TestContextConfig extends TomcatBaseTest {
         Tomcat tomcat = getTomcatInstance();
 
         File appDir = new File("test/webapp-fragments");
-        Context context =
-                tomcat.addWebapp(null, "/test", appDir.getAbsolutePath());
+        Context context = tomcat.addWebapp(null, "/test", appDir
+                .getAbsolutePath());
 
         Tomcat.addServlet(context, "TestServlet",
                 "org.apache.catalina.startup.TesterServletWithLifeCycleMethods");
@@ -125,8 +123,8 @@ public class TestContextConfig extends TomcatBaseTest {
         Tomcat tomcat = getTomcatInstance();
 
         File appDir = new File("test/webapp-fragments");
-        Context context = tomcat.addWebapp(null, "/test",
-                appDir.getAbsolutePath());
+        Context context = tomcat.addWebapp(null, "/test", appDir
+                .getAbsolutePath());
 
         Tomcat.addServlet(context, "TestServlet",
                 "org.apache.catalina.startup.TesterServletWithAnnotations");
@@ -153,8 +151,8 @@ public class TestContextConfig extends TomcatBaseTest {
         assertPageContains("/test/TesterServlet2", "OK");
     }
 
-    private static class CustomDefaultServletSCI
-            implements ServletContainerInitializer {
+    private static class CustomDefaultServletSCI implements
+            ServletContainerInitializer {
 
         private String servletName;
 

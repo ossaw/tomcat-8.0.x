@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -30,7 +28,6 @@ import javax.servlet.http.HttpServletResponseWrapper;
 import org.apache.juli.logging.Log;
 import org.apache.juli.logging.LogFactory;
 
-
 /**
  * Filter that explicitly sets the default character set for media subtypes of
  * the "text" type to ISO-8859-1, or another user defined character set. RFC2616
@@ -47,8 +44,8 @@ import org.apache.juli.logging.LogFactory;
  */
 public class AddDefaultCharsetFilter extends FilterBase {
 
-    private static final Log log =
-        LogFactory.getLog(AddDefaultCharsetFilter.class);
+    private static final Log log = LogFactory.getLog(
+            AddDefaultCharsetFilter.class);
 
     private static final String DEFAULT_ENCODING = "ISO-8859-1";
 
@@ -66,8 +63,8 @@ public class AddDefaultCharsetFilter extends FilterBase {
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
         super.init(filterConfig);
-        if (encoding == null || encoding.length() == 0 ||
-                encoding.equalsIgnoreCase("default")) {
+        if (encoding == null || encoding.length() == 0 || encoding
+                .equalsIgnoreCase("default")) {
             encoding = DEFAULT_ENCODING;
         } else if (encoding.equalsIgnoreCase("system")) {
             encoding = Charset.defaultCharset().name();
@@ -83,8 +80,8 @@ public class AddDefaultCharsetFilter extends FilterBase {
 
         // Wrap the response
         if (response instanceof HttpServletResponse) {
-            ResponseWrapper wrapped =
-                new ResponseWrapper((HttpServletResponse)response, encoding);
+            ResponseWrapper wrapped = new ResponseWrapper(
+                    (HttpServletResponse) response, encoding);
             chain.doFilter(request, wrapped);
         } else {
             chain.doFilter(request, response);

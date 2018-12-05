@@ -1,18 +1,16 @@
 /*
- *  Licensed to the Apache Software Foundation (ASF) under one or more
- *  contributor license agreements.  See the NOTICE file distributed with
- *  this work for additional information regarding copyright ownership.
- *  The ASF licenses this file to You under the Apache License, Version 2.0
- *  (the "License"); you may not use this file except in compliance with
- *  the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements. See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package org.apache.coyote.http11;
@@ -51,30 +49,26 @@ public class InternalAprOutputBuffer extends AbstractOutputBuffer<Long> {
         if (headerBufferSize < (8 * 1024)) {
             bbuf = ByteBuffer.allocateDirect(6 * 1500);
         } else {
-            bbuf = ByteBuffer.allocateDirect((headerBufferSize / 1500 + 1) * 1500);
+            bbuf = ByteBuffer.allocateDirect((headerBufferSize / 1500 + 1)
+                    * 1500);
         }
 
         outputStreamOutputBuffer = new SocketOutputBuffer();
     }
 
-
     // ----------------------------------------------------- Instance Variables
-
 
     /**
      * Underlying socket.
      */
     private long socket;
 
-
     private SocketWrapper<Long> wrapper;
-
 
     /**
      * Direct byte buffer used for writing.
      */
     private final ByteBuffer bbuf;
-
 
     /**
      * <code>false</code> if bbuf is ready to be written to and
@@ -82,9 +76,7 @@ public class InternalAprOutputBuffer extends AbstractOutputBuffer<Long> {
      */
     private volatile boolean flipped = false;
 
-
     private AbstractEndpoint<Long> endpoint;
-
 
     // --------------------------------------------------------- Public Methods
 
@@ -98,7 +90,6 @@ public class InternalAprOutputBuffer extends AbstractOutputBuffer<Long> {
 
         Socket.setsbb(this.socket, bbuf);
     }
-
 
     /**
      * Recycle the output buffer. This should be called when closing the
@@ -116,7 +107,6 @@ public class InternalAprOutputBuffer extends AbstractOutputBuffer<Long> {
         wrapper = null;
     }
 
-
     // ------------------------------------------------ HTTP/1.1 Output Methods
 
     /**
@@ -125,14 +115,13 @@ public class InternalAprOutputBuffer extends AbstractOutputBuffer<Long> {
     @Override
     public void sendAck() throws IOException {
         if (!committed) {
-            if (Socket.send(socket, Constants.ACK_BYTES, 0, Constants.ACK_BYTES.length) < 0)
+            if (Socket.send(socket, Constants.ACK_BYTES, 0,
+                    Constants.ACK_BYTES.length) < 0)
                 throw new IOException(sm.getString("iob.failedwrite.ack"));
         }
     }
 
-
     // ------------------------------------------------------ Protected Methods
-
 
     /**
      * Commit the response.
@@ -153,11 +142,11 @@ public class InternalAprOutputBuffer extends AbstractOutputBuffer<Long> {
 
     }
 
-
     private synchronized void addToBB(byte[] buf, int offset, int length)
             throws IOException {
 
-        if (length == 0) return;
+        if (length == 0)
+            return;
 
         // If bbuf is currently being used for writes, add this data to the
         // write buffer
@@ -185,23 +174,23 @@ public class InternalAprOutputBuffer extends AbstractOutputBuffer<Long> {
 
         wrapper.access();
 
-        if (!isBlocking() && length>0) {
+        if (!isBlocking() && length > 0) {
             // Buffer the remaining data
             addToBuffers(buf, offset, length);
         }
     }
 
-
     private void addToBuffers(byte[] buf, int offset, int length) {
         ByteBufferHolder holder = bufferedWrites.peekLast();
-        if (holder==null || holder.isFlipped() || holder.getBuf().remaining()<length) {
-            ByteBuffer buffer = ByteBuffer.allocate(Math.max(bufferedWriteSize,length));
-            holder = new ByteBufferHolder(buffer,false);
+        if (holder == null || holder.isFlipped() || holder.getBuf()
+                .remaining() < length) {
+            ByteBuffer buffer = ByteBuffer.allocate(Math.max(bufferedWriteSize,
+                    length));
+            holder = new ByteBufferHolder(buffer, false);
             bufferedWrites.add(holder);
         }
-        holder.getBuf().put(buf,offset,length);
+        holder.getBuf().put(buf, offset, length);
     }
-
 
     @Override
     protected synchronized boolean flushBuffer(boolean block)
@@ -218,7 +207,8 @@ public class InternalAprOutputBuffer extends AbstractOutputBuffer<Long> {
             while (!hasMoreDataToFlush() && bufIter.hasNext()) {
                 ByteBufferHolder buffer = bufIter.next();
                 buffer.flip();
-                while (!hasMoreDataToFlush() && buffer.getBuf().remaining()>0) {
+                while (!hasMoreDataToFlush() && buffer.getBuf()
+                        .remaining() > 0) {
                     transfer(buffer.getBuf(), bbuf);
                     if (buffer.getBuf().remaining() == 0) {
                         bufIter.remove();
@@ -231,7 +221,6 @@ public class InternalAprOutputBuffer extends AbstractOutputBuffer<Long> {
 
         return hasMoreDataToFlush();
     }
-
 
     private synchronized void writeToSocket(boolean block) throws IOException {
 
@@ -303,7 +292,6 @@ public class InternalAprOutputBuffer extends AbstractOutputBuffer<Long> {
         // write registration.
     }
 
-
     private void transfer(ByteBuffer from, ByteBuffer to) {
         int max = Math.min(from.remaining(), to.remaining());
         int fromLimit = from.limit();
@@ -312,21 +300,18 @@ public class InternalAprOutputBuffer extends AbstractOutputBuffer<Long> {
         from.limit(fromLimit);
     }
 
-
     //-------------------------------------------------- Non-blocking IO methods
 
     @Override
     protected synchronized boolean hasMoreDataToFlush() {
-        return (flipped && bbuf.remaining() > 0) ||
-                (!flipped && bbuf.position() > 0);
+        return (flipped && bbuf.remaining() > 0) || (!flipped && bbuf
+                .position() > 0);
     }
-
 
     @Override
     protected void registerWriteInterest() {
         wrapper.registerforEvent(-1, false, true);
     }
-
 
     // ----------------------------------- OutputStreamOutputBuffer Inner Class
 
@@ -335,7 +320,6 @@ public class InternalAprOutputBuffer extends AbstractOutputBuffer<Long> {
      * stream.
      */
     protected class SocketOutputBuffer implements OutputBuffer {
-
 
         /**
          * Write chunk.

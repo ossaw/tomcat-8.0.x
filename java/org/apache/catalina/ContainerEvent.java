@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -15,7 +13,6 @@
  * limitations under the License.
  */
 package org.apache.catalina;
-
 
 import java.util.EventObject;
 
@@ -33,26 +30,23 @@ public final class ContainerEvent extends EventObject {
      */
     private final Object data;
 
-
     /**
      * The event type this instance represents.
      */
     private final String type;
 
-
     /**
      * Construct a new ContainerEvent with the specified parameters.
      *
      * @param container Container on which this event occurred
-     * @param type Event type
-     * @param data Event data
+     * @param type      Event type
+     * @param data      Event data
      */
     public ContainerEvent(Container container, String type, Object data) {
         super(container);
         this.type = type;
         this.data = data;
     }
-
 
     /**
      * Return the event data of this event.
@@ -63,7 +57,6 @@ public final class ContainerEvent extends EventObject {
         return this.data;
     }
 
-
     /**
      * Return the Container on which this event occurred.
      *
@@ -72,7 +65,6 @@ public final class ContainerEvent extends EventObject {
     public Container getContainer() {
         return (Container) getSource();
     }
-
 
     /**
      * Return the event type of this event.
@@ -85,13 +77,12 @@ public final class ContainerEvent extends EventObject {
         return this.type;
     }
 
-
     /**
      * Return a string representation of this event.
      */
     @Override
     public String toString() {
-        return ("ContainerEvent['" + getContainer() + "','" +
-                getType() + "','" + getData() + "']");
+        return ("ContainerEvent['" + getContainer() + "','" + getType() + "','"
+                + getData() + "']");
     }
 }

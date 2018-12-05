@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -31,17 +29,16 @@ import org.apache.catalina.tribes.util.StringManager;
 import org.apache.juli.logging.Log;
 import org.apache.juli.logging.LogFactory;
 
-
-
 /**
  *
  *
  * @version 1.0
  */
 public class ThroughputInterceptor extends ChannelInterceptorBase {
-    private static final Log log = LogFactory.getLog(ThroughputInterceptor.class);
-    protected static final StringManager sm =
-            StringManager.getManager(ThroughputInterceptor.class.getPackage().getName());
+    private static final Log log = LogFactory.getLog(
+            ThroughputInterceptor.class);
+    protected static final StringManager sm = StringManager.getManager(
+            ThroughputInterceptor.class.getPackage().getName());
 
     double mbTx = 0;
     double mbAppTx = 0;
@@ -57,21 +54,24 @@ public class ThroughputInterceptor extends ChannelInterceptorBase {
     long rxStart = 0;
     final DecimalFormat df = new DecimalFormat("#0.00");
 
-
     @Override
-    public void sendMessage(Member[] destination, ChannelMessage msg, InterceptorPayload payload) throws ChannelException {
-        if ( access.addAndGet(1) == 1 ) txStart = System.currentTimeMillis();
-        long bytes = XByteBuffer.getDataPackageLength(((ChannelData)msg).getDataPackageLength());
+    public void sendMessage(Member[] destination, ChannelMessage msg,
+            InterceptorPayload payload) throws ChannelException {
+        if (access.addAndGet(1) == 1)
+            txStart = System.currentTimeMillis();
+        long bytes = XByteBuffer.getDataPackageLength(((ChannelData) msg)
+                .getDataPackageLength());
         try {
             super.sendMessage(destination, msg, payload);
-        }catch ( ChannelException x ) {
+        } catch (ChannelException x) {
             msgTxErr.addAndGet(1);
-            if ( access.get() == 1 ) access.addAndGet(-1);
+            if (access.get() == 1)
+                access.addAndGet(-1);
             throw x;
         }
-        mbTx += (bytes*destination.length)/(1024d*1024d);
-        mbAppTx += bytes/(1024d*1024d);
-        if ( access.addAndGet(-1) == 0 ) {
+        mbTx += (bytes * destination.length) / (1024d * 1024d);
+        mbAppTx += bytes / (1024d * 1024d);
+        if (access.addAndGet(-1) == 0) {
             long stop = System.currentTimeMillis();
             timeTx += (stop - txStart) / 1000d;
             if ((msgTxCnt.get() / interval) >= lastCnt) {
@@ -84,21 +84,26 @@ public class ThroughputInterceptor extends ChannelInterceptorBase {
 
     @Override
     public void messageReceived(ChannelMessage msg) {
-        if ( rxStart == 0 ) rxStart = System.currentTimeMillis();
-        long bytes = XByteBuffer.getDataPackageLength(((ChannelData)msg).getDataPackageLength());
-        mbRx += bytes/(1024d*1024d);
+        if (rxStart == 0)
+            rxStart = System.currentTimeMillis();
+        long bytes = XByteBuffer.getDataPackageLength(((ChannelData) msg)
+                .getDataPackageLength());
+        mbRx += bytes / (1024d * 1024d);
         msgRxCnt.addAndGet(1);
-        if ( msgRxCnt.get() % interval == 0 ) report(timeTx);
+        if (msgRxCnt.get() % interval == 0)
+            report(timeTx);
         super.messageReceived(msg);
 
     }
 
     public void report(double timeTx) {
-        if ( log.isInfoEnabled() )
-            log.info(sm.getString("throughputInterceptor.report",
-                    msgTxCnt, df.format(mbTx), df.format(mbAppTx), df.format(timeTx), df.format(mbTx/timeTx),
-                    df.format(mbAppTx/timeTx), msgTxErr, msgRxCnt, df.format(mbRx/((System.currentTimeMillis()-rxStart)/1000)),
-                    df.format(mbRx)));
+        if (log.isInfoEnabled())
+            log.info(sm.getString("throughputInterceptor.report", msgTxCnt, df
+                    .format(mbTx), df.format(mbAppTx), df.format(timeTx), df
+                            .format(mbTx / timeTx), df.format(mbAppTx / timeTx),
+                    msgTxErr, msgRxCnt, df.format(mbRx / ((System
+                            .currentTimeMillis() - rxStart) / 1000)), df.format(
+                                    mbRx)));
     }
 
     public void setInterval(int interval) {

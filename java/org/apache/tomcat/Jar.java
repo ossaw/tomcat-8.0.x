@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -42,23 +40,22 @@ public interface Jar extends AutoCloseable {
     /**
      * Determines if a specific entry exists within the JAR.
      *
-     * @param name  Entry to look for
-     * @return      <code>true</code> if the specified entry exists else
-     *               <code>false</code>
+     * @param name Entry to look for
+     * @return <code>true</code> if the specified entry exists else
+     *         <code>false</code>
      *
      * @throws IOException if an I/O error occurs while processing the JAR file
-     *   entries
+     *                     entries
      */
     boolean entryExists(String name) throws IOException;
-
 
     /**
      * Obtain an {@link InputStream} for a given entry in a JAR. The caller is
      * responsible for closing the stream.
      *
-     * @param name  Entry to obtain an {@link InputStream} for
-     * @return      An {@link InputStream} for the specified entry or null if
-     *              the entry does not exist
+     * @param name Entry to obtain an {@link InputStream} for
+     * @return An {@link InputStream} for the specified entry or null if
+     *         the entry does not exist
      *
      * @throws IOException if an I/O error occurs while processing the JAR file
      */
@@ -67,7 +64,7 @@ public interface Jar extends AutoCloseable {
     /**
      * Obtain the last modified time for the given resource in the JAR.
      *
-     * @param name  Entry to obtain the modification time for
+     * @param name Entry to obtain the modification time for
      *
      * @return The time (in the same format as
      *         {@link System#currentTimeMillis()} that the resource was last
@@ -91,15 +88,15 @@ public interface Jar extends AutoCloseable {
     /**
      * Obtains the name of the current entry.
      *
-     * @return  The entry name
+     * @return The entry name
      */
     String getEntryName();
 
     /**
      * Obtains the input stream for the current entry.
      *
-     * @return  The input stream
-     * @throws IOException  If the stream cannot be obtained
+     * @return The input stream
+     * @throws IOException If the stream cannot be obtained
      */
     InputStream getEntryInputStream() throws IOException;
 
@@ -131,7 +128,7 @@ public interface Jar extends AutoCloseable {
      * Resets the internal pointer used to track JAR entries to the beginning of
      * the JAR.
      *
-     * @throws IOException  If the pointer cannot be reset
+     * @throws IOException If the pointer cannot be reset
      */
     void reset() throws IOException;
 }

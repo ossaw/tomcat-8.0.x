@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -49,8 +47,8 @@ public class TestMapperListener extends TomcatBaseTest {
 
         File appDir = new File(getBuildDirectory(), "webapps/examples");
         // app dir is relative to server home
-        Context ctxt = tomcat.addWebapp(null, "/examples",
-                appDir.getAbsolutePath());
+        Context ctxt = tomcat.addWebapp(null, "/examples", appDir
+                .getAbsolutePath());
         ctxt.addApplicationListener(WsContextListener.class.getName());
         tomcat.start();
 
@@ -59,7 +57,8 @@ public class TestMapperListener extends TomcatBaseTest {
         res = getUrl("http://localhost:" + getPort()
                 + "/examples/servlets/servlet/HelloWorldExample");
         text = res.toString();
-        Assert.assertTrue(text, text.contains("<a href=\"../helloworld.html\">"));
+        Assert.assertTrue(text, text.contains(
+                "<a href=\"../helloworld.html\">"));
 
         List<ListenersInfo> listenersFirst = new ArrayList<>();
         populateListenersInfo(listenersFirst, tomcat.getEngine());
@@ -70,7 +69,8 @@ public class TestMapperListener extends TomcatBaseTest {
         res = getUrl("http://localhost:" + getPort()
                 + "/examples/servlets/servlet/HelloWorldExample");
         text = res.toString();
-        Assert.assertTrue(text, text.contains("<a href=\"../helloworld.html\">"));
+        Assert.assertTrue(text, text.contains(
+                "<a href=\"../helloworld.html\">"));
 
         List<ListenersInfo> listenersSecond = new ArrayList<>();
         populateListenersInfo(listenersSecond, tomcat.getEngine());
@@ -104,15 +104,15 @@ public class TestMapperListener extends TomcatBaseTest {
         @Override
         public String toString() {
             StringBuilder buf = new StringBuilder();
-            buf.append("[container: \"").append(container)
-                    .append("\"\n containerListeners.length: ")
-                    .append(containerListeners.length)
-                    .append(", lifecycleListeners.length: ")
-                    .append(lifecycleListeners.length)
-                    .append("\n containerListeners: ")
-                    .append(Arrays.asList(containerListeners))
-                    .append("\n lifecycleListeners: ")
-                    .append(Arrays.asList(lifecycleListeners)).append("\n]");
+            buf.append("[container: \"").append(container).append(
+                    "\"\n containerListeners.length: ").append(
+                            containerListeners.length).append(
+                                    ", lifecycleListeners.length: ").append(
+                                            lifecycleListeners.length).append(
+                                                    "\n containerListeners: ")
+                    .append(Arrays.asList(containerListeners)).append(
+                            "\n lifecycleListeners: ").append(Arrays.asList(
+                                    lifecycleListeners)).append("\n]");
             return buf.toString();
         }
     }

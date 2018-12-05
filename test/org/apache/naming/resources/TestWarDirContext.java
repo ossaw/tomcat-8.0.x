@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -58,12 +56,10 @@ public class TestWarDirContext extends TomcatBaseTest {
 
         tomcat.start();
 
-        ByteChunk bc = getUrl("http://localhost:" + getPort() +
-                "/test/warDirContext.jsp");
-        assertEquals("<p>java.lang.ClassNotFoundException</p>",
-                bc.toString());
+        ByteChunk bc = getUrl("http://localhost:" + getPort()
+                + "/test/warDirContext.jsp");
+        assertEquals("<p>java.lang.ClassNotFoundException</p>", bc.toString());
     }
-
 
     /*
      * Additional test following on from SPR-7350 above to check files that
@@ -75,8 +71,8 @@ public class TestWarDirContext extends TomcatBaseTest {
 
         File appDir = new File("test/webapp-fragments");
         // app dir is relative to server home
-        StandardContext ctxt = (StandardContext) tomcat.addWebapp(
-                null, "/test", appDir.getAbsolutePath());
+        StandardContext ctxt = (StandardContext) tomcat.addWebapp(null, "/test",
+                appDir.getAbsolutePath());
         StandardRoot root = new StandardRoot();
         root.setCachingAllowed(true);
         ctxt.setResources(root);
@@ -84,18 +80,15 @@ public class TestWarDirContext extends TomcatBaseTest {
         tomcat.start();
 
         // Should be found in resources.jar
-        ByteChunk bc = getUrl("http://localhost:" + getPort() +
-                "/test/'singlequote.jsp");
-        assertEquals("<p>'singlequote.jsp in resources.jar</p>",
-                bc.toString());
+        ByteChunk bc = getUrl("http://localhost:" + getPort()
+                + "/test/'singlequote.jsp");
+        assertEquals("<p>'singlequote.jsp in resources.jar</p>", bc.toString());
 
         // Should be found in file system
-        bc = getUrl("http://localhost:" + getPort() +
-                "/test/'singlequote2.jsp");
-        assertEquals("<p>'singlequote2.jsp in file system</p>",
-                bc.toString());
+        bc = getUrl("http://localhost:" + getPort()
+                + "/test/'singlequote2.jsp");
+        assertEquals("<p>'singlequote2.jsp in file system</p>", bc.toString());
     }
-
 
     /*
      * Additional test following on from SPR-7350 above to check files that
@@ -107,8 +100,8 @@ public class TestWarDirContext extends TomcatBaseTest {
 
         File appDir = new File("test/webapp-fragments");
         // app dir is relative to server home
-        StandardContext ctxt = (StandardContext) tomcat.addWebapp(
-                null, "/test", appDir.getAbsolutePath());
+        StandardContext ctxt = (StandardContext) tomcat.addWebapp(null, "/test",
+                appDir.getAbsolutePath());
         StandardRoot root = new StandardRoot();
         root.setCachingAllowed(true);
         ctxt.setResources(root);
@@ -116,15 +109,13 @@ public class TestWarDirContext extends TomcatBaseTest {
         tomcat.start();
 
         // Should be found in resources.jar
-        ByteChunk bc = getUrl("http://localhost:" + getPort() +
-                "/test/'singlequote.jsp");
-        assertEquals("<p>'singlequote.jsp in resources.jar</p>",
-                bc.toString());
+        ByteChunk bc = getUrl("http://localhost:" + getPort()
+                + "/test/'singlequote.jsp");
+        assertEquals("<p>'singlequote.jsp in resources.jar</p>", bc.toString());
 
         // Should be found in file system
-        bc = getUrl("http://localhost:" + getPort() +
-                "/test/'singlequote2.jsp");
-        assertEquals("<p>'singlequote2.jsp in file system</p>",
-                bc.toString());
+        bc = getUrl("http://localhost:" + getPort()
+                + "/test/'singlequote2.jsp");
+        assertEquals("<p>'singlequote2.jsp in file system</p>", bc.toString());
     }
 }

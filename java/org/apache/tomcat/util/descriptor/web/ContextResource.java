@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -15,8 +13,6 @@
  * limitations under the License.
  */
 package org.apache.tomcat.util.descriptor.web;
-
-
 
 /**
  * Representation of a resource reference for a web application, as
@@ -31,7 +27,6 @@ public class ContextResource extends ResourceBase {
     private static final long serialVersionUID = 1L;
 
     // ------------------------------------------------------------- Properties
-
 
     /**
      * The authorization requirement for this resource
@@ -61,7 +56,6 @@ public class ContextResource extends ResourceBase {
         this.scope = scope;
     }
 
-
     /**
      * Is this resource known to be a singleton resource. The default value is
      * true since this is what users expect although the JavaEE spec implies
@@ -76,7 +70,6 @@ public class ContextResource extends ResourceBase {
     public void setSingleton(boolean singleton) {
         this.singleton = singleton;
     }
-
 
     /**
      * The name of the zero argument method to be called when the resource is
@@ -94,9 +87,7 @@ public class ContextResource extends ResourceBase {
         this.closeMethod = closeMethod;
     }
 
-
     // --------------------------------------------------------- Public Methods
-
 
     /**
      * Return a String representation of this object.
@@ -127,19 +118,17 @@ public class ContextResource extends ResourceBase {
         return (sb.toString());
     }
 
-
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = super.hashCode();
         result = prime * result + ((auth == null) ? 0 : auth.hashCode());
-        result = prime * result +
-                ((closeMethod == null) ? 0 : closeMethod.hashCode());
+        result = prime * result + ((closeMethod == null) ? 0
+                : closeMethod.hashCode());
         result = prime * result + ((scope == null) ? 0 : scope.hashCode());
         result = prime * result + (singleton ? 1231 : 1237);
         return result;
     }
-
 
     @Override
     public boolean equals(Object obj) {

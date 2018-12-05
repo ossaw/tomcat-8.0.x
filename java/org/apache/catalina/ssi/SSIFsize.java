@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -16,10 +14,10 @@
  */
 package org.apache.catalina.ssi;
 
-
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.DecimalFormat;
+
 /**
  * Implements the Server-side #fsize command
  *
@@ -32,7 +30,6 @@ public final class SSIFsize implements SSICommand {
     static final int ONE_KILOBYTE = 1024;
     static final int ONE_MEGABYTE = 1024 * 1024;
 
-
     /**
      * @see SSICommand
      */
@@ -44,11 +41,11 @@ public final class SSIFsize implements SSICommand {
         for (int i = 0; i < paramNames.length; i++) {
             String paramName = paramNames[i];
             String paramValue = paramValues[i];
-            String substitutedValue = ssiMediator
-                    .substituteVariables(paramValue);
+            String substitutedValue = ssiMediator.substituteVariables(
+                    paramValue);
             try {
-                if (paramName.equalsIgnoreCase("file")
-                        || paramName.equalsIgnoreCase("virtual")) {
+                if (paramName.equalsIgnoreCase("file") || paramName
+                        .equalsIgnoreCase("virtual")) {
                     boolean virtual = paramName.equalsIgnoreCase("virtual");
                     lastModified = ssiMediator.getFileLastModified(
                             substitutedValue, virtual);
@@ -69,7 +66,6 @@ public final class SSIFsize implements SSICommand {
         return lastModified;
     }
 
-
     public String repeat(char aChar, int numChars) {
         if (numChars < 0) {
             throw new IllegalArgumentException("Num chars can't be negative");
@@ -81,7 +77,6 @@ public final class SSIFsize implements SSICommand {
         return buf.toString();
     }
 
-
     public String padLeft(String str, int maxChars) {
         String result = str;
         int charsToAdd = maxChars - str.length();
@@ -90,7 +85,6 @@ public final class SSIFsize implements SSICommand {
         }
         return result;
     }
-
 
     //We try to mimic Apache here, as we do everywhere
     //All the 'magic' numbers are from the util_script.c Apache source file.
@@ -109,7 +103,7 @@ public final class SSIFsize implements SSICommand {
                 retString += "k";
             } else if (size < 99 * ONE_MEGABYTE) {
                 DecimalFormat decimalFormat = new DecimalFormat("0.0M");
-                retString = decimalFormat.format(size / (double)ONE_MEGABYTE);
+                retString = decimalFormat.format(size / (double) ONE_MEGABYTE);
             } else {
                 retString = Long.toString((size + (529 * ONE_KILOBYTE))
                         / ONE_MEGABYTE);

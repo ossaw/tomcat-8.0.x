@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -95,10 +93,10 @@ public class TagHandlerPool {
      * instantiating one if this tag handler pool is empty.
      *
      * @param handlerClass
-     *            Tag handler class
+     *                     Tag handler class
      * @return Reused or newly instantiated tag handler
      * @throws JspException
-     *             if a tag handler cannot be instantiated
+     *                      if a tag handler cannot be instantiated
      */
     public Tag get(Class<? extends Tag> handlerClass) throws JspException {
         Tag handler;
@@ -113,8 +111,8 @@ public class TagHandlerPool {
         // wait for us to construct a tag for this thread.
         try {
             if (Constants.USE_INSTANCE_MANAGER_FOR_TAGS) {
-                return (Tag) instanceManager.newInstance(
-                        handlerClass.getName(), handlerClass.getClassLoader());
+                return (Tag) instanceManager.newInstance(handlerClass.getName(),
+                        handlerClass.getClassLoader());
             } else {
                 Tag instance = handlerClass.newInstance();
                 instanceManager.newInstance(instance);
@@ -133,7 +131,7 @@ public class TagHandlerPool {
      * handler's release() method is called.
      *
      * @param handler
-     *            Tag handler to add to this tag handler pool
+     *                Tag handler to add to this tag handler pool
      */
     public void reuse(Tag handler) {
         synchronized (this) {
@@ -156,25 +154,23 @@ public class TagHandlerPool {
         }
     }
 
-
     private void doRelease(Tag handler) {
         try {
             handler.release();
         } catch (Throwable t) {
             ExceptionUtils.handleThrowable(t);
-            log.warn("Error processing release on tag instance of "
-                    + handler.getClass().getName(), t);
+            log.warn("Error processing release on tag instance of " + handler
+                    .getClass().getName(), t);
         }
         try {
             instanceManager.destroyInstance(handler);
         } catch (Exception e) {
             Throwable t = ExceptionUtils.unwrapInvocationTargetException(e);
             ExceptionUtils.handleThrowable(t);
-            log.warn("Error processing preDestroy on tag instance of "
-                    + handler.getClass().getName(), t);
+            log.warn("Error processing preDestroy on tag instance of " + handler
+                    .getClass().getName(), t);
         }
     }
-
 
     protected static String getOption(ServletConfig config, String name,
             String defaultV) {

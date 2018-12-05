@@ -1,18 +1,16 @@
 /*
- *  Licensed to the Apache Software Foundation (ASF) under one or more
- *  contributor license agreements.  See the NOTICE file distributed with
- *  this work for additional information regarding copyright ownership.
- *  The ASF licenses this file to You under the Apache License, Version 2.0
- *  (the "License"); you may not use this file except in compliance with
- *  the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements. See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package org.apache.coyote.http11;
@@ -53,7 +51,6 @@ public class TestInternalInputBuffer extends TomcatBaseTest {
         assertTrue(client.isResponseBodyOK());
     }
 
-
     /**
      * Bug 48839 test client.
      */
@@ -75,12 +72,9 @@ public class TestInternalInputBuffer extends TomcatBaseTest {
                 connect();
 
                 String[] request = new String[1];
-                request[0] =
-                    "GET http://localhost:8080/test HTTP/1.1" + CRLF +
-                    "X-Bug48839: abcd" + CRLF +
-                    "\tefgh" + CRLF +
-                    "Connection: close" + CRLF +
-                    CRLF;
+                request[0] = "GET http://localhost:8080/test HTTP/1.1" + CRLF
+                        + "X-Bug48839: abcd" + CRLF + "\tefgh" + CRLF
+                        + "Connection: close" + CRLF + CRLF;
 
                 setRequest(request);
                 processRequest(); // blocks until response has been read
@@ -128,7 +122,6 @@ public class TestInternalInputBuffer extends TomcatBaseTest {
         }
     }
 
-
     @Test
     public void testBug51557NoColon() {
 
@@ -140,12 +133,11 @@ public class TestInternalInputBuffer extends TomcatBaseTest {
         assertTrue(client.isResponseBodyOK());
     }
 
-
     @Test
     public void testBug51557Separators() throws Exception {
-        char httpSeparators[] = new char[] {
-                '\t', ' ', '\"', '(', ')', ',', '/', ':', ';', '<',
-                '=', '>', '?', '@', '[', '\\', ']', '{', '}' };
+        char httpSeparators[] = new char[] { '\t', ' ', '\"', '(', ')', ',',
+                '/', ':', ';', '<', '=', '>', '?', '@', '[', '\\', ']', '{',
+                '}' };
 
         for (char s : httpSeparators) {
             doTestBug51557Char(s);
@@ -153,7 +145,6 @@ public class TestInternalInputBuffer extends TomcatBaseTest {
             setUp();
         }
     }
-
 
     @Test
     public void testBug51557Ctl() throws Exception {
@@ -165,38 +156,33 @@ public class TestInternalInputBuffer extends TomcatBaseTest {
         doTestBug51557Char((char) 127);
     }
 
-
     @Test
     public void testBug51557Continuation() {
 
-        Bug51557Client client = new Bug51557Client("X-Bug=51557NoColon",
-                "foo" + SimpleHttpClient.CRLF + " bar");
+        Bug51557Client client = new Bug51557Client("X-Bug=51557NoColon", "foo"
+                + SimpleHttpClient.CRLF + " bar");
 
         client.doRequest();
         assertTrue(client.isResponse200());
         assertEquals("abcd", client.getResponseBody());
         assertTrue(client.isResponseBodyOK());
     }
-
 
     @Test
     public void testBug51557BoundaryStart() {
 
-        Bug51557Client client = new Bug51557Client("=X-Bug51557",
-                "invalid");
+        Bug51557Client client = new Bug51557Client("=X-Bug51557", "invalid");
 
         client.doRequest();
         assertTrue(client.isResponse200());
         assertEquals("abcd", client.getResponseBody());
         assertTrue(client.isResponseBodyOK());
     }
-
 
     @Test
     public void testBug51557BoundaryEnd() {
 
-        Bug51557Client client = new Bug51557Client("X-Bug51557=",
-                "invalid");
+        Bug51557Client client = new Bug51557Client("X-Bug51557=", "invalid");
 
         client.doRequest();
         assertTrue(client.isResponse200());
@@ -204,10 +190,9 @@ public class TestInternalInputBuffer extends TomcatBaseTest {
         assertTrue(client.isResponseBodyOK());
     }
 
-
     private void doTestBug51557Char(char s) {
-        Bug51557Client client =
-            new Bug51557Client("X-Bug" + s + "51557", "invalid");
+        Bug51557Client client = new Bug51557Client("X-Bug" + s + "51557",
+                "invalid");
 
         client.doRequest();
         assertTrue(client.isResponse200());
@@ -238,8 +223,8 @@ public class TestInternalInputBuffer extends TomcatBaseTest {
             Tomcat tomcat = getTomcatInstance();
 
             Context root = tomcat.addContext("", TEMP_DIR);
-            Tomcat.addServlet(root, "Bug51557",
-                    new Bug51557Servlet(headerName));
+            Tomcat.addServlet(root, "Bug51557", new Bug51557Servlet(
+                    headerName));
             root.addServletMappingDecoded("/test", "Bug51557");
 
             try {
@@ -250,12 +235,9 @@ public class TestInternalInputBuffer extends TomcatBaseTest {
                 connect();
 
                 String[] request = new String[1];
-                request[0] =
-                    "GET http://localhost:8080/test HTTP/1.1" + CRLF +
-                    headerLine + CRLF +
-                    "X-Bug51557: abcd" + CRLF +
-                    "Connection: close" + CRLF +
-                    CRLF;
+                request[0] = "GET http://localhost:8080/test HTTP/1.1" + CRLF
+                        + headerLine + CRLF + "X-Bug51557: abcd" + CRLF
+                        + "Connection: close" + CRLF + CRLF;
 
                 setRequest(request);
                 processRequest(); // blocks until response has been read
@@ -319,7 +301,6 @@ public class TestInternalInputBuffer extends TomcatBaseTest {
         }
     }
 
-
     /**
      * Test case for new lines at the start of a request. RFC2616
      * does not permit any, but Tomcat is tolerant of them if they are present.
@@ -333,7 +314,6 @@ public class TestInternalInputBuffer extends TomcatBaseTest {
         assertTrue(client.isResponse200());
         assertTrue(client.isResponseBodyOK());
     }
-
 
     /**
      * Test case for new lines at the start of a request. RFC2616
@@ -352,7 +332,6 @@ public class TestInternalInputBuffer extends TomcatBaseTest {
         }
         assertFalse(client.isResponseBodyOK());
     }
-
 
     private class NewLinesClient extends SimpleHttpClient {
 
@@ -382,13 +361,10 @@ public class TestInternalInputBuffer extends TomcatBaseTest {
                 connect();
 
                 String[] request = new String[1];
-                request[0] =
-                    newLines +
-                    "GET http://localhost:8080/test HTTP/1.1" + CRLF +
-                    "X-Bug48839: abcd" + CRLF +
-                    "\tefgh" + CRLF +
-                    "Connection: close" + CRLF +
-                    CRLF;
+                request[0] = newLines
+                        + "GET http://localhost:8080/test HTTP/1.1" + CRLF
+                        + "X-Bug48839: abcd" + CRLF + "\tefgh" + CRLF
+                        + "Connection: close" + CRLF + CRLF;
 
                 setRequest(request);
                 processRequest(); // blocks until response has been read
@@ -414,7 +390,6 @@ public class TestInternalInputBuffer extends TomcatBaseTest {
 
     }
 
-
     /**
      * Test case for https://bz.apache.org/bugzilla/show_bug.cgi?id=54947
      */
@@ -427,7 +402,6 @@ public class TestInternalInputBuffer extends TomcatBaseTest {
         assertTrue(client.isResponse200());
         assertTrue(client.isResponseBodyOK());
     }
-
 
     /**
      * Bug 54947 test client.
@@ -451,9 +425,7 @@ public class TestInternalInputBuffer extends TomcatBaseTest {
 
                 String[] request = new String[2];
                 request[0] = "GET http://localhost:8080/test HTTP/1.1" + CR;
-                request[1] = LF +
-                        "Connection: close" + CRLF +
-                        CRLF;
+                request[1] = LF + "Connection: close" + CRLF + CRLF;
 
                 setRequest(request);
                 processRequest(); // blocks until response has been read
@@ -478,7 +450,6 @@ public class TestInternalInputBuffer extends TomcatBaseTest {
         }
     }
 
-
     /**
      * Test case for https://bz.apache.org/bugzilla/show_bug.cgi?id=59089
      */
@@ -491,7 +462,6 @@ public class TestInternalInputBuffer extends TomcatBaseTest {
         assertTrue(client.isResponse200());
         assertTrue(client.isResponseBodyOK());
     }
-
 
     /**
      * Bug 59089 test client.
@@ -517,9 +487,9 @@ public class TestInternalInputBuffer extends TomcatBaseTest {
                 connect();
 
                 String[] request = new String[1];
-                request[0] = "GET http://localhost:8080/test HTTP/1.1" + CRLF +
-                        "X-Header: Ignore" + CRLF +
-                        "X-Header" + (char) 130 + ": Broken" + CRLF + CRLF;
+                request[0] = "GET http://localhost:8080/test HTTP/1.1" + CRLF
+                        + "X-Header: Ignore" + CRLF + "X-Header" + (char) 130
+                        + ": Broken" + CRLF + CRLF;
 
                 setRequest(request);
                 processRequest(); // blocks until response has been read
@@ -544,7 +514,6 @@ public class TestInternalInputBuffer extends TomcatBaseTest {
         }
     }
 
-
     @Test
     public void testInvalidMethod() {
 
@@ -554,7 +523,6 @@ public class TestInternalInputBuffer extends TomcatBaseTest {
         assertTrue(client.getResponseLine(), client.isResponse400());
         assertTrue(client.isResponseBodyOK());
     }
-
 
     /**
      * Bug 48839 test client.
@@ -575,11 +543,9 @@ public class TestInternalInputBuffer extends TomcatBaseTest {
                 connect();
 
                 String[] request = new String[1];
-                request[0] =
-                    "GET" + (char) 0 + " /test HTTP/1.1" + CRLF +
-                    "Host: localhost:8080" + CRLF +
-                    "Connection: close" + CRLF +
-                    CRLF;
+                request[0] = "GET" + (char) 0 + " /test HTTP/1.1" + CRLF
+                        + "Host: localhost:8080" + CRLF + "Connection: close"
+                        + CRLF + CRLF;
 
                 setRequest(request);
                 processRequest(); // blocks until response has been read

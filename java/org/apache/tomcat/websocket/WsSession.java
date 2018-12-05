@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -56,12 +54,13 @@ public class WsSession implements Session {
 
     // An ellipsis is a single character that looks like three periods in a row
     // and is used to indicate a continuation.
-    private static final byte[] ELLIPSIS_BYTES =
-            "\u2026".getBytes(StandardCharsets.UTF_8);
+    private static final byte[] ELLIPSIS_BYTES = "\u2026".getBytes(
+            StandardCharsets.UTF_8);
     // An ellipsis is three bytes in UTF-8
     private static final int ELLIPSIS_BYTES_LEN = ELLIPSIS_BYTES.length;
 
-    private static final StringManager sm = StringManager.getManager(WsSession.class);
+    private static final StringManager sm = StringManager.getManager(
+            WsSession.class);
     private static AtomicLong ids = new AtomicLong(0);
 
     private final Log log = LogFactory.getLog(WsSession.class);
@@ -73,14 +72,14 @@ public class WsSession implements Session {
     private final ClassLoader applicationClassLoader;
     private final WsWebSocketContainer webSocketContainer;
     private final URI requestUri;
-    private final Map<String,List<String>> requestParameterMap;
+    private final Map<String, List<String>> requestParameterMap;
     private final String queryString;
     private final Principal userPrincipal;
     private final EndpointConfig endpointConfig;
 
     private final List<Extension> negotiatedExtensions;
     private final String subProtocol;
-    private final Map<String,String> pathParameters;
+    private final Map<String, String> pathParameters;
     private final boolean secure;
     private final String httpSessionId;
     private final String id;
@@ -92,14 +91,12 @@ public class WsSession implements Session {
     private volatile MessageHandler.Whole<PongMessage> pongMessageHandler = null;
     private volatile State state = State.OPEN;
     private final Object stateLock = new Object();
-    private final Map<String,Object> userProperties = new ConcurrentHashMap<>();
-    private volatile int maxBinaryMessageBufferSize =
-            Constants.DEFAULT_BUFFER_SIZE;
-    private volatile int maxTextMessageBufferSize =
-            Constants.DEFAULT_BUFFER_SIZE;
+    private final Map<String, Object> userProperties = new ConcurrentHashMap<>();
+    private volatile int maxBinaryMessageBufferSize = Constants.DEFAULT_BUFFER_SIZE;
+    private volatile int maxTextMessageBufferSize = Constants.DEFAULT_BUFFER_SIZE;
     private volatile long maxIdleTimeout = 0;
     private volatile long lastActive = System.currentTimeMillis();
-    private Map<FutureToSendHandler,FutureToSendHandler> futures = new ConcurrentHashMap<>();
+    private Map<FutureToSendHandler, FutureToSendHandler> futures = new ConcurrentHashMap<>();
 
     /**
      * Creates a new WebSocket session for communication between the two
@@ -138,11 +135,12 @@ public class WsSession implements Session {
      */
     public WsSession(Endpoint localEndpoint,
             WsRemoteEndpointImplBase wsRemoteEndpoint,
-            WsWebSocketContainer wsWebSocketContainer,
-            URI requestUri, Map<String,List<String>> requestParameterMap,
-            String queryString, Principal userPrincipal, String httpSessionId,
-            List<Extension> negotiatedExtensions, String subProtocol, Map<String,String> pathParameters,
-            boolean secure, EndpointConfig endpointConfig) throws DeploymentException {
+            WsWebSocketContainer wsWebSocketContainer, URI requestUri,
+            Map<String, List<String>> requestParameterMap, String queryString,
+            Principal userPrincipal, String httpSessionId,
+            List<Extension> negotiatedExtensions, String subProtocol,
+            Map<String, String> pathParameters, boolean secure,
+            EndpointConfig endpointConfig) throws DeploymentException {
         this.localEndpoint = localEndpoint;
         this.wsRemoteEndpoint = wsRemoteEndpoint;
         this.wsRemoteEndpoint.setSession(this);
@@ -150,14 +148,14 @@ public class WsSession implements Session {
         this.remoteEndpointBasic = new WsRemoteEndpointBasic(wsRemoteEndpoint);
         this.webSocketContainer = wsWebSocketContainer;
         applicationClassLoader = Thread.currentThread().getContextClassLoader();
-        wsRemoteEndpoint.setSendTimeout(
-                wsWebSocketContainer.getDefaultAsyncSendTimeout());
-        this.maxBinaryMessageBufferSize =
-                webSocketContainer.getDefaultMaxBinaryMessageBufferSize();
-        this.maxTextMessageBufferSize =
-                webSocketContainer.getDefaultMaxTextMessageBufferSize();
-        this.maxIdleTimeout =
-                webSocketContainer.getDefaultMaxSessionIdleTimeout();
+        wsRemoteEndpoint.setSendTimeout(wsWebSocketContainer
+                .getDefaultAsyncSendTimeout());
+        this.maxBinaryMessageBufferSize = webSocketContainer
+                .getDefaultMaxBinaryMessageBufferSize();
+        this.maxTextMessageBufferSize = webSocketContainer
+                .getDefaultMaxTextMessageBufferSize();
+        this.maxIdleTimeout = webSocketContainer
+                .getDefaultMaxSessionIdleTimeout();
         this.requestUri = requestUri;
         if (requestParameterMap == null) {
             this.requestParameterMap = Collections.emptyMap();
@@ -181,12 +179,14 @@ public class WsSession implements Session {
         this.userProperties.putAll(endpointConfig.getUserProperties());
         this.id = Long.toHexString(ids.getAndIncrement());
 
-        InstanceManager instanceManager = webSocketContainer.getInstanceManager();
+        InstanceManager instanceManager = webSocketContainer
+                .getInstanceManager();
         if (instanceManager != null) {
             try {
                 instanceManager.newInstance(localEndpoint);
             } catch (Exception e) {
-                throw new DeploymentException(sm.getString("wsSession.instanceNew"), e);
+                throw new DeploymentException(sm.getString(
+                        "wsSession.instanceNew"), e);
             }
         }
 
@@ -195,13 +195,11 @@ public class WsSession implements Session {
         }
     }
 
-
     @Override
     public WebSocketContainer getContainer() {
         checkState();
         return webSocketContainer;
     }
-
 
     @Override
     public void addMessageHandler(MessageHandler listener) {
@@ -209,20 +207,17 @@ public class WsSession implements Session {
         doAddMessageHandler(target, listener);
     }
 
-
     @Override
     public <T> void addMessageHandler(Class<T> clazz, Partial<T> handler)
             throws IllegalStateException {
         doAddMessageHandler(clazz, handler);
     }
 
-
     @Override
     public <T> void addMessageHandler(Class<T> clazz, Whole<T> handler)
             throws IllegalStateException {
         doAddMessageHandler(clazz, handler);
     }
-
 
     @SuppressWarnings("unchecked")
     private void doAddMessageHandler(Class<?> target, MessageHandler listener) {
@@ -238,52 +233,50 @@ public class WsSession implements Session {
         // arbitrary objects with MessageHandlers and can wrap MessageHandlers
         // just as easily.
 
-        Set<MessageHandlerResult> mhResults =
-                Util.getMessageHandlers(target, listener, endpointConfig, this);
+        Set<MessageHandlerResult> mhResults = Util.getMessageHandlers(target,
+                listener, endpointConfig, this);
 
         for (MessageHandlerResult mhResult : mhResults) {
             switch (mhResult.getType()) {
                 case TEXT: {
                     if (textMessageHandler != null) {
-                        throw new IllegalStateException(
-                                sm.getString("wsSession.duplicateHandlerText"));
+                        throw new IllegalStateException(sm.getString(
+                                "wsSession.duplicateHandlerText"));
                     }
                     textMessageHandler = mhResult.getHandler();
                     break;
                 }
                 case BINARY: {
                     if (binaryMessageHandler != null) {
-                        throw new IllegalStateException(
-                                sm.getString("wsSession.duplicateHandlerBinary"));
+                        throw new IllegalStateException(sm.getString(
+                                "wsSession.duplicateHandlerBinary"));
                     }
                     binaryMessageHandler = mhResult.getHandler();
                     break;
                 }
                 case PONG: {
                     if (pongMessageHandler != null) {
-                        throw new IllegalStateException(
-                                sm.getString("wsSession.duplicateHandlerPong"));
+                        throw new IllegalStateException(sm.getString(
+                                "wsSession.duplicateHandlerPong"));
                     }
                     MessageHandler handler = mhResult.getHandler();
                     if (handler instanceof MessageHandler.Whole<?>) {
-                        pongMessageHandler =
-                                (MessageHandler.Whole<PongMessage>) handler;
+                        pongMessageHandler = (MessageHandler.Whole<PongMessage>) handler;
                     } else {
-                        throw new IllegalStateException(
-                                sm.getString("wsSession.invalidHandlerTypePong"));
+                        throw new IllegalStateException(sm.getString(
+                                "wsSession.invalidHandlerTypePong"));
                     }
 
                     break;
                 }
                 default: {
                     throw new IllegalArgumentException(sm.getString(
-                            "wsSession.unknownHandlerType", listener,
-                            mhResult.getType()));
+                            "wsSession.unknownHandlerType", listener, mhResult
+                                    .getType()));
                 }
             }
         }
     }
-
 
     @Override
     public Set<MessageHandler> getMessageHandlers() {
@@ -300,7 +293,6 @@ public class WsSession implements Session {
         }
         return result;
     }
-
 
     @Override
     public void removeMessageHandler(MessageHandler listener) {
@@ -320,20 +312,20 @@ public class WsSession implements Session {
         }
 
         boolean removed = false;
-        if (wrapped.equals(textMessageHandler) ||
-                listener.equals(textMessageHandler)) {
+        if (wrapped.equals(textMessageHandler) || listener.equals(
+                textMessageHandler)) {
             textMessageHandler = null;
             removed = true;
         }
 
-        if (wrapped.equals(binaryMessageHandler) ||
-                listener.equals(binaryMessageHandler)) {
+        if (wrapped.equals(binaryMessageHandler) || listener.equals(
+                binaryMessageHandler)) {
             binaryMessageHandler = null;
             removed = true;
         }
 
-        if (wrapped.equals(pongMessageHandler) ||
-                listener.equals(pongMessageHandler)) {
+        if (wrapped.equals(pongMessageHandler) || listener.equals(
+                pongMessageHandler)) {
             pongMessageHandler = null;
             removed = true;
         }
@@ -341,11 +333,10 @@ public class WsSession implements Session {
         if (!removed) {
             // ISE for now. Could swallow this silently / log this if the ISE
             // becomes a problem
-            throw new IllegalStateException(
-                    sm.getString("wsSession.removeHandlerFailed", listener));
+            throw new IllegalStateException(sm.getString(
+                    "wsSession.removeHandlerFailed", listener));
         }
     }
-
 
     @Override
     public String getProtocolVersion() {
@@ -353,13 +344,11 @@ public class WsSession implements Session {
         return Constants.WS_VERSION_HEADER_VALUE;
     }
 
-
     @Override
     public String getNegotiatedSubprotocol() {
         checkState();
         return subProtocol;
     }
-
 
     @Override
     public List<Extension> getNegotiatedExtensions() {
@@ -367,19 +356,16 @@ public class WsSession implements Session {
         return negotiatedExtensions;
     }
 
-
     @Override
     public boolean isSecure() {
         checkState();
         return secure;
     }
 
-
     @Override
     public boolean isOpen() {
         return state == State.OPEN || state == State.SENDING_CLOSED;
     }
-
 
     @Override
     public long getMaxIdleTimeout() {
@@ -387,13 +373,11 @@ public class WsSession implements Session {
         return maxIdleTimeout;
     }
 
-
     @Override
     public void setMaxIdleTimeout(long timeout) {
         checkState();
         this.maxIdleTimeout = timeout;
     }
-
 
     @Override
     public void setMaxBinaryMessageBufferSize(int max) {
@@ -401,13 +385,11 @@ public class WsSession implements Session {
         this.maxBinaryMessageBufferSize = max;
     }
 
-
     @Override
     public int getMaxBinaryMessageBufferSize() {
         checkState();
         return maxBinaryMessageBufferSize;
     }
-
 
     @Override
     public void setMaxTextMessageBufferSize(int max) {
@@ -415,13 +397,11 @@ public class WsSession implements Session {
         this.maxTextMessageBufferSize = max;
     }
 
-
     @Override
     public int getMaxTextMessageBufferSize() {
         checkState();
         return maxTextMessageBufferSize;
     }
-
 
     @Override
     public Set<Session> getOpenSessions() {
@@ -429,13 +409,11 @@ public class WsSession implements Session {
         return webSocketContainer.getOpenSessions(localEndpoint);
     }
 
-
     @Override
     public RemoteEndpoint.Async getAsyncRemote() {
         checkState();
         return remoteEndpointAsync;
     }
-
 
     @Override
     public RemoteEndpoint.Basic getBasicRemote() {
@@ -443,18 +421,15 @@ public class WsSession implements Session {
         return remoteEndpointBasic;
     }
 
-
     @Override
     public void close() throws IOException {
         close(new CloseReason(CloseCodes.NORMAL_CLOSURE, ""));
     }
 
-
     @Override
     public void close(CloseReason closeReason) throws IOException {
         doClose(closeReason, closeReason);
     }
-
 
     /**
      * WebSocket 1.0. Section 2.1.5.
@@ -464,7 +439,8 @@ public class WsSession implements Session {
      * @param closeReasonMessage The close reason to pass to the remote endpoint
      * @param closeReasonLocal   The close reason to pass to the local endpoint
      */
-    public void doClose(CloseReason closeReasonMessage, CloseReason closeReasonLocal) {
+    public void doClose(CloseReason closeReasonMessage,
+            CloseReason closeReasonLocal) {
         // Double-checked locking. OK because state is volatile
         if (state != State.OPEN) {
             return;
@@ -491,13 +467,13 @@ public class WsSession implements Session {
             fireEndpointOnClose(closeReasonLocal);
         }
 
-        IOException ioe = new IOException(sm.getString("wsSession.messageFailed"));
+        IOException ioe = new IOException(sm.getString(
+                "wsSession.messageFailed"));
         SendResult sr = new SendResult(ioe);
         for (FutureToSendHandler f2sh : futures.keySet()) {
             f2sh.onResult(sr);
         }
     }
-
 
     /**
      * Called when a close message is received. Should only ever happen once.
@@ -535,7 +511,8 @@ public class WsSession implements Session {
 
         // Fire the onClose event
         Throwable throwable = null;
-        InstanceManager instanceManager = webSocketContainer.getInstanceManager();
+        InstanceManager instanceManager = webSocketContainer
+                .getInstanceManager();
         Thread t = Thread.currentThread();
         ClassLoader cl = t.getContextClassLoader();
         t.setContextClassLoader(applicationClassLoader);
@@ -563,8 +540,6 @@ public class WsSession implements Session {
         }
     }
 
-
-
     private void fireEndpointOnError(Throwable throwable) {
 
         // Fire the onError event
@@ -577,7 +552,6 @@ public class WsSession implements Session {
             t.setContextClassLoader(cl);
         }
     }
-
 
     private void sendCloseMessage(CloseReason closeReason) {
         // 125 is maximum size for the payload of a control message
@@ -597,7 +571,8 @@ public class WsSession implements Session {
         }
         msg.flip();
         try {
-            wsRemoteEndpoint.startMessageBlock(Constants.OPCODE_CLOSE, msg, true);
+            wsRemoteEndpoint.startMessageBlock(Constants.OPCODE_CLOSE, msg,
+                    true);
         } catch (IOException | WritePendingException e) {
             // Failed to send close message. Close the socket and let the caller
             // deal with the Exception
@@ -617,10 +592,10 @@ public class WsSession implements Session {
         }
     }
 
-
     /**
      * Use protected so unit tests can access this method directly.
-     * @param msg The message
+     * 
+     * @param msg    The message
      * @param reason The reason
      */
     protected static void appendCloseReasonWithTruncation(ByteBuffer msg,
@@ -631,7 +606,7 @@ public class WsSession implements Session {
         // multi-byte UTF-8 character.
         byte[] reasonBytes = reason.getBytes(StandardCharsets.UTF_8);
 
-        if (reasonBytes.length  <= 123) {
+        if (reasonBytes.length <= 123) {
             // No need to truncate
             msg.put(reasonBytes);
         } else {
@@ -650,7 +625,6 @@ public class WsSession implements Session {
             msg.put(ELLIPSIS_BYTES);
         }
     }
-
 
     /**
      * Make the session aware of a {@link FutureToSendHandler} that will need to
@@ -677,21 +651,21 @@ public class WsSession implements Session {
         }
 
         if (fail) {
-            IOException ioe = new IOException(sm.getString("wsSession.messageFailed"));
+            IOException ioe = new IOException(sm.getString(
+                    "wsSession.messageFailed"));
             SendResult sr = new SendResult(ioe);
             f2sh.onResult(sr);
         }
     }
 
-
     /**
      * Remove a {@link FutureToSendHandler} from the set of tracked instances.
+     * 
      * @param f2sh The handler
      */
     protected void unregisterFuture(FutureToSendHandler f2sh) {
         futures.remove(f2sh);
     }
-
 
     @Override
     public URI getRequestURI() {
@@ -699,13 +673,11 @@ public class WsSession implements Session {
         return requestUri;
     }
 
-
     @Override
-    public Map<String,List<String>> getRequestParameterMap() {
+    public Map<String, List<String>> getRequestParameterMap() {
         checkState();
         return requestParameterMap;
     }
-
 
     @Override
     public String getQueryString() {
@@ -713,63 +685,52 @@ public class WsSession implements Session {
         return queryString;
     }
 
-
     @Override
     public Principal getUserPrincipal() {
         checkState();
         return userPrincipal;
     }
 
-
     @Override
-    public Map<String,String> getPathParameters() {
+    public Map<String, String> getPathParameters() {
         checkState();
         return pathParameters;
     }
-
 
     @Override
     public String getId() {
         return id;
     }
 
-
     @Override
-    public Map<String,Object> getUserProperties() {
+    public Map<String, Object> getUserProperties() {
         checkState();
         return userProperties;
     }
-
 
     public Endpoint getLocal() {
         return localEndpoint;
     }
 
-
     public String getHttpSessionId() {
         return httpSessionId;
     }
-
 
     protected MessageHandler getTextMessageHandler() {
         return textMessageHandler;
     }
 
-
     protected MessageHandler getBinaryMessageHandler() {
         return binaryMessageHandler;
     }
-
 
     protected MessageHandler.Whole<PongMessage> getPongMessageHandler() {
         return pongMessageHandler;
     }
 
-
     protected void updateLastActive() {
         lastActive = System.currentTimeMillis();
     }
-
 
     protected void checkExpiration() {
         long timeout = maxIdleTimeout;
@@ -784,21 +745,18 @@ public class WsSession implements Session {
         }
     }
 
-
     private void checkState() {
         if (state == State.CLOSED) {
             /*
              * As per RFC 6455, a WebSocket connection is considered to be
              * closed once a peer has sent and received a WebSocket close frame.
              */
-            throw new IllegalStateException(sm.getString("wsSession.closed", id));
+            throw new IllegalStateException(sm.getString("wsSession.closed",
+                    id));
         }
     }
 
     private static enum State {
-        OPEN,
-        SENDING_CLOSED,
-        CLOSED_SENT,
-        CLOSED
+        OPEN, SENDING_CLOSED, CLOSED_SENT, CLOSED
     }
 }

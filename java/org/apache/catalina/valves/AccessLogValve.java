@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -15,7 +13,6 @@
  * limitations under the License.
  */
 package org.apache.catalina.valves;
-
 
 import java.io.BufferedWriter;
 import java.io.CharArrayWriter;
@@ -37,7 +34,6 @@ import org.apache.juli.logging.Log;
 import org.apache.juli.logging.LogFactory;
 import org.apache.tomcat.util.ExceptionUtils;
 import org.apache.tomcat.util.buf.B2CConverter;
-
 
 /**
  * This is a concrete implementation of {@link AbstractAccessLogValve} that
@@ -71,13 +67,11 @@ public class AccessLogValve extends AbstractAccessLogValve {
 
     // ----------------------------------------------------- Instance Variables
 
-
     /**
      * The as-of date for the currently open log file, or a zero-length
      * string if there is no open log file.
      */
     private volatile String dateStamp = "";
-
 
     /**
      * The directory in which log files are created.
@@ -88,7 +82,6 @@ public class AccessLogValve extends AbstractAccessLogValve {
      * The prefix that is added to log file filenames.
      */
     protected String prefix = "access_log";
-
 
     /**
      * Should we rotate our log file? Default is true (like old behavior)
@@ -101,31 +94,26 @@ public class AccessLogValve extends AbstractAccessLogValve {
      */
     protected boolean renameOnRotate = false;
 
-
     /**
      * Buffered logging.
      */
     private boolean buffered = true;
-
 
     /**
      * The suffix that is added to log file filenames.
      */
     protected String suffix = "";
 
-
     /**
      * The PrintWriter to which we are currently logging, if any.
      */
     protected PrintWriter writer = null;
-
 
     /**
      * A date formatter to format a Date using the format
      * given by <code>fileDateFormat</code>.
      */
     protected SimpleDateFormat fileDateFormatter = null;
-
 
     /**
      * The current log file we are writing to. Helpful when checkExists
@@ -158,14 +146,12 @@ public class AccessLogValve extends AbstractAccessLogValve {
 
     // ------------------------------------------------------------- Properties
 
-
     /**
      * Return the directory in which we create log files.
      */
     public String getDirectory() {
         return (directory);
     }
-
 
     /**
      * Set the directory in which we create log files.
@@ -185,7 +171,6 @@ public class AccessLogValve extends AbstractAccessLogValve {
 
     }
 
-
     /**
      * Set whether to check for log file existence before logging.
      *
@@ -197,14 +182,12 @@ public class AccessLogValve extends AbstractAccessLogValve {
 
     }
 
-
     /**
      * Return the log file prefix.
      */
     public String getPrefix() {
         return (prefix);
     }
-
 
     /**
      * Set the log file prefix.
@@ -215,14 +198,12 @@ public class AccessLogValve extends AbstractAccessLogValve {
         this.prefix = prefix;
     }
 
-
     /**
      * Should we rotate the logs
      */
     public boolean isRotatable() {
         return rotatable;
     }
-
 
     /**
      * Set the value is we should we rotate the logs
@@ -233,7 +214,6 @@ public class AccessLogValve extends AbstractAccessLogValve {
         this.rotatable = rotatable;
     }
 
-
     /**
      * Should we defer inclusion of the date stamp in the file
      * name until rotate time
@@ -241,7 +221,6 @@ public class AccessLogValve extends AbstractAccessLogValve {
     public boolean isRenameOnRotate() {
         return renameOnRotate;
     }
-
 
     /**
      * Set the value if we should defer inclusion of the date
@@ -253,14 +232,12 @@ public class AccessLogValve extends AbstractAccessLogValve {
         this.renameOnRotate = renameOnRotate;
     }
 
-
     /**
      * Is the logging buffered
      */
     public boolean isBuffered() {
         return buffered;
     }
-
 
     /**
      * Set the value if the logging should be buffered
@@ -271,14 +248,12 @@ public class AccessLogValve extends AbstractAccessLogValve {
         this.buffered = buffered;
     }
 
-
     /**
      * Return the log file suffix.
      */
     public String getSuffix() {
         return (suffix);
     }
-
 
     /**
      * Set the log file suffix.
@@ -290,15 +265,14 @@ public class AccessLogValve extends AbstractAccessLogValve {
     }
 
     /**
-     *  Return the date format date based log rotation.
+     * Return the date format date based log rotation.
      */
     public String getFileDateFormat() {
         return fileDateFormat;
     }
 
-
     /**
-     *  Set the date format date based log rotation.
+     * Set the date format date based log rotation.
      */
     public void setFileDateFormat(String fileDateFormat) {
         String newFormat;
@@ -319,7 +293,7 @@ public class AccessLogValve extends AbstractAccessLogValve {
      * Return the character set name that is used to write the log file.
      *
      * @return Character set name, or <code>null</code> if the system default
-     *  character set is used.
+     *         character set is used.
      */
     public String getEncoding() {
         return encoding;
@@ -347,8 +321,8 @@ public class AccessLogValve extends AbstractAccessLogValve {
      */
     @Override
     public synchronized void backgroundProcess() {
-        if (getState().isAvailable() && getEnabled() && writer != null &&
-                buffered) {
+        if (getState().isAvailable() && getEnabled() && writer != null
+                && buffered) {
             writer.flush();
         }
     }
@@ -361,7 +335,7 @@ public class AccessLogValve extends AbstractAccessLogValve {
             // Only do a logfile switch check once a second, max.
             long systime = System.currentTimeMillis();
             if ((systime - rotationLastChecked) > 1000) {
-                synchronized(this) {
+                synchronized (this) {
                     if ((systime - rotationLastChecked) > 1000) {
                         rotationLastChecked = systime;
 
@@ -403,8 +377,8 @@ public class AccessLogValve extends AbstractAccessLogValve {
             }
 
             /* Make sure date is correct */
-            dateStamp = fileDateFormatter.format(
-                    new Date(System.currentTimeMillis()));
+            dateStamp = fileDateFormatter.format(new Date(System
+                    .currentTimeMillis()));
 
             open();
             return true;
@@ -415,7 +389,6 @@ public class AccessLogValve extends AbstractAccessLogValve {
     }
 
     // -------------------------------------------------------- Private Methods
-
 
     /**
      * Create a File object based on the current log file name.
@@ -459,19 +432,20 @@ public class AccessLogValve extends AbstractAccessLogValve {
     private void restore() {
         File newLogFile = getLogFile(false);
         File rotatedLogFile = getLogFile(true);
-        if (rotatedLogFile.exists() && !newLogFile.exists() &&
-            !rotatedLogFile.equals(newLogFile)) {
+        if (rotatedLogFile.exists() && !newLogFile.exists() && !rotatedLogFile
+                .equals(newLogFile)) {
             try {
                 if (!rotatedLogFile.renameTo(newLogFile)) {
-                    log.error(sm.getString("accessLogValve.renameFail", rotatedLogFile, newLogFile));
+                    log.error(sm.getString("accessLogValve.renameFail",
+                            rotatedLogFile, newLogFile));
                 }
             } catch (Throwable e) {
                 ExceptionUtils.handleThrowable(e);
-                log.error(sm.getString("accessLogValve.renameFail", rotatedLogFile, newLogFile), e);
+                log.error(sm.getString("accessLogValve.renameFail",
+                        rotatedLogFile, newLogFile), e);
             }
         }
     }
-
 
     /**
      * Close the currently open log file (if any)
@@ -489,21 +463,23 @@ public class AccessLogValve extends AbstractAccessLogValve {
             if (!newLogFile.exists()) {
                 try {
                     if (!currentLogFile.renameTo(newLogFile)) {
-                        log.error(sm.getString("accessLogValve.renameFail", currentLogFile, newLogFile));
+                        log.error(sm.getString("accessLogValve.renameFail",
+                                currentLogFile, newLogFile));
                     }
                 } catch (Throwable e) {
                     ExceptionUtils.handleThrowable(e);
-                    log.error(sm.getString("accessLogValve.renameFail", currentLogFile, newLogFile), e);
+                    log.error(sm.getString("accessLogValve.renameFail",
+                            currentLogFile, newLogFile), e);
                 }
             } else {
-                log.error(sm.getString("accessLogValve.alreadyExists", currentLogFile, newLogFile));
+                log.error(sm.getString("accessLogValve.alreadyExists",
+                        currentLogFile, newLogFile));
             }
         }
         writer = null;
         dateStamp = "";
         currentLogFile = null;
     }
-
 
     /**
      * Log the specified message to the log file, switching files if the date
@@ -528,8 +504,8 @@ public class AccessLogValve extends AbstractAccessLogValve {
                     }
 
                     /* Make sure date is correct */
-                    dateStamp = fileDateFormatter.format(
-                            new Date(System.currentTimeMillis()));
+                    dateStamp = fileDateFormatter.format(new Date(System
+                            .currentTimeMillis()));
 
                     open();
                 }
@@ -538,7 +514,7 @@ public class AccessLogValve extends AbstractAccessLogValve {
 
         // Log this message
         try {
-            synchronized(this) {
+            synchronized (this) {
                 if (writer != null) {
                     message.writeTo(writer);
                     writer.println("");
@@ -548,11 +524,10 @@ public class AccessLogValve extends AbstractAccessLogValve {
                 }
             }
         } catch (IOException ioe) {
-            log.warn(sm.getString(
-                    "accessLogValve.writeFail", message.toString()), ioe);
+            log.warn(sm.getString("accessLogValve.writeFail", message
+                    .toString()), ioe);
         }
     }
-
 
     /**
      * Open the new log file for the date specified by <code>dateStamp</code>.
@@ -567,8 +542,8 @@ public class AccessLogValve extends AbstractAccessLogValve {
             try {
                 charset = B2CConverter.getCharset(encoding);
             } catch (UnsupportedEncodingException ex) {
-                log.error(sm.getString(
-                        "accessLogValve.unsupportedEncoding", encoding), ex);
+                log.error(sm.getString("accessLogValve.unsupportedEncoding",
+                        encoding), ex);
             }
         }
         if (charset == null) {
@@ -593,7 +568,8 @@ public class AccessLogValve extends AbstractAccessLogValve {
      * of {@link org.apache.catalina.util.LifecycleBase#startInternal()}.
      *
      * @exception LifecycleException if this component detects a fatal error
-     *  that prevents this component from being used
+     *                               that prevents this component from being
+     *                               used
      */
     @Override
     protected synchronized void startInternal() throws LifecycleException {
@@ -602,7 +578,8 @@ public class AccessLogValve extends AbstractAccessLogValve {
         String format = getFileDateFormat();
         fileDateFormatter = new SimpleDateFormat(format, Locale.US);
         fileDateFormatter.setTimeZone(TimeZone.getDefault());
-        dateStamp = fileDateFormatter.format(new Date(System.currentTimeMillis()));
+        dateStamp = fileDateFormatter.format(new Date(System
+                .currentTimeMillis()));
         if (rotatable && renameOnRotate) {
             restore();
         }
@@ -611,13 +588,13 @@ public class AccessLogValve extends AbstractAccessLogValve {
         super.startInternal();
     }
 
-
     /**
      * Stop this component and implement the requirements
      * of {@link org.apache.catalina.util.LifecycleBase#stopInternal()}.
      *
      * @exception LifecycleException if this component detects a fatal error
-     *  that prevents this component from being used
+     *                               that prevents this component from being
+     *                               used
      */
     @Override
     protected synchronized void stopInternal() throws LifecycleException {

@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -32,15 +30,14 @@ public final class ContextName {
     private final String version;
     private final String name;
 
-
     /**
      * Creates an instance from a context name, display name, base name,
      * directory name, WAR name or context.xml name.
      *
-     * @param name  The name to use as the basis for this object
-     * @param stripFileExtension    If a .war or .xml file extension is present
-     *                              at the end of the provided name should it be
-     *                              removed?
+     * @param name               The name to use as the basis for this object
+     * @param stripFileExtension If a .war or .xml file extension is present
+     *                           at the end of the provided name should it be
+     *                           removed?
      */
     public ContextName(String name, boolean stripFileExtension) {
 
@@ -62,10 +59,9 @@ public final class ContextName {
         }
 
         // Remove any file extensions
-        if (stripFileExtension &&
-                (tmp1.toLowerCase(Locale.ENGLISH).endsWith(".war") ||
-                        tmp1.toLowerCase(Locale.ENGLISH).endsWith(".xml"))) {
-            tmp1 = tmp1.substring(0, tmp1.length() -4);
+        if (stripFileExtension && (tmp1.toLowerCase(Locale.ENGLISH).endsWith(
+                ".war") || tmp1.toLowerCase(Locale.ENGLISH).endsWith(".xml"))) {
+            tmp1 = tmp1.substring(0, tmp1.length() - 4);
         }
 
         baseName = tmp1;
@@ -97,8 +93,8 @@ public final class ContextName {
     /**
      * Construct an instance from a path and version.
      *
-     * @param path      Context path to use
-     * @param version   Context version to use
+     * @param path    Context path to use
+     * @param version Context version to use
      */
     public ContextName(String path, String version) {
         // Path should never be null, '/' or '/ROOT'

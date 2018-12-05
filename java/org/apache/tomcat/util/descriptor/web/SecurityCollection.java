@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -20,16 +18,15 @@ import java.io.Serializable;
 
 import org.apache.tomcat.util.buf.UDecoder;
 
-
 /**
  * Representation of a web resource collection for a web application's security
  * constraint, as represented in a <code>&lt;web-resource-collection&gt;</code>
  * element in the deployment descriptor.
  * <p>
- * <b>WARNING</b>:  It is assumed that instances of this class will be created
+ * <b>WARNING</b>: It is assumed that instances of this class will be created
  * and modified only within the context of a single thread, before the instance
- * is made visible to the remainder of the application.  After that, only read
- * access is expected.  Therefore, none of the read and write access within
+ * is made visible to the remainder of the application. After that, only read
+ * access is expected. Therefore, none of the read and write access within
  * this class is synchronized.
  *
  * @author Craig R. McClanahan
@@ -39,9 +36,11 @@ public class SecurityCollection implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private String encoding = null;
+
     public void setEncoding(String encoding) {
         this.encoding = encoding;
     }
+
     /**
      * Obtain the encoding of the XML source that was used to populated this
      * object.
@@ -56,9 +55,7 @@ public class SecurityCollection implements Serializable {
         return encoding;
     }
 
-
     // ----------------------------------------------------------- Constructors
-
 
     /**
      * Construct a new security collection instance with default values.
@@ -69,11 +66,10 @@ public class SecurityCollection implements Serializable {
 
     }
 
-
     /**
      * Construct a new security collection instance with specified values.
      *
-     * @param name Name of this security collection
+     * @param name        Name of this security collection
      * @param description Description of this security collection
      */
     public SecurityCollection(String name, String description) {
@@ -84,21 +80,17 @@ public class SecurityCollection implements Serializable {
 
     }
 
-
     // ----------------------------------------------------- Instance Variables
-
 
     /**
      * Description of this web resource collection.
      */
     private String description = null;
 
-
     /**
      * The HTTP methods explicitly covered by this web resource collection.
      */
     private String methods[] = new String[0];
-
 
     /**
      * The HTTP methods explicitly excluded from this web resource collection.
@@ -110,12 +102,10 @@ public class SecurityCollection implements Serializable {
      */
     private String name = null;
 
-
     /**
      * The URL patterns protected by this security collection.
      */
     private String patterns[] = new String[0];
-
 
     /**
      * This security collection was established by a deployment descriptor.
@@ -125,7 +115,6 @@ public class SecurityCollection implements Serializable {
 
     // ------------------------------------------------------------- Properties
 
-
     /**
      * Return the description of this web resource collection.
      */
@@ -134,7 +123,6 @@ public class SecurityCollection implements Serializable {
         return (this.description);
 
     }
-
 
     /**
      * Set the description of this web resource collection.
@@ -147,7 +135,6 @@ public class SecurityCollection implements Serializable {
 
     }
 
-
     /**
      * Return the name of this web resource collection.
      */
@@ -156,7 +143,6 @@ public class SecurityCollection implements Serializable {
         return (this.name);
 
     }
-
 
     /**
      * Set the name of this web resource collection
@@ -169,14 +155,12 @@ public class SecurityCollection implements Serializable {
 
     }
 
-
     /**
      * Return if this constraint was defined in a deployment descriptor.
      */
     public boolean isFromDescriptor() {
         return isFromDescriptor;
     }
-
 
     /**
      * Set if this constraint was defined in a deployment descriptor.
@@ -185,9 +169,7 @@ public class SecurityCollection implements Serializable {
         this.isFromDescriptor = isFromDescriptor;
     }
 
-
     // --------------------------------------------------------- Public Methods
-
 
     /**
      * Add an HTTP request method to be explicitly part of this web resource
@@ -204,7 +186,6 @@ public class SecurityCollection implements Serializable {
         methods = results;
 
     }
-
 
     /**
      * Add an HTTP request method to the methods explicitly excluded from this
@@ -226,6 +207,7 @@ public class SecurityCollection implements Serializable {
     public void addPattern(String pattern) {
         addPatternDecoded(UDecoder.URLDecode(pattern, "UTF-8"));
     }
+
     public void addPatternDecoded(String pattern) {
 
         if (pattern == null)
@@ -239,7 +221,6 @@ public class SecurityCollection implements Serializable {
         results[patterns.length] = decodedPattern;
         patterns = results;
     }
-
 
     /**
      * Return <code>true</code> if the specified HTTP request method is
@@ -267,7 +248,6 @@ public class SecurityCollection implements Serializable {
         return true;
     }
 
-
     /**
      * Return the set of HTTP request methods that are part of this web
      * resource collection, or a zero-length array if no methods have been
@@ -279,7 +259,6 @@ public class SecurityCollection implements Serializable {
 
     }
 
-
     /**
      * Return the set of HTTP request methods that are explicitly excluded from
      * this web resource collection, or a zero-length array if no request
@@ -290,7 +269,6 @@ public class SecurityCollection implements Serializable {
         return (omittedMethods);
 
     }
-
 
     /**
      * Is the specified pattern part of this web resource collection?
@@ -307,10 +285,9 @@ public class SecurityCollection implements Serializable {
 
     }
 
-
     /**
      * Return the set of URL patterns that are part of this web resource
-     * collection.  If none have been specified, a zero-length array is
+     * collection. If none have been specified, a zero-length array is
      * returned.
      */
     public String[] findPatterns() {
@@ -318,7 +295,6 @@ public class SecurityCollection implements Serializable {
         return (patterns);
 
     }
-
 
     /**
      * Remove the specified HTTP request method from those that are part
@@ -349,7 +325,6 @@ public class SecurityCollection implements Serializable {
 
     }
 
-
     /**
      * Remove the specified HTTP request method from those that are explicitly
      * excluded from this web resource collection.
@@ -378,7 +353,6 @@ public class SecurityCollection implements Serializable {
         }
 
     }
-
 
     /**
      * Remove the specified URL pattern from those that are part of this
@@ -409,7 +383,6 @@ public class SecurityCollection implements Serializable {
 
     }
 
-
     /**
      * Return a String representation of this security collection.
      */
@@ -426,6 +399,5 @@ public class SecurityCollection implements Serializable {
         return (sb.toString());
 
     }
-
 
 }

@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -48,15 +46,14 @@ public class TesterAjpNonBlockingClient extends TomcatBaseTest {
 
         Map<String, List<String>> resHeaders = new HashMap<>();
         ByteChunk out = new ByteChunk();
-        int rc = postUrl(true, new DataWriter(2000), "http://localhost" +
-                "/examples/servlets/nonblocking/bytecounter",
-                out, resHeaders, null);
+        int rc = postUrl(true, new DataWriter(2000), "http://localhost"
+                + "/examples/servlets/nonblocking/bytecounter", out, resHeaders,
+                null);
 
         System.out.println(out.toString());
 
         Assert.assertEquals(HttpServletResponse.SC_OK, rc);
     }
-
 
     @Test
     public void testNonBlockingWrite() throws Exception {
@@ -66,10 +63,9 @@ public class TesterAjpNonBlockingClient extends TomcatBaseTest {
 
         ByteChunk result = new ByteChunk();
         OutputStream os = s.getOutputStream();
-        os.write(("GET /examples/servlets/nonblocking/numberwriter HTTP/1.1\r\n" +
-                "Host: localhost\r\n" +
-                "Connection: close\r\n" +
-                "\r\n").getBytes(StandardCharsets.ISO_8859_1));
+        os.write(("GET /examples/servlets/nonblocking/numberwriter HTTP/1.1\r\n"
+                + "Host: localhost\r\n" + "Connection: close\r\n" + "\r\n")
+                        .getBytes(StandardCharsets.ISO_8859_1));
         os.flush();
 
         InputStream is = s.getInputStream();

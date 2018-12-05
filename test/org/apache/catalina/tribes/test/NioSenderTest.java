@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -32,7 +30,8 @@ public class NioSenderTest {
     private int counter = 0;
     Member mbr;
     private static int testOptions = Channel.SEND_OPTIONS_DEFAULT;
-    public NioSenderTest()  {
+
+    public NioSenderTest() {
         // Default constructor
     }
 
@@ -41,9 +40,10 @@ public class NioSenderTest {
     }
 
     public synchronized ChannelData getMessage(Member mbr) {
-        String msg = "Thread-"+Thread.currentThread().getName()+" Message:"+inc();
+        String msg = "Thread-" + Thread.currentThread().getName() + " Message:"
+                + inc();
         ChannelData data = new ChannelData(true);
-        data.setMessage(new XByteBuffer(msg.getBytes(),false));
+        data.setMessage(new XByteBuffer(msg.getBytes(), false));
         data.setAddress(mbr);
 
         return data;
@@ -56,7 +56,7 @@ public class NioSenderTest {
             // Affects 1.6.0_29, fixed in 1.7.0_01
             selector = Selector.open();
         }
-        mbr = new MemberImpl("localhost",4444,0);
+        mbr = new MemberImpl("localhost", 4444, 0);
         NioSender sender = new NioSender();
         sender.setDestination(mbr);
         sender.setDirectBuffer(true);
@@ -91,13 +91,15 @@ public class NioSenderTest {
                     int readyOps = sk.readyOps();
                     sk.interestOps(sk.interestOps() & ~readyOps);
                     NioSender sender = (NioSender) sk.attachment();
-                    if ( sender.process(sk, (testOptions&Channel.SEND_OPTIONS_USE_ACK)==Channel.SEND_OPTIONS_USE_ACK) ) {
-                        System.out.println("Message completed for handler:"+sender);
+                    if (sender.process(sk, (testOptions
+                            & Channel.SEND_OPTIONS_USE_ACK) == Channel.SEND_OPTIONS_USE_ACK)) {
+                        System.out.println("Message completed for handler:"
+                                + sender);
                         Thread.sleep(2000);
                         sender.reset();
-                        sender.setMessage(XByteBuffer.createDataPackage(getMessage(mbr)));
+                        sender.setMessage(XByteBuffer.createDataPackage(
+                                getMessage(mbr)));
                     }
-
 
                 } catch (Throwable t) {
                     t.printStackTrace();

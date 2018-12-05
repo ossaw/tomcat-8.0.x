@@ -1,19 +1,17 @@
 /*
-* Licensed to the Apache Software Foundation (ASF) under one or more
-* contributor license agreements.  See the NOTICE file distributed with
-* this work for additional information regarding copyright ownership.
-* The ASF licenses this file to You under the Apache License, Version 2.0
-* (the "License"); you may not use this file except in compliance with
-* the License.  You may obtain a copy of the License at
-*
-*     http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*/
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements. See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package javax.servlet.jsp.tagext;
 
 import java.io.Serializable;
@@ -26,14 +24,16 @@ import javax.servlet.jsp.PageContext;
 /**
  * A base class for defining new tag handlers implementing Tag.
  *
- * <p> The TagSupport class is a utility class intended to be used as
- * the base class for new tag handlers.  The TagSupport class
+ * <p>
+ * The TagSupport class is a utility class intended to be used as
+ * the base class for new tag handlers. The TagSupport class
  * implements the Tag and IterationTag interfaces and adds additional
  * convenience methods including getter methods for the properties in
- * Tag.  TagSupport has one static method that is included to
+ * Tag. TagSupport has one static method that is included to
  * facilitate coordination among cooperating tags.
  *
- * <p> Many tag handlers will extend TagSupport and only redefine a
+ * <p>
+ * Many tag handlers will extend TagSupport and only redefine a
  * few methods.
  */
 public class TagSupport implements IterationTag, Serializable {
@@ -51,7 +51,7 @@ public class TagSupport implements IterationTag, Serializable {
      * The current version of the specification only provides one formal
      * way of indicating the observable type of a tag handler: its
      * tag handler implementation class, described in the tag-class
-     * subelement of the tag element.  This is extended in an
+     * subelement of the tag element. This is extended in an
      * informal manner by allowing the tag library author to
      * indicate in the description subelement an observable type.
      * The type should be a subtype of the tag handler implementation
@@ -63,26 +63,23 @@ public class TagSupport implements IterationTag, Serializable {
      * <p>
      * When a tag library author provides information on the
      * observable type of a tag handler, client programmatic code
-     * should adhere to that constraint.  Specifically, the Class
+     * should adhere to that constraint. Specifically, the Class
      * passed to findAncestorWithClass should be a subtype of the
      * observable type.
      *
      *
-     * @param from The instance from where to start looking.
+     * @param from  The instance from where to start looking.
      * @param klass The subclass of Tag or interface to be matched
      * @return the nearest ancestor that implements the interface
-     * or is an instance of the class specified
+     *         or is an instance of the class specified
      */
     public static final Tag findAncestorWithClass(Tag from,
             // TCK signature test fails with generics
-            @SuppressWarnings("rawtypes")
-            Class klass) {
+            @SuppressWarnings("rawtypes") Class klass) {
         boolean isInterface = false;
 
-        if (from == null ||
-            klass == null ||
-            (!Tag.class.isAssignableFrom(klass) &&
-             !(isInterface = klass.isInterface()))) {
+        if (from == null || klass == null || (!Tag.class.isAssignableFrom(klass)
+                && !(isInterface = klass.isInterface()))) {
             return null;
         }
 
@@ -93,8 +90,8 @@ public class TagSupport implements IterationTag, Serializable {
                 return null;
             }
 
-            if ((isInterface && klass.isInstance(tag)) ||
-                    ((Class<?>)klass).isAssignableFrom(tag.getClass())) {
+            if ((isInterface && klass.isInstance(tag)) || ((Class<?>) klass)
+                    .isAssignableFrom(tag.getClass())) {
                 return tag;
             }
             from = tag;
@@ -139,7 +136,6 @@ public class TagSupport implements IterationTag, Serializable {
         return EVAL_PAGE;
     }
 
-
     /**
      * Default processing for a body.
      *
@@ -155,7 +151,6 @@ public class TagSupport implements IterationTag, Serializable {
 
     // Actions related to body evaluation
 
-
     /**
      * Release state.
      *
@@ -165,7 +160,7 @@ public class TagSupport implements IterationTag, Serializable {
     public void release() {
         parent = null;
         id = null;
-        if( values != null ) {
+        if (values != null) {
             values.clear();
         }
         values = null;
@@ -184,6 +179,7 @@ public class TagSupport implements IterationTag, Serializable {
 
     /**
      * The Tag instance most closely enclosing this tag instance.
+     * 
      * @see Tag#getParent()
      *
      * @return the parent tag instance or null
@@ -263,7 +259,7 @@ public class TagSupport implements IterationTag, Serializable {
      * Enumerate the keys for the values kept by this tag handler.
      *
      * @return An enumeration of all the keys for the values set,
-     *     or null or an empty Enumeration if no values have been set.
+     *         or null or an empty Enumeration if no values have been set.
      */
     public Enumeration<String> getValues() {
         if (values == null) {
@@ -274,12 +270,12 @@ public class TagSupport implements IterationTag, Serializable {
 
     // private fields
 
-    private   Tag         parent;
-    private   Hashtable<String, Object>   values;
+    private Tag parent;
+    private Hashtable<String, Object> values;
     /**
      * The value of the id attribute of this tag; or null.
      */
-    protected String      id;
+    protected String id;
 
     // protected fields
 
@@ -288,4 +284,3 @@ public class TagSupport implements IterationTag, Serializable {
      */
     protected transient PageContext pageContext;
 }
-

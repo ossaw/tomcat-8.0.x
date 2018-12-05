@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -41,7 +39,6 @@ public class TestWebRuleSet {
         webDigester.addRuleSet(webRuleSet);
     }
 
-
     @Test
     public void testSingleNameInWebFragmentXml() throws Exception {
 
@@ -51,12 +48,10 @@ public class TestWebRuleSet {
         assertEquals("name1", webXml.getName());
     }
 
-
     @Test
     public void testMultipleNameInWebFragmentXml() throws Exception {
         parse(new WebXml(), "web-fragment-2name.xml", true, false);
     }
-
 
     @Test
     public void testSingleOrderingInWebFragmentXml() throws Exception {
@@ -68,12 +63,10 @@ public class TestWebRuleSet {
         assertTrue(webXml.getBeforeOrdering().contains("bar"));
     }
 
-
     @Test
     public void testMultipleOrderingInWebFragmentXml() throws Exception {
         parse(new WebXml(), "web-fragment-2ordering.xml", true, false);
     }
-
 
     @Test
     public void testSingleOrderingInWebXml() throws Exception {
@@ -85,12 +78,10 @@ public class TestWebRuleSet {
         assertTrue(webXml.getAbsoluteOrdering().contains("bar"));
     }
 
-
     @Test
     public void testMultipleOrderingInWebXml() throws Exception {
         parse(new WebXml(), "web-2ordering.xml", false, false);
     }
-
 
     @Test
     public void testRecycle() throws Exception {
@@ -111,7 +102,7 @@ public class TestWebRuleSet {
         parse(new WebXml(), "web-1ordering.xml", false, true);
         parse(new WebXml(), "web-2ordering.xml", false, false);
         parse(new WebXml(), "web-1ordering.xml", false, true);
-}
+    }
 
     @Test
     public void testLifecycleMethodsDefinitions() throws Exception {

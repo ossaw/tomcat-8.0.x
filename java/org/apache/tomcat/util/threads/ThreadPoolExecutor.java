@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -27,18 +25,22 @@ import java.util.concurrent.atomic.AtomicLong;
 import org.apache.tomcat.util.res.StringManager;
 
 /**
- * Same as a java.util.concurrent.ThreadPoolExecutor but implements a much more efficient
- * {@link #getSubmittedCount()} method, to be used to properly handle the work queue.
- * If a RejectedExecutionHandler is not specified a default one will be configured
+ * Same as a java.util.concurrent.ThreadPoolExecutor but implements a much more
+ * efficient
+ * {@link #getSubmittedCount()} method, to be used to properly handle the work
+ * queue.
+ * If a RejectedExecutionHandler is not specified a default one will be
+ * configured
  * and that one will always throw a RejectedExecutionException
  *
  */
-public class ThreadPoolExecutor extends java.util.concurrent.ThreadPoolExecutor {
+public class ThreadPoolExecutor extends
+        java.util.concurrent.ThreadPoolExecutor {
     /**
      * The string manager for this package.
      */
-    protected static final StringManager sm = StringManager
-            .getManager("org.apache.tomcat.util.threads.res");
+    protected static final StringManager sm = StringManager.getManager(
+            "org.apache.tomcat.util.threads.res");
 
     /**
      * The number of tasks submitted but not yet finished. This includes tasks
@@ -57,25 +59,39 @@ public class ThreadPoolExecutor extends java.util.concurrent.ThreadPoolExecutor 
     private final AtomicLong lastTimeThreadKilledItself = new AtomicLong(0L);
 
     /**
-     * Delay in ms between 2 threads being renewed. If negative, do not renew threads.
+     * Delay in ms between 2 threads being renewed. If negative, do not renew
+     * threads.
      */
     private long threadRenewalDelay = Constants.DEFAULT_THREAD_RENEWAL_DELAY;
 
-    public ThreadPoolExecutor(int corePoolSize, int maximumPoolSize, long keepAliveTime, TimeUnit unit, BlockingQueue<Runnable> workQueue, RejectedExecutionHandler handler) {
-        super(corePoolSize, maximumPoolSize, keepAliveTime, unit, workQueue, handler);
-    }
-
-    public ThreadPoolExecutor(int corePoolSize, int maximumPoolSize, long keepAliveTime, TimeUnit unit, BlockingQueue<Runnable> workQueue, ThreadFactory threadFactory,
+    public ThreadPoolExecutor(int corePoolSize, int maximumPoolSize,
+            long keepAliveTime, TimeUnit unit,
+            BlockingQueue<Runnable> workQueue,
             RejectedExecutionHandler handler) {
-        super(corePoolSize, maximumPoolSize, keepAliveTime, unit, workQueue, threadFactory, handler);
+        super(corePoolSize, maximumPoolSize, keepAliveTime, unit, workQueue,
+                handler);
     }
 
-    public ThreadPoolExecutor(int corePoolSize, int maximumPoolSize, long keepAliveTime, TimeUnit unit, BlockingQueue<Runnable> workQueue, ThreadFactory threadFactory) {
-        super(corePoolSize, maximumPoolSize, keepAliveTime, unit, workQueue, threadFactory, new RejectHandler());
+    public ThreadPoolExecutor(int corePoolSize, int maximumPoolSize,
+            long keepAliveTime, TimeUnit unit,
+            BlockingQueue<Runnable> workQueue, ThreadFactory threadFactory,
+            RejectedExecutionHandler handler) {
+        super(corePoolSize, maximumPoolSize, keepAliveTime, unit, workQueue,
+                threadFactory, handler);
     }
 
-    public ThreadPoolExecutor(int corePoolSize, int maximumPoolSize, long keepAliveTime, TimeUnit unit, BlockingQueue<Runnable> workQueue) {
-        super(corePoolSize, maximumPoolSize, keepAliveTime, unit, workQueue, new RejectHandler());
+    public ThreadPoolExecutor(int corePoolSize, int maximumPoolSize,
+            long keepAliveTime, TimeUnit unit,
+            BlockingQueue<Runnable> workQueue, ThreadFactory threadFactory) {
+        super(corePoolSize, maximumPoolSize, keepAliveTime, unit, workQueue,
+                threadFactory, new RejectHandler());
+    }
+
+    public ThreadPoolExecutor(int corePoolSize, int maximumPoolSize,
+            long keepAliveTime, TimeUnit unit,
+            BlockingQueue<Runnable> workQueue) {
+        super(corePoolSize, maximumPoolSize, keepAliveTime, unit, workQueue,
+                new RejectHandler());
     }
 
     public long getThreadRenewalDelay() {
@@ -103,13 +119,13 @@ public class ThreadPoolExecutor extends java.util.concurrent.ThreadPoolExecutor 
         if (currentThreadShouldBeStopped()) {
             long lastTime = lastTimeThreadKilledItself.longValue();
             if (lastTime + threadRenewalDelay < System.currentTimeMillis()) {
-                if (lastTimeThreadKilledItself.compareAndSet(lastTime,
-                        System.currentTimeMillis() + 1)) {
+                if (lastTimeThreadKilledItself.compareAndSet(lastTime, System
+                        .currentTimeMillis() + 1)) {
                     // OK, it's really time to dispose of this thread
 
                     final String msg = sm.getString(
-                                    "threadPoolExecutor.threadStoppedToAvoidPotentialLeak",
-                                    Thread.currentThread().getName());
+                            "threadPoolExecutor.threadStoppedToAvoidPotentialLeak",
+                            Thread.currentThread().getName());
 
                     throw new StopPooledThreadException(msg);
                 }
@@ -118,11 +134,12 @@ public class ThreadPoolExecutor extends java.util.concurrent.ThreadPoolExecutor 
     }
 
     protected boolean currentThreadShouldBeStopped() {
-        if (threadRenewalDelay >= 0
-            && Thread.currentThread() instanceof TaskThread) {
+        if (threadRenewalDelay >= 0 && Thread
+                .currentThread() instanceof TaskThread) {
             TaskThread currentTaskThread = (TaskThread) Thread.currentThread();
-            if (currentTaskThread.getCreationTime() <
-                    this.lastContextStoppedTime.longValue()) {
+            if (currentTaskThread
+                    .getCreationTime() < this.lastContextStoppedTime
+                            .longValue()) {
                 return true;
             }
         }
@@ -138,11 +155,11 @@ public class ThreadPoolExecutor extends java.util.concurrent.ThreadPoolExecutor 
      */
     @Override
     public void execute(Runnable command) {
-        execute(command,0,TimeUnit.MILLISECONDS);
+        execute(command, 0, TimeUnit.MILLISECONDS);
     }
 
     /**
-     * Executes the given command at some time in the future.  The command
+     * Executes the given command at some time in the future. The command
      * may execute in a new thread, in a pooled thread, or in the calling
      * thread, at the discretion of the <tt>Executor</tt> implementation.
      * If no threads are available, it will be added to the work queue.
@@ -152,8 +169,9 @@ public class ThreadPoolExecutor extends java.util.concurrent.ThreadPoolExecutor 
      *
      * @param command the runnable task
      * @throws RejectedExecutionException if this task cannot be
-     * accepted for execution - the queue is full
-     * @throws NullPointerException if command or unit is null
+     *                                    accepted for execution - the queue is
+     *                                    full
+     * @throws NullPointerException       if command or unit is null
      */
     public void execute(Runnable command, long timeout, TimeUnit unit) {
         submittedCount.incrementAndGet();
@@ -161,11 +179,12 @@ public class ThreadPoolExecutor extends java.util.concurrent.ThreadPoolExecutor 
             super.execute(command);
         } catch (RejectedExecutionException rx) {
             if (super.getQueue() instanceof TaskQueue) {
-                final TaskQueue queue = (TaskQueue)super.getQueue();
+                final TaskQueue queue = (TaskQueue) super.getQueue();
                 try {
                     if (!queue.force(command, timeout, unit)) {
                         submittedCount.decrementAndGet();
-                        throw new RejectedExecutionException("Queue capacity is full.");
+                        throw new RejectedExecutionException(
+                                "Queue capacity is full.");
                     }
                 } catch (InterruptedException x) {
                     submittedCount.decrementAndGet();
@@ -184,8 +203,9 @@ public class ThreadPoolExecutor extends java.util.concurrent.ThreadPoolExecutor 
 
         // save the current pool parameters to restore them later
         int savedCorePoolSize = this.getCorePoolSize();
-        TaskQueue taskQueue =
-                getQueue() instanceof TaskQueue ? (TaskQueue) getQueue() : null;
+        TaskQueue taskQueue = getQueue() instanceof TaskQueue
+                ? (TaskQueue) getQueue()
+                : null;
         if (taskQueue != null) {
             // note by slaurent : quite oddly threadPoolExecutor.setCorePoolSize
             // checks that queue.remainingCapacity()==0. I did not understand
@@ -216,6 +236,5 @@ public class ThreadPoolExecutor extends java.util.concurrent.ThreadPoolExecutor 
         }
 
     }
-
 
 }

@@ -1,18 +1,16 @@
 /*
- *  Licensed to the Apache Software Foundation (ASF) under one or more
- *  contributor license agreements.  See the NOTICE file distributed with
- *  this work for additional information regarding copyright ownership.
- *  The ASF licenses this file to You under the Apache License, Version 2.0
- *  (the "License"); you may not use this file except in compliance with
- *  the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements. See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.apache.catalina.core;
 
@@ -66,26 +64,26 @@ public class TestStandardWrapper extends TomcatBaseTest {
 
     @Test
     public void testSecurityAnnotationsSubclass1() throws Exception {
-        doTest(SubclassDenyAllServlet.class.getName(),
-                false, false, false,false);
+        doTest(SubclassDenyAllServlet.class.getName(), false, false, false,
+                false);
     }
 
     @Test
     public void testSecurityAnnotationsSubclass2() throws Exception {
-        doTest(SubclassAllowAllServlet.class.getName(),
-                false, false, true, false);
+        doTest(SubclassAllowAllServlet.class.getName(), false, false, true,
+                false);
     }
 
     @Test
     public void testSecurityAnnotationsMethods1() throws Exception {
-        doTest(MethodConstraintServlet.class.getName(),
-                false, false, false, false);
+        doTest(MethodConstraintServlet.class.getName(), false, false, false,
+                false);
     }
 
     @Test
     public void testSecurityAnnotationsMethods2() throws Exception {
-        doTest(MethodConstraintServlet.class.getName(),
-                true, false, true, false);
+        doTest(MethodConstraintServlet.class.getName(), true, false, true,
+                false);
     }
 
     @Test
@@ -159,9 +157,9 @@ public class TestStandardWrapper extends TomcatBaseTest {
 
         ByteChunk bc = new ByteChunk();
         int rc;
-        rc = getUrl("http://localhost:" + getPort() +
-                "/testStandardWrapper/securityAnnotationsWebXmlPriority",
-                bc, null, null);
+        rc = getUrl("http://localhost:" + getPort()
+                + "/testStandardWrapper/securityAnnotationsWebXmlPriority", bc,
+                null, null);
 
         assertTrue(bc.getLength() > 0);
         assertEquals(403, rc);
@@ -173,8 +171,8 @@ public class TestStandardWrapper extends TomcatBaseTest {
 
         ByteChunk bc = new ByteChunk();
         int rc;
-        rc = getUrl("http://localhost:" + getPort() +
-                "/test/testStandardWrapper/securityAnnotationsMetaDataPriority",
+        rc = getUrl("http://localhost:" + getPort()
+                + "/test/testStandardWrapper/securityAnnotationsMetaDataPriority",
                 bc, null, null);
 
         assertEquals("OK", bc.toString());
@@ -203,8 +201,7 @@ public class TestStandardWrapper extends TomcatBaseTest {
 
         ByteChunk bc = new ByteChunk();
         int rc;
-        rc = getUrl("http://localhost:" + getPort() + "/",
-                bc, null, null);
+        rc = getUrl("http://localhost:" + getPort() + "/", bc, null, null);
 
         assertTrue(bc.getLength() > 0);
         assertEquals(403, rc);
@@ -222,16 +219,16 @@ public class TestStandardWrapper extends TomcatBaseTest {
 
         ByteChunk bc = new ByteChunk();
         int rc;
-        rc = getUrl("http://localhost:" + getPort() + "/protected.jsp",
-                bc, null, null);
+        rc = getUrl("http://localhost:" + getPort() + "/protected.jsp", bc,
+                null, null);
 
         assertTrue(bc.getLength() > 0);
         assertEquals(403, rc);
 
         bc.recycle();
 
-        rc = getUrl("http://localhost:" + getPort() + "/unprotected.jsp",
-                bc, null, null);
+        rc = getUrl("http://localhost:" + getPort() + "/unprotected.jsp", bc,
+                null, null);
 
         assertEquals(200, rc);
         assertTrue(bc.toString().contains("00-OK"));
@@ -294,7 +291,7 @@ public class TestStandardWrapper extends TomcatBaseTest {
         tomcat.start();
 
         ByteChunk bc = new ByteChunk();
-        Map<String,List<String>> reqHeaders = null;
+        Map<String, List<String>> reqHeaders = null;
         if (useRole) {
             reqHeaders = new HashMap<>();
             List<String> authHeaders = new ArrayList<>();
@@ -353,20 +350,14 @@ public class TestStandardWrapper extends TomcatBaseTest {
         private static final long serialVersionUID = 1L;
     }
 
-    @ServletSecurity(value= @HttpConstraint(EmptyRoleSemantic.PERMIT),
-        httpMethodConstraints = {
-            @HttpMethodConstraint(value="GET",
-                    emptyRoleSemantic = EmptyRoleSemantic.DENY)
-        }
-    )
+    @ServletSecurity(value = @HttpConstraint(EmptyRoleSemantic.PERMIT), httpMethodConstraints = {
+            @HttpMethodConstraint(value = "GET", emptyRoleSemantic = EmptyRoleSemantic.DENY) })
     public static class MethodConstraintServlet extends TestServlet {
         private static final long serialVersionUID = 1L;
     }
 
     @ServletSecurity(httpMethodConstraints = {
-            @HttpMethodConstraint(value="POST",rolesAllowed = "testRole")
-        }
-    )
+            @HttpMethodConstraint(value = "POST", rolesAllowed = "testRole") })
     public static class UncoveredGetServlet extends TestServlet {
         private static final long serialVersionUID = 1L;
     }
@@ -406,7 +397,6 @@ public class TestStandardWrapper extends TomcatBaseTest {
         }
     }
 
-
     public static final int BUG51445_THREAD_COUNT = 5;
 
     public static CountDownLatch latch = null;
@@ -433,24 +423,24 @@ public class TestStandardWrapper extends TomcatBaseTest {
 
         // Start the threads
         Bug51445Thread[] threads = new Bug51445Thread[5];
-        for (int i = 0; i < BUG51445_THREAD_COUNT; i ++) {
+        for (int i = 0; i < BUG51445_THREAD_COUNT; i++) {
             threads[i] = new Bug51445Thread(getPort());
             threads[i].start();
         }
 
         // Wait for threads to finish
-        for (int i = 0; i < BUG51445_THREAD_COUNT; i ++) {
+        for (int i = 0; i < BUG51445_THREAD_COUNT; i++) {
             threads[i].join();
         }
 
         Set<String> servlets = new HashSet<>();
         // Output the result
-        for (int i = 0; i < BUG51445_THREAD_COUNT; i ++) {
+        for (int i = 0; i < BUG51445_THREAD_COUNT; i++) {
             System.out.println(threads[i].getResult());
         }
 
         // Check the result
-        for (int i = 0; i < BUG51445_THREAD_COUNT; i ++) {
+        for (int i = 0; i < BUG51445_THREAD_COUNT; i++) {
             String[] results = threads[i].getResult().split(",");
             assertEquals(2, results.length);
             assertEquals("10", results[0]);
@@ -479,23 +469,23 @@ public class TestStandardWrapper extends TomcatBaseTest {
 
         // Start the threads
         Bug51445Thread[] threads = new Bug51445Thread[5];
-        for (int i = 0; i < BUG51445_THREAD_COUNT; i ++) {
+        for (int i = 0; i < BUG51445_THREAD_COUNT; i++) {
             threads[i] = new Bug51445Thread(getPort());
             threads[i].start();
         }
 
         // Wait for threads to finish
-        for (int i = 0; i < BUG51445_THREAD_COUNT; i ++) {
+        for (int i = 0; i < BUG51445_THREAD_COUNT; i++) {
             threads[i].join();
         }
 
         Set<String> servlets = new HashSet<>();
         // Output the result
-        for (int i = 0; i < BUG51445_THREAD_COUNT; i ++) {
+        for (int i = 0; i < BUG51445_THREAD_COUNT; i++) {
             System.out.println(threads[i].getResult());
         }
         // Check the result
-        for (int i = 0; i < BUG51445_THREAD_COUNT; i ++) {
+        for (int i = 0; i < BUG51445_THREAD_COUNT; i++) {
             String[] results = threads[i].getResult().split(",");
             assertEquals(2, results.length);
             assertEquals("10", results[0]);
@@ -532,8 +522,8 @@ public class TestStandardWrapper extends TomcatBaseTest {
      * SingleThreadModel servlet that sets a value in the init() method.
      */
     @SuppressWarnings("deprecation")
-    public static class Bug51445Servlet extends HttpServlet
-            implements javax.servlet.SingleThreadModel {
+    public static class Bug51445Servlet extends HttpServlet implements
+            javax.servlet.SingleThreadModel {
 
         private static final long serialVersionUID = 1L;
         private static final long LATCH_TIMEOUT = 60;

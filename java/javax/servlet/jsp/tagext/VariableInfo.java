@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -82,31 +80,37 @@ package javax.servlet.jsp.tagext;
  * <b>Note:</b> the synchronization of the variable(s) will occur <em>after</em>
  * the respective method has been called. <blockquote>
  * <table cellpadding="2" cellspacing="2" border="0" width="55%"
- *        style="background-color:#999999" summary="Variable Synchronization Points">
+ * style="background-color:#999999" summary="Variable Synchronization Points">
  * <tbody>
  * <tr align="center">
  * <td valign="top" colspan="6" style="background-color:#999999">
- *   <u><b>Variable Synchronization Points</b></u><br>
+ * <u><b>Variable Synchronization Points</b></u><br>
  * </td>
  * </tr>
  * <tr>
  * <th valign="top" style="background-color:#c0c0c0">&nbsp;</th>
- * <th valign="top" style="background-color:#c0c0c0" align="center">doStartTag()</th>
- * <th valign="top" style="background-color:#c0c0c0" align="center">doInitBody()</th>
- * <th valign="top" style="background-color:#c0c0c0" align="center">doAfterBody()</th>
- * <th valign="top" style="background-color:#c0c0c0" align="center">doEndTag()</th>
+ * <th valign="top" style="background-color:#c0c0c0" align=
+ * "center">doStartTag()</th>
+ * <th valign="top" style="background-color:#c0c0c0" align=
+ * "center">doInitBody()</th>
+ * <th valign="top" style="background-color:#c0c0c0" align=
+ * "center">doAfterBody()</th>
+ * <th valign="top" style="background-color:#c0c0c0" align=
+ * "center">doEndTag()</th>
  * <th valign="top" style="background-color:#c0c0c0" align="center">doTag()</th>
  * </tr>
  * <tr>
  * <td valign="top" style="background-color:#c0c0c0"><b>Tag<br>
  * </b></td>
- * <td valign="top" align="center" style="background-color:#ffffff">AT_BEGIN, NESTED<br>
+ * <td valign="top" align="center" style="background-color:#ffffff">AT_BEGIN,
+ * NESTED<br>
  * </td>
  * <td valign="top" align="center" style="background-color:#ffffff"><br>
  * </td>
  * <td valign="top" align="center" style="background-color:#ffffff"><br>
  * </td>
- * <td valign="top" align="center" style="background-color:#ffffff">AT_BEGIN, AT_END<br>
+ * <td valign="top" align="center" style="background-color:#ffffff">AT_BEGIN,
+ * AT_END<br>
  * </td>
  * <td valign="top" align="center" style="background-color:#ffffff"><br>
  * </td>
@@ -114,13 +118,16 @@ package javax.servlet.jsp.tagext;
  * <tr>
  * <td valign="top" style="background-color:#c0c0c0"><b>IterationTag<br>
  * </b></td>
- * <td valign="top" align="center" style="background-color:#ffffff">AT_BEGIN, NESTED<br>
+ * <td valign="top" align="center" style="background-color:#ffffff">AT_BEGIN,
+ * NESTED<br>
  * </td>
  * <td valign="top" align="center" style="background-color:#ffffff"><br>
  * </td>
- * <td valign="top" align="center" style="background-color:#ffffff">AT_BEGIN, NESTED<br>
+ * <td valign="top" align="center" style="background-color:#ffffff">AT_BEGIN,
+ * NESTED<br>
  * </td>
- * <td valign="top" align="center" style="background-color:#ffffff">AT_BEGIN, AT_END<br>
+ * <td valign="top" align="center" style="background-color:#ffffff">AT_BEGIN,
+ * AT_END<br>
  * </td>
  * <td valign="top" align="center" style="background-color:#ffffff"><br>
  * </td>
@@ -134,9 +141,11 @@ package javax.servlet.jsp.tagext;
  * <td valign="top" align="center" style="background-color:#ffffff">AT_BEGIN,
  * NESTED<sup>1</sup><br>
  * </td>
- * <td valign="top" align="center" style="background-color:#ffffff">AT_BEGIN, NESTED<br>
+ * <td valign="top" align="center" style="background-color:#ffffff">AT_BEGIN,
+ * NESTED<br>
  * </td>
- * <td valign="top" align="center" style="background-color:#ffffff">AT_BEGIN, AT_END<br>
+ * <td valign="top" align="center" style="background-color:#ffffff">AT_BEGIN,
+ * AT_END<br>
  * </td>
  * <td valign="top" align="center" style="background-color:#ffffff"><br>
  * </td>
@@ -152,7 +161,8 @@ package javax.servlet.jsp.tagext;
  * </td>
  * <td valign="top" align="center" style="background-color:#ffffff"><br>
  * </td>
- * <td valign="top" align="center" style="background-color:#ffffff">AT_BEGIN, AT_END<br>
+ * <td valign="top" align="center" style="background-color:#ffffff">AT_BEGIN,
+ * AT_END<br>
  * </td>
  * </tr>
  * </tbody>
@@ -190,14 +200,15 @@ public class VariableInfo {
      * TagExtraInfo instances.
      *
      * @param varName
-     *            The name of the scripting variable
+     *                  The name of the scripting variable
      * @param className
-     *            The type of this variable
+     *                  The type of this variable
      * @param declare
-     *            If true, it is a new variable (in some languages this will
-     *            require a declaration)
+     *                  If true, it is a new variable (in some languages this
+     *                  will
+     *                  require a declaration)
      * @param scope
-     *            Indication on the lexical scope of the variable
+     *                  Indication on the lexical scope of the variable
      */
     public VariableInfo(String varName, String className, boolean declare,
             int scope) {

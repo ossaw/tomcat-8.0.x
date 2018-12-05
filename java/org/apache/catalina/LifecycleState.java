@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -22,18 +20,16 @@ package org.apache.catalina;
  * See {@link Lifecycle} for the state transition diagram.
  */
 public enum LifecycleState {
-    NEW(false, null),
-    INITIALIZING(false, Lifecycle.BEFORE_INIT_EVENT),
-    INITIALIZED(false, Lifecycle.AFTER_INIT_EVENT),
-    STARTING_PREP(false, Lifecycle.BEFORE_START_EVENT),
-    STARTING(true, Lifecycle.START_EVENT),
-    STARTED(true, Lifecycle.AFTER_START_EVENT),
-    STOPPING_PREP(true, Lifecycle.BEFORE_STOP_EVENT),
-    STOPPING(false, Lifecycle.STOP_EVENT),
-    STOPPED(false, Lifecycle.AFTER_STOP_EVENT),
-    DESTROYING(false, Lifecycle.BEFORE_DESTROY_EVENT),
-    DESTROYED(false, Lifecycle.AFTER_DESTROY_EVENT),
-    FAILED(false, null),
+    NEW(false, null), INITIALIZING(false, Lifecycle.BEFORE_INIT_EVENT),
+    INITIALIZED(false, Lifecycle.AFTER_INIT_EVENT), STARTING_PREP(false,
+            Lifecycle.BEFORE_START_EVENT), STARTING(true,
+                    Lifecycle.START_EVENT), STARTED(true,
+                            Lifecycle.AFTER_START_EVENT), STOPPING_PREP(true,
+                                    Lifecycle.BEFORE_STOP_EVENT), STOPPING(
+                                            false, Lifecycle.STOP_EVENT),
+    STOPPED(false, Lifecycle.AFTER_STOP_EVENT), DESTROYING(false,
+            Lifecycle.BEFORE_DESTROY_EVENT), DESTROYED(false,
+                    Lifecycle.AFTER_DESTROY_EVENT), FAILED(false, null),
     /**
      * @deprecated Unused. Will be removed in Tomcat 8.5.x. The state transition
      *             checking in {@link org.apache.catalina.util.LifecycleBase}

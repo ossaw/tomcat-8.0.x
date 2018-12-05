@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -15,7 +13,6 @@
  * limitations under the License.
  */
 package org.apache.catalina.ssi;
-
 
 /**
  * Parses an expression string to return the individual tokens. This is
@@ -43,7 +40,6 @@ public class ExpressionTokenizer {
     private int index;
     private final int length;
 
-
     /**
      * Creates a new parser for the specified expression.
      */
@@ -52,14 +48,12 @@ public class ExpressionTokenizer {
         this.length = this.expr.length;
     }
 
-
     /**
      * Returns true if there are more tokens.
      */
     public boolean hasMoreTokens() {
         return index < length;
     }
-
 
     /**
      * Returns the current index for error reporting purposes.
@@ -68,12 +62,10 @@ public class ExpressionTokenizer {
         return index;
     }
 
-
     protected boolean isMetaChar(char c) {
         return Character.isWhitespace(c) || c == '(' || c == ')' || c == '!'
                 || c == '<' || c == '>' || c == '|' || c == '&' || c == '=';
     }
-
 
     /**
      * Returns the next token type and initializes any state variables
@@ -85,51 +77,53 @@ public class ExpressionTokenizer {
             index++;
         // Clear the current token val
         tokenVal = null;
-        if (index == length) return TOKEN_END; // End of string
+        if (index == length)
+            return TOKEN_END; // End of string
         int start = index;
         char currentChar = expr[index];
-        char nextChar = (char)0;
+        char nextChar = (char) 0;
         index++;
-        if (index < length) nextChar = expr[index];
+        if (index < length)
+            nextChar = expr[index];
         // Check for a known token start
         switch (currentChar) {
-            case '(' :
+            case '(':
                 return TOKEN_LBRACE;
-            case ')' :
+            case ')':
                 return TOKEN_RBRACE;
-            case '=' :
+            case '=':
                 return TOKEN_EQ;
-            case '!' :
+            case '!':
                 if (nextChar == '=') {
                     index++;
                     return TOKEN_NOT_EQ;
                 }
                 return TOKEN_NOT;
-            case '|' :
+            case '|':
                 if (nextChar == '|') {
                     index++;
                     return TOKEN_OR;
                 }
                 break;
-            case '&' :
+            case '&':
                 if (nextChar == '&') {
                     index++;
                     return TOKEN_AND;
                 }
                 break;
-            case '>' :
+            case '>':
                 if (nextChar == '=') {
                     index++;
                     return TOKEN_GE; // Greater than or equal
                 }
                 return TOKEN_GT; // Greater than
-            case '<' :
+            case '<':
                 if (nextChar == '=') {
                     index++;
                     return TOKEN_LE; // Less than or equal
                 }
                 return TOKEN_LT; // Less than
-            default :
+            default:
                 // Otherwise it's a string
                 break;
         }
@@ -144,7 +138,8 @@ public class ExpressionTokenizer {
                     escaped = true;
                     continue;
                 }
-                if (expr[index] == endChar && !escaped) break;
+                if (expr[index] == endChar && !escaped)
+                    break;
                 escaped = false;
             }
             end = index;
@@ -158,14 +153,16 @@ public class ExpressionTokenizer {
                     escaped = true;
                     continue;
                 }
-                if (expr[index] == endChar && !escaped) break;
+                if (expr[index] == endChar && !escaped)
+                    break;
                 escaped = false;
             }
             end = ++index;
         } else {
             // End is the next whitespace character
             for (; index < length; index++) {
-                if (isMetaChar(expr[index])) break;
+                if (isMetaChar(expr[index]))
+                    break;
             }
             end = index;
         }
@@ -173,7 +170,6 @@ public class ExpressionTokenizer {
         this.tokenVal = new String(expr, start, end - start);
         return TOKEN_STRING;
     }
-
 
     /**
      * Returns the String value of the token if it was type TOKEN_STRING.

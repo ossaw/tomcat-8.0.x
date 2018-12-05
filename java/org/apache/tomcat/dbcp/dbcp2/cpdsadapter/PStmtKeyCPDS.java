@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -21,7 +19,9 @@ import java.util.Arrays;
 import org.apache.tomcat.dbcp.dbcp2.PStmtKey;
 
 /**
- * A key uniquely identifying a {@link java.sql.PreparedStatement PreparedStatement}.
+ * A key uniquely identifying a {@link java.sql.PreparedStatement
+ * PreparedStatement}.
+ * 
  * @since 2.0
  */
 public class PStmtKeyCPDS extends PStmtKey {
@@ -43,15 +43,16 @@ public class PStmtKeyCPDS extends PStmtKey {
         _columnNames = null;
     }
 
-    public PStmtKeyCPDS(final String sql, final int resultSetType, final int resultSetConcurrency) {
+    public PStmtKeyCPDS(final String sql, final int resultSetType,
+            final int resultSetConcurrency) {
         super(sql, resultSetType, resultSetConcurrency);
         _resultSetHoldability = null;
         _columnIndexes = null;
         _columnNames = null;
     }
 
-    public PStmtKeyCPDS(final String sql, final int resultSetType, final int resultSetConcurrency,
-            final int resultSetHoldability) {
+    public PStmtKeyCPDS(final String sql, final int resultSetType,
+            final int resultSetConcurrency, final int resultSetHoldability) {
         super(sql, resultSetType, resultSetConcurrency);
         _resultSetHoldability = Integer.valueOf(resultSetHoldability);
         _columnIndexes = null;
@@ -71,7 +72,6 @@ public class PStmtKeyCPDS extends PStmtKey {
         _resultSetHoldability = null;
         _columnIndexes = null;
     }
-
 
     @Override
     public boolean equals(final Object obj) {
@@ -101,17 +101,16 @@ public class PStmtKeyCPDS extends PStmtKey {
         return true;
     }
 
-
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = super.hashCode();
         result = prime * result + Arrays.hashCode(_columnIndexes);
         result = prime * result + Arrays.hashCode(_columnNames);
-        result = prime * result + (_resultSetHoldability == null ? 0 : _resultSetHoldability.hashCode());
+        result = prime * result + (_resultSetHoldability == null ? 0
+                : _resultSetHoldability.hashCode());
         return result;
     }
-
 
     @Override
     public String toString() {

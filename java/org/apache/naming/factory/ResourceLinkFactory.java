@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -31,7 +29,9 @@ import javax.naming.spi.ObjectFactory;
 import org.apache.naming.ResourceLinkRef;
 
 /**
- * <p>Object factory for resource links.</p>
+ * <p>
+ * Object factory for resource links.
+ * </p>
  *
  * @author Remy Maucherat
  */
@@ -44,8 +44,7 @@ public class ResourceLinkFactory implements ObjectFactory {
      */
     private static Context globalContext = null;
 
-    private static Map<ClassLoader,Map<String,String>> globalResourceRegistrations =
-            new ConcurrentHashMap<>();
+    private static Map<ClassLoader, Map<String, String>> globalResourceRegistrations = new ConcurrentHashMap<>();
 
     // --------------------------------------------------------- Public Methods
 
@@ -57,18 +56,17 @@ public class ResourceLinkFactory implements ObjectFactory {
     public static void setGlobalContext(Context newGlobalContext) {
         SecurityManager sm = System.getSecurityManager();
         if (sm != null) {
-            sm.checkPermission(new RuntimePermission(
-                   ResourceLinkFactory.class.getName() + ".setGlobalContext"));
+            sm.checkPermission(new RuntimePermission(ResourceLinkFactory.class
+                    .getName() + ".setGlobalContext"));
         }
         globalContext = newGlobalContext;
     }
 
-
-    public static void registerGlobalResourceAccess(Context globalContext, String localName,
-            String globalName) {
+    public static void registerGlobalResourceAccess(Context globalContext,
+            String localName, String globalName) {
         validateGlobalContext(globalContext);
         ClassLoader cl = Thread.currentThread().getContextClassLoader();
-        Map<String,String> registrations = globalResourceRegistrations.get(cl);
+        Map<String, String> registrations = globalResourceRegistrations.get(cl);
         if (registrations == null) {
             // Web application initialization is single threaded so this is
             // safe.
@@ -78,16 +76,15 @@ public class ResourceLinkFactory implements ObjectFactory {
         registrations.put(localName, globalName);
     }
 
-
-    public static void deregisterGlobalResourceAccess(Context globalContext, String localName) {
+    public static void deregisterGlobalResourceAccess(Context globalContext,
+            String localName) {
         validateGlobalContext(globalContext);
         ClassLoader cl = Thread.currentThread().getContextClassLoader();
-        Map<String,String> registrations = globalResourceRegistrations.get(cl);
+        Map<String, String> registrations = globalResourceRegistrations.get(cl);
         if (registrations != null) {
             registrations.remove(localName);
         }
     }
-
 
     public static void deregisterGlobalResourceAccess(Context globalContext) {
         validateGlobalContext(globalContext);
@@ -95,24 +92,22 @@ public class ResourceLinkFactory implements ObjectFactory {
         globalResourceRegistrations.remove(cl);
     }
 
-
     private static void validateGlobalContext(Context globalContext) {
-        if (ResourceLinkFactory.globalContext != null &&
-                ResourceLinkFactory.globalContext != globalContext) {
-            throw new SecurityException("Caller provided invalid global context");
+        if (ResourceLinkFactory.globalContext != null
+                && ResourceLinkFactory.globalContext != globalContext) {
+            throw new SecurityException(
+                    "Caller provided invalid global context");
         }
     }
 
-
     private static boolean validateGlobalResourceAccess(String globalName) {
         ClassLoader cl = Thread.currentThread().getContextClassLoader();
-        Map<String,String> registrations = globalResourceRegistrations.get(cl);
+        Map<String, String> registrations = globalResourceRegistrations.get(cl);
         if (registrations != null && registrations.containsValue(globalName)) {
             return true;
         }
         return false;
     }
-
 
     // -------------------------------------------------- ObjectFactory Methods
 
@@ -123,7 +118,7 @@ public class ResourceLinkFactory implements ObjectFactory {
      */
     @Override
     public Object getObjectInstance(Object obj, Name name, Context nameCtx,
-            Hashtable<?,?> environment) throws NamingException {
+            Hashtable<?, ?> environment) throws NamingException {
 
         if (!(obj instanceof ResourceLinkRef)) {
             return null;
@@ -147,8 +142,8 @@ public class ResourceLinkFactory implements ObjectFactory {
             // Check the expected type
             String expectedClassName = ref.getClassName();
             try {
-                Class<?> expectedClazz = Class.forName(
-                        expectedClassName, true, Thread.currentThread().getContextClassLoader());
+                Class<?> expectedClazz = Class.forName(expectedClassName, true,
+                        Thread.currentThread().getContextClassLoader());
                 if (!expectedClazz.isAssignableFrom(result.getClass())) {
                     throw new IllegalArgumentException();
                 }

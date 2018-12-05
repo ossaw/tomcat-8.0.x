@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -163,7 +161,7 @@ public class StoreAppender {
      *
      * @param aWriter
      * @param indent
-     *            number of spaces
+     *                number of spaces
      */
     public void printIndent(PrintWriter aWriter, int indent) {
         for (int i = 0; i < indent; i++) {
@@ -178,12 +176,12 @@ public class StoreAppender {
      * class name of the bean.
      *
      * @param writer
-     *            PrintWriter to which we are storing
+     *               PrintWriter to which we are storing
      * @param bean
-     *            Bean whose properties are to be rendered as attributes,
+     *               Bean whose properties are to be rendered as attributes,
      *
      * @exception Exception
-     *                if an exception occurs while storing
+     *                      if an exception occurs while storing
      */
     public void printAttributes(PrintWriter writer, int indent, Object bean,
             StoreDescription desc) throws Exception {
@@ -196,20 +194,19 @@ public class StoreAppender {
      * Store the relevant attributes of the specified JavaBean.
      *
      * @param writer
-     *            PrintWriter to which we are storing
+     *                PrintWriter to which we are storing
      * @param include
-     *            Should we include a <code>className</code> attribute?
+     *                Should we include a <code>className</code> attribute?
      * @param bean
-     *            Bean whose properties are to be rendered as attributes,
+     *                Bean whose properties are to be rendered as attributes,
      * @param desc
-     *            RegistryDescrpitor from this bean
+     *                RegistryDescrpitor from this bean
      *
      * @exception Exception
-     *                if an exception occurs while storing
+     *                      if an exception occurs while storing
      */
-    public void printAttributes(PrintWriter writer, int indent,
-            boolean include, Object bean, StoreDescription desc)
-            throws Exception {
+    public void printAttributes(PrintWriter writer, int indent, boolean include,
+            Object bean, StoreDescription desc) throws Exception {
 
         // Render a className attribute if requested
         if (include && desc != null && !desc.isStandard()) {
@@ -219,8 +216,8 @@ public class StoreAppender {
         }
 
         // Acquire the list of properties for this bean
-        PropertyDescriptor descriptors[] = Introspector.getBeanInfo(
-                bean.getClass()).getPropertyDescriptors();
+        PropertyDescriptor descriptors[] = Introspector.getBeanInfo(bean
+                .getClass()).getPropertyDescriptors();
         if (descriptors == null) {
             descriptors = new PropertyDescriptor[0];
         }
@@ -244,18 +241,20 @@ public class StoreAppender {
             if (value == null) {
                 continue; // Null values are not persisted
             }
-            Object value2 = IntrospectionUtils.getProperty(bean2,
-                    descriptors[i].getName());
+            Object value2 = IntrospectionUtils.getProperty(bean2, descriptors[i]
+                    .getName());
             if (value.equals(value2)) {
                 // The property has its default value
                 continue;
             }
-            printAttribute(writer, indent, bean, desc, descriptors[i].getName(), bean2, value);
+            printAttribute(writer, indent, bean, desc, descriptors[i].getName(),
+                    bean2, value);
         }
 
         if (bean instanceof ResourceBase) {
             ResourceBase resource = (ResourceBase) bean;
-            for (Iterator<String> iter = resource.listProperties(); iter.hasNext();) {
+            for (Iterator<String> iter = resource.listProperties(); iter
+                    .hasNext();) {
                 String name = iter.next();
                 Object value = resource.getProperty(name);
                 if (!isPersistable(value.getClass())) {
@@ -279,7 +278,9 @@ public class StoreAppender {
      * @param bean2
      * @param value
      */
-    protected void printAttribute(PrintWriter writer, int indent, Object bean, StoreDescription desc, String attributeName, Object bean2, Object value) {
+    protected void printAttribute(PrintWriter writer, int indent, Object bean,
+            StoreDescription desc, String attributeName, Object bean2,
+            Object value) {
         if (isPrintValue(bean, bean2, attributeName, desc))
             printValue(writer, indent, attributeName, value);
     }
@@ -288,13 +289,13 @@ public class StoreAppender {
      * print this Attribute value or not
      *
      * @param bean
-     *            orginal bean
+     *                 orginal bean
      * @param bean2
-     *            default bean
+     *                 default bean
      * @param attrName
-     *            attribute name
+     *                 attribute name
      * @param desc
-     *            StoreDescription from bean
+     *                 StoreDescription from bean
      * @return True if it's a printing value
      */
     public boolean isPrintValue(Object bean, Object bean2, String attrName,
@@ -385,12 +386,13 @@ public class StoreAppender {
      * persistence attribute?
      *
      * @param clazz
-     *            Java class to be tested
+     *              Java class to be tested
      */
     protected boolean isPersistable(Class<?> clazz) {
 
         for (int i = 0; i < persistables.length; i++) {
-            if (persistables[i] == clazz || persistables[i].isAssignableFrom(clazz)) {
+            if (persistables[i] == clazz || persistables[i].isAssignableFrom(
+                    clazz)) {
                 return (true);
             }
         }

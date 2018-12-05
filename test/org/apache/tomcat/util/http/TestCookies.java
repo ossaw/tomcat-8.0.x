@@ -1,18 +1,16 @@
 /*
- *  Licensed to the Apache Software Foundation (ASF) under one or more
- *  contributor license agreements.  See the NOTICE file distributed with
- *  this work for additional information regarding copyright ownership.
- *  The ASF licenses this file to You under the Apache License, Version 2.0
- *  (the "License"); you may not use this file except in compliance with
- *  the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements. See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package org.apache.tomcat.util.http;
@@ -90,7 +88,8 @@ public class TestCookies {
         Cookie george = new Cookie("george", "3");
         test(true, "fred=1; jim=2; bob", fred, jim, bobEmpty);
         test(true, "fred=1; jim=2; bob; george=3", fred, jim, bobEmpty, george);
-        test(true, "fred=1; jim=2; bob=; george=3", fred, jim, bobEmpty, george);
+        test(true, "fred=1; jim=2; bob=; george=3", fred, jim, bobEmpty,
+                george);
         test(true, "fred=1; jim=2; bob=", fred, jim, bobEmpty);
     }
 
@@ -142,7 +141,6 @@ public class TestCookies {
     private void doTestSeparatorsInValue(boolean useRfc6265) {
         test(useRfc6265, "a=()<>@:\\\"/[]?={}\t; foo=bar", FOO);
     }
-
 
     @Test
     public void v1TokenValueOld() {
@@ -225,7 +223,6 @@ public class TestCookies {
         A.setVersion(1);
         test(useRfc6265, "$Version=1;foo=b'ar;a=b", FOO, A);
     }
-
 
     @Test
     public void v1QuoteInQuotedValueOld() {
@@ -322,7 +319,9 @@ public class TestCookies {
         FOO.setDomain("apache.org");
         A.setVersion(1);
         A.setDomain("yahoo.com");
-        test(useRfc6265, "$Version=1;foo=\"bar\";$Domain=apache.org;a=b;$Domain=yahoo.com", FOO, A);
+        test(useRfc6265,
+                "$Version=1;foo=\"bar\";$Domain=apache.org;a=b;$Domain=yahoo.com",
+                FOO, A);
     }
 
     @Test
@@ -339,7 +338,8 @@ public class TestCookies {
         FOO.setVersion(1);
         FOO.setDomain("apache.org");
         A.setVersion(1);
-        test(useRfc6265, "$Version=1;foo=\"bar\";$Domain=apache.org;a=b", FOO, A);
+        test(useRfc6265, "$Version=1;foo=\"bar\";$Domain=apache.org;a=b", FOO,
+                A);
     }
 
     @Test
@@ -347,7 +347,8 @@ public class TestCookies {
         FOO.setVersion(1);
         FOO.setDomain("apache.org");
         A.setVersion(1);
-        test(false, "$Version=1;foo=\"bar\";$Domain=apache.org;$Port=8080;a=b", FOO, A);
+        test(false, "$Version=1;foo=\"bar\";$Domain=apache.org;$Port=8080;a=b",
+                FOO, A);
     }
 
     @Test
@@ -356,7 +357,8 @@ public class TestCookies {
         FOO.setDomain("apache.org");
         $PORT.setVersion(1);
         A.setVersion(1);
-        test(true, "$Version=1;foo=\"bar\";$Domain=apache.org;$Port=8080;a=b", FOO, $PORT, A);
+        test(true, "$Version=1;foo=\"bar\";$Domain=apache.org;$Port=8080;a=b",
+                FOO, $PORT, A);
     }
 
     @Test
@@ -373,7 +375,8 @@ public class TestCookies {
         FOO.setVersion(1);
         FOO.setPath("/examples");
         A.setVersion(1);
-        test(useRfc6265, "$Version=1;foo=\"bar\";$Path=/examples;a=b; ; ", FOO, A);
+        test(useRfc6265, "$Version=1;foo=\"bar\";$Path=/examples;a=b; ; ", FOO,
+                A);
     }
 
     @Test
@@ -492,11 +495,14 @@ public class TestCookies {
             Assert.assertEquals(cookie.getName(), actual.getName().toString());
             actual.getValue().getByteChunk().setCharset(StandardCharsets.UTF_8);
             Assert.assertEquals(cookie.getValue(),
-                    org.apache.tomcat.util.http.parser.Cookie.unescapeCookieValueRfc2109(
-                            actual.getValue().toString()));
+                    org.apache.tomcat.util.http.parser.Cookie
+                            .unescapeCookieValueRfc2109(actual.getValue()
+                                    .toString()));
             if (cookie.getVersion() == 1) {
-                Assert.assertEquals(cookie.getDomain(), actual.getDomain().toString());
-                Assert.assertEquals(cookie.getPath(), actual.getPath().toString());
+                Assert.assertEquals(cookie.getDomain(), actual.getDomain()
+                        .toString());
+                Assert.assertEquals(cookie.getPath(), actual.getPath()
+                        .toString());
             }
         }
     }

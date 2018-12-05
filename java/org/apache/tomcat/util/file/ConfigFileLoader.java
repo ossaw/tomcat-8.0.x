@@ -1,19 +1,16 @@
 /*
- *  Licensed to the Apache Software Foundation (ASF) under one or more
- *  contributor license agreements.  See the NOTICE file distributed with
- *  this work for additional information regarding copyright ownership.
- *  The ASF licenses this file to You under the Apache License, Version 2.0
- *  (the "License"); you may not use this file except in compliance with
- *  the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- *
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements. See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.apache.tomcat.util.file;
 
@@ -33,8 +30,8 @@ import org.apache.tomcat.util.res.StringManager;
  */
 public class ConfigFileLoader {
 
-    private static final StringManager sm = StringManager.getManager(ConfigFileLoader.class
-            .getPackage().getName());
+    private static final StringManager sm = StringManager.getManager(
+            ConfigFileLoader.class.getPackage().getName());
 
     private static final File CATALINA_BASE_FILE;
     private static final URI CATALINA_BASE_URI;
@@ -54,7 +51,6 @@ public class ConfigFileLoader {
         // Utility class. Hide the default constructor.
     }
 
-
     /**
      * Load the resource from the specified location.
      *
@@ -68,7 +64,8 @@ public class ConfigFileLoader {
      * @throws IOException If an InputStream cannot be created using the
      *                     provided location
      */
-    public static InputStream getInputStream(String location) throws IOException {
+    public static InputStream getInputStream(String location)
+            throws IOException {
         // Location was originally always a file before URI support was added so
         // try file first.
 
@@ -95,7 +92,8 @@ public class ConfigFileLoader {
             URL url = uri.toURL();
             return url.openConnection().getInputStream();
         } catch (IllegalArgumentException e) {
-            throw new IOException(sm.getString("configFileLoader.cannotObtainURL", location), e);
+            throw new IOException(sm.getString(
+                    "configFileLoader.cannotObtainURL", location), e);
         }
     }
 }

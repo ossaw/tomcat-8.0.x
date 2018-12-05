@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -29,90 +27,68 @@ public final class Globals {
      * The servlet context attribute under which we store the alternate
      * deployment descriptor for this web application
      */
-    public static final String ALT_DD_ATTR =
-        "org.apache.catalina.deploy.alt_dd";
-
+    public static final String ALT_DD_ATTR = "org.apache.catalina.deploy.alt_dd";
 
     /**
      * The request attribute under which we store the array of X509Certificate
      * objects representing the certificate chain presented by our client,
      * if any.
      */
-    public static final String CERTIFICATES_ATTR =
-        "javax.servlet.request.X509Certificate";
-
+    public static final String CERTIFICATES_ATTR = "javax.servlet.request.X509Certificate";
 
     /**
      * The request attribute under which we store the name of the cipher suite
      * being used on an SSL connection (as an object of type
      * java.lang.String).
      */
-    public static final String CIPHER_SUITE_ATTR =
-        "javax.servlet.request.cipher_suite";
-
+    public static final String CIPHER_SUITE_ATTR = "javax.servlet.request.cipher_suite";
 
     /**
      * Request dispatcher state.
      */
-    public static final String DISPATCHER_TYPE_ATTR =
-        "org.apache.catalina.core.DISPATCHER_TYPE";
-
+    public static final String DISPATCHER_TYPE_ATTR = "org.apache.catalina.core.DISPATCHER_TYPE";
 
     /**
      * Request dispatcher path.
      */
-    public static final String DISPATCHER_REQUEST_PATH_ATTR =
-        "org.apache.catalina.core.DISPATCHER_REQUEST_PATH";
-
+    public static final String DISPATCHER_REQUEST_PATH_ATTR = "org.apache.catalina.core.DISPATCHER_REQUEST_PATH";
 
     /**
      * The WebResourceRoot which is associated with the context. This can be
      * used to manipulate static files.
      */
-    public static final String RESOURCES_ATTR =
-        "org.apache.catalina.resources";
-
+    public static final String RESOURCES_ATTR = "org.apache.catalina.resources";
 
     /**
      * The servlet context attribute under which we store the class path
      * for our application class loader (as an object of type String),
      * delimited with the appropriate path delimiter for this platform.
      */
-    public static final String CLASS_PATH_ATTR =
-        "org.apache.catalina.jsp_classpath";
-
+    public static final String CLASS_PATH_ATTR = "org.apache.catalina.jsp_classpath";
 
     /**
      * The request attribute under which we store the key size being used for
      * this SSL connection (as an object of type java.lang.Integer).
      */
-    public static final String KEY_SIZE_ATTR =
-        "javax.servlet.request.key_size";
-
+    public static final String KEY_SIZE_ATTR = "javax.servlet.request.key_size";
 
     /**
      * The request attribute under which we store the session id being used
      * for this SSL connection (as an object of type java.lang.String).
      */
-    public static final String SSL_SESSION_ID_ATTR =
-        "javax.servlet.request.ssl_session_id";
-
+    public static final String SSL_SESSION_ID_ATTR = "javax.servlet.request.ssl_session_id";
 
     /**
      * The request attribute key for the session manager.
      * This one is a Tomcat extension to the Servlet spec.
      */
-    public static final String SSL_SESSION_MGR_ATTR =
-        "javax.servlet.request.ssl_session_mgr";
-
+    public static final String SSL_SESSION_MGR_ATTR = "javax.servlet.request.ssl_session_mgr";
 
     /**
      * The request attribute under which we store the servlet name on a
      * named dispatcher request.
      */
-    public static final String NAMED_DISPATCHER_ATTR =
-        "org.apache.catalina.NAMED";
-
+    public static final String NAMED_DISPATCHER_ATTR = "org.apache.catalina.NAMED";
 
     /**
      * The servlet context attribute under which we store a flag used
@@ -121,29 +97,21 @@ public final class Globals {
      * the CGIServlet in conjunction with the SSI servlet. (value stored
      * as an object of type String)
      */
-     public static final String SSI_FLAG_ATTR =
-         "org.apache.catalina.ssi.SSIServlet";
-
+    public static final String SSI_FLAG_ATTR = "org.apache.catalina.ssi.SSIServlet";
 
     /**
      * The subject under which the AccessControlContext is running.
      */
-    public static final String SUBJECT_ATTR =
-        "javax.security.auth.subject";
+    public static final String SUBJECT_ATTR = "javax.security.auth.subject";
 
-
-    public static final String GSS_CREDENTIAL_ATTR =
-        "org.apache.catalina.realm.GSS_CREDENTIAL";
-
+    public static final String GSS_CREDENTIAL_ATTR = "org.apache.catalina.realm.GSS_CREDENTIAL";
 
     /**
      * The request attribute that is set to the value of {@code Boolean.TRUE}
      * if connector processing this request supports Comet API.
      * Duplicated here for neater code in the catalina packages.
      */
-    public static final String COMET_SUPPORTED_ATTR =
-        org.apache.coyote.Constants.COMET_SUPPORTED_ATTR;
-
+    public static final String COMET_SUPPORTED_ATTR = org.apache.coyote.Constants.COMET_SUPPORTED_ATTR;
 
     /**
      * The request attribute that is set to the value of {@code Boolean.TRUE}
@@ -152,11 +120,9 @@ public final class Globals {
      *
      * @see org.apache.catalina.comet.CometEvent#setTimeout(int)
      *
-     * Duplicated here for neater code in the catalina packages.
+     *      Duplicated here for neater code in the catalina packages.
      */
-    public static final String COMET_TIMEOUT_SUPPORTED_ATTR =
-            org.apache.coyote.Constants.COMET_TIMEOUT_SUPPORTED_ATTR;
-
+    public static final String COMET_TIMEOUT_SUPPORTED_ATTR = org.apache.coyote.Constants.COMET_TIMEOUT_SUPPORTED_ATTR;
 
     /**
      * The request attribute that can be set to a value of type
@@ -165,11 +131,9 @@ public final class Globals {
      *
      * @see org.apache.catalina.comet.CometEvent#setTimeout(int)
      *
-     * Duplicated here for neater code in the catalina packages.
+     *      Duplicated here for neater code in the catalina packages.
      */
-    public static final String COMET_TIMEOUT_ATTR =
-        org.apache.coyote.Constants.COMET_TIMEOUT_ATTR;
-
+    public static final String COMET_TIMEOUT_ATTR = org.apache.coyote.Constants.COMET_TIMEOUT_ATTR;
 
     /**
      * The request attribute that is set to the value of {@code Boolean.TRUE}
@@ -177,9 +141,7 @@ public final class Globals {
      *
      * Duplicated here for neater code in the catalina packages.
      */
-    public static final String SENDFILE_SUPPORTED_ATTR =
-            org.apache.coyote.Constants.SENDFILE_SUPPORTED_ATTR;
-
+    public static final String SENDFILE_SUPPORTED_ATTR = org.apache.coyote.Constants.SENDFILE_SUPPORTED_ATTR;
 
     /**
      * The request attribute that can be used by a servlet to pass
@@ -189,9 +151,7 @@ public final class Globals {
      *
      * Duplicated here for neater code in the catalina packages.
      */
-    public static final String SENDFILE_FILENAME_ATTR =
-            org.apache.coyote.Constants.SENDFILE_FILENAME_ATTR;
-
+    public static final String SENDFILE_FILENAME_ATTR = org.apache.coyote.Constants.SENDFILE_FILENAME_ATTR;
 
     /**
      * The request attribute that can be used by a servlet to pass
@@ -202,9 +162,7 @@ public final class Globals {
      *
      * Duplicated here for neater code in the catalina packages.
      */
-    public static final String SENDFILE_FILE_START_ATTR =
-            org.apache.coyote.Constants.SENDFILE_FILE_START_ATTR;
-
+    public static final String SENDFILE_FILE_START_ATTR = org.apache.coyote.Constants.SENDFILE_FILE_START_ATTR;
 
     /**
      * The request attribute that can be used by a servlet to pass
@@ -215,9 +173,7 @@ public final class Globals {
      *
      * Duplicated here for neater code in the catalina packages.
      */
-    public static final String SENDFILE_FILE_END_ATTR =
-            org.apache.coyote.Constants.SENDFILE_FILE_END_ATTR;
-
+    public static final String SENDFILE_FILE_END_ATTR = org.apache.coyote.Constants.SENDFILE_FILE_END_ATTR;
 
     /**
      * The request attribute set by the RemoteIpFilter, RemoteIpValve (and may
@@ -228,13 +184,9 @@ public final class Globals {
      *
      * Duplicated here for neater code in the catalina packages.
      */
-    public static final String REMOTE_ADDR_ATTRIBUTE =
-            org.apache.coyote.Constants.REMOTE_ADDR_ATTRIBUTE;
+    public static final String REMOTE_ADDR_ATTRIBUTE = org.apache.coyote.Constants.REMOTE_ADDR_ATTRIBUTE;
 
-
-    public static final String ASYNC_SUPPORTED_ATTR =
-        "org.apache.catalina.ASYNC_SUPPORTED";
-
+    public static final String ASYNC_SUPPORTED_ATTR = "org.apache.catalina.ASYNC_SUPPORTED";
 
     /**
      * The request attribute that is set to {@code Boolean.TRUE} if some request
@@ -243,37 +195,31 @@ public final class Globals {
      * parameters, or if parameter cannot be decoded, or any other error
      * happened during parameter parsing.
      */
-    public static final String PARAMETER_PARSE_FAILED_ATTR =
-        "org.apache.catalina.parameter_parse_failed";
-
+    public static final String PARAMETER_PARSE_FAILED_ATTR = "org.apache.catalina.parameter_parse_failed";
 
     /**
      * The reason that the parameter parsing failed.
      */
-    public static final String PARAMETER_PARSE_FAILED_REASON_ATTR =
-            "org.apache.catalina.parameter_parse_failed_reason";
-
+    public static final String PARAMETER_PARSE_FAILED_REASON_ATTR = "org.apache.catalina.parameter_parse_failed_reason";
 
     /**
      * The master flag which controls strict servlet specification
      * compliance.
      */
-    public static final boolean STRICT_SERVLET_COMPLIANCE =
-        Boolean.parseBoolean(System.getProperty("org.apache.catalina.STRICT_SERVLET_COMPLIANCE", "false"));
-
+    public static final boolean STRICT_SERVLET_COMPLIANCE = Boolean
+            .parseBoolean(System.getProperty(
+                    "org.apache.catalina.STRICT_SERVLET_COMPLIANCE", "false"));
 
     /**
      * Has security been turned on?
      */
-    public static final boolean IS_SECURITY_ENABLED =
-        (System.getSecurityManager() != null);
-
+    public static final boolean IS_SECURITY_ENABLED = (System
+            .getSecurityManager() != null);
 
     /**
      * Default domain for MBeans if none can be determined
      */
     public static final String DEFAULT_MBEAN_DOMAIN = "Catalina";
-
 
     /**
      * Name of the system property containing
@@ -281,13 +227,11 @@ public final class Globals {
      */
     public static final String CATALINA_HOME_PROP = "catalina.home";
 
-
     /**
      * Name of the system property containing
      * the tomcat instance installation path
      */
     public static final String CATALINA_BASE_PROP = "catalina.base";
-
 
     /**
      * Name of the ServletContext init-param that determines if the JSP engine
@@ -295,9 +239,7 @@ public final class Globals {
      * <p>
      * This must be kept in sync with org.apache.jasper.Constants
      */
-    public static final String JASPER_XML_VALIDATION_TLD_INIT_PARAM =
-            "org.apache.jasper.XML_VALIDATE_TLD";
-
+    public static final String JASPER_XML_VALIDATION_TLD_INIT_PARAM = "org.apache.jasper.XML_VALIDATE_TLD";
 
     /**
      * Name of the ServletContext init-param that determines if the JSP engine
@@ -306,8 +248,7 @@ public final class Globals {
      * <p>
      * This must be kept in sync with org.apache.jasper.Constants
      */
-    public static final String JASPER_XML_BLOCK_EXTERNAL_INIT_PARAM =
-            "org.apache.jasper.XML_BLOCK_EXTERNAL";
+    public static final String JASPER_XML_BLOCK_EXTERNAL_INIT_PARAM = "org.apache.jasper.XML_BLOCK_EXTERNAL";
 
     @Deprecated // Will be removed in Tomcat 8.5.x
     public static final boolean IS_ORACLE_JVM = JreVendor.IS_ORACLE_JVM;
@@ -320,6 +261,5 @@ public final class Globals {
      * Realm's CredentialHandler (if both the Realm and the CredentialHandler
      * exist).
      */
-    public static final String CREDENTIAL_HANDLER
-            = "org.apache.catalina.CredentialHandler";
+    public static final String CREDENTIAL_HANDLER = "org.apache.catalina.CredentialHandler";
 }

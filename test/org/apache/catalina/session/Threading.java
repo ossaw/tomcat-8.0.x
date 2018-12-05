@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -38,13 +36,11 @@ public class Threading {
     /*
      * {@link FileInputStream#read(byte[])} and related methods are all native
      * methods so it isn't immediately obvious if they are thread-safe or not.
-     *
      * <pre>
      * Windows JDK 1.6.0_22_x64 - Thread safe
-     * OSX     JDK 1.6.0_22_x64 - Not thread safe
-     * OSX     JDK 1.7.0_51_x64 - Not thread safe
+     * OSX JDK 1.6.0_22_x64 - Not thread safe
+     * OSX JDK 1.7.0_51_x64 - Not thread safe
      * </pre>
-     *
      * Therefore, have to assume that {@link FileInputStream#read(byte[])} is
      * not thread safe.
      */
@@ -100,7 +96,7 @@ public class Threading {
         result.append("Threads: ");
         result.append(threadCount);
         result.append(", Time(ms): ");
-        result.append(end-start);
+        result.append(end - start);
         result.append(", Bytes: ");
         result.append(byteCount);
         System.out.println(result.toString());
@@ -127,7 +123,7 @@ public class Threading {
                     // Uncomment the sync block to test adding the sync fixes
                     // issues on platforms where fis is not thread-safe
                     // synchronized (fis) {
-                        read = fis.read(buffer);
+                    read = fis.read(buffer);
                     //}
                 } catch (IOException e) {
                     e.printStackTrace();

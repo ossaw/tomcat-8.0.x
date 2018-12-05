@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -60,7 +58,6 @@ public class TestAttributeParser {
         assertEquals("false", evalAttr("${false ? true : false}", '\"'));
     }
 
-
     /**
      * Test use nested ternary expressions. Full tests in
      * {@link org.apache.el.TestELEvaluation}. This is just a smoke test to
@@ -68,14 +65,13 @@ public class TestAttributeParser {
      */
     @Test
     public void testBug44994() {
-        assertEquals("none",
-                evalAttr("${0 lt 0 ? 1 lt 0 ? 'many': 'one': 'none'}", '\"'));
-        assertEquals("one",
-                evalAttr("${0 lt 1 ? 1 lt 1 ? 'many': 'one': 'none'}", '\"'));
-        assertEquals("many",
-                evalAttr("${0 lt 2 ? 1 lt 2 ? 'many': 'one': 'none'}", '\"'));
+        assertEquals("none", evalAttr(
+                "${0 lt 0 ? 1 lt 0 ? 'many': 'one': 'none'}", '\"'));
+        assertEquals("one", evalAttr(
+                "${0 lt 1 ? 1 lt 1 ? 'many': 'one': 'none'}", '\"'));
+        assertEquals("many", evalAttr(
+                "${0 lt 2 ? 1 lt 2 ? 'many': 'one': 'none'}", '\"'));
     }
-
 
     /**
      * Test the quoting requirements of JSP attributes. This doesn't make use of
@@ -151,9 +147,12 @@ public class TestAttributeParser {
         // inside of parseEL it will be printed as \${, thus preventing the EL
         // expression that follows from being evaluated.
         //
-        assertEquals("foo\\bar\\baz", evalAttr("${\'foo\'}\\\\${\'bar\'}\\\\${\'baz\'}", '\"'));
-        assertEquals("foo\\bar\\baz", evalAttr("${\'foo\'}\\\\${\"bar\"}\\\\${\'baz\'}", '\"'));
-        assertEquals("foo\\bar\\baz", evalAttr("${\"foo\"}\\\\${\'bar\'}\\\\${\"baz\"}", '\"'));
+        assertEquals("foo\\bar\\baz", evalAttr(
+                "${\'foo\'}\\\\${\'bar\'}\\\\${\'baz\'}", '\"'));
+        assertEquals("foo\\bar\\baz", evalAttr(
+                "${\'foo\'}\\\\${\"bar\"}\\\\${\'baz\'}", '\"'));
+        assertEquals("foo\\bar\\baz", evalAttr(
+                "${\"foo\"}\\\\${\'bar\'}\\\\${\"baz\"}", '\"'));
     }
 
     @Test
@@ -171,8 +170,7 @@ public class TestAttributeParser {
         ctx.setFunctionMapper(new FMapper());
         ValueExpression ve = exprFactory.createValueExpression(ctx,
                 AttributeParser.getUnquoted(expression, quote, false, false,
-                        false, false),
-                String.class);
+                        false, false), String.class);
         return (String) ve.getValue(ctx);
     }
 

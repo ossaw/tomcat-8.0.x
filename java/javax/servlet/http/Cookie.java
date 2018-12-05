@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -57,17 +55,18 @@ public class Cookie implements Cloneable, Serializable {
     private static final CookieNameValidator validation;
     static {
         boolean strictNaming;
-        String prop = System.getProperty("org.apache.tomcat.util.http.ServerCookie.STRICT_NAMING");
+        String prop = System.getProperty(
+                "org.apache.tomcat.util.http.ServerCookie.STRICT_NAMING");
         if (prop != null) {
             strictNaming = Boolean.parseBoolean(prop);
         } else {
-            strictNaming = Boolean.getBoolean("org.apache.catalina.STRICT_SERVLET_COMPLIANCE");
+            strictNaming = Boolean.getBoolean(
+                    "org.apache.catalina.STRICT_SERVLET_COMPLIANCE");
         }
 
         if (strictNaming) {
             validation = new RFC2109Validator();
-        }
-        else {
+        } else {
             validation = new NetscapeValidator();
         }
     }
@@ -106,13 +105,15 @@ public class Cookie implements Cloneable, Serializable {
      * <code>setVersion</code> method.
      *
      * @param name
-     *            a <code>String</code> specifying the name of the cookie
+     *              a <code>String</code> specifying the name of the cookie
      * @param value
-     *            a <code>String</code> specifying the value of the cookie
+     *              a <code>String</code> specifying the value of the cookie
      * @throws IllegalArgumentException
-     *             if the cookie name contains illegal characters (for example,
-     *             a comma, space, or semicolon) or it is one of the tokens
-     *             reserved for use by the cookie protocol
+     *                                  if the cookie name contains illegal
+     *                                  characters (for example,
+     *                                  a comma, space, or semicolon) or it is
+     *                                  one of the tokens
+     *                                  reserved for use by the cookie protocol
      * @see #setValue
      * @see #setVersion
      */
@@ -128,8 +129,9 @@ public class Cookie implements Cloneable, Serializable {
      * supported by Netscape Version 0 cookies.
      *
      * @param purpose
-     *            a <code>String</code> specifying the comment to display to the
-     *            user
+     *                a <code>String</code> specifying the comment to display to
+     *                the
+     *                user
      * @see #getComment
      */
     public void setComment(String purpose) {
@@ -158,8 +160,9 @@ public class Cookie implements Cloneable, Serializable {
      * default, cookies are only returned to the server that sent them.
      *
      * @param pattern
-     *            a <code>String</code> containing the domain name within which
-     *            this cookie is visible; form is according to RFC 2109
+     *                a <code>String</code> containing the domain name within
+     *                which
+     *                this cookie is visible; form is according to RFC 2109
      * @see #getDomain
      */
     public void setDomain(String pattern) {
@@ -189,9 +192,10 @@ public class Cookie implements Cloneable, Serializable {
      * cookie to be deleted.
      *
      * @param expiry
-     *            an integer specifying the maximum age of the cookie in
-     *            seconds; if negative, means the cookie is not stored; if zero,
-     *            deletes the cookie
+     *               an integer specifying the maximum age of the cookie in
+     *               seconds; if negative, means the cookie is not stored; if
+     *               zero,
+     *               deletes the cookie
      * @see #getMaxAge
      */
     public void setMaxAge(int expiry) {
@@ -203,7 +207,8 @@ public class Cookie implements Cloneable, Serializable {
      * <code>-1</code> indicating the cookie will persist until browser
      * shutdown.
      *
-     * @return an integer specifying the maximum age of the cookie in seconds; if
+     * @return an integer specifying the maximum age of the cookie in seconds;
+     *         if
      *         negative, means the cookie persists until browser shutdown
      * @see #setMaxAge
      */
@@ -251,9 +256,10 @@ public class Cookie implements Cloneable, Serializable {
      * The default value is <code>false</code>.
      *
      * @param flag
-     *            if <code>true</code>, sends the cookie from the browser to the
-     *            server only when using a secure protocol; if
-     *            <code>false</code>, sent on any protocol
+     *             if <code>true</code>, sends the cookie from the browser to
+     *             the
+     *             server only when using a secure protocol; if
+     *             <code>false</code>, sent on any protocol
      * @see #getSecure
      */
     public void setSecure(boolean flag) {
@@ -293,7 +299,7 @@ public class Cookie implements Cloneable, Serializable {
      * same way on all browsers.
      *
      * @param newValue
-     *            a <code>String</code> specifying the new value
+     *                 a <code>String</code> specifying the new value
      * @see #getValue
      * @see Cookie
      */
@@ -318,7 +324,8 @@ public class Cookie implements Cloneable, Serializable {
      * specification drafted by Netscape. Cookies provided by a browser use and
      * identify the browser's cookie version.
      *
-     * @return 0 if the cookie complies with the original Netscape specification;
+     * @return 0 if the cookie complies with the original Netscape
+     *         specification;
      *         1 if the cookie complies with RFC 2109
      * @see #setVersion
      */
@@ -335,8 +342,8 @@ public class Cookie implements Cloneable, Serializable {
      * do not use it yet on production sites.
      *
      * @param v
-     *            0 if the cookie should comply with the original Netscape
-     *            specification; 1 if the cookie should comply with RFC 2109
+     *          0 if the cookie should comply with the original Netscape
+     *          specification; 1 if the cookie should comply with RFC 2109
      * @see #getVersion
      */
     public void setVersion(int v) {
@@ -360,7 +367,7 @@ public class Cookie implements Cloneable, Serializable {
      * Sets the flag that controls if this cookie will be hidden from scripts on
      * the client side.
      *
-     * @param httpOnly  The new value of the flag
+     * @param httpOnly The new value of the flag
      *
      * @since Servlet 3.0
      */
@@ -372,8 +379,8 @@ public class Cookie implements Cloneable, Serializable {
      * Gets the flag that controls if this cookie will be hidden from scripts on
      * the client side.
      *
-     * @return  <code>true</code> if the cookie is hidden from scripts, else
-     *          <code>false</code>
+     * @return <code>true</code> if the cookie is hidden from scripts, else
+     *         <code>false</code>
      * @since Servlet 3.0
      */
     public boolean isHttpOnly() {
@@ -381,10 +388,10 @@ public class Cookie implements Cloneable, Serializable {
     }
 }
 
-
 class CookieNameValidator {
     private static final String LSTRING_FILE = "javax.servlet.http.LocalStrings";
-    protected static final ResourceBundle lStrings = ResourceBundle.getBundle(LSTRING_FILE);
+    protected static final ResourceBundle lStrings = ResourceBundle.getBundle(
+            LSTRING_FILE);
 
     protected final BitSet allowed;
 
@@ -399,11 +406,13 @@ class CookieNameValidator {
 
     void validate(String name) {
         if (name == null || name.length() == 0) {
-            throw new IllegalArgumentException(lStrings.getString("err.cookie_name_blank"));
+            throw new IllegalArgumentException(lStrings.getString(
+                    "err.cookie_name_blank"));
         }
         if (!isToken(name)) {
             String errMsg = lStrings.getString("err.cookie_name_is_token");
-            throw new IllegalArgumentException(MessageFormat.format(errMsg, name));
+            throw new IllegalArgumentException(MessageFormat.format(errMsg,
+                    name));
         }
     }
 
@@ -439,11 +448,13 @@ class RFC6265Validator extends CookieNameValidator {
 
         // special treatment to allow for FWD_SLASH_IS_SEPARATOR property
         boolean allowSlash;
-        String prop = System.getProperty("org.apache.tomcat.util.http.ServerCookie.FWD_SLASH_IS_SEPARATOR");
+        String prop = System.getProperty(
+                "org.apache.tomcat.util.http.ServerCookie.FWD_SLASH_IS_SEPARATOR");
         if (prop != null) {
             allowSlash = !Boolean.parseBoolean(prop);
         } else {
-            allowSlash = !Boolean.getBoolean("org.apache.catalina.STRICT_SERVLET_COMPLIANCE");
+            allowSlash = !Boolean.getBoolean(
+                    "org.apache.catalina.STRICT_SERVLET_COMPLIANCE");
         }
         if (allowSlash) {
             allowed.set('/');
@@ -452,15 +463,15 @@ class RFC6265Validator extends CookieNameValidator {
 }
 
 class RFC2109Validator extends RFC6265Validator {
-    RFC2109Validator() {
-    }
+    RFC2109Validator() {}
 
     @Override
     void validate(String name) {
         super.validate(name);
         if (name.charAt(0) == '$') {
             String errMsg = lStrings.getString("err.cookie_name_is_token");
-            throw new IllegalArgumentException(MessageFormat.format(errMsg, name));
+            throw new IllegalArgumentException(MessageFormat.format(errMsg,
+                    name));
         }
     }
 }

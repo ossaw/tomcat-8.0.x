@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -51,19 +49,19 @@ public class DirResourceSet extends AbstractFileResourceSet {
      * Creates a new {@link org.apache.catalina.WebResourceSet} based on a
      * directory.
      *
-     * @param root          The {@link WebResourceRoot} this new
-     *                          {@link org.apache.catalina.WebResourceSet} will
-     *                          be added to.
-     * @param webAppMount   The path within the web application at which this
-     *                          {@link org.apache.catalina.WebResourceSet} will
-     *                          be mounted. For example, to add a directory of
-     *                          JARs to a web application, the directory would
-     *                          be mounted at "/WEB-INF/lib/"
-     * @param base          The absolute path to the directory on the file
-     *                          system from which the resources will be served.
-     * @param internalPath  The path within this new {@link
-     *                          org.apache.catalina.WebResourceSet} where
-     *                          resources will be served from.
+     * @param root         The {@link WebResourceRoot} this new
+     *                     {@link org.apache.catalina.WebResourceSet} will
+     *                     be added to.
+     * @param webAppMount  The path within the web application at which this
+     *                     {@link org.apache.catalina.WebResourceSet} will
+     *                     be mounted. For example, to add a directory of
+     *                     JARs to a web application, the directory would
+     *                     be mounted at "/WEB-INF/lib/"
+     * @param base         The absolute path to the directory on the file
+     *                     system from which the resources will be served.
+     * @param internalPath The path within this new {@link
+     *                     org.apache.catalina.WebResourceSet} where
+     *                     resources will be served from.
      */
     public DirResourceSet(WebResourceRoot root, String webAppMount, String base,
             String internalPath) {
@@ -77,8 +75,8 @@ public class DirResourceSet extends AbstractFileResourceSet {
             f = new File(f, "/WEB-INF/classes/META-INF/resources");
 
             if (f.isDirectory()) {
-                root.createWebResourceSet(ResourceSetType.RESOURCE_JAR, "/",
-                         f.getAbsolutePath(), null, "/");
+                root.createWebResourceSet(ResourceSetType.RESOURCE_JAR, "/", f
+                        .getAbsolutePath(), null, "/");
             }
         }
 
@@ -90,7 +88,6 @@ public class DirResourceSet extends AbstractFileResourceSet {
             }
         }
     }
-
 
     @Override
     public WebResource getResource(String path) {
@@ -136,10 +133,11 @@ public class DirResourceSet extends AbstractFileResourceSet {
             if (webAppMount.startsWith(path)) {
                 int i = webAppMount.indexOf('/', path.length());
                 if (i == -1) {
-                    return new String[] {webAppMount.substring(path.length())};
+                    return new String[] { webAppMount.substring(path
+                            .length()) };
                 } else {
-                    return new String[] {
-                            webAppMount.substring(path.length(), i)};
+                    return new String[] { webAppMount.substring(path.length(),
+                            i) };
                 }
             }
             return EMPTY_STRING_ARRAY;
@@ -209,8 +207,8 @@ public class DirResourceSet extends AbstractFileResourceSet {
         checkPath(path);
 
         if (is == null) {
-            throw new NullPointerException(
-                    sm.getString("dirResourceSet.writeNpe"));
+            throw new NullPointerException(sm.getString(
+                    "dirResourceSet.writeNpe"));
         }
 
         if (isReadOnly()) {
@@ -234,7 +232,8 @@ public class DirResourceSet extends AbstractFileResourceSet {
 
         try {
             if (overwrite) {
-                Files.copy(is, dest.toPath(), StandardCopyOption.REPLACE_EXISTING);
+                Files.copy(is, dest.toPath(),
+                        StandardCopyOption.REPLACE_EXISTING);
             } else {
                 Files.copy(is, dest.toPath());
             }
@@ -248,8 +247,9 @@ public class DirResourceSet extends AbstractFileResourceSet {
     @Override
     protected void checkType(File file) {
         if (file.isDirectory() == false) {
-            throw new IllegalArgumentException(sm.getString("dirResourceSet.notDirectory",
-                    getBase(), File.separator, getInternalPath()));
+            throw new IllegalArgumentException(sm.getString(
+                    "dirResourceSet.notDirectory", getBase(), File.separator,
+                    getInternalPath()));
         }
     }
 
@@ -265,7 +265,8 @@ public class DirResourceSet extends AbstractFileResourceSet {
                 try (FileInputStream fis = new FileInputStream(mf)) {
                     setManifest(new Manifest(fis));
                 } catch (IOException e) {
-                    log.warn(sm.getString("dirResourceSet.manifestFail", mf.getAbsolutePath()), e);
+                    log.warn(sm.getString("dirResourceSet.manifestFail", mf
+                            .getAbsolutePath()), e);
                 }
             }
         }

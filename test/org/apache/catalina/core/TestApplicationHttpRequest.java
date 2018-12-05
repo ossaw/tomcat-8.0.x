@@ -1,18 +1,16 @@
 /*
- *  Licensed to the Apache Software Foundation (ASF) under one or more
- *  contributor license agreements.  See the NOTICE file distributed with
- *  this work for additional information regarding copyright ownership.
- *  The ASF licenses this file to You under the Apache License, Version 2.0
- *  (the "License"); you may not use this file except in compliance with
- *  the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements. See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.apache.catalina.core;
 
@@ -43,121 +41,108 @@ public class TestApplicationHttpRequest extends TomcatBaseTest {
      */
     @Test
     public void testForwardQueryString01() throws Exception {
-        Map<String,String[]> expected = new HashMap<>();
+        Map<String, String[]> expected = new HashMap<>();
         expected.put("a", new String[] { "b" });
         doQueryStringTest(null, "a=b", expected);
     }
 
-
     @Test
     public void testForwardQueryString02() throws Exception {
-        Map<String,String[]> expected = new HashMap<>();
+        Map<String, String[]> expected = new HashMap<>();
         expected.put("a", new String[] { "b", "c" });
         doQueryStringTest(null, "a=b&a=c", expected);
     }
 
-
     @Test
     public void testForwardQueryString03() throws Exception {
-        Map<String,String[]> expected = new HashMap<>();
+        Map<String, String[]> expected = new HashMap<>();
         expected.put("a", new String[] { "b" });
         expected.put("c", new String[] { "d" });
         doQueryStringTest(null, "a=b&c=d", expected);
     }
 
-
     @Test
     public void testForwardQueryString04() throws Exception {
-        Map<String,String[]> expected = new HashMap<>();
+        Map<String, String[]> expected = new HashMap<>();
         expected.put("a", new String[] { "b", "e" });
         expected.put("c", new String[] { "d" });
         doQueryStringTest(null, "a=b&c=d&a=e", expected);
     }
 
-
     @Test
     public void testForwardQueryString05() throws Exception {
         // Parameters with no value are assigned a vale of the empty string
-        Map<String,String[]> expected = new HashMap<>();
+        Map<String, String[]> expected = new HashMap<>();
         expected.put("a", new String[] { "b", "e" });
         expected.put("c", new String[] { "" });
         doQueryStringTest(null, "a=b&c&a=e", expected);
     }
 
-
     @Test
     public void testOriginalQueryString01() throws Exception {
-        Map<String,String[]> expected = new HashMap<>();
+        Map<String, String[]> expected = new HashMap<>();
         expected.put("a", new String[] { "b" });
         doQueryStringTest("a=b", null, expected);
     }
 
-
     @Test
     public void testOriginalQueryString02() throws Exception {
-        Map<String,String[]> expected = new HashMap<>();
+        Map<String, String[]> expected = new HashMap<>();
         expected.put("a", new String[] { "b", "c" });
         doQueryStringTest("a=b&a=c", null, expected);
     }
 
-
     @Test
     public void testOriginalQueryString03() throws Exception {
-        Map<String,String[]> expected = new HashMap<>();
+        Map<String, String[]> expected = new HashMap<>();
         expected.put("a", new String[] { "b" });
         expected.put("c", new String[] { "d" });
         doQueryStringTest("a=b&c=d", null, expected);
     }
 
-
     @Test
     public void testOriginalQueryString04() throws Exception {
-        Map<String,String[]> expected = new HashMap<>();
+        Map<String, String[]> expected = new HashMap<>();
         expected.put("a", new String[] { "b", "e" });
         expected.put("c", new String[] { "d" });
         doQueryStringTest("a=b&c=d&a=e", null, expected);
     }
 
-
     @Test
     public void testOriginalQueryString05() throws Exception {
         // Parameters with no value are assigned a vale of the empty string
-        Map<String,String[]> expected = new HashMap<>();
+        Map<String, String[]> expected = new HashMap<>();
         expected.put("a", new String[] { "b", "e" });
         expected.put("c", new String[] { "" });
         doQueryStringTest("a=b&c&a=e", null, expected);
     }
 
-
     @Test
     public void testMergeQueryString01() throws Exception {
-        Map<String,String[]> expected = new HashMap<>();
+        Map<String, String[]> expected = new HashMap<>();
         expected.put("a", new String[] { "z", "b" });
         doQueryStringTest("a=b", "a=z", expected);
     }
 
-
     @Test
     public void testMergeQueryString02() throws Exception {
-        Map<String,String[]> expected = new HashMap<>();
+        Map<String, String[]> expected = new HashMap<>();
         expected.put("a", new String[] { "z", "b", "e" });
         expected.put("c", new String[] { "" });
         doQueryStringTest("a=b&c&a=e", "a=z", expected);
     }
 
-
     @Test
     public void testMergeQueryString03() throws Exception {
-        Map<String,String[]> expected = new HashMap<>();
+        Map<String, String[]> expected = new HashMap<>();
         expected.put("a", new String[] { "b", "e" });
         expected.put("c", new String[] { "z", "" });
         doQueryStringTest("a=b&c&a=e", "c=z", expected);
     }
 
-
     @Test
     public void testMergeQueryString04() throws Exception {
-        Map<String,String[]> expected = new HashMap<>();
+        Map<String, String[]> expected = new HashMap<>();
         expected.put("a", new String[] { "", "b", "e" });
         expected.put("c", new String[] { "" });
         doQueryStringTest("a=b&c&a=e", "a", expected);
@@ -176,9 +161,9 @@ public class TestApplicationHttpRequest extends TomcatBaseTest {
         doQueryStringTest("a=b", query, expected);
     }
 
-
-    private void doQueryStringTest(String originalQueryString, String forwardQueryString,
-            Map<String,String[]> expected) throws Exception {
+    private void doQueryStringTest(String originalQueryString,
+            String forwardQueryString, Map<String, String[]> expected)
+            throws Exception {
         Tomcat tomcat = getTomcatInstance();
 
         // No file system docBase required
@@ -187,11 +172,13 @@ public class TestApplicationHttpRequest extends TomcatBaseTest {
         if (forwardQueryString == null) {
             Tomcat.addServlet(ctx, "forward", new ForwardServlet("/display"));
         } else {
-            Tomcat.addServlet(ctx, "forward", new ForwardServlet("/display?" + forwardQueryString));
+            Tomcat.addServlet(ctx, "forward", new ForwardServlet("/display?"
+                    + forwardQueryString));
         }
         ctx.addServletMappingDecoded("/forward", "forward");
 
-        Tomcat.addServlet(ctx, "display", new DisplayParameterServlet(expected));
+        Tomcat.addServlet(ctx, "display", new DisplayParameterServlet(
+                expected));
         ctx.addServletMappingDecoded("/display", "display");
 
         tomcat.start();
@@ -209,7 +196,6 @@ public class TestApplicationHttpRequest extends TomcatBaseTest {
         Assert.assertEquals(200, rc);
         Assert.assertEquals("OK", response.toString());
     }
-
 
     @Test
     public void testParameterImmutability() throws Exception {
@@ -236,7 +222,6 @@ public class TestApplicationHttpRequest extends TomcatBaseTest {
         Assert.assertEquals("OK", response.toString());
     }
 
-
     private static class ForwardServlet extends HttpServlet {
 
         private static final long serialVersionUID = 1L;
@@ -255,14 +240,13 @@ public class TestApplicationHttpRequest extends TomcatBaseTest {
         }
     }
 
-
     private static class DisplayParameterServlet extends HttpServlet {
 
         private static final long serialVersionUID = 1L;
 
-        private Map<String,String[]> expected;
+        private Map<String, String[]> expected;
 
-        public DisplayParameterServlet(Map<String,String[]> expected) {
+        public DisplayParameterServlet(Map<String, String[]> expected) {
             this.expected = expected;
         }
 
@@ -273,13 +257,13 @@ public class TestApplicationHttpRequest extends TomcatBaseTest {
             resp.setContentType("text/plain");
             resp.setCharacterEncoding("UTF-8");
             PrintWriter w = resp.getWriter();
-            Map<String,String[]> actual = req.getParameterMap();
+            Map<String, String[]> actual = req.getParameterMap();
 
             boolean ok = true;
-            for (Entry<String,String[]> entry : actual.entrySet()) {
+            for (Entry<String, String[]> entry : actual.entrySet()) {
                 String[] expectedValue = expected.get(entry.getKey());
-                if (expectedValue == null ||
-                        expectedValue.length != entry.getValue().length) {
+                if (expectedValue == null || expectedValue.length != entry
+                        .getValue().length) {
                     ok = false;
                     break;
                 }
@@ -299,7 +283,7 @@ public class TestApplicationHttpRequest extends TomcatBaseTest {
                 return;
             }
             boolean firstParam = true;
-            for (Entry<String,String[]> param : actual.entrySet()) {
+            for (Entry<String, String[]> param : actual.entrySet()) {
                 if (firstParam) {
                     firstParam = false;
                 } else {
@@ -322,14 +306,13 @@ public class TestApplicationHttpRequest extends TomcatBaseTest {
         }
     }
 
-
     private static class ModifyParameterServlet extends HttpServlet {
 
         private static final long serialVersionUID = 1L;
 
         // Suppress warnings generated because the code is trying to put the
         // wrong type of values into the Map
-        @SuppressWarnings({"rawtypes", "unchecked"})
+        @SuppressWarnings({ "rawtypes", "unchecked" })
         @Override
         protected void doGet(HttpServletRequest req, HttpServletResponse resp)
                 throws ServletException, IOException {

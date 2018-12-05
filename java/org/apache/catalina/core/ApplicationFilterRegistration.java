@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -32,20 +30,19 @@ import org.apache.tomcat.util.descriptor.web.FilterDef;
 import org.apache.tomcat.util.descriptor.web.FilterMap;
 import org.apache.tomcat.util.res.StringManager;
 
-public class ApplicationFilterRegistration
-        implements FilterRegistration.Dynamic {
+public class ApplicationFilterRegistration implements
+        FilterRegistration.Dynamic {
 
     /**
      * The string manager for this package.
      */
-    private static final StringManager sm =
-      StringManager.getManager(Constants.Package);
+    private static final StringManager sm = StringManager.getManager(
+            Constants.Package);
 
     private final FilterDef filterDef;
     private final Context context;
 
-    public ApplicationFilterRegistration(FilterDef filterDef,
-            Context context) {
+    public ApplicationFilterRegistration(FilterDef filterDef, Context context) {
         this.filterDef = filterDef;
         this.context = context;
 
@@ -146,7 +143,7 @@ public class ApplicationFilterRegistration
     @Override
     public String getClassName() {
         return filterDef.getFilterClass();
-   }
+    }
 
     @Override
     public String getInitParameter(String name) {
@@ -155,7 +152,7 @@ public class ApplicationFilterRegistration
 
     @Override
     public Map<String, String> getInitParameters() {
-        ParameterMap<String,String> result = new ParameterMap<>();
+        ParameterMap<String, String> result = new ParameterMap<>();
         result.putAll(filterDef.getParameterMap());
         result.setLocked(true);
         return result;
@@ -169,9 +166,9 @@ public class ApplicationFilterRegistration
     @Override
     public boolean setInitParameter(String name, String value) {
         if (name == null || value == null) {
-            throw new IllegalArgumentException(
-                    sm.getString("applicationFilterRegistration.nullInitParam",
-                            name, value));
+            throw new IllegalArgumentException(sm.getString(
+                    "applicationFilterRegistration.nullInitParam", name,
+                    value));
         }
         if (getInitParameter(name) != null) {
             return false;
@@ -190,8 +187,8 @@ public class ApplicationFilterRegistration
         for (Map.Entry<String, String> entry : initParameters.entrySet()) {
             if (entry.getKey() == null || entry.getValue() == null) {
                 throw new IllegalArgumentException(sm.getString(
-                        "applicationFilterRegistration.nullInitParams",
-                                entry.getKey(), entry.getValue()));
+                        "applicationFilterRegistration.nullInitParams", entry
+                                .getKey(), entry.getValue()));
             }
             if (getInitParameter(entry.getKey()) != null) {
                 conflicts.add(entry.getKey());

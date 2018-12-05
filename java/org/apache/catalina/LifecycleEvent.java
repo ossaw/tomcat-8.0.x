@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -15,16 +13,13 @@
  * limitations under the License.
  */
 
-
 package org.apache.catalina;
-
 
 import java.util.EventObject;
 
-
 /**
  * General event for notifying listeners of significant changes on a component
- * that implements the Lifecycle interface.  In particular, this will be useful
+ * that implements the Lifecycle interface. In particular, this will be useful
  * on Containers, where these events replace the ContextInterceptor concept in
  * Tomcat 3.x.
  *
@@ -34,15 +29,14 @@ public final class LifecycleEvent extends EventObject {
 
     private static final long serialVersionUID = 1L;
 
-
     // ----------------------------------------------------------- Constructors
 
     /**
      * Construct a new LifecycleEvent with the specified parameters.
      *
      * @param lifecycle Component on which this event occurred
-     * @param type Event type (required)
-     * @param data Event data (if any)
+     * @param type      Event type (required)
+     * @param data      Event data (if any)
      */
     public LifecycleEvent(Lifecycle lifecycle, String type, Object data) {
 
@@ -51,24 +45,19 @@ public final class LifecycleEvent extends EventObject {
         this.data = data;
     }
 
-
     // ----------------------------------------------------- Instance Variables
-
 
     /**
      * The event data associated with this event.
      */
     private final Object data;
 
-
     /**
      * The event type this instance represents.
      */
     private final String type;
 
-
     // ------------------------------------------------------------- Properties
-
 
     /**
      * Return the event data of this event.
@@ -79,7 +68,6 @@ public final class LifecycleEvent extends EventObject {
 
     }
 
-
     /**
      * Return the Lifecycle on which this event occurred.
      */
@@ -89,7 +77,6 @@ public final class LifecycleEvent extends EventObject {
 
     }
 
-
     /**
      * Return the event type of this event.
      */
@@ -98,6 +85,5 @@ public final class LifecycleEvent extends EventObject {
         return (this.type);
 
     }
-
 
 }

@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -23,7 +21,8 @@ import java.util.regex.Matcher;
 public class Substitution {
 
     public abstract class SubstitutionElement {
-        public abstract String evaluate(Matcher rule, Matcher cond, Resolver resolver);
+        public abstract String evaluate(Matcher rule, Matcher cond,
+                Resolver resolver);
     }
 
     public class StaticElement extends SubstitutionElement {
@@ -38,6 +37,7 @@ public class Substitution {
 
     public class RewriteRuleBackReferenceElement extends SubstitutionElement {
         public int n;
+
         @Override
         public String evaluate(Matcher rule, Matcher cond, Resolver resolver) {
             return rule.group(n);
@@ -46,6 +46,7 @@ public class Substitution {
 
     public class RewriteCondBackReferenceElement extends SubstitutionElement {
         public int n;
+
         @Override
         public String evaluate(Matcher rule, Matcher cond, Resolver resolver) {
             return cond.group(n);
@@ -54,6 +55,7 @@ public class Substitution {
 
     public class ServerVariableElement extends SubstitutionElement {
         public String key;
+
         @Override
         public String evaluate(Matcher rule, Matcher cond, Resolver resolver) {
             return resolver.resolve(key);
@@ -62,6 +64,7 @@ public class Substitution {
 
     public class ServerVariableEnvElement extends SubstitutionElement {
         public String key;
+
         @Override
         public String evaluate(Matcher rule, Matcher cond, Resolver resolver) {
             return resolver.resolveEnv(key);
@@ -70,6 +73,7 @@ public class Substitution {
 
     public class ServerVariableSslElement extends SubstitutionElement {
         public String key;
+
         @Override
         public String evaluate(Matcher rule, Matcher cond, Resolver resolver) {
             return resolver.resolveSsl(key);
@@ -78,6 +82,7 @@ public class Substitution {
 
     public class ServerVariableHttpElement extends SubstitutionElement {
         public String key;
+
         @Override
         public String evaluate(Matcher rule, Matcher cond, Resolver resolver) {
             return resolver.resolveHttp(key);
@@ -89,6 +94,7 @@ public class Substitution {
         public String key;
         public String defaultValue = null;
         public int n;
+
         @Override
         public String evaluate(Matcher rule, Matcher cond, Resolver resolver) {
             String result = map.lookup(rule.group(n));
@@ -102,8 +108,14 @@ public class Substitution {
     protected SubstitutionElement[] elements = null;
 
     protected String sub = null;
-    public String getSub() { return sub; }
-    public void setSub(String sub) { this.sub = sub; }
+
+    public String getSub() {
+        return sub;
+    }
+
+    public void setSub(String sub) {
+        this.sub = sub;
+    }
 
     public void parse(Map<String, RewriteMap> maps) {
 
@@ -128,7 +140,8 @@ public class Substitution {
                     throw new IllegalArgumentException(sub);
                 }
                 StaticElement newElement = new StaticElement();
-                newElement.value = sub.substring(pos, backslashPos) + sub.substring(backslashPos + 1, backslashPos + 2);
+                newElement.value = sub.substring(pos, backslashPos) + sub
+                        .substring(backslashPos + 1, backslashPos + 2);
                 pos = backslashPos + 2;
                 elements.add(newElement);
             } else if (isFirstPos(dollarPos, percentPos)) {
@@ -146,7 +159,8 @@ public class Substitution {
                 if (Character.isDigit(sub.charAt(dollarPos + 1))) {
                     // $: back reference to rule
                     RewriteRuleBackReferenceElement newElement = new RewriteRuleBackReferenceElement();
-                    newElement.n = Character.digit(sub.charAt(dollarPos + 1), 10);
+                    newElement.n = Character.digit(sub.charAt(dollarPos + 1),
+                            10);
                     pos = dollarPos + 2;
                     elements.add(newElement);
                 } else if (sub.charAt(dollarPos + 1) == '{') {
@@ -161,7 +175,8 @@ public class Substitution {
                     }
                     newElement.map = maps.get(sub.substring(open + 1, colon));
                     if (newElement.map == null) {
-                        throw new IllegalArgumentException(sub + ": No map: " + sub.substring(open + 1, colon));
+                        throw new IllegalArgumentException(sub + ": No map: "
+                                + sub.substring(open + 1, colon));
                     }
                     if (def > -1) {
                         if (!(colon < def && def < close)) {
@@ -173,12 +188,14 @@ public class Substitution {
                         newElement.key = sub.substring(colon + 1, close);
                     }
                     if (newElement.key.startsWith("$")) {
-                        newElement.n = Integer.parseInt(newElement.key.substring(1));
+                        newElement.n = Integer.parseInt(newElement.key
+                                .substring(1));
                     }
                     pos = close + 1;
                     elements.add(newElement);
                 } else {
-                    throw new IllegalArgumentException(sub + ": missing digit or curly brace.");
+                    throw new IllegalArgumentException(sub
+                            + ": missing digit or curly brace.");
                 }
             } else {
                 // %: back reference to condition or server variable
@@ -195,7 +212,8 @@ public class Substitution {
                 if (Character.isDigit(sub.charAt(percentPos + 1))) {
                     // %: back reference to condition
                     RewriteCondBackReferenceElement newElement = new RewriteCondBackReferenceElement();
-                    newElement.n = Character.digit(sub.charAt(percentPos + 1), 10);
+                    newElement.n = Character.digit(sub.charAt(percentPos + 1),
+                            10);
                     pos = percentPos + 2;
                     elements.add(newElement);
                 } else if (sub.charAt(percentPos + 1) == '{') {
@@ -211,24 +229,30 @@ public class Substitution {
                         String type = sub.substring(open + 1, colon);
                         if (type.equals("ENV")) {
                             newElement = new ServerVariableEnvElement();
-                            ((ServerVariableEnvElement) newElement).key = sub.substring(colon + 1, close);
+                            ((ServerVariableEnvElement) newElement).key = sub
+                                    .substring(colon + 1, close);
                         } else if (type.equals("SSL")) {
                             newElement = new ServerVariableSslElement();
-                            ((ServerVariableSslElement) newElement).key = sub.substring(colon + 1, close);
+                            ((ServerVariableSslElement) newElement).key = sub
+                                    .substring(colon + 1, close);
                         } else if (type.equals("HTTP")) {
                             newElement = new ServerVariableHttpElement();
-                            ((ServerVariableHttpElement) newElement).key = sub.substring(colon + 1, close);
+                            ((ServerVariableHttpElement) newElement).key = sub
+                                    .substring(colon + 1, close);
                         } else {
-                            throw new IllegalArgumentException(sub + ": Bad type: " + type);
+                            throw new IllegalArgumentException(sub
+                                    + ": Bad type: " + type);
                         }
                     } else {
                         newElement = new ServerVariableElement();
-                        ((ServerVariableElement) newElement).key = sub.substring(open + 1, close);
+                        ((ServerVariableElement) newElement).key = sub
+                                .substring(open + 1, close);
                     }
                     pos = close + 1;
                     elements.add(newElement);
                 } else {
-                    throw new IllegalArgumentException(sub + ": missing digit or curly brace.");
+                    throw new IllegalArgumentException(sub
+                            + ": missing digit or curly brace.");
                 }
             }
         }
@@ -252,15 +276,18 @@ public class Substitution {
     }
 
     /**
-     * Checks whether the first int is non negative and smaller than any non negative other int
+     * Checks whether the first int is non negative and smaller than any non
+     * negative other int
      * given with {@code others}.
      *
      * @param testPos
-     *            integer to test against
+     *                integer to test against
      * @param others
-     *            list of integers that are paired against {@code testPos}. Any
-     *            negative integer will be ignored.
-     * @return {@code true} if {@code testPos} is not negative and is less then any given other
+     *                list of integers that are paired against {@code testPos}.
+     *                Any
+     *                negative integer will be ignored.
+     * @return {@code true} if {@code testPos} is not negative and is less then
+     *         any given other
      *         integer, {@code false} otherwise
      */
     private boolean isFirstPos(int testPos, int... others) {

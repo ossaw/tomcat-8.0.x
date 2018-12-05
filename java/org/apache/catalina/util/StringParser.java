@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -15,16 +13,14 @@
  * limitations under the License.
  */
 
-
 package org.apache.catalina.util;
-
 
 /**
  * Utility class for string parsing that is higher performance than
- * StringParser for simple delimited text cases.  Parsing is performed
+ * StringParser for simple delimited text cases. Parsing is performed
  * by setting the string, and then using the <code>findXxxx()</code> and
  * <code>skipXxxx()</code> families of methods to remember significant
- * offsets.  To retrieve the parsed substrings, call the <code>extract()</code>
+ * offsets. To retrieve the parsed substrings, call the <code>extract()</code>
  * method with the appropriate saved offset values.
  *
  * @author Craig R. McClanahan
@@ -34,9 +30,7 @@ package org.apache.catalina.util;
 @Deprecated
 public final class StringParser {
 
-
     // ----------------------------------------------------------- Constructors
-
 
     /**
      * Construct a string parser with no preset string to be parsed.
@@ -46,7 +40,6 @@ public final class StringParser {
         this(null);
 
     }
-
 
     /**
      * Construct a string parser that is initialized to parse the specified
@@ -61,44 +54,37 @@ public final class StringParser {
 
     }
 
-
     // ----------------------------------------------------- Instance Variables
 
-
     /**
-     * The characters of the current string, as a character array.  Stored
+     * The characters of the current string, as a character array. Stored
      * when the string is first specified to speed up access to characters
      * being compared during parsing.
      */
     private char chars[] = null;
 
-
     /**
      * The zero-relative index of the current point at which we are
-     * positioned within the string being parsed.  <strong>NOTE</strong>:
+     * positioned within the string being parsed. <strong>NOTE</strong>:
      * the value of this index can be one larger than the index of the last
      * character of the string (i.e. equal to the string length) if you
-     * parse off the end of the string.  This value is useful for extracting
+     * parse off the end of the string. This value is useful for extracting
      * substrings that include the end of the string.
      */
     private int index = 0;
 
-
     /**
-     * The length of the String we are currently parsing.  Stored when the
+     * The length of the String we are currently parsing. Stored when the
      * string is first specified to avoid repeated recalculations.
      */
     private int length = 0;
-
 
     /**
      * The String we are currently parsing.
      */
     private String string = null;
 
-
     // ------------------------------------------------------------- Properties
-
 
     /**
      * Return the zero-relative index of our current parsing position
@@ -110,7 +96,6 @@ public final class StringParser {
 
     }
 
-
     /**
      * Return the length of the string we are parsing.
      */
@@ -118,9 +103,8 @@ public final class StringParser {
         return length;
     }
 
-
     /**
-     * Set the String we are currently parsing.  The parser state is also reset
+     * Set the String we are currently parsing. The parser state is also reset
      * to begin at the start of this string.
      *
      * @param string The string to be parsed.
@@ -138,9 +122,7 @@ public final class StringParser {
         reset();
     }
 
-
     // --------------------------------------------------------- Public Methods
-
 
     /**
      * Advance the current parsing position by one, if we are not already
@@ -152,14 +134,13 @@ public final class StringParser {
             index++;
     }
 
-
     /**
      * Extract and return a substring that starts at the specified position,
-     * and ends at the character before the specified position.  If this is
+     * and ends at the character before the specified position. If this is
      * not possible, a zero-length string is returned.
      *
      * @param start Starting index, zero relative, inclusive
-     * @param end Ending index, zero relative, exclusive
+     * @param end   Ending index, zero relative, exclusive
      */
     public String extract(int start, int end) {
 
@@ -170,11 +151,10 @@ public final class StringParser {
 
     }
 
-
     /**
      * Return the index of the next occurrence of the specified character,
      * or the index of the character after the last position of the string
-     * if no more occurrences of this character are found.  The current
+     * if no more occurrences of this character are found. The current
      * parsing position is updated to the returned value.
      *
      * @param ch Character to be found
@@ -186,7 +166,6 @@ public final class StringParser {
         return (index);
 
     }
-
 
     /**
      * Reset the current state of the parser to the beginning of the

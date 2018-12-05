@@ -1,18 +1,16 @@
 /*
- *  Licensed to the Apache Software Foundation (ASF) under one or more
- *  contributor license agreements.  See the NOTICE file distributed with
- *  this work for additional information regarding copyright ownership.
- *  The ASF licenses this file to You under the Apache License, Version 2.0
- *  (the "License"); you may not use this file except in compliance with
- *  the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements. See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.apache.coyote.http11;
 
@@ -43,11 +41,10 @@ import org.apache.tomcat.util.net.SocketWrapper;
  */
 public class InternalAprInputBuffer extends AbstractInputBuffer<Long> {
 
-    private static final Log log =
-        LogFactory.getLog(InternalAprInputBuffer.class);
+    private static final Log log = LogFactory.getLog(
+            InternalAprInputBuffer.class);
 
     // ----------------------------------------------------------- Constructors
-
 
     /**
      * Alternate constructor.
@@ -61,7 +58,8 @@ public class InternalAprInputBuffer extends AbstractInputBuffer<Long> {
         if (headerBufferSize < (8 * 1024)) {
             bbuf = ByteBuffer.allocateDirect(6 * 1500);
         } else {
-            bbuf = ByteBuffer.allocateDirect((headerBufferSize / 1500 + 1) * 1500);
+            bbuf = ByteBuffer.allocateDirect((headerBufferSize / 1500 + 1)
+                    * 1500);
         }
 
         inputStreamInputBuffer = new SocketInputBuffer();
@@ -75,24 +73,19 @@ public class InternalAprInputBuffer extends AbstractInputBuffer<Long> {
 
     }
 
-
     // ----------------------------------------------------- Instance Variables
-
 
     /**
      * Direct byte buffer used to perform actual reading.
      */
     private final ByteBuffer bbuf;
 
-
     /**
      * Underlying socket.
      */
     private long socket;
 
-
     private SocketWrapper<Long> wrapper;
-
 
     // --------------------------------------------------------- Public Methods
 
@@ -107,21 +100,21 @@ public class InternalAprInputBuffer extends AbstractInputBuffer<Long> {
         super.recycle();
     }
 
-
     /**
      * Read the request line. This function is meant to be used during the
      * HTTP request header parsing. Do NOT attempt to read the request body
      * using it.
      *
      * @throws IOException If an exception occurs during the underlying socket
-     * read operations, or if the given buffer is not big enough to accommodate
-     * the whole line.
+     *                     read operations, or if the given buffer is not big
+     *                     enough to accommodate
+     *                     the whole line.
      * @return true if data is properly fed; false if no data is available
-     * immediately and thread should be freed
+     *         immediately and thread should be freed
      */
     @Override
     public boolean parseRequestLine(boolean useAvailableData)
-        throws IOException {
+            throws IOException {
 
         int start = 0;
 
@@ -182,7 +175,8 @@ public class InternalAprInputBuffer extends AbstractInputBuffer<Long> {
                 space = true;
                 request.method().setBytes(buf, start, pos - start);
             } else if (!HTTP_TOKEN_CHAR[buf[pos]]) {
-                throw new IllegalArgumentException(sm.getString("iib.invalidmethod"));
+                throw new IllegalArgumentException(sm.getString(
+                        "iib.invalidmethod"));
             }
 
             pos++;
@@ -227,13 +221,13 @@ public class InternalAprInputBuffer extends AbstractInputBuffer<Long> {
                 space = true;
                 end = pos;
             } else if ((buf[pos] == Constants.CR)
-                       || (buf[pos] == Constants.LF)) {
+                    || (buf[pos] == Constants.LF)) {
                 // HTTP/0.9 style request
                 eol = true;
                 space = true;
                 end = pos;
             } else if ((buf[pos] == Constants.QUESTION)
-                       && (questionPos == -1)) {
+                    && (questionPos == -1)) {
                 questionPos = pos;
             }
 
@@ -242,8 +236,8 @@ public class InternalAprInputBuffer extends AbstractInputBuffer<Long> {
         }
 
         if (questionPos >= 0) {
-            request.queryString().setBytes(buf, questionPos + 1,
-                                           end - questionPos - 1);
+            request.queryString().setBytes(buf, questionPos + 1, end
+                    - questionPos - 1);
             request.requestURI().setBytes(buf, start, questionPos - start);
         } else {
             request.requestURI().setBytes(buf, start, end - start);
@@ -262,7 +256,6 @@ public class InternalAprInputBuffer extends AbstractInputBuffer<Long> {
                 space = false;
             }
         }
-
 
         // Mark the current buffer position
         start = pos;
@@ -303,16 +296,14 @@ public class InternalAprInputBuffer extends AbstractInputBuffer<Long> {
 
     }
 
-
     /**
      * Parse the HTTP headers.
      */
     @Override
-    public boolean parseHeaders()
-        throws IOException {
+    public boolean parseHeaders() throws IOException {
         if (!parsingHeader) {
-            throw new IllegalStateException(
-                    sm.getString("iib.parseheaders.ise.error"));
+            throw new IllegalStateException(sm.getString(
+                    "iib.parseheaders.ise.error"));
         }
 
         while (parseHeader()) {
@@ -324,16 +315,14 @@ public class InternalAprInputBuffer extends AbstractInputBuffer<Long> {
         return true;
     }
 
-
     /**
      * Parse an HTTP header.
      *
      * @return false after reading a blank line (which indicates that the
-     * HTTP header parsing is done
+     *         HTTP header parsing is done
      */
     @SuppressWarnings("null") // headerValue cannot be null
-    private boolean parseHeader()
-        throws IOException {
+    private boolean parseHeader() throws IOException {
 
         //
         // Check for blank line
@@ -491,7 +480,6 @@ public class InternalAprInputBuffer extends AbstractInputBuffer<Long> {
 
     }
 
-
     private void skipLine(int start) throws IOException {
         boolean eol = false;
         int lastRealByte = start;
@@ -523,24 +511,20 @@ public class InternalAprInputBuffer extends AbstractInputBuffer<Long> {
         }
     }
 
-
     // ---------------------------------------------------- InputBuffer Methods
-
 
     /**
      * Read some bytes.
      */
     @Override
-    public int doRead(ByteChunk chunk, Request req)
-        throws IOException {
+    public int doRead(ByteChunk chunk, Request req) throws IOException {
 
         if (lastActiveFilter == -1)
             return inputStreamInputBuffer.doRead(chunk, req);
         else
-            return activeFilters[lastActiveFilter].doRead(chunk,req);
+            return activeFilters[lastActiveFilter].doRead(chunk, req);
 
     }
-
 
     // ------------------------------------------------------ Protected Methods
 
@@ -553,7 +537,6 @@ public class InternalAprInputBuffer extends AbstractInputBuffer<Long> {
         Socket.setrbb(this.socket, bbuf);
     }
 
-
     @Override
     protected boolean fill(boolean block) throws IOException {
 
@@ -561,8 +544,8 @@ public class InternalAprInputBuffer extends AbstractInputBuffer<Long> {
 
         if (parsingHeader) {
             if (lastValid == buf.length) {
-                throw new IllegalArgumentException
-                    (sm.getString("iib.requestheadertoolarge.error"));
+                throw new IllegalArgumentException(sm.getString(
+                        "iib.requestheadertoolarge.error"));
             }
         } else {
             if (buf.length - end < 4500) {
@@ -591,14 +574,14 @@ public class InternalAprInputBuffer extends AbstractInputBuffer<Long> {
             // identified any issues with this but log it so it can be tracked
             // if it is suspected of causing issues in the future.
             if (log.isDebugEnabled()) {
-                log.debug(sm.getString("iib.apr.sslGeneralError",
-                        Long.valueOf(socket), wrapper));
+                log.debug(sm.getString("iib.apr.sslGeneralError", Long.valueOf(
+                        socket), wrapper));
             }
             return false;
         } else if ((-nRead) == Status.ETIMEDOUT || (-nRead) == Status.TIMEUP) {
             if (block) {
-                throw new SocketTimeoutException(
-                        sm.getString("iib.readtimeout"));
+                throw new SocketTimeoutException(sm.getString(
+                        "iib.readtimeout"));
             } else {
                 // Attempting to read from the socket when the poller
                 // has not signalled that there is data to read appears
@@ -612,17 +595,15 @@ public class InternalAprInputBuffer extends AbstractInputBuffer<Long> {
             // APR_STATUS_IS_EOF, since native 1.1.22
             return false;
         } else {
-            throw new IOException(sm.getString("iib.failedread.apr",
-                    Integer.valueOf(-nRead)));
+            throw new IOException(sm.getString("iib.failedread.apr", Integer
+                    .valueOf(-nRead)));
         }
     }
-
 
     @Override
     protected final Log getLog() {
         return log;
     }
-
 
     private int doReadSocket(boolean block) {
 
@@ -672,23 +653,19 @@ public class InternalAprInputBuffer extends AbstractInputBuffer<Long> {
         return result;
     }
 
-
     // ------------------------------------- InputStreamInputBuffer Inner Class
 
     /**
      * This class is an input buffer which will read its data from an input
      * stream.
      */
-    protected class SocketInputBuffer
-        implements InputBuffer {
-
+    protected class SocketInputBuffer implements InputBuffer {
 
         /**
          * Read bytes into the specified chunk.
          */
         @Override
-        public int doRead(ByteChunk chunk, Request req )
-            throws IOException {
+        public int doRead(ByteChunk chunk, Request req) throws IOException {
 
             if (pos >= lastValid) {
                 if (!fill(true))

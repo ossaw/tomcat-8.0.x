@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -39,10 +37,12 @@ import org.apache.tomcat.util.http.fileupload.ParameterParser;
 import org.apache.tomcat.util.http.fileupload.util.Streams;
 
 /**
- * <p> The default implementation of the
+ * <p>
+ * The default implementation of the
  * {@link org.apache.tomcat.util.http.fileupload.FileItem FileItem} interface.
  *
- * <p> After retrieving an instance of this class from a {@link
+ * <p>
+ * After retrieving an instance of this class from a {@link
  * org.apache.tomcat.util.http.fileupload.FileUpload FileUpload} instance (see
  * {@link org.apache.tomcat.util.http.fileupload.FileUpload
  * #parseRequest(org.apache.tomcat.util.http.fileupload.RequestContext)}), you
@@ -51,13 +51,14 @@ import org.apache.tomcat.util.http.fileupload.util.Streams;
  * {@link #getInputStream()} and process the file without attempting to load
  * it into memory, which may come handy with large files.
  *
- * <p>Temporary files, which are created for file items, should be
- * deleted later on.</p>
+ * <p>
+ * Temporary files, which are created for file items, should be
+ * deleted later on.
+ * </p>
  *
  * @since FileUpload 1.1
  */
-public class DiskFileItem
-    implements FileItem {
+public class DiskFileItem implements FileItem {
 
     // ----------------------------------------------------- Manifest constants
 
@@ -74,8 +75,8 @@ public class DiskFileItem
     /**
      * UID used in unique file name generation.
      */
-    private static final String UID =
-            UUID.randomUUID().toString().replace('-', '_');
+    private static final String UID = UUID.randomUUID().toString().replace('-',
+            '_');
 
     /**
      * Counter used in unique identifier generation.
@@ -108,7 +109,6 @@ public class DiskFileItem
      * file item is moved from its original location.
      */
     private long size = -1;
-
 
     /**
      * The threshold above which uploads will be stored on disk.
@@ -159,9 +159,9 @@ public class DiskFileItem
      *                      which files will be created, should the item size
      *                      exceed the threshold.
      */
-    public DiskFileItem(String fieldName,
-            String contentType, boolean isFormField, String fileName,
-            int sizeThreshold, File repository) {
+    public DiskFileItem(String fieldName, String contentType,
+            boolean isFormField, String fileName, int sizeThreshold,
+            File repository) {
         this.fieldName = fieldName;
         this.contentType = contentType;
         this.isFormField = isFormField;
@@ -182,8 +182,7 @@ public class DiskFileItem
      * @throws IOException if an error occurs.
      */
     @Override
-    public InputStream getInputStream()
-        throws IOException {
+    public InputStream getInputStream() throws IOException {
         if (!isInMemory()) {
             return new FileInputStream(dfos.getFile());
         }
@@ -217,7 +216,7 @@ public class DiskFileItem
         ParameterParser parser = new ParameterParser();
         parser.setLowerCaseNames(true);
         // Parameter parser can handle null input
-        Map<String,String> params = parser.parse(getContentType(), ';');
+        Map<String, String> params = parser.parse(getContentType(), ';');
         return params.get("charset");
     }
 
@@ -226,10 +225,12 @@ public class DiskFileItem
      *
      * @return The original filename in the client's filesystem.
      * @throws org.apache.tomcat.util.http.fileupload.InvalidFileNameException
-     *   The file name contains a NUL character, which might be an indicator of
-     *   a security attack. If you intend to use the file name anyways, catch
-     *   the exception and use {@link
-     *   org.apache.tomcat.util.http.fileupload.InvalidFileNameException#getName()}.
+     *         The file name contains a NUL character, which might be an
+     *         indicator of
+     *         a security attack. If you intend to use the file name anyways,
+     *         catch
+     *         the exception and use {@link
+     *         org.apache.tomcat.util.http.fileupload.InvalidFileNameException#getName()}.
      */
     @Override
     public String getName() {
@@ -272,12 +273,12 @@ public class DiskFileItem
     }
 
     /**
-     * Returns the contents of the file as an array of bytes.  If the
+     * Returns the contents of the file as an array of bytes. If the
      * contents of the file were not yet cached in memory, they will be
      * loaded from the disk storage and cached.
      *
      * @return The contents of the file as an array of bytes
-     * or {@code null} if the data cannot be read
+     *         or {@code null} if the data cannot be read
      */
     @Override
     public byte[] get() {
@@ -305,7 +306,7 @@ public class DiskFileItem
 
     /**
      * Returns the contents of the file as a String, using the specified
-     * encoding.  This method uses {@link #get()} to retrieve the
+     * encoding. This method uses {@link #get()} to retrieve the
      * contents of the file.
      *
      * @param charset The charset to use.
@@ -317,16 +318,17 @@ public class DiskFileItem
      */
     @Override
     public String getString(final String charset)
-        throws UnsupportedEncodingException {
+            throws UnsupportedEncodingException {
         return new String(get(), charset);
     }
 
     /**
      * Returns the contents of the file as a String, using the default
-     * character encoding.  This method uses {@link #get()} to retrieve the
+     * character encoding. This method uses {@link #get()} to retrieve the
      * contents of the file.
      *
-     * <b>TODO</b> Consider making this method throw UnsupportedEncodingException.
+     * <b>TODO</b> Consider making this method throw
+     * UnsupportedEncodingException.
      *
      * @return The contents of the file, as a string.
      */
@@ -389,10 +391,10 @@ public class DiskFileItem
                     BufferedInputStream in = null;
                     BufferedOutputStream out = null;
                     try {
-                        in = new BufferedInputStream(
-                            new FileInputStream(outputFile));
-                        out = new BufferedOutputStream(
-                                new FileOutputStream(file));
+                        in = new BufferedInputStream(new FileInputStream(
+                                outputFile));
+                        out = new BufferedOutputStream(new FileOutputStream(
+                                file));
                         IOUtils.copy(in, out);
                         out.close();
                     } finally {
@@ -406,7 +408,7 @@ public class DiskFileItem
                  * file to disk.
                  */
                 throw new FileUploadException(
-                    "Cannot write uploaded file to disk!");
+                        "Cannot write uploaded file to disk!");
             }
         }
     }
@@ -494,8 +496,7 @@ public class DiskFileItem
      * @throws IOException if an error occurs.
      */
     @Override
-    public OutputStream getOutputStream()
-        throws IOException {
+    public OutputStream getOutputStream() throws IOException {
         if (dfos == null) {
             File outputFile = getTempFile();
             dfos = new DeferredFileOutputStream(sizeThreshold, outputFile);
@@ -551,7 +552,8 @@ public class DiskFileItem
      * the file is tied to the lifetime of the <code>FileItem</code> instance;
      * the file will be deleted when the instance is garbage collected.
      * <p>
-     * <b>Note: Subclasses that override this method must ensure that they return the
+     * <b>Note: Subclasses that override this method must ensure that they
+     * return the
      * same File each time.</b>
      *
      * @return The {@link java.io.File File} to be used for temporary storage.
@@ -563,8 +565,8 @@ public class DiskFileItem
                 tempDir = new File(System.getProperty("java.io.tmpdir"));
             }
 
-            String tempFileName =
-                    String.format("upload_%s_%s.tmp", UID, getUniqueId());
+            String tempFileName = String.format("upload_%s_%s.tmp", UID,
+                    getUniqueId());
 
             tempFile = new File(tempDir, tempFileName);
         }
@@ -599,13 +601,15 @@ public class DiskFileItem
      */
     @Override
     public String toString() {
-        return String.format("name=%s, StoreLocation=%s, size=%s bytes, isFormField=%s, FieldName=%s",
-                      getName(), getStoreLocation(), Long.valueOf(getSize()),
-                      Boolean.valueOf(isFormField()), getFieldName());
+        return String.format(
+                "name=%s, StoreLocation=%s, size=%s bytes, isFormField=%s, FieldName=%s",
+                getName(), getStoreLocation(), Long.valueOf(getSize()), Boolean
+                        .valueOf(isFormField()), getFieldName());
     }
 
     /**
      * Returns the file item headers.
+     * 
      * @return The file items headers.
      */
     @Override
@@ -615,6 +619,7 @@ public class DiskFileItem
 
     /**
      * Sets the file item headers.
+     * 
      * @param pHeaders The file items headers.
      */
     @Override

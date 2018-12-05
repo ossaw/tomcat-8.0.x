@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -42,8 +40,8 @@ public class TomcatURLStreamHandlerFactory implements URLStreamHandlerFactory {
         return instance;
     }
 
-
-    private static TomcatURLStreamHandlerFactory getInstanceInternal(boolean register) {
+    private static TomcatURLStreamHandlerFactory getInstanceInternal(
+            boolean register) {
         // Double checked locking. OK because instance is volatile.
         if (instance == null) {
             synchronized (TomcatURLStreamHandlerFactory.class) {
@@ -55,12 +53,10 @@ public class TomcatURLStreamHandlerFactory implements URLStreamHandlerFactory {
         return instance;
     }
 
-
     private final boolean registered;
 
     // List of factories for application defined stream handler factories.
-    private final List<URLStreamHandlerFactory> userFactories =
-            new CopyOnWriteArrayList<>();
+    private final List<URLStreamHandlerFactory> userFactories = new CopyOnWriteArrayList<>();
 
     /**
      * Register this factory with the JVM. May be called more than once. The
@@ -75,7 +71,6 @@ public class TomcatURLStreamHandlerFactory implements URLStreamHandlerFactory {
         return getInstanceInternal(true).isRegistered();
     }
 
-
     /**
      * Prevent this this factory from registering with the JVM. May be called
      * more than once.
@@ -84,12 +79,11 @@ public class TomcatURLStreamHandlerFactory implements URLStreamHandlerFactory {
      *         successfully disabled as a result of this call.
      *         <code>false</code> if the factory was already registered prior
      *         to this call.
-
+     * 
      */
     public static boolean disable() {
         return !getInstanceInternal(false).isRegistered();
     }
-
 
     /**
      * Release references to any user provided factories that have been loaded
@@ -118,7 +112,6 @@ public class TomcatURLStreamHandlerFactory implements URLStreamHandlerFactory {
         }
     }
 
-
     private TomcatURLStreamHandlerFactory(boolean register) {
         // Hide default constructor
         // Singleton pattern to ensure there is only one instance of this
@@ -129,11 +122,9 @@ public class TomcatURLStreamHandlerFactory implements URLStreamHandlerFactory {
         }
     }
 
-
     public boolean isRegistered() {
         return registered;
     }
-
 
     /**
      * Since the JVM only allows a single call to
@@ -148,7 +139,6 @@ public class TomcatURLStreamHandlerFactory implements URLStreamHandlerFactory {
         userFactories.add(factory);
     }
 
-
     @Override
     public URLStreamHandler createURLStreamHandler(String protocol) {
 
@@ -162,8 +152,7 @@ public class TomcatURLStreamHandlerFactory implements URLStreamHandlerFactory {
 
         // Application handlers
         for (URLStreamHandlerFactory factory : userFactories) {
-            URLStreamHandler handler =
-                factory.createURLStreamHandler(protocol);
+            URLStreamHandler handler = factory.createURLStreamHandler(protocol);
             if (handler != null) {
                 return handler;
             }

@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -27,8 +25,7 @@ import javax.naming.NamingException;
  */
 public class SimpleInstanceManager implements InstanceManager {
 
-    public SimpleInstanceManager() {
-    }
+    public SimpleInstanceManager() {}
 
     @Override
     public Object newInstance(Class<?> clazz) throws IllegalAccessException,
@@ -39,28 +36,29 @@ public class SimpleInstanceManager implements InstanceManager {
     @Override
     public Object newInstance(String className) throws IllegalAccessException,
             InvocationTargetException, NamingException, InstantiationException,
-            ClassNotFoundException  {
-        Class<?> clazz = Thread.currentThread().getContextClassLoader().loadClass(className);
+            ClassNotFoundException {
+        Class<?> clazz = Thread.currentThread().getContextClassLoader()
+                .loadClass(className);
         return prepareInstance(clazz.newInstance());
     }
 
     @Override
-    public Object newInstance(String fqcn, ClassLoader classLoader) throws IllegalAccessException,
-            InvocationTargetException, NamingException, InstantiationException,
-            ClassNotFoundException  {
+    public Object newInstance(String fqcn, ClassLoader classLoader)
+            throws IllegalAccessException, InvocationTargetException,
+            NamingException, InstantiationException, ClassNotFoundException {
         Class<?> clazz = classLoader.loadClass(fqcn);
         return prepareInstance(clazz.newInstance());
     }
 
     @Override
-    public void newInstance(Object o) throws IllegalAccessException, InvocationTargetException,
-            NamingException  {
+    public void newInstance(Object o) throws IllegalAccessException,
+            InvocationTargetException, NamingException {
         prepareInstance(o);
     }
 
     @Override
-    public void destroyInstance(Object o) throws IllegalAccessException, InvocationTargetException {
-    }
+    public void destroyInstance(Object o) throws IllegalAccessException,
+            InvocationTargetException {}
 
     private Object prepareInstance(Object o) {
         return o;

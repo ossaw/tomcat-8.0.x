@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -41,6 +39,7 @@ class Util {
     /**
      * Checks whether the supplied Throwable is one that needs to be
      * rethrown and swallows all others.
+     * 
      * @param t the Throwable to check
      */
     static void handleThrowable(Throwable t) {
@@ -52,7 +51,6 @@ class Util {
         }
         // All other instances of Throwable will be silently swallowed
     }
-
 
     static String message(ELContext context, String name, Object... props) {
         Locale locale = null;
@@ -74,14 +72,13 @@ class Util {
             }
             return template;
         } catch (MissingResourceException e) {
-            return "Missing Resource: '" + name + "' for Locale " + locale.getDisplayName();
+            return "Missing Resource: '" + name + "' for Locale " + locale
+                    .getDisplayName();
         }
     }
 
-
     private static final CacheValue nullTcclFactory = new CacheValue();
-    private static final ConcurrentMap<CacheKey, CacheValue> factoryCache =
-            new ConcurrentHashMap<>();
+    private static final ConcurrentMap<CacheKey, CacheValue> factoryCache = new ConcurrentHashMap<>();
 
     /**
      * Provides a per class loader cache of ExpressionFactory instances without
@@ -132,7 +129,6 @@ class Util {
         return factory;
     }
 
-
     /**
      * Key used to cache default ExpressionFactory information per class
      * loader. The class loader reference is never {@code null}, because
@@ -172,8 +168,7 @@ class Util {
         private final ReadWriteLock lock = new ReentrantReadWriteLock();
         private WeakReference<ExpressionFactory> ref;
 
-        public CacheValue() {
-        }
+        public CacheValue() {}
 
         public ReadWriteLock getLock() {
             return lock;
@@ -188,7 +183,6 @@ class Util {
         }
     }
 
-
     /*
      * This method duplicates code in org.apache.el.util.ReflectionUtil. When
      * making changes keep the code in sync.
@@ -197,9 +191,9 @@ class Util {
             Class<?>[] paramTypes, Object[] paramValues) {
 
         if (clazz == null || methodName == null) {
-            throw new MethodNotFoundException(
-                    message(null, "util.method.notfound", clazz, methodName,
-                    paramString(paramTypes)));
+            throw new MethodNotFoundException(message(null,
+                    "util.method.notfound", clazz, methodName, paramString(
+                            paramTypes)));
         }
 
         if (paramTypes == null) {
@@ -210,8 +204,8 @@ class Util {
 
         List<Wrapper> wrappers = Wrapper.wrap(methods, methodName);
 
-        Wrapper result = findWrapper(
-                clazz, wrappers, methodName, paramTypes, paramValues);
+        Wrapper result = findWrapper(clazz, wrappers, methodName, paramTypes,
+                paramValues);
 
         if (result == null) {
             return null;
@@ -227,7 +221,7 @@ class Util {
     private static Wrapper findWrapper(Class<?> clazz, List<Wrapper> wrappers,
             String name, Class<?>[] paramTypes, Object[] paramValues) {
 
-        Map<Wrapper,MatchResult> candidates = new HashMap<>();
+        Map<Wrapper, MatchResult> candidates = new HashMap<>();
 
         int paramCount;
         if (paramTypes == null) {
@@ -246,8 +240,8 @@ class Util {
             }
 
             // Check the number of parameters
-            if (!(paramCount == mParamCount ||
-                    (w.isVarArgs() && paramCount >= mParamCount))) {
+            if (!(paramCount == mParamCount || (w.isVarArgs()
+                    && paramCount >= mParamCount))) {
                 // Method has wrong number of parameters
                 continue;
             }
@@ -309,8 +303,8 @@ class Util {
                 return w;
             }
 
-            candidates.put(w, new MatchResult(
-                    exactMatch, assignableMatch, coercibleMatch, w.isBridge()));
+            candidates.put(w, new MatchResult(exactMatch, assignableMatch,
+                    coercibleMatch, w.isBridge()));
         }
 
         // Look for the method that has the highest number of parameters where
@@ -332,7 +326,8 @@ class Util {
             if (bestMatch.getExact() == paramCount - 1) {
                 // Only one parameter is not an exact match - try using the
                 // super class
-                match = resolveAmbiguousWrapper(candidates.keySet(), paramTypes);
+                match = resolveAmbiguousWrapper(candidates.keySet(),
+                        paramTypes);
             } else {
                 match = null;
             }
@@ -340,22 +335,21 @@ class Util {
             if (match == null) {
                 // If multiple methods have the same matching number of parameters
                 // the match is ambiguous so throw an exception
-                throw new MethodNotFoundException(message(
-                        null, "util.method.ambiguous", clazz, name,
-                        paramString(paramTypes)));
-                }
+                throw new MethodNotFoundException(message(null,
+                        "util.method.ambiguous", clazz, name, paramString(
+                                paramTypes)));
+            }
         }
 
         // Handle case where no match at all was found
         if (match == null) {
-            throw new MethodNotFoundException(message(
-                        null, "util.method.notfound", clazz, name,
-                        paramString(paramTypes)));
+            throw new MethodNotFoundException(message(null,
+                    "util.method.notfound", clazz, name, paramString(
+                            paramTypes)));
         }
 
         return match;
     }
-
 
     private static final String paramString(Class<?>[] types) {
         if (types != null) {
@@ -374,7 +368,6 @@ class Util {
         }
         return null;
     }
-
 
     /*
      * This method duplicates code in org.apache.el.util.ReflectionUtil. When
@@ -402,12 +395,11 @@ class Util {
         }
 
         for (Wrapper c : candidates) {
-           if (c.getParameterTypes()[nonMatchIndex] ==
-                   paramTypes[nonMatchIndex]) {
-               // Methods have different non-matching parameters
-               // Result is ambiguous
-               return null;
-           }
+            if (c.getParameterTypes()[nonMatchIndex] == paramTypes[nonMatchIndex]) {
+                // Methods have different non-matching parameters
+                // Result is ambiguous
+                return null;
+            }
         }
 
         // Can't be null
@@ -427,8 +419,8 @@ class Util {
         if (Number.class.isAssignableFrom(nonMatchClass)) {
             for (Wrapper c : candidates) {
                 Class<?> candidateType = c.getParameterTypes()[nonMatchIndex];
-                if (Number.class.isAssignableFrom(candidateType) ||
-                        candidateType.isPrimitive()) {
+                if (Number.class.isAssignableFrom(candidateType)
+                        || candidateType.isPrimitive()) {
                     if (match == null) {
                         match = c;
                     } else {
@@ -442,7 +434,6 @@ class Util {
 
         return match;
     }
-
 
     /*
      * This method duplicates code in org.apache.el.util.ReflectionUtil. When
@@ -481,7 +472,6 @@ class Util {
         return targetClass.isAssignableFrom(src);
     }
 
-
     /*
      * This method duplicates code in org.apache.el.util.ReflectionUtil. When
      * making changes keep the code in sync.
@@ -496,7 +486,6 @@ class Util {
         }
         return true;
     }
-
 
     private static Class<?>[] getTypesFromValues(Object[] values) {
         if (values == null) {
@@ -513,7 +502,6 @@ class Util {
         }
         return result;
     }
-
 
     /*
      * This method duplicates code in org.apache.el.util.ReflectionUtil. When
@@ -551,16 +539,15 @@ class Util {
         return null;
     }
 
-
     static Constructor<?> findConstructor(Class<?> clazz, Class<?>[] paramTypes,
             Object[] paramValues) {
 
         String methodName = "<init>";
 
         if (clazz == null) {
-            throw new MethodNotFoundException(
-                    message(null, "util.method.notfound", clazz, methodName,
-                    paramString(paramTypes)));
+            throw new MethodNotFoundException(message(null,
+                    "util.method.notfound", clazz, methodName, paramString(
+                            paramTypes)));
         }
 
         if (paramTypes == null) {
@@ -571,15 +558,14 @@ class Util {
 
         List<Wrapper> wrappers = Wrapper.wrap(constructors);
 
-        Wrapper result = findWrapper(
-                clazz, wrappers, methodName, paramTypes, paramValues);
+        Wrapper result = findWrapper(clazz, wrappers, methodName, paramTypes,
+                paramValues);
 
         if (result == null) {
             return null;
         }
         return getConstructor(clazz, (Constructor<?>) result.unWrap());
     }
-
 
     static Constructor<?> getConstructor(Class<?> type, Constructor<?> c) {
         if (c == null || Modifier.isPublic(type.getModifiers())) {
@@ -601,9 +587,8 @@ class Util {
         return null;
     }
 
-
     static Object[] buildParameters(Class<?>[] parameterTypes,
-            boolean isVarArgs,Object[] params) {
+            boolean isVarArgs, Object[] params) {
         ExpressionFactory factory = getExpressionFactory();
         Object[] parameters = null;
         if (parameterTypes.length > 0) {
@@ -617,14 +602,13 @@ class Util {
                             parameterTypes[i]);
                 }
                 // Last parameter is the varargs
-                Class<?> varArgClass =
-                    parameterTypes[varArgIndex].getComponentType();
-                final Object varargs = Array.newInstance(
-                    varArgClass,
-                    (paramCount - varArgIndex));
+                Class<?> varArgClass = parameterTypes[varArgIndex]
+                        .getComponentType();
+                final Object varargs = Array.newInstance(varArgClass,
+                        (paramCount - varArgIndex));
                 for (int i = (varArgIndex); i < paramCount; i++) {
-                    Array.set(varargs, i - varArgIndex,
-                            factory.coerceToType(params[i], varArgClass));
+                    Array.set(varargs, i - varArgIndex, factory.coerceToType(
+                            params[i], varArgClass));
                 }
                 parameters[varArgIndex] = varargs;
             } else {
@@ -637,7 +621,6 @@ class Util {
         }
         return parameters;
     }
-
 
     private abstract static class Wrapper {
 
@@ -660,11 +643,13 @@ class Util {
         }
 
         public abstract Object unWrap();
+
         public abstract Class<?>[] getParameterTypes();
+
         public abstract boolean isVarArgs();
+
         public abstract boolean isBridge();
     }
-
 
     private static class MethodWrapper extends Wrapper {
         private final Method m;
@@ -733,7 +718,8 @@ class Util {
         private final int coercible;
         private final boolean bridge;
 
-        public MatchResult(int exact, int assignable, int coercible, boolean bridge) {
+        public MatchResult(int exact, int assignable, int coercible,
+                boolean bridge) {
             this.exact = exact;
             this.assignable = assignable;
             this.coercible = coercible;
@@ -762,7 +748,8 @@ class Util {
             if (cmp == 0) {
                 cmp = Integer.compare(this.getAssignable(), o.getAssignable());
                 if (cmp == 0) {
-                    cmp = Integer.compare(this.getCoercible(), o.getCoercible());
+                    cmp = Integer.compare(this.getCoercible(), o
+                            .getCoercible());
                     if (cmp == 0) {
                         // The nature of bridge methods is such that it actually
                         // doesn't matter which one we pick as long as we pick

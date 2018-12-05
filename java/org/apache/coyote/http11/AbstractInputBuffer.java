@@ -1,18 +1,16 @@
 /*
- *  Licensed to the Apache Software Foundation (ASF) under one or more
- *  contributor license agreements.  See the NOTICE file distributed with
- *  this work for additional information regarding copyright ownership.
- *  The ASF licenses this file to You under the Apache License, Version 2.0
- *  (the "License"); you may not use this file except in compliance with
- *  the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements. See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.apache.coyote.http11;
 
@@ -28,16 +26,15 @@ import org.apache.tomcat.util.net.AbstractEndpoint;
 import org.apache.tomcat.util.net.SocketWrapper;
 import org.apache.tomcat.util.res.StringManager;
 
-public abstract class AbstractInputBuffer<S> implements InputBuffer{
+public abstract class AbstractInputBuffer<S> implements InputBuffer {
 
     protected static final boolean[] HTTP_TOKEN_CHAR = new boolean[128];
 
     /**
      * The string manager for this package.
      */
-    protected static final StringManager sm =
-        StringManager.getManager(Constants.Package);
-
+    protected static final StringManager sm = StringManager.getManager(
+            Constants.Package);
 
     static {
         for (int i = 0; i < 128; i++) {
@@ -87,48 +84,40 @@ public abstract class AbstractInputBuffer<S> implements InputBuffer{
         }
     }
 
-
     /**
      * Associated Coyote request.
      */
     protected Request request;
-
 
     /**
      * Headers of the associated request.
      */
     protected MimeHeaders headers;
 
-
     /**
      * State.
      */
     protected boolean parsingHeader;
-
 
     /**
      * Swallow input ? (in the case of an expectation)
      */
     protected boolean swallowInput;
 
-
     /**
      * Pointer to the current read buffer.
      */
     protected byte[] buf;
-
 
     /**
      * Last valid byte.
      */
     protected int lastValid;
 
-
     /**
      * Position in the buffer.
      */
     protected int pos;
-
 
     /**
      * Pos of the end of the header in the buffer, which is also the
@@ -136,12 +125,10 @@ public abstract class AbstractInputBuffer<S> implements InputBuffer{
      */
     protected int end;
 
-
     /**
      * Underlying input buffer.
      */
     protected InputBuffer inputStreamInputBuffer;
-
 
     /**
      * Filter library.
@@ -149,18 +136,15 @@ public abstract class AbstractInputBuffer<S> implements InputBuffer{
      */
     protected InputFilter[] filterLibrary;
 
-
     /**
      * Active filters (in order).
      */
     protected InputFilter[] activeFilters;
 
-
     /**
      * Index of the last active filter.
      */
     protected int lastActiveFilter;
-
 
     // ------------------------------------------------------------- Properties
 
@@ -175,8 +159,8 @@ public abstract class AbstractInputBuffer<S> implements InputBuffer{
             throw new NullPointerException(sm.getString("iib.filter.npe"));
         }
 
-        InputFilter[] newFilterLibrary =
-            new InputFilter[filterLibrary.length + 1];
+        InputFilter[] newFilterLibrary = new InputFilter[filterLibrary.length
+                + 1];
         for (int i = 0; i < filterLibrary.length; i++) {
             newFilterLibrary[i] = filterLibrary[i];
         }
@@ -186,7 +170,6 @@ public abstract class AbstractInputBuffer<S> implements InputBuffer{
         activeFilters = new InputFilter[filterLibrary.length];
     }
 
-
     /**
      * Get filters.
      */
@@ -195,7 +178,6 @@ public abstract class AbstractInputBuffer<S> implements InputBuffer{
         return filterLibrary;
 
     }
-
 
     /**
      * Add an input filter to the filter library.
@@ -218,7 +200,6 @@ public abstract class AbstractInputBuffer<S> implements InputBuffer{
 
     }
 
-
     /**
      * Set the swallow input flag.
      */
@@ -226,13 +207,12 @@ public abstract class AbstractInputBuffer<S> implements InputBuffer{
         this.swallowInput = swallowInput;
     }
 
-
     /**
      * Implementations are expected to call {@link Request#setStartTime(long)}
      * as soon as the first byte is read from the request.
      */
     public abstract boolean parseRequestLine(boolean useAvailableDataOnly)
-        throws IOException;
+            throws IOException;
 
     public abstract boolean parseHeaders() throws IOException;
 
@@ -248,7 +228,6 @@ public abstract class AbstractInputBuffer<S> implements InputBuffer{
             AbstractEndpoint<S> endpoint) throws IOException;
 
     protected abstract Log getLog();
-
 
     // --------------------------------------------------------- Public Methods
 
@@ -273,7 +252,6 @@ public abstract class AbstractInputBuffer<S> implements InputBuffer{
         swallowInput = true;
 
     }
-
 
     /**
      * End processing of current HTTP request.
@@ -305,7 +283,6 @@ public abstract class AbstractInputBuffer<S> implements InputBuffer{
         swallowInput = true;
     }
 
-
     /**
      * End request (consumes leftover bytes).
      *
@@ -318,7 +295,6 @@ public abstract class AbstractInputBuffer<S> implements InputBuffer{
             pos = pos - extraBytes;
         }
     }
-
 
     /**
      * Available bytes in the buffers (note that due to encoding, this may not
@@ -349,7 +325,6 @@ public abstract class AbstractInputBuffer<S> implements InputBuffer{
         }
         return available;
     }
-
 
     /**
      * Has all of the request body been read? There are subtle differences
@@ -398,20 +373,18 @@ public abstract class AbstractInputBuffer<S> implements InputBuffer{
         return request.getReadListener() == null;
     }
 
-
     // ---------------------------------------------------- InputBuffer Methods
 
     /**
      * Read some bytes.
      */
     @Override
-    public int doRead(ByteChunk chunk, Request req)
-        throws IOException {
+    public int doRead(ByteChunk chunk, Request req) throws IOException {
 
         if (lastActiveFilter == -1)
             return inputStreamInputBuffer.doRead(chunk, req);
         else
-            return activeFilters[lastActiveFilter].doRead(chunk,req);
+            return activeFilters[lastActiveFilter].doRead(chunk, req);
 
     }
 }

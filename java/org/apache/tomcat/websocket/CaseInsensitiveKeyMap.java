@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -37,29 +35,27 @@ import org.apache.tomcat.util.res.StringManager;
  *
  * @param <V> Type of values placed in this Map.
  */
-public class CaseInsensitiveKeyMap<V> extends AbstractMap<String,V> {
+public class CaseInsensitiveKeyMap<V> extends AbstractMap<String, V> {
 
-    private static final StringManager sm =
-            StringManager.getManager(Constants.PACKAGE_NAME);
+    private static final StringManager sm = StringManager.getManager(
+            Constants.PACKAGE_NAME);
 
-    private final Map<Key,V> map = new HashMap<>();
-
+    private final Map<Key, V> map = new HashMap<>();
 
     @Override
     public V get(Object key) {
         return map.get(Key.getInstance(key));
     }
 
-
     @Override
     public V put(String key, V value) {
         Key caseInsensitiveKey = Key.getInstance(key);
         if (caseInsensitiveKey == null) {
-            throw new NullPointerException(sm.getString("caseInsensitiveKeyMap.nullKey"));
+            throw new NullPointerException(sm.getString(
+                    "caseInsensitiveKeyMap.nullKey"));
         }
         return map.put(caseInsensitiveKey, value);
     }
-
 
     /**
      * {@inheritDoc}
@@ -73,35 +69,31 @@ public class CaseInsensitiveKeyMap<V> extends AbstractMap<String,V> {
         super.putAll(m);
     }
 
-
     @Override
     public boolean containsKey(Object key) {
         return map.containsKey(Key.getInstance(key));
     }
-
 
     @Override
     public V remove(Object key) {
         return map.remove(Key.getInstance(key));
     }
 
-
     @Override
     public Set<Entry<String, V>> entrySet() {
         return new EntrySet<>(map.entrySet());
     }
 
+    private static class EntrySet<V> extends AbstractSet<Entry<String, V>> {
 
-    private static class EntrySet<V> extends AbstractSet<Entry<String,V>> {
+        private final Set<Entry<Key, V>> entrySet;
 
-        private final Set<Entry<Key,V>> entrySet;
-
-        public EntrySet(Set<Map.Entry<Key,V>> entrySet) {
+        public EntrySet(Set<Map.Entry<Key, V>> entrySet) {
             this.entrySet = entrySet;
         }
 
         @Override
-        public Iterator<Entry<String,V>> iterator() {
+        public Iterator<Entry<String, V>> iterator() {
             return new EntryIterator<>(entrySet.iterator());
         }
 
@@ -111,12 +103,12 @@ public class CaseInsensitiveKeyMap<V> extends AbstractMap<String,V> {
         }
     }
 
+    private static class EntryIterator<V> implements
+            Iterator<Entry<String, V>> {
 
-    private static class EntryIterator<V> implements Iterator<Entry<String,V>> {
+        private final Iterator<Entry<Key, V>> iterator;
 
-        private final Iterator<Entry<Key,V>> iterator;
-
-        public EntryIterator(Iterator<Entry<Key,V>> iterator) {
+        public EntryIterator(Iterator<Entry<Key, V>> iterator) {
             this.iterator = iterator;
         }
 
@@ -126,8 +118,8 @@ public class CaseInsensitiveKeyMap<V> extends AbstractMap<String,V> {
         }
 
         @Override
-        public Entry<String,V> next() {
-            Entry<Key,V> entry = iterator.next();
+        public Entry<String, V> next() {
+            Entry<Key, V> entry = iterator.next();
             return new EntryImpl<>(entry.getKey().getKey(), entry.getValue());
         }
 
@@ -137,8 +129,7 @@ public class CaseInsensitiveKeyMap<V> extends AbstractMap<String,V> {
         }
     }
 
-
-    private static class EntryImpl<V> implements Entry<String,V> {
+    private static class EntryImpl<V> implements Entry<String, V> {
 
         private final String key;
         private final V value;

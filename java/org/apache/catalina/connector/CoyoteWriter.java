@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -26,43 +24,33 @@ import java.io.PrintWriter;
  */
 public class CoyoteWriter extends PrintWriter {
 
-
     // -------------------------------------------------------------- Constants
 
     private static final char[] LINE_SEP = System.lineSeparator().toCharArray();
 
-
     // ----------------------------------------------------- Instance Variables
-
 
     protected OutputBuffer ob;
     protected boolean error = false;
 
-
     // ----------------------------------------------------------- Constructors
-
 
     public CoyoteWriter(OutputBuffer ob) {
         super(ob);
         this.ob = ob;
     }
 
-
     // --------------------------------------------------------- Public Methods
-
 
     /**
      * Prevent cloning the facade.
      */
     @Override
-    protected Object clone()
-        throws CloneNotSupportedException {
+    protected Object clone() throws CloneNotSupportedException {
         throw new CloneNotSupportedException();
     }
 
-
     // -------------------------------------------------------- Package Methods
-
 
     /**
      * Clear facade.
@@ -71,7 +59,6 @@ public class CoyoteWriter extends PrintWriter {
         ob = null;
     }
 
-
     /**
      * Recycle.
      */
@@ -79,9 +66,7 @@ public class CoyoteWriter extends PrintWriter {
         error = false;
     }
 
-
     // --------------------------------------------------------- Writer Methods
-
 
     @Override
     public void flush() {
@@ -98,7 +83,6 @@ public class CoyoteWriter extends PrintWriter {
 
     }
 
-
     @Override
     public void close() {
 
@@ -106,20 +90,18 @@ public class CoyoteWriter extends PrintWriter {
         // so the stream can be reused. We close ob.
         try {
             ob.close();
-        } catch (IOException ex ) {
+        } catch (IOException ex) {
             // Ignore
         }
         error = false;
 
     }
 
-
     @Override
     public boolean checkError() {
         flush();
         return error;
     }
-
 
     @Override
     public void write(int c) {
@@ -136,7 +118,6 @@ public class CoyoteWriter extends PrintWriter {
 
     }
 
-
     @Override
     public void write(char buf[], int off, int len) {
 
@@ -152,12 +133,10 @@ public class CoyoteWriter extends PrintWriter {
 
     }
 
-
     @Override
     public void write(char buf[]) {
         write(buf, 0, buf.length);
     }
-
 
     @Override
     public void write(String s, int off, int len) {
@@ -174,15 +153,12 @@ public class CoyoteWriter extends PrintWriter {
 
     }
 
-
     @Override
     public void write(String s) {
         write(s, 0, s.length());
     }
 
-
     // ---------------------------------------------------- PrintWriter Methods
-
 
     @Override
     public void print(boolean b) {
@@ -193,42 +169,35 @@ public class CoyoteWriter extends PrintWriter {
         }
     }
 
-
     @Override
     public void print(char c) {
         write(c);
     }
-
 
     @Override
     public void print(int i) {
         write(String.valueOf(i));
     }
 
-
     @Override
     public void print(long l) {
         write(String.valueOf(l));
     }
-
 
     @Override
     public void print(float f) {
         write(String.valueOf(f));
     }
 
-
     @Override
     public void print(double d) {
         write(String.valueOf(d));
     }
 
-
     @Override
     public void print(char s[]) {
         write(s);
     }
-
 
     @Override
     public void print(String s) {
@@ -238,18 +207,15 @@ public class CoyoteWriter extends PrintWriter {
         write(s);
     }
 
-
     @Override
     public void print(Object obj) {
         write(String.valueOf(obj));
     }
 
-
     @Override
     public void println() {
         write(LINE_SEP);
     }
-
 
     @Override
     public void println(boolean b) {
@@ -257,13 +223,11 @@ public class CoyoteWriter extends PrintWriter {
         println();
     }
 
-
     @Override
     public void println(char c) {
         print(c);
         println();
     }
-
 
     @Override
     public void println(int i) {
@@ -271,13 +235,11 @@ public class CoyoteWriter extends PrintWriter {
         println();
     }
 
-
     @Override
     public void println(long l) {
         print(l);
         println();
     }
-
 
     @Override
     public void println(float f) {
@@ -285,13 +247,11 @@ public class CoyoteWriter extends PrintWriter {
         println();
     }
 
-
     @Override
     public void println(double d) {
         print(d);
         println();
     }
-
 
     @Override
     public void println(char c[]) {
@@ -299,19 +259,16 @@ public class CoyoteWriter extends PrintWriter {
         println();
     }
 
-
     @Override
     public void println(String s) {
         print(s);
         println();
     }
 
-
     @Override
     public void println(Object o) {
         print(o);
         println();
     }
-
 
 }

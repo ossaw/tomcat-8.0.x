@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -39,7 +37,6 @@ public class SnakeAnnotation {
     private static final AtomicInteger snakeIds = new AtomicInteger(0);
     private static final Random random = new Random();
 
-
     private final int id;
     private Snake snake;
 
@@ -49,17 +46,15 @@ public class SnakeAnnotation {
         float saturation = (random.nextInt(2000) + 1000) / 10000f;
         float luminance = 0.9f;
         Color color = Color.getHSBColor(hue, saturation, luminance);
-        return '#' + Integer.toHexString(
-                (color.getRGB() & 0xffffff) | 0x1000000).substring(1);
+        return '#' + Integer.toHexString((color.getRGB() & 0xffffff)
+                | 0x1000000).substring(1);
     }
-
 
     public static Location getRandomLocation() {
         int x = roundByGridSize(random.nextInt(PLAYFIELD_WIDTH));
         int y = roundByGridSize(random.nextInt(PLAYFIELD_HEIGHT));
         return new Location(x, y);
     }
-
 
     private static int roundByGridSize(int value) {
         value = value + (GRID_SIZE / 2);
@@ -72,17 +67,16 @@ public class SnakeAnnotation {
         this.id = snakeIds.getAndIncrement();
     }
 
-
     @OnOpen
     public void onOpen(Session session) {
         this.snake = new Snake(id, session);
         SnakeTimer.addSnake(snake);
         StringBuilder sb = new StringBuilder();
-        for (Iterator<Snake> iterator = SnakeTimer.getSnakes().iterator();
-                iterator.hasNext();) {
+        for (Iterator<Snake> iterator = SnakeTimer.getSnakes()
+                .iterator(); iterator.hasNext();) {
             Snake snake = iterator.next();
-            sb.append(String.format("{\"id\": %d, \"color\": \"%s\"}",
-                    Integer.valueOf(snake.getId()), snake.getHexColor()));
+            sb.append(String.format("{\"id\": %d, \"color\": \"%s\"}", Integer
+                    .valueOf(snake.getId()), snake.getHexColor()));
             if (iterator.hasNext()) {
                 sb.append(',');
             }
@@ -90,7 +84,6 @@ public class SnakeAnnotation {
         SnakeTimer.broadcast(String.format("{\"type\": \"join\",\"data\":[%s]}",
                 sb.toString()));
     }
-
 
     @OnMessage
     public void onTextMessage(String message) {
@@ -105,14 +98,12 @@ public class SnakeAnnotation {
         }
     }
 
-
     @OnClose
     public void onClose() {
         SnakeTimer.removeSnake(snake);
         SnakeTimer.broadcast(String.format("{\"type\": \"leave\", \"id\": %d}",
                 Integer.valueOf(id)));
     }
-
 
     @OnError
     public void onError(Throwable t) throws Throwable {
@@ -123,7 +114,7 @@ public class SnakeAnnotation {
         Throwable root = t;
         while (root.getCause() != null && count < 20) {
             root = root.getCause();
-            count ++;
+            count++;
         }
         if (root instanceof EOFException) {
             // Assume this is triggered by the user closing their browser and

@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -59,10 +57,10 @@ import org.w3c.dom.ls.DOMImplementationLS;
  */
 public class JreMemoryLeakPreventionListener implements LifecycleListener {
 
-    private static final Log log =
-        LogFactory.getLog(JreMemoryLeakPreventionListener.class);
-    private static final StringManager sm =
-        StringManager.getManager(Constants.Package);
+    private static final Log log = LogFactory.getLog(
+            JreMemoryLeakPreventionListener.class);
+    private static final StringManager sm = StringManager.getManager(
+            Constants.Package);
 
     /**
      * Protect against the memory leak caused when the first call to
@@ -73,7 +71,11 @@ public class JreMemoryLeakPreventionListener implements LifecycleListener {
      * requires a graphical environment and starts an AWT thread.
      */
     private boolean appContextProtection = false;
-    public boolean isAppContextProtection() { return appContextProtection; }
+
+    public boolean isAppContextProtection() {
+        return appContextProtection;
+    }
+
     public void setAppContextProtection(boolean appContextProtection) {
         this.appContextProtection = appContextProtection;
     }
@@ -85,9 +87,13 @@ public class JreMemoryLeakPreventionListener implements LifecycleListener {
      * Thread is launched.
      */
     private boolean awtThreadProtection = false;
-    public boolean isAWTThreadProtection() { return awtThreadProtection; }
+
+    public boolean isAWTThreadProtection() {
+        return awtThreadProtection;
+    }
+
     public void setAWTThreadProtection(boolean awtThreadProtection) {
-      this.awtThreadProtection = awtThreadProtection;
+        this.awtThreadProtection = awtThreadProtection;
     }
 
     /**
@@ -98,24 +104,30 @@ public class JreMemoryLeakPreventionListener implements LifecycleListener {
      * loader. Defaults to <code>true</code>.
      */
     private boolean gcDaemonProtection = true;
-    public boolean isGcDaemonProtection() { return gcDaemonProtection; }
+
+    public boolean isGcDaemonProtection() {
+        return gcDaemonProtection;
+    }
+
     public void setGcDaemonProtection(boolean gcDaemonProtection) {
         this.gcDaemonProtection = gcDaemonProtection;
     }
 
-     /**
-      * Protect against the memory leak caused when the first call to
-      * <code>javax.security.auth.Policy</code> is triggered by a web
-      * application. This first call populate a static variable with a reference
-      * to the context class loader. Defaults to <code>true</code>.
-      */
-     private boolean securityPolicyProtection = true;
-     public boolean isSecurityPolicyProtection() {
-         return securityPolicyProtection;
-     }
-     public void setSecurityPolicyProtection(boolean securityPolicyProtection) {
-         this.securityPolicyProtection = securityPolicyProtection;
-     }
+    /**
+     * Protect against the memory leak caused when the first call to
+     * <code>javax.security.auth.Policy</code> is triggered by a web
+     * application. This first call populate a static variable with a reference
+     * to the context class loader. Defaults to <code>true</code>.
+     */
+    private boolean securityPolicyProtection = true;
+
+    public boolean isSecurityPolicyProtection() {
+        return securityPolicyProtection;
+    }
+
+    public void setSecurityPolicyProtection(boolean securityPolicyProtection) {
+        this.securityPolicyProtection = securityPolicyProtection;
+    }
 
     /**
      * Protects against the memory leak caused when the first call to
@@ -124,15 +136,17 @@ public class JreMemoryLeakPreventionListener implements LifecycleListener {
      * reference to the context class loader. Defaults to <code>true</code>.
      */
     private boolean securityLoginConfigurationProtection = true;
+
     public boolean isSecurityLoginConfigurationProtection() {
         return securityLoginConfigurationProtection;
     }
+
     public void setSecurityLoginConfigurationProtection(
             boolean securityLoginConfigurationProtection) {
         this.securityLoginConfigurationProtection = securityLoginConfigurationProtection;
     }
 
-     /**
+    /**
      * Protect against the memory leak, when the initialization of the
      * Java Cryptography Architecture is triggered by initializing
      * a MessageDigest during web application deployment.
@@ -142,7 +156,11 @@ public class JreMemoryLeakPreventionListener implements LifecycleListener {
      * Defaults to <code>true</code>.
      */
     private boolean tokenPollerProtection = true;
-    public boolean isTokenPollerProtection() { return tokenPollerProtection; }
+
+    public boolean isTokenPollerProtection() {
+        return tokenPollerProtection;
+    }
+
     public void setTokenPollerProtection(boolean tokenPollerProtection) {
         this.tokenPollerProtection = tokenPollerProtection;
     }
@@ -154,7 +172,11 @@ public class JreMemoryLeakPreventionListener implements LifecycleListener {
      * <code>true</code>.
      */
     private boolean urlCacheProtection = true;
-    public boolean isUrlCacheProtection() { return urlCacheProtection; }
+
+    public boolean isUrlCacheProtection() {
+        return urlCacheProtection;
+    }
+
     public void setUrlCacheProtection(boolean urlCacheProtection) {
         this.urlCacheProtection = urlCacheProtection;
     }
@@ -167,7 +189,11 @@ public class JreMemoryLeakPreventionListener implements LifecycleListener {
      * used to be able to trace some of the leaks.
      */
     private boolean xmlParsingProtection = true;
-    public boolean isXmlParsingProtection() { return xmlParsingProtection; }
+
+    public boolean isXmlParsingProtection() {
+        return xmlParsingProtection;
+    }
+
     public void setXmlParsingProtection(boolean xmlParsingProtection) {
         this.xmlParsingProtection = xmlParsingProtection;
     }
@@ -181,7 +207,11 @@ public class JreMemoryLeakPreventionListener implements LifecycleListener {
      * is the first to use <code>LdapPoolManager</code>.
      */
     private boolean ldapPoolProtection = true;
-    public boolean isLdapPoolProtection() { return ldapPoolProtection; }
+
+    public boolean isLdapPoolProtection() {
+        return ldapPoolProtection;
+    }
+
     public void setLdapPoolProtection(boolean ldapPoolProtection) {
         this.ldapPoolProtection = ldapPoolProtection;
     }
@@ -193,27 +223,31 @@ public class JreMemoryLeakPreventionListener implements LifecycleListener {
      * cases but triggering the loading here has fewer side-effects.
      */
     private boolean driverManagerProtection = true;
+
     public boolean isDriverManagerProtection() {
         return driverManagerProtection;
     }
+
     public void setDriverManagerProtection(boolean driverManagerProtection) {
         this.driverManagerProtection = driverManagerProtection;
     }
 
     /**
-     * List of comma-separated fully qualified class names to load and initialize during
-     * the startup of this Listener. This allows to pre-load classes that are known to
+     * List of comma-separated fully qualified class names to load and
+     * initialize during
+     * the startup of this Listener. This allows to pre-load classes that are
+     * known to
      * provoke classloader leaks if they are loaded during a request processing.
      */
     private String classesToInitialize = null;
+
     public String getClassesToInitialize() {
         return classesToInitialize;
     }
+
     public void setClassesToInitialize(String classesToInitialize) {
         this.classesToInitialize = classesToInitialize;
     }
-
-
 
     @Override
     public void lifecycleEvent(LifecycleEvent event) {
@@ -222,12 +256,11 @@ public class JreMemoryLeakPreventionListener implements LifecycleListener {
 
             ClassLoader loader = Thread.currentThread().getContextClassLoader();
 
-            try
-            {
+            try {
                 // Use the system classloader as the victim for all this
                 // ClassLoader pinning we're about to do.
-                Thread.currentThread().setContextClassLoader(
-                        ClassLoader.getSystemClassLoader());
+                Thread.currentThread().setContextClassLoader(ClassLoader
+                        .getSystemClassLoader());
 
                 /*
                  * First call to this loads all drivers in the current class
@@ -240,16 +273,14 @@ public class JreMemoryLeakPreventionListener implements LifecycleListener {
                 /*
                  * Several components end up calling:
                  * sun.awt.AppContext.getAppContext()
-                 *
                  * Those libraries / components known to trigger memory leaks
                  * due to eventual calls to getAppContext() are:
                  * - Google Web Toolkit via its use of javax.imageio
                  * - Tomcat via its use of java.beans.Introspector.flushCaches()
-                 *   in 1.7.0 to 1.7.0_01. From 1.7.0_02 onwards use of
-                 *   AppContext by Introspector.flushCaches() was replaced with
-                 *   ThreadGroupContext
+                 * in 1.7.0 to 1.7.0_01. From 1.7.0_02 onwards use of
+                 * AppContext by Introspector.flushCaches() was replaced with
+                 * ThreadGroupContext
                  * - others TBD
-                 *
                  * From 1.7.0_25 onwards, a call to
                  * sun.awt.AppContext.getAppContext() results in a thread being
                  * started named AWT-AppKit that requires a graphic environment
@@ -273,21 +304,17 @@ public class JreMemoryLeakPreventionListener implements LifecycleListener {
                  * Several components end up calling
                  * sun.misc.GC.requestLatency(long) which creates a daemon
                  * thread without setting the TCCL.
-                 *
                  * Those libraries / components known to trigger memory leaks
                  * due to eventual calls to requestLatency(long) are:
                  * - javax.management.remote.rmi.RMIConnectorServer.start()
-                 *
                  * Note: Long.MAX_VALUE is a special case that causes the thread
-                 *       to terminate
-                 *
+                 * to terminate
                  */
                 if (gcDaemonProtection && !JreCompat.isJre9Available()) {
                     try {
                         Class<?> clazz = Class.forName("sun.misc.GC");
                         Method method = clazz.getDeclaredMethod(
-                                "requestLatency",
-                                new Class[] {long.class});
+                                "requestLatency", new Class[] { long.class });
                         method.invoke(null, Long.valueOf(Long.MAX_VALUE - 1));
                     } catch (ClassNotFoundException e) {
                         if (JreVendor.IS_ORACLE_JVM) {
@@ -323,13 +350,13 @@ public class JreMemoryLeakPreventionListener implements LifecycleListener {
                 if (securityPolicyProtection && !JreCompat.isJre8Available()) {
                     try {
                         // Policy.getPolicy();
-                        Class<?> policyClass = Class
-                                .forName("javax.security.auth.Policy");
+                        Class<?> policyClass = Class.forName(
+                                "javax.security.auth.Policy");
                         Method method = policyClass.getMethod("getPolicy");
                         method.invoke(null);
-                    } catch(ClassNotFoundException e) {
+                    } catch (ClassNotFoundException e) {
                         // Ignore. The class is deprecated.
-                    } catch(SecurityException e) {
+                    } catch (SecurityException e) {
                         // Ignore. Don't need call to getPolicy() to be
                         // successful, just need to trigger static initializer.
                     } catch (NoSuchMethodException e) {
@@ -348,15 +375,17 @@ public class JreMemoryLeakPreventionListener implements LifecycleListener {
                     }
                 }
 
-
                 /*
-                 * Initializing javax.security.auth.login.Configuration retains a static reference to the context
+                 * Initializing javax.security.auth.login.Configuration retains
+                 * a static reference to the context
                  * class loader.
                  */
-                if (securityLoginConfigurationProtection && !JreCompat.isJre8Available()) {
+                if (securityLoginConfigurationProtection && !JreCompat
+                        .isJre8Available()) {
                     try {
-                        Class.forName("javax.security.auth.login.Configuration", true, ClassLoader.getSystemClassLoader());
-                    } catch(ClassNotFoundException e) {
+                        Class.forName("javax.security.auth.login.Configuration",
+                                true, ClassLoader.getSystemClassLoader());
+                    } catch (ClassNotFoundException e) {
                         // Ignore
                     }
                 }
@@ -366,9 +395,7 @@ public class JreMemoryLeakPreventionListener implements LifecycleListener {
                  * initializes the Java Cryptography Architecture. Under certain
                  * conditions this starts a Token poller thread with TCCL equal
                  * to the web application class loader.
-                 *
                  * Instead we initialize JCA right now.
-                 *
                  * Fixed in Java 9 onwards (from early access build 133)
                  */
                 if (tokenPollerProtection && !JreCompat.isJre9Available()) {
@@ -380,7 +407,6 @@ public class JreMemoryLeakPreventionListener implements LifecycleListener {
                  * first disabling caching. This effectively locks the file.
                  * Whilst more noticeable and harder to ignore on Windows, it
                  * affects all operating systems.
-                 *
                  * Those libraries/components known to trigger this issue
                  * include:
                  * - log4j versions 1.2.15 and earlier
@@ -414,16 +440,19 @@ public class JreMemoryLeakPreventionListener implements LifecycleListener {
                     // backtrace field. Note that YourKit only shows this field
                     // when using the HPROF format memory snapshots.
                     // https://bz.apache.org/bugzilla/show_bug.cgi?id=58486
-                    DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+                    DocumentBuilderFactory factory = DocumentBuilderFactory
+                            .newInstance();
                     try {
-                        DocumentBuilder documentBuilder = factory.newDocumentBuilder();
+                        DocumentBuilder documentBuilder = factory
+                                .newDocumentBuilder();
                         // Issue 1
                         // com.sun.org.apache.xml.internal.serialize.DOMSerializerImpl
                         Document document = documentBuilder.newDocument();
                         document.createElement("dummy");
-                        DOMImplementationLS implementation =
-                                (DOMImplementationLS)document.getImplementation();
-                        implementation.createLSSerializer().writeToString(document);
+                        DOMImplementationLS implementation = (DOMImplementationLS) document
+                                .getImplementation();
+                        implementation.createLSSerializer().writeToString(
+                                document);
                         // Issue 1
                         // com.sun.org.apache.xerces.internal.dom.DOMNormalizer
                         document.normalize();
@@ -448,15 +477,15 @@ public class JreMemoryLeakPreventionListener implements LifecycleListener {
                 }
 
                 if (classesToInitialize != null) {
-                    StringTokenizer strTok =
-                        new StringTokenizer(classesToInitialize, ", \r\n\t");
+                    StringTokenizer strTok = new StringTokenizer(
+                            classesToInitialize, ", \r\n\t");
                     while (strTok.hasMoreTokens()) {
                         String classNameToLoad = strTok.nextToken();
                         try {
                             Class.forName(classNameToLoad);
                         } catch (ClassNotFoundException e) {
-                            log.error(
-                                sm.getString("jreLeakListener.classToInitializeFail",
+                            log.error(sm.getString(
+                                    "jreLeakListener.classToInitializeFail",
                                     classNameToLoad), e);
                             // continue with next class to load
                         }

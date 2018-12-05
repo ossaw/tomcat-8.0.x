@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -31,14 +29,13 @@ import org.apache.juli.logging.LogFactory;
 import org.apache.tomcat.util.modeler.Registry;
 import org.apache.tomcat.util.res.StringManager;
 
-public abstract class LifecycleMBeanBase extends LifecycleBase
-        implements JmxEnabled {
+public abstract class LifecycleMBeanBase extends LifecycleBase implements
+        JmxEnabled {
 
     private static final Log log = LogFactory.getLog(LifecycleMBeanBase.class);
 
-    private static final StringManager sm =
-        StringManager.getManager("org.apache.catalina.util");
-
+    private static final StringManager sm = StringManager.getManager(
+            "org.apache.catalina.util");
 
     /* Cache components of the MBean registration. */
     private String domain = null;
@@ -62,7 +59,6 @@ public abstract class LifecycleMBeanBase extends LifecycleBase
         }
     }
 
-
     /**
      * Sub-classes wishing to perform additional clean-up should override this
      * method, ensuring that super.destroyInternal() is the last call in the
@@ -73,7 +69,6 @@ public abstract class LifecycleMBeanBase extends LifecycleBase
         unregister(oname);
     }
 
-
     /**
      * Specify the domain under which this component should be registered. Used
      * with components that cannot (easily) navigate the component hierarchy to
@@ -83,7 +78,6 @@ public abstract class LifecycleMBeanBase extends LifecycleBase
     public final void setDomain(String domain) {
         this.domain = domain;
     }
-
 
     /**
      * Obtain the domain under which this component will be / has been
@@ -102,15 +96,13 @@ public abstract class LifecycleMBeanBase extends LifecycleBase
         return domain;
     }
 
-
     /**
      * Method implemented by sub-classes to identify the domain in which MBeans
      * should be registered.
      *
-     * @return  The name of the domain to use to register MBeans.
+     * @return The name of the domain to use to register MBeans.
      */
     protected abstract String getDomainInternal();
-
 
     /**
      * Obtain the name under which this component has been registered with JMX.
@@ -120,16 +112,14 @@ public abstract class LifecycleMBeanBase extends LifecycleBase
         return oname;
     }
 
-
     /**
      * Allow sub-classes to specify the key properties component of the
      * {@link ObjectName} that will be used to register this component.
      *
-     * @return  The string representation of the key properties component of the
-     *          desired {@link ObjectName}
+     * @return The string representation of the key properties component of the
+     *         desired {@link ObjectName}
      */
     protected abstract String getObjectNameKeyProperties();
-
 
     /**
      * Utility method to enable sub-classes to easily register additional
@@ -138,12 +128,12 @@ public abstract class LifecycleMBeanBase extends LifecycleBase
      * Note: This method should only be used once {@link #initInternal()} has
      * been called and before {@link #destroyInternal()} has been called.
      *
-     * @param obj                       The object the register
-     * @param objectNameKeyProperties   The key properties component of the
-     *                                  object name to use to register the
-     *                                  object
+     * @param obj                     The object the register
+     * @param objectNameKeyProperties The key properties component of the
+     *                                object name to use to register the
+     *                                object
      *
-     * @return  The name used to register the object
+     * @return The name used to register the object
      */
     protected final ObjectName register(Object obj,
             String objectNameKeyProperties) {
@@ -170,7 +160,6 @@ public abstract class LifecycleMBeanBase extends LifecycleBase
         return on;
     }
 
-
     /**
      * Utility method to enable sub-classes to easily unregister additional
      * components that don't implement {@link JmxEnabled} with an MBean server.
@@ -178,7 +167,7 @@ public abstract class LifecycleMBeanBase extends LifecycleBase
      * Note: This method should only be used once {@link #initInternal()} has
      * been called and before {@link #destroyInternal()} has been called.
      *
-     * @param on    The name of the component to unregister
+     * @param on The name of the component to unregister
      */
     protected final void unregister(ObjectName on) {
 
@@ -203,7 +192,6 @@ public abstract class LifecycleMBeanBase extends LifecycleBase
 
     }
 
-
     /**
      * Not used - NOOP.
      */
@@ -211,7 +199,6 @@ public abstract class LifecycleMBeanBase extends LifecycleBase
     public final void postDeregister() {
         // NOOP
     }
-
 
     /**
      * Not used - NOOP.
@@ -221,7 +208,6 @@ public abstract class LifecycleMBeanBase extends LifecycleBase
         // NOOP
     }
 
-
     /**
      * Not used - NOOP.
      */
@@ -229,7 +215,6 @@ public abstract class LifecycleMBeanBase extends LifecycleBase
     public final void preDeregister() throws Exception {
         // NOOP
     }
-
 
     /**
      * Allows the object to be registered with an alternative

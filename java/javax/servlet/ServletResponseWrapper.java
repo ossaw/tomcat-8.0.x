@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -38,7 +36,7 @@ public class ServletResponseWrapper implements ServletResponse {
      * @param response The response to wrap
      *
      * @throws java.lang.IllegalArgumentException
-     *             if the response is null.
+     *         if the response is null.
      */
     public ServletResponseWrapper(ServletResponse response) {
         if (response == null) {
@@ -62,7 +60,7 @@ public class ServletResponseWrapper implements ServletResponse {
      * @param response The new response to wrap
      *
      * @throws java.lang.IllegalArgumentException
-     *             if the response is null.
+     *         if the response is null.
      */
     public void setResponse(ServletResponse response) {
         if (response == null) {
@@ -119,7 +117,8 @@ public class ServletResponseWrapper implements ServletResponse {
     }
 
     /**
-     * The default behavior of this method is to call setContentLengthLong(long len)
+     * The default behavior of this method is to call setContentLengthLong(long
+     * len)
      * on the wrapped response object.
      *
      * @since Servlet 3.1
@@ -223,6 +222,7 @@ public class ServletResponseWrapper implements ServletResponse {
 
     /**
      * TODO SERVLET3 - Add comments
+     * 
      * @param wrapped The response to compare to the wrapped response
      * @return <code>true</code> if the response wrapped by this wrapper (or
      *         series of wrappers) is the same as the supplied response,
@@ -241,6 +241,7 @@ public class ServletResponseWrapper implements ServletResponse {
 
     /**
      * TODO SERVLET3 - Add comments
+     * 
      * @param wrappedType The class to compare to the class of the wrapped
      *                    response
      * @return <code>true</code> if the response wrapped by this wrapper (or
@@ -253,7 +254,8 @@ public class ServletResponseWrapper implements ServletResponse {
             return true;
         }
         if (response instanceof ServletResponseWrapper) {
-            return ((ServletResponseWrapper) response).isWrapperFor(wrappedType);
+            return ((ServletResponseWrapper) response).isWrapperFor(
+                    wrappedType);
         }
         return false;
     }

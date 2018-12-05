@@ -1,20 +1,17 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 
 package org.apache.catalina;
 
@@ -25,8 +22,8 @@ import org.apache.catalina.startup.Catalina;
 
 /**
  * A <code>Server</code> element represents the entire Catalina
- * servlet container.  Its attributes represent the characteristics of
- * the servlet container as a whole.  A <code>Server</code> may contain
+ * servlet container. Its attributes represent the characteristics of
+ * the servlet container as a whole. A <code>Server</code> may contain
  * one or more <code>Services</code>, and the top level set of naming
  * resources.
  * <p>
@@ -36,7 +33,7 @@ import org.apache.catalina.startup.Catalina;
  * <code>Services</code> are also started or stopped.
  * <p>
  * In between, the implementation must open a server socket on the port number
- * specified by the <code>port</code> property.  When a connection is accepted,
+ * specified by the <code>port</code> property. When a connection is accepted,
  * the first line is read and compared with the specified shutdown command.
  * If the command matches, shutdown of the server is initiated.
  * <p>
@@ -55,27 +52,23 @@ public interface Server extends Lifecycle {
      */
     public NamingResourcesImpl getGlobalNamingResources();
 
-
     /**
      * Set the global naming resources.
      *
      * @param globalNamingResources The new global naming resources
      */
-    public void setGlobalNamingResources
-        (NamingResourcesImpl globalNamingResources);
-
+    public void setGlobalNamingResources(
+            NamingResourcesImpl globalNamingResources);
 
     /**
      * @return the global naming resources context.
      */
     public javax.naming.Context getGlobalNamingContext();
 
-
     /**
      * @return the port number we listen to for shutdown commands.
      */
     public int getPort();
-
 
     /**
      * Set the port number we listen to for shutdown commands.
@@ -84,12 +77,10 @@ public interface Server extends Lifecycle {
      */
     public void setPort(int port);
 
-
     /**
      * @return the address on which we listen to for shutdown commands.
      */
     public String getAddress();
-
 
     /**
      * Set the address on which we listen to for shutdown commands.
@@ -98,12 +89,10 @@ public interface Server extends Lifecycle {
      */
     public void setAddress(String address);
 
-
     /**
      * @return the shutdown command string we are waiting for.
      */
     public String getShutdown();
-
 
     /**
      * Set the shutdown command we are waiting for.
@@ -112,14 +101,13 @@ public interface Server extends Lifecycle {
      */
     public void setShutdown(String shutdown);
 
-
     /**
      * @return the parent class loader for this component. If not set, return
-     * {@link #getCatalina()} {@link Catalina#getParentClassLoader()}. If
-     * catalina has not been set, return the system class loader.
+     *         {@link #getCatalina()} {@link Catalina#getParentClassLoader()}.
+     *         If
+     *         catalina has not been set, return the system class loader.
      */
     public ClassLoader getParentClassLoader();
-
 
     /**
      * Set the parent class loader for this server.
@@ -127,7 +115,6 @@ public interface Server extends Lifecycle {
      * @param parent The new parent class loader
      */
     public void setParentClassLoader(ClassLoader parent);
-
 
     /**
      * @return the outer Catalina startup/shutdown component if present.
@@ -141,11 +128,11 @@ public interface Server extends Lifecycle {
      */
     public void setCatalina(Catalina catalina);
 
-
     /**
      * @return the configured base (instance) directory. Note that home and base
-     * may be the same (and are by default). If this is not set the value
-     * returned by {@link #getCatalinaHome()} will be used.
+     *         may be the same (and are by default). If this is not set the
+     *         value
+     *         returned by {@link #getCatalinaHome()} will be used.
      */
     public File getCatalinaBase();
 
@@ -157,10 +144,9 @@ public interface Server extends Lifecycle {
      */
     public void setCatalinaBase(File catalinaBase);
 
-
     /**
      * @return the configured home (binary) directory. Note that home and base
-     * may be the same (and are by default).
+     *         may be the same (and are by default).
      */
     public File getCatalinaHome();
 
@@ -172,9 +158,7 @@ public interface Server extends Lifecycle {
      */
     public void setCatalinaHome(File catalinaHome);
 
-
     // --------------------------------------------------------- Public Methods
-
 
     /**
      * Add a new Service to the set of defined Services.
@@ -183,12 +167,10 @@ public interface Server extends Lifecycle {
      */
     public void addService(Service service);
 
-
     /**
      * Wait until a proper shutdown command is received, then return.
      */
     public void await();
-
 
     /**
      * Find the specified Service
@@ -198,12 +180,10 @@ public interface Server extends Lifecycle {
      */
     public Service findService(String name);
 
-
     /**
      * @return the set of Services defined within this Server.
      */
     public Service[] findServices();
-
 
     /**
      * Remove the specified Service from the set associated from this
@@ -213,10 +193,9 @@ public interface Server extends Lifecycle {
      */
     public void removeService(Service service);
 
-
     /**
      * @return the token necessary for operations on the associated JNDI naming
-     * context.
+     *         context.
      */
     public Object getNamingToken();
 }

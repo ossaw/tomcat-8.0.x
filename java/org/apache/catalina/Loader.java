@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -30,25 +28,24 @@ import java.beans.PropertyChangeListener;
  * must obey the following constraints:
  * <ul>
  * <li>Must implement <code>Lifecycle</code> so that the Context can indicate
- *     that a new class loader is required.
+ * that a new class loader is required.
  * <li>The <code>start()</code> method must unconditionally create a new
- *     <code>ClassLoader</code> implementation.
+ * <code>ClassLoader</code> implementation.
  * <li>The <code>stop()</code> method must throw away its reference to the
- *     <code>ClassLoader</code> previously utilized, so that the class loader,
- *     all classes loaded by it, and all objects of those classes, can be
- *     garbage collected.
+ * <code>ClassLoader</code> previously utilized, so that the class loader,
+ * all classes loaded by it, and all objects of those classes, can be
+ * garbage collected.
  * <li>Must allow a call to <code>stop()</code> to be followed by a call to
- *     <code>start()</code> on the same <code>Loader</code> instance.
+ * <code>start()</code> on the same <code>Loader</code> instance.
  * <li>Based on a policy chosen by the implementation, must call the
- *     <code>Context.reload()</code> method on the owning <code>Context</code>
- *     when a change to one or more of the class files loaded by this class
- *     loader is detected.
+ * <code>Context.reload()</code> method on the owning <code>Context</code>
+ * when a change to one or more of the class files loaded by this class
+ * loader is detected.
  * </ul>
  *
  * @author Craig R. McClanahan
  */
 public interface Loader {
-
 
     /**
      * Execute a periodic task, such as reloading, etc. This method will be
@@ -57,18 +54,15 @@ public interface Loader {
      */
     public void backgroundProcess();
 
-
     /**
      * @return the Java class loader to be used by this Container.
      */
     public ClassLoader getClassLoader();
 
-
     /**
      * @return the Context with which this Loader has been associated.
      */
     public Context getContext();
-
 
     /**
      * Set the Context with which this Loader has been associated.
@@ -77,13 +71,11 @@ public interface Loader {
      */
     public void setContext(Context context);
 
-
     /**
      * @return the "follow standard delegation model" flag used to configure
-     * our ClassLoader.
+     *         our ClassLoader.
      */
     public boolean getDelegate();
-
 
     /**
      * Set the "follow standard delegation model" flag used to configure
@@ -93,12 +85,10 @@ public interface Loader {
      */
     public void setDelegate(boolean delegate);
 
-
     /**
      * @return the reloadable flag for this Loader.
      */
     public boolean getReloadable();
-
 
     /**
      * Set the reloadable flag for this Loader.
@@ -107,14 +97,12 @@ public interface Loader {
      */
     public void setReloadable(boolean reloadable);
 
-
     /**
      * Add a property change listener to this component.
      *
      * @param listener The listener to add
      */
     public void addPropertyChangeListener(PropertyChangeListener listener);
-
 
     /**
      * Has the internal repository associated with this Loader been modified,
@@ -124,7 +112,6 @@ public interface Loader {
      *         <code>false</code> otherwise
      */
     public boolean modified();
-
 
     /**
      * Remove a property change listener from this component.

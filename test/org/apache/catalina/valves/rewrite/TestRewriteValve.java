@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -51,43 +49,54 @@ public class TestRewriteValve extends TomcatBaseTest {
 
     @Test
     public void testNonNormalizedPathRewrite() throws Exception {
-        doTestRewrite("RewriteRule ^/b/(.*) /b/../a/$1", "/b/%255A", "/b/../a/%255A");
+        doTestRewrite("RewriteRule ^/b/(.*) /b/../a/$1", "/b/%255A",
+                "/b/../a/%255A");
     }
 
     // BZ 57863
     @Test
     public void testRewriteMap01() throws Exception {
-        doTestRewrite("RewriteMap mapa org.apache.catalina.valves.rewrite.TesterRewriteMapA\n" +
-                "RewriteRule /b/(.*).html$ /c/${mapa:$1}", "/b/a.html", "/c/aa");
+        doTestRewrite(
+                "RewriteMap mapa org.apache.catalina.valves.rewrite.TesterRewriteMapA\n"
+                        + "RewriteRule /b/(.*).html$ /c/${mapa:$1}",
+                "/b/a.html", "/c/aa");
     }
 
     @Test
     public void testRewriteMap02() throws Exception {
-        doTestRewrite("RewriteMap mapa org.apache.catalina.valves.rewrite.TesterRewriteMapA\n" +
-                "RewriteRule /b/(.*).html$ /c/${mapa:$1|dd}", "/b/x.html", "/c/dd");
+        doTestRewrite(
+                "RewriteMap mapa org.apache.catalina.valves.rewrite.TesterRewriteMapA\n"
+                        + "RewriteRule /b/(.*).html$ /c/${mapa:$1|dd}",
+                "/b/x.html", "/c/dd");
     }
 
     @Test
     public void testRewriteServerVar() throws Exception {
-        doTestRewrite("RewriteRule /b/(.*).html$ /c%{SERVLET_PATH}", "/b/x.html", "/c/b/x.html");
+        doTestRewrite("RewriteRule /b/(.*).html$ /c%{SERVLET_PATH}",
+                "/b/x.html", "/c/b/x.html");
     }
 
     @Test
     public void testRewriteEnvVarAndServerVar() throws Exception {
         System.setProperty("some_variable", "something");
-        doTestRewrite("RewriteRule /b/(.*).html$ /c/%{ENV:some_variable}%{SERVLET_PATH}", "/b/x.html", "/c/something/b/x.html");
+        doTestRewrite(
+                "RewriteRule /b/(.*).html$ /c/%{ENV:some_variable}%{SERVLET_PATH}",
+                "/b/x.html", "/c/something/b/x.html");
     }
 
     @Test
     public void testRewriteServerVarAndEnvVar() throws Exception {
         System.setProperty("some_variable", "something");
-        doTestRewrite("RewriteRule /b/(.*).html$ /c%{SERVLET_PATH}/%{ENV:some_variable}", "/b/x.html", "/c/b/x.html/something");
+        doTestRewrite(
+                "RewriteRule /b/(.*).html$ /c%{SERVLET_PATH}/%{ENV:some_variable}",
+                "/b/x.html", "/c/b/x.html/something");
     }
 
     @Test
     public void testRewriteMissingCurlyBraceOnVar() throws Exception {
         try {
-            doTestRewrite("RewriteRule /b/(.*).html$ /c%_{SERVLET_PATH}", "/b/x.html", "/c");
+            doTestRewrite("RewriteRule /b/(.*).html$ /c%_{SERVLET_PATH}",
+                    "/b/x.html", "/c");
             Assert.fail("IAE expected.");
         } catch (java.lang.IllegalArgumentException e) {
             // excpected as %_{ is invalid
@@ -97,7 +106,8 @@ public class TestRewriteValve extends TomcatBaseTest {
     @Test
     public void testRewriteMissingCurlyBraceOnMapper() throws Exception {
         try {
-            doTestRewrite("RewriteRule /b/(.*).html$ /c$_{SERVLET_PATH}", "/b/x.html", "/c");
+            doTestRewrite("RewriteRule /b/(.*).html$ /c$_{SERVLET_PATH}",
+                    "/b/x.html", "/c");
             Assert.fail("IAE expected.");
         } catch (java.lang.IllegalArgumentException e) {
             // excpected as $_{ is invalid
@@ -107,16 +117,19 @@ public class TestRewriteValve extends TomcatBaseTest {
     // https://bz.apache.org/bugzilla/show_bug.cgi?id=60013
     public void testRewriteWithEncoding02() throws Exception {
         doTestRewrite("RewriteRule ^/b/(.*)$ /c/?param=$1 [L]",
-                "/b/%E5%9C%A8%E7%BA%BF%E6%B5%8B%E8%AF%95", "/c/", "param=\u5728\u7EBF\u6D4B\u8BD5");
+                "/b/%E5%9C%A8%E7%BA%BF%E6%B5%8B%E8%AF%95", "/c/",
+                "param=\u5728\u7EBF\u6D4B\u8BD5");
     }
 
-    private void doTestRewrite(String config, String request, String expectedURI) throws Exception {
+    private void doTestRewrite(String config, String request,
+            String expectedURI) throws Exception {
         doTestRewrite(config, request, expectedURI, null);
     }
 
     @Test
     public void testNonAsciiPath() throws Exception {
-        doTestRewrite("RewriteRule ^/b/(.*) /c/$1", "/b/%E5%9C%A8%E7%BA%BF%E6%B5%8B%E8%AF%95",
+        doTestRewrite("RewriteRule ^/b/(.*) /c/$1",
+                "/b/%E5%9C%A8%E7%BA%BF%E6%B5%8B%E8%AF%95",
                 "/c/%E5%9C%A8%E7%BA%BF%E6%B5%8B%E8%AF%95");
     }
 
@@ -134,20 +147,20 @@ public class TestRewriteValve extends TomcatBaseTest {
 
     @Test
     public void testNonAsciiQueryString() throws Exception {
-        doTestRewrite("RewriteRule ^/b/(.*) /c?$1", "/b/id=%E5%9C%A8%E7%BA%BF%E6%B5%8B%E8%AF%95",
-                "/c", "id=%E5%9C%A8%E7%BA%BF%E6%B5%8B%E8%AF%95");
+        doTestRewrite("RewriteRule ^/b/(.*) /c?$1",
+                "/b/id=%E5%9C%A8%E7%BA%BF%E6%B5%8B%E8%AF%95", "/c",
+                "id=%E5%9C%A8%E7%BA%BF%E6%B5%8B%E8%AF%95");
     }
-
 
     @Test
     public void testNonAsciiQueryStringAndRedirectPath() throws Exception {
-        doTestRewrite("RewriteRule ^/b/(.*)/(.*) /c/$1?$2", "/b/%E5%9C%A8%E7%BA%BF/id=%E6%B5%8B%E8%AF%95",
+        doTestRewrite("RewriteRule ^/b/(.*)/(.*) /c/$1?$2",
+                "/b/%E5%9C%A8%E7%BA%BF/id=%E6%B5%8B%E8%AF%95",
                 "/c/%E5%9C%A8%E7%BA%BF", "id=%E6%B5%8B%E8%AF%95");
     }
 
-
-    private void doTestRewrite(String config, String request, String expectedURI,
-            String expectedQueryString) throws Exception {
+    private void doTestRewrite(String config, String request,
+            String expectedURI, String expectedQueryString) throws Exception {
 
         Tomcat tomcat = getTomcatInstance();
 
@@ -176,7 +189,8 @@ public class TestRewriteValve extends TomcatBaseTest {
         Assert.assertEquals(expectedURI, requestURI);
 
         if (expectedQueryString != null) {
-            String queryString = requestDesc.getRequestInfo("REQUEST-QUERY-STRING");
+            String queryString = requestDesc.getRequestInfo(
+                    "REQUEST-QUERY-STRING");
             Assert.assertEquals(expectedQueryString, queryString);
         }
     }

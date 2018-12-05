@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -27,7 +25,7 @@ import org.apache.juli.logging.Log;
  * <li>NOTHING: Log nothing.</li>
  * <li>DEBUG_ALL: Log all problems at DEBUG log level.</li>
  * <li>INFO_THEN_DEBUG: Log first problem at INFO log level and any further
- *     issues in the following TBD (configurable) seconds at DEBUG level</li>
+ * issues in the following TBD (configurable) seconds at DEBUG level</li>
  * <li>INFO_ALL: Log all problems at INFO log level.</li>
  * </ul>
  * By default, INFO_THEN_DEBUG is used with a suppression time of 24 hours.
@@ -49,7 +47,6 @@ public class UserDataHelper {
 
     private volatile long lastInfoTime = 0;
 
-
     public UserDataHelper(Log log) {
         this.log = log;
 
@@ -69,8 +66,8 @@ public class UserDataHelper {
 
         // Default suppression time of 1 day.
         suppressionTime = Integer.getInteger(
-                "org.apache.juli.logging.UserDataHelper.SUPPRESSION_TIME",
-                60 * 60 * 24).intValue() * 1000L;
+                "org.apache.juli.logging.UserDataHelper.SUPPRESSION_TIME", 60
+                        * 60 * 24).intValue() * 1000L;
 
         if (suppressionTime == 0) {
             tempConfig = Config.INFO_ALL;
@@ -78,7 +75,6 @@ public class UserDataHelper {
 
         config = tempConfig;
     }
-
 
     /**
      * Returns log mode for the next log message, or <code>null</code> if the
@@ -108,7 +104,6 @@ public class UserDataHelper {
         return null;
     }
 
-
     /*
      * Not completely thread-safe but good enough for this use case. I couldn't
      * see a simple enough way to make it completely thread-safe that was not
@@ -130,20 +125,14 @@ public class UserDataHelper {
         return true;
     }
 
-
     private static enum Config {
-        NONE,
-        DEBUG_ALL,
-        INFO_THEN_DEBUG,
-        INFO_ALL
+        NONE, DEBUG_ALL, INFO_THEN_DEBUG, INFO_ALL
     }
 
     /**
      * Log mode for the next log message.
      */
     public static enum Mode {
-        DEBUG,
-        INFO_THEN_DEBUG,
-        INFO
+        DEBUG, INFO_THEN_DEBUG, INFO
     }
 }

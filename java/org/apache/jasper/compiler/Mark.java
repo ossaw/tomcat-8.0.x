@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -42,9 +40,9 @@ final class Mark {
     /**
      * Constructor
      *
-     * @param reader JspReader this mark belongs to
+     * @param reader   JspReader this mark belongs to
      * @param inStream current stream for this mark
-     * @param name JSP file name
+     * @param name     JSP file name
      */
     Mark(JspReader reader, char[] inStream, String name) {
         this.ctxt = reader.getJspCompilationContext();
@@ -55,12 +53,11 @@ final class Mark {
         this.fileName = name;
     }
 
-
     /**
      * Constructor
      */
     Mark(Mark other) {
-       init(other, false);
+        init(other, false);
     }
 
     void update(int cursor, int line, int col) {
@@ -81,7 +78,6 @@ final class Mark {
         }
     }
 
-
     /**
      * Constructor
      */
@@ -94,7 +90,6 @@ final class Mark {
         this.fileName = filename;
     }
 
-
     public int getLineNumber() {
         return line;
     }
@@ -105,7 +100,7 @@ final class Mark {
 
     @Override
     public String toString() {
-        return getFile()+"("+line+","+col+")";
+        return getFile() + "(" + line + "," + col + ")";
     }
 
     public String getFile() {
@@ -127,11 +122,11 @@ final class Mark {
     public boolean equals(Object other) {
         if (other instanceof Mark) {
             Mark m = (Mark) other;
-            return this.cursor == m.cursor && this.line == m.line && this.col == m.col;
+            return this.cursor == m.cursor && this.line == m.line
+                    && this.col == m.col;
         }
         return false;
     }
-
 
     @Override
     public int hashCode() {

@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -243,23 +241,23 @@ public class TesterServletContext implements ServletContext {
     }
 
     @Override
-    public javax.servlet.FilterRegistration.Dynamic addFilter(
-            String filterName, String className) {
+    public javax.servlet.FilterRegistration.Dynamic addFilter(String filterName,
+            String className) {
         throw new RuntimeException("Not implemented");
     }
 
     @Override
-    public javax.servlet.FilterRegistration.Dynamic addFilter(
-            String filterName, Filter filter) {
-        return new ApplicationFilterRegistration(
-                new FilterDef(), new TesterContext());
+    public javax.servlet.FilterRegistration.Dynamic addFilter(String filterName,
+            Filter filter) {
+        return new ApplicationFilterRegistration(new FilterDef(),
+                new TesterContext());
     }
 
     @Override
-    public javax.servlet.FilterRegistration.Dynamic addFilter(
-            String filterName, Class<? extends Filter> filterClass) {
-        return new ApplicationFilterRegistration(
-                new FilterDef(), new TesterContext());
+    public javax.servlet.FilterRegistration.Dynamic addFilter(String filterName,
+            Class<? extends Filter> filterClass) {
+        return new ApplicationFilterRegistration(new FilterDef(),
+                new TesterContext());
     }
 
     @Override
@@ -279,12 +277,14 @@ public class TesterServletContext implements ServletContext {
     }
 
     private SessionCookieConfig sessionCookieConfig = new TesterSessionCookieConfig();
+
     @Override
     public SessionCookieConfig getSessionCookieConfig() {
         return sessionCookieConfig;
     }
 
     private final Set<SessionTrackingMode> sessionTrackingModes = new HashSet<>();
+
     @Override
     public void setSessionTrackingModes(
             Set<SessionTrackingMode> sessionTrackingModes) {

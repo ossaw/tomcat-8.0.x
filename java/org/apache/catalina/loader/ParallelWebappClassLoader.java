@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -20,13 +18,14 @@ import org.apache.catalina.LifecycleException;
 
 public class ParallelWebappClassLoader extends WebappClassLoaderBase {
 
-    private static final org.apache.juli.logging.Log log =
-            org.apache.juli.logging.LogFactory.getLog(ParallelWebappClassLoader.class);
+    private static final org.apache.juli.logging.Log log = org.apache.juli.logging.LogFactory
+            .getLog(ParallelWebappClassLoader.class);
 
     static {
         boolean result = ClassLoader.registerAsParallelCapable();
         if (!result) {
-            log.warn(sm.getString("webappClassLoaderParallel.registrationFailed"));
+            log.warn(sm.getString(
+                    "webappClassLoaderParallel.registrationFailed"));
         }
     }
 
@@ -34,11 +33,9 @@ public class ParallelWebappClassLoader extends WebappClassLoaderBase {
         super();
     }
 
-
     public ParallelWebappClassLoader(ClassLoader parent) {
         super(parent);
     }
-
 
     /**
      * Returns a copy of this class loader without any class file
@@ -58,7 +55,8 @@ public class ParallelWebappClassLoader extends WebappClassLoaderBase {
     @Override
     public ParallelWebappClassLoader copyWithoutTransformers() {
 
-        ParallelWebappClassLoader result = new ParallelWebappClassLoader(getParent());
+        ParallelWebappClassLoader result = new ParallelWebappClassLoader(
+                getParent());
 
         super.copyStateWithoutTransformers(result);
 

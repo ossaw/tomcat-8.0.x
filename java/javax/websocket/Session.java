@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -28,6 +26,7 @@ public interface Session extends Closeable {
 
     /**
      * Get the container that created this session.
+     * 
      * @return the container that created this session.
      */
     WebSocketContainer getContainer();
@@ -42,10 +41,10 @@ public interface Session extends Closeable {
      * or
      * {@link #addMessageHandler(Class, javax.websocket.MessageHandler.Whole)}.
      *
-     * @param handler   The message handler for a incoming message
+     * @param handler The message handler for a incoming message
      *
-     * @throws IllegalStateException  If a message handler has already been
-     *                                registered for the associated message type
+     * @throws IllegalStateException If a message handler has already been
+     *                               registered for the associated message type
      */
     void addMessageHandler(MessageHandler handler) throws IllegalStateException;
 
@@ -65,6 +64,7 @@ public interface Session extends Closeable {
 
     /**
      * Get the idle timeout for this session.
+     * 
      * @return The current idle timeout for this session in milliseconds. Zero
      *         or negative values indicate an infinite timeout.
      */
@@ -72,6 +72,7 @@ public interface Session extends Closeable {
 
     /**
      * Set the idle timeout for this session.
+     * 
      * @param timeout The new idle timeout for this session in milliseconds.
      *                Zero or negative values indicate an infinite timeout.
      */
@@ -79,24 +80,28 @@ public interface Session extends Closeable {
 
     /**
      * Set the current maximum buffer size for binary messages.
+     * 
      * @param max The new maximum buffer size in bytes
      */
     void setMaxBinaryMessageBufferSize(int max);
 
     /**
      * Get the current maximum buffer size for binary messages.
+     * 
      * @return The current maximum buffer size in bytes
      */
     int getMaxBinaryMessageBufferSize();
 
     /**
      * Set the maximum buffer size for text messages.
+     * 
      * @param max The new maximum buffer size in characters.
      */
     void setMaxTextMessageBufferSize(int max);
 
     /**
      * Get the maximum buffer size for text messages.
+     * 
      * @return The maximum buffer size in characters.
      */
     int getMaxTextMessageBufferSize();
@@ -108,6 +113,7 @@ public interface Session extends Closeable {
     /**
      * Provides a unique identifier for the session. This identifier should not
      * be relied upon to be generated from a secure random source.
+     * 
      * @return A unique identifier for the session.
      */
     String getId();
@@ -123,10 +129,10 @@ public interface Session extends Closeable {
     @Override
     void close() throws IOException;
 
-
     /**
      * Close the connection to the remote end point using the specified code
      * and reason phrase.
+     * 
      * @param closeReason The reason the WebSocket session is being closed.
      *
      * @throws IOException if an I/O error occurs while the WebSocket session is
@@ -140,9 +146,9 @@ public interface Session extends Closeable {
 
     String getQueryString();
 
-    Map<String,String> getPathParameters();
+    Map<String, String> getPathParameters();
 
-    Map<String,Object> getUserProperties();
+    Map<String, Object> getUserProperties();
 
     Principal getUserPrincipal();
 
@@ -151,7 +157,7 @@ public interface Session extends Closeable {
      * as this session.
      *
      * @return The set of currently open sessions for the local endpoint that
-     * this session is associated with.
+     *         this session is associated with.
      */
     Set<Session> getOpenSessions();
 
@@ -160,31 +166,31 @@ public interface Session extends Closeable {
      * one {@link MessageHandler} may be registered for each message type (text
      * or binary, pong messages are never presented as partial messages).
      *
-     * @param <T>       The type of message that the given handler is intended
-     *                  for
-     * @param clazz     The Class that implements T
-     * @param handler   The message handler for a incoming message
+     * @param         <T> The type of message that the given handler is intended
+     *                for
+     * @param clazz   The Class that implements T
+     * @param handler The message handler for a incoming message
      *
-     * @throws IllegalStateException  If a message handler has already been
-     *                                registered for the associated message type
+     * @throws IllegalStateException If a message handler has already been
+     *                               registered for the associated message type
      *
      * @since WebSocket 1.1
      */
-    <T> void addMessageHandler(Class<T> clazz, MessageHandler.Partial<T> handler)
-            throws IllegalStateException;
+    <T> void addMessageHandler(Class<T> clazz,
+            MessageHandler.Partial<T> handler) throws IllegalStateException;
 
     /**
      * Registers a {@link MessageHandler} for whole incoming messages. Only
      * one {@link MessageHandler} may be registered for each message type (text,
      * binary, pong).
      *
-     * @param <T>       The type of message that the given handler is intended
-     *                  for
-     * @param clazz     The Class that implements T
-     * @param handler   The message handler for a incoming message
+     * @param         <T> The type of message that the given handler is intended
+     *                for
+     * @param clazz   The Class that implements T
+     * @param handler The message handler for a incoming message
      *
-     * @throws IllegalStateException  If a message handler has already been
-     *                                registered for the associated message type
+     * @throws IllegalStateException If a message handler has already been
+     *                               registered for the associated message type
      *
      * @since WebSocket 1.1
      */

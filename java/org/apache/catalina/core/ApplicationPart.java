@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -71,8 +69,8 @@ public class ApplicationPart implements Part {
     public Collection<String> getHeaderNames() {
         if (fileItem instanceof DiskFileItem) {
             LinkedHashSet<String> headerNames = new LinkedHashSet<>();
-            Iterator<String> iter =
-                ((DiskFileItem) fileItem).getHeaders().getHeaderNames();
+            Iterator<String> iter = ((DiskFileItem) fileItem).getHeaders()
+                    .getHeaderNames();
             while (iter.hasNext()) {
                 headerNames.add(iter.next());
             }
@@ -85,8 +83,8 @@ public class ApplicationPart implements Part {
     public Collection<String> getHeaders(String name) {
         if (fileItem instanceof DiskFileItem) {
             LinkedHashSet<String> headers = new LinkedHashSet<>();
-            Iterator<String> iter =
-                ((DiskFileItem) fileItem).getHeaders().getHeaders(name);
+            Iterator<String> iter = ((DiskFileItem) fileItem).getHeaders()
+                    .getHeaders(name);
             while (iter.hasNext()) {
                 headers.add(iter.next());
             }
@@ -123,7 +121,8 @@ public class ApplicationPart implements Part {
         }
     }
 
-    public String getString(String encoding) throws UnsupportedEncodingException {
+    public String getString(String encoding)
+            throws UnsupportedEncodingException {
         return fileItem.getString(encoding);
     }
 
@@ -140,7 +139,7 @@ public class ApplicationPart implements Part {
                 ParameterParser paramParser = new ParameterParser();
                 paramParser.setLowerCaseNames(true);
                 // Parameter parser can handle null input
-                Map<String,String> params = paramParser.parse(cd, ';');
+                Map<String, String> params = paramParser.parse(cd, ';');
                 if (params.containsKey("filename")) {
                     fileName = params.get("filename");
                     // The parser will remove surrounding '"' but will not

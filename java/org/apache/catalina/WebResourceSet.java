@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -29,10 +27,10 @@ public interface WebResourceSet extends Lifecycle {
      * Obtain the object that represents the resource at the given path. Note
      * the resource at that path may not exist.
      *
-     * @param path  The path for the resource of interest relative to the root
-     *              of the web application. It must start with '/'.
+     * @param path The path for the resource of interest relative to the root
+     *             of the web application. It must start with '/'.
      *
-     * @return  The object that represents the resource at the given path
+     * @return The object that represents the resource at the given path
      */
     WebResource getResource(String path);
 
@@ -40,11 +38,11 @@ public interface WebResourceSet extends Lifecycle {
      * Obtain the list of the names of all of the files and directories located
      * in the specified directory.
      *
-     * @param path  The path for the resource of interest relative to the root
-     *              of the web application. It must start with '/'.
+     * @param path The path for the resource of interest relative to the root
+     *             of the web application. It must start with '/'.
      *
-     * @return  The list of resources. If path does not refer to a directory
-     *          then a zero length array will be returned.
+     * @return The list of resources. If path does not refer to a directory
+     *         then a zero length array will be returned.
      */
     String[] list(String path);
 
@@ -53,22 +51,22 @@ public interface WebResourceSet extends Lifecycle {
      * directories located in the specified directory. Paths representing
      * directories will end with a "/" character.
      *
-     * @param path  The path for the resource of interest relative to the root
-     *              of the web application. It must start with '/'.
+     * @param path The path for the resource of interest relative to the root
+     *             of the web application. It must start with '/'.
      *
-     * @return  The Set of resources. If path does not refer to a directory
-     *          then an empty set will be returned.
+     * @return The Set of resources. If path does not refer to a directory
+     *         then an empty set will be returned.
      */
     Set<String> listWebAppPaths(String path);
 
     /**
      * Create a new directory at the given path.
      *
-     * @param path  The path for the new resource to create relative to the root
-     *              of the web application. It must start with '/'.
+     * @param path The path for the new resource to create relative to the root
+     *             of the web application. It must start with '/'.
      *
-     * @return  <code>true</code> if the directory was created, otherwise
-     *          <code>false</code>
+     * @return <code>true</code> if the directory was created, otherwise
+     *         <code>false</code>
      */
     boolean mkdir(String path);
 
@@ -85,7 +83,7 @@ public interface WebResourceSet extends Lifecycle {
      *                  will be overwritten. If <code>false</code> and the
      *                  resource already exists the write will fail.
      *
-     * @return  <code>true</code> if and only if the new Resource is written
+     * @return <code>true</code> if and only if the new Resource is written
      */
     boolean write(String path, InputStream is, boolean overwrite);
 
@@ -132,8 +130,9 @@ public interface WebResourceSet extends Lifecycle {
      *                 configured to be read-only
      *
      * @throws IllegalArgumentException if an attempt is made to configure a
-     *         {@link WebResourceSet} that is hard-coded to be read-only as
-     *         writable
+     *                                  {@link WebResourceSet} that is
+     *                                  hard-coded to be read-only as
+     *                                  writable
      */
     void setReadOnly(boolean readOnly);
 

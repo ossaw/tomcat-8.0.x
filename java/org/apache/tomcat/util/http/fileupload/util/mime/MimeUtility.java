@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -48,12 +46,14 @@ public final class MimeUtility {
     private static final String QUOTEDPRINTABLE_ENCODING_MARKER = "Q";
 
     /**
-     * If the text contains any encoded tokens, those tokens will be marked with "=?".
+     * If the text contains any encoded tokens, those tokens will be marked with
+     * "=?".
      */
     private static final String ENCODED_TOKEN_MARKER = "=?";
 
     /**
-     * If the text contains any encoded tokens, those tokens will terminate with "=?".
+     * If the text contains any encoded tokens, those tokens will terminate with
+     * "=?".
      */
     private static final String ENCODED_TOKEN_FINISHER = "?=";
 
@@ -89,16 +89,18 @@ public final class MimeUtility {
 
     /**
      * Decode a string of text obtained from a mail header into
-     * its proper form.  The text generally will consist of a
+     * its proper form. The text generally will consist of a
      * string of tokens, some of which may be encoded using
      * base64 encoding.
      *
-     * @param text   The text to decode.
+     * @param text The text to decode.
      *
      * @return The decoded text string.
-     * @throws UnsupportedEncodingException if the detected encoding in the input text is not supported.
+     * @throws UnsupportedEncodingException if the detected encoding in the
+     *                                      input text is not supported.
      */
-    public static String decodeText(String text) throws UnsupportedEncodingException {
+    public static String decodeText(String text)
+            throws UnsupportedEncodingException {
         // if the text contains any encoded tokens, those tokens will be marked with "=?".  If the
         // source string doesn't contain that sequent, no decoding is required.
         if (text.indexOf(ENCODED_TOKEN_MARKER) < 0) {
@@ -158,7 +160,8 @@ public final class MimeUtility {
 
                         // are any whitespace characters significant?  Append 'em if we've got 'em.
                         if (!previousTokenEncoded && startWhiteSpace != -1) {
-                            decodedText.append(text.substring(startWhiteSpace, endWhiteSpace));
+                            decodedText.append(text.substring(startWhiteSpace,
+                                    endWhiteSpace));
                             startWhiteSpace = -1;
                         }
                         // this is definitely a decoded token.
@@ -176,7 +179,8 @@ public final class MimeUtility {
                 // this is a normal token, so it doesn't matter what the previous token was.  Add the white space
                 // if we have it.
                 if (startWhiteSpace != -1) {
-                    decodedText.append(text.substring(startWhiteSpace, endWhiteSpace));
+                    decodedText.append(text.substring(startWhiteSpace,
+                            endWhiteSpace));
                     startWhiteSpace = -1;
                 }
                 // this is not a decoded token.
@@ -190,17 +194,18 @@ public final class MimeUtility {
 
     /**
      * Parse a string using the RFC 2047 rules for an "encoded-word"
-     * type.  This encoding has the syntax:
+     * type. This encoding has the syntax:
      *
      * encoded-word = "=?" charset "?" encoding "?" encoded-text "?="
      *
-     * @param word   The possibly encoded word value.
+     * @param word The possibly encoded word value.
      *
      * @return The decoded word.
      * @throws ParseException
      * @throws UnsupportedEncodingException
      */
-    private static String decodeWord(String word) throws ParseException, UnsupportedEncodingException {
+    private static String decodeWord(String word) throws ParseException,
+            UnsupportedEncodingException {
         // encoded words start with the characters "=?".  If this not an encoded word, we throw a
         // ParseException for the caller.
 
@@ -210,24 +215,29 @@ public final class MimeUtility {
 
         int charsetPos = word.indexOf('?', 2);
         if (charsetPos == -1) {
-            throw new ParseException("Missing charset in RFC 2047 encoded-word: " + word);
+            throw new ParseException(
+                    "Missing charset in RFC 2047 encoded-word: " + word);
         }
 
         // pull out the character set information (this is the MIME name at this point).
-        String charset = word.substring(2, charsetPos).toLowerCase(Locale.ENGLISH);
+        String charset = word.substring(2, charsetPos).toLowerCase(
+                Locale.ENGLISH);
 
         // now pull out the encoding token the same way.
         int encodingPos = word.indexOf('?', charsetPos + 1);
         if (encodingPos == -1) {
-            throw new ParseException("Missing encoding in RFC 2047 encoded-word: " + word);
+            throw new ParseException(
+                    "Missing encoding in RFC 2047 encoded-word: " + word);
         }
 
         String encoding = word.substring(charsetPos + 1, encodingPos);
 
         // and finally the encoded text.
-        int encodedTextPos = word.indexOf(ENCODED_TOKEN_FINISHER, encodingPos + 1);
+        int encodedTextPos = word.indexOf(ENCODED_TOKEN_FINISHER, encodingPos
+                + 1);
         if (encodedTextPos == -1) {
-            throw new ParseException("Missing encoded text in RFC 2047 encoded-word: " + word);
+            throw new ParseException(
+                    "Missing encoded text in RFC 2047 encoded-word: " + word);
         }
 
         String encodedText = word.substring(encodingPos + 1, encodedTextPos);
@@ -239,7 +249,8 @@ public final class MimeUtility {
 
         try {
             // the decoder writes directly to an output stream.
-            ByteArrayOutputStream out = new ByteArrayOutputStream(encodedText.length());
+            ByteArrayOutputStream out = new ByteArrayOutputStream(encodedText
+                    .length());
 
             byte[] decodedData;
             // Base64 encoded?
@@ -250,7 +261,8 @@ public final class MimeUtility {
                 QuotedPrintableDecoder.decode(encodedData, out);
                 decodedData = out.toByteArray();
             } else {
-                throw new UnsupportedEncodingException("Unknown RFC 2047 encoding: " + encoding);
+                throw new UnsupportedEncodingException(
+                        "Unknown RFC 2047 encoding: " + encoding);
             }
             // Convert decoded byte data into a string.
             return new String(decodedData, javaCharset(charset));
@@ -273,7 +285,8 @@ public final class MimeUtility {
             return null;
         }
 
-        String mappedCharset = MIME2JAVA.get(charset.toLowerCase(Locale.ENGLISH));
+        String mappedCharset = MIME2JAVA.get(charset.toLowerCase(
+                Locale.ENGLISH));
         // if there is no mapping, then the original name is used.  Many of the MIME character set
         // names map directly back into Java.  The reverse isn't necessarily true.
         if (mappedCharset == null) {

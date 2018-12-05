@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -84,7 +82,7 @@ public class JspContextWrapper extends PageContext implements VariableResolver {
     // ArrayList of AT_END scripting variables
     private final ArrayList<String> atEndVars;
 
-    private final Map<String,String> aliases;
+    private final Map<String, String> aliases;
 
     private final HashMap<String, Object> originalNestedVars;
 
@@ -96,13 +94,12 @@ public class JspContextWrapper extends PageContext implements VariableResolver {
 
     public JspContextWrapper(JspTag jspTag, JspContext jspContext,
             ArrayList<String> nestedVars, ArrayList<String> atBeginVars,
-            ArrayList<String> atEndVars, Map<String,String> aliases) {
+            ArrayList<String> atEndVars, Map<String, String> aliases) {
         this.jspTag = jspTag;
         this.invokingJspCtxt = (PageContext) jspContext;
         if (jspContext instanceof JspContextWrapper) {
-            rootJspCtxt = ((JspContextWrapper)jspContext).rootJspCtxt;
-        }
-        else {
+            rootJspCtxt = ((JspContextWrapper) jspContext).rootJspCtxt;
+        } else {
             rootJspCtxt = invokingJspCtxt;
         }
         this.nestedVars = nestedVars;
@@ -121,17 +118,16 @@ public class JspContextWrapper extends PageContext implements VariableResolver {
 
     @Override
     public void initialize(Servlet servlet, ServletRequest request,
-            ServletResponse response, String errorPageURL,
-            boolean needsSession, int bufferSize, boolean autoFlush)
-            throws IOException, IllegalStateException, IllegalArgumentException {
-    }
+            ServletResponse response, String errorPageURL, boolean needsSession,
+            int bufferSize, boolean autoFlush) throws IOException,
+            IllegalStateException, IllegalArgumentException {}
 
     @Override
     public Object getAttribute(String name) {
 
         if (name == null) {
-            throw new NullPointerException(Localizer
-                    .getMessage("jsp.error.attribute.null_name"));
+            throw new NullPointerException(Localizer.getMessage(
+                    "jsp.error.attribute.null_name"));
         }
 
         return pageAttributes.get(name);
@@ -141,8 +137,8 @@ public class JspContextWrapper extends PageContext implements VariableResolver {
     public Object getAttribute(String name, int scope) {
 
         if (name == null) {
-            throw new NullPointerException(Localizer
-                    .getMessage("jsp.error.attribute.null_name"));
+            throw new NullPointerException(Localizer.getMessage(
+                    "jsp.error.attribute.null_name"));
         }
 
         if (scope == PAGE_SCOPE) {
@@ -156,8 +152,8 @@ public class JspContextWrapper extends PageContext implements VariableResolver {
     public void setAttribute(String name, Object value) {
 
         if (name == null) {
-            throw new NullPointerException(Localizer
-                    .getMessage("jsp.error.attribute.null_name"));
+            throw new NullPointerException(Localizer.getMessage(
+                    "jsp.error.attribute.null_name"));
         }
 
         if (value != null) {
@@ -171,8 +167,8 @@ public class JspContextWrapper extends PageContext implements VariableResolver {
     public void setAttribute(String name, Object value, int scope) {
 
         if (name == null) {
-            throw new NullPointerException(Localizer
-                    .getMessage("jsp.error.attribute.null_name"));
+            throw new NullPointerException(Localizer.getMessage(
+                    "jsp.error.attribute.null_name"));
         }
 
         if (scope == PAGE_SCOPE) {
@@ -190,8 +186,8 @@ public class JspContextWrapper extends PageContext implements VariableResolver {
     public Object findAttribute(String name) {
 
         if (name == null) {
-            throw new NullPointerException(Localizer
-                    .getMessage("jsp.error.attribute.null_name"));
+            throw new NullPointerException(Localizer.getMessage(
+                    "jsp.error.attribute.null_name"));
         }
 
         Object o = pageAttributes.get(name);
@@ -214,8 +210,8 @@ public class JspContextWrapper extends PageContext implements VariableResolver {
     public void removeAttribute(String name) {
 
         if (name == null) {
-            throw new NullPointerException(Localizer
-                    .getMessage("jsp.error.attribute.null_name"));
+            throw new NullPointerException(Localizer.getMessage(
+                    "jsp.error.attribute.null_name"));
         }
 
         pageAttributes.remove(name);
@@ -230,8 +226,8 @@ public class JspContextWrapper extends PageContext implements VariableResolver {
     public void removeAttribute(String name, int scope) {
 
         if (name == null) {
-            throw new NullPointerException(Localizer
-                    .getMessage("jsp.error.attribute.null_name"));
+            throw new NullPointerException(Localizer.getMessage(
+                    "jsp.error.attribute.null_name"));
         }
 
         if (scope == PAGE_SCOPE) {
@@ -245,8 +241,8 @@ public class JspContextWrapper extends PageContext implements VariableResolver {
     public int getAttributesScope(String name) {
 
         if (name == null) {
-            throw new NullPointerException(Localizer
-                    .getMessage("jsp.error.attribute.null_name"));
+            throw new NullPointerException(Localizer.getMessage(
+                    "jsp.error.attribute.null_name"));
         }
 
         if (pageAttributes.get(name) != null) {
@@ -411,27 +407,27 @@ public class JspContextWrapper extends PageContext implements VariableResolver {
      * this JSP context wrapper to the page scope of the invoking JSP context.
      *
      * @param scope
-     *            variable scope (one of NESTED, AT_BEGIN, or AT_END)
+     *              variable scope (one of NESTED, AT_BEGIN, or AT_END)
      */
     private void copyTagToPageScope(int scope) {
         Iterator<String> iter = null;
 
         switch (scope) {
-        case VariableInfo.NESTED:
-            if (nestedVars != null) {
-                iter = nestedVars.iterator();
-            }
-            break;
-        case VariableInfo.AT_BEGIN:
-            if (atBeginVars != null) {
-                iter = atBeginVars.iterator();
-            }
-            break;
-        case VariableInfo.AT_END:
-            if (atEndVars != null) {
-                iter = atEndVars.iterator();
-            }
-            break;
+            case VariableInfo.NESTED:
+                if (nestedVars != null) {
+                    iter = nestedVars.iterator();
+                }
+                break;
+            case VariableInfo.AT_BEGIN:
+                if (atBeginVars != null) {
+                    iter = atBeginVars.iterator();
+                }
+                break;
+            case VariableInfo.AT_END:
+                if (atEndVars != null) {
+                    iter = atEndVars.iterator();
+                }
+                break;
         }
 
         while ((iter != null) && iter.hasNext()) {
@@ -488,7 +484,7 @@ public class JspContextWrapper extends PageContext implements VariableResolver {
      * returns the variable name for which it is used as an alias.
      *
      * @param varName
-     *            The variable name to check
+     *                The variable name to check
      * @return The variable name for which varName is used as an alias, or
      *         varName if it is not being used as an alias
      */
@@ -507,11 +503,11 @@ public class JspContextWrapper extends PageContext implements VariableResolver {
     @Override
     public ELContext getELContext() {
         if (elContext == null) {
-            elContext = new ELContextWrapper(rootJspCtxt.getELContext(), jspTag, this);
+            elContext = new ELContextWrapper(rootJspCtxt.getELContext(), jspTag,
+                    this);
         }
         return elContext;
     }
-
 
     static class ELContextWrapper extends ELContext {
 
@@ -520,7 +516,8 @@ public class JspContextWrapper extends PageContext implements VariableResolver {
         private final PageContext pageContext;
         private ImportHandler importHandler;
 
-        private ELContextWrapper(ELContext wrapped, JspTag jspTag, PageContext pageContext) {
+        private ELContextWrapper(ELContext wrapped, JspTag jspTag,
+                PageContext pageContext) {
             this.wrapped = wrapped;
             this.jspTag = jspTag;
             this.pageContext = pageContext;
@@ -546,7 +543,8 @@ public class JspContextWrapper extends PageContext implements VariableResolver {
         }
 
         @Override
-        public void putContext(@SuppressWarnings("rawtypes") Class key, Object contextObject) {
+        public void putContext(@SuppressWarnings("rawtypes") Class key,
+                Object contextObject) {
             wrapped.putContext(key, contextObject);
         }
 
@@ -563,13 +561,15 @@ public class JspContextWrapper extends PageContext implements VariableResolver {
             if (importHandler == null) {
                 importHandler = new ImportHandler();
                 if (jspTag instanceof JspSourceImports) {
-                    Set<String> packageImports = ((JspSourceImports) jspTag).getPackageImports();
+                    Set<String> packageImports = ((JspSourceImports) jspTag)
+                            .getPackageImports();
                     if (packageImports != null) {
                         for (String packageImport : packageImports) {
                             importHandler.importPackage(packageImport);
                         }
                     }
-                    Set<String> classImports = ((JspSourceImports) jspTag).getClassImports();
+                    Set<String> classImports = ((JspSourceImports) jspTag)
+                            .getClassImports();
                     if (classImports != null) {
                         for (String classImport : classImports) {
                             importHandler.importClass(classImport);

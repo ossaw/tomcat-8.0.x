@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -70,8 +68,8 @@ public abstract class GenericServlet implements Servlet, ServletConfig,
      * parameter from the servlet's <code>ServletConfig</code> object.
      *
      * @param name
-     *            a <code>String</code> specifying the name of the
-     *            initialization parameter
+     *             a <code>String</code> specifying the name of the
+     *             initialization parameter
      * @return String a <code>String</code> containing the value of the
      *         initialization parameter
      */
@@ -145,11 +143,12 @@ public abstract class GenericServlet implements Servlet, ServletConfig,
      * the method, call <code>super.init(config)</code>.
      *
      * @param config
-     *            the <code>ServletConfig</code> object that contains
-     *            configuration information for this servlet
+     *               the <code>ServletConfig</code> object that contains
+     *               configuration information for this servlet
      * @exception ServletException
-     *                if an exception occurs that interrupts the servlet's
-     *                normal operation
+     *                             if an exception occurs that interrupts the
+     *                             servlet's
+     *                             normal operation
      * @see UnavailableException
      */
     @Override
@@ -169,8 +168,9 @@ public abstract class GenericServlet implements Servlet, ServletConfig,
      * {@link #getServletConfig}.
      *
      * @exception ServletException
-     *                if an exception occurs that interrupts the servlet's
-     *                normal operation
+     *                             if an exception occurs that interrupts the
+     *                             servlet's
+     *                             normal operation
      */
     public void init() throws ServletException {
         // NOOP by default
@@ -194,9 +194,10 @@ public abstract class GenericServlet implements Servlet, ServletConfig,
      * the servlet's name. See {@link ServletContext#log(String, Throwable)}.
      *
      * @param message
-     *            a <code>String</code> that describes the error or exception
+     *                a <code>String</code> that describes the error or
+     *                exception
      * @param t
-     *            the <code>java.lang.Throwable</code> error or exception
+     *                the <code>java.lang.Throwable</code> error or exception
      */
     public void log(String message, Throwable t) {
         getServletContext().log(getServletName() + ": " + message, t);
@@ -216,10 +217,11 @@ public abstract class GenericServlet implements Servlet, ServletConfig,
      *            the <code>ServletResponse</code> object that will contain the
      *            servlet's response
      * @exception ServletException
-     *                if an exception occurs that interferes with the servlet's
-     *                normal operation occurred
+     *                             if an exception occurs that interferes with
+     *                             the servlet's
+     *                             normal operation occurred
      * @exception IOException
-     *                if an input or output exception occurs
+     *                             if an input or output exception occurs
      */
     @Override
     public abstract void service(ServletRequest req, ServletResponse res)

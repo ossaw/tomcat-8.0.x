@@ -1,18 +1,16 @@
 /*
- *  Licensed to the Apache Software Foundation (ASF) under one or more
- *  contributor license agreements.  See the NOTICE file distributed with
- *  this work for additional information regarding copyright ownership.
- *  The ASF licenses this file to You under the Apache License, Version 2.0
- *  (the "License"); you may not use this file except in compliance with
- *  the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements. See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.apache.coyote.ajp;
 
@@ -42,11 +40,11 @@ import org.apache.tomcat.util.net.SocketWrapper;
 public class AjpAprProcessor extends AbstractAjpProcessor<Long> {
 
     private static final Log log = LogFactory.getLog(AjpAprProcessor.class);
+
     @Override
     protected Log getLog() {
         return log;
     }
-
 
     public AjpAprProcessor(int packetSize, AprEndpoint endpoint) {
 
@@ -60,18 +58,15 @@ public class AjpAprProcessor extends AbstractAjpProcessor<Long> {
         outputBuffer = ByteBuffer.allocateDirect(packetSize * 2);
     }
 
-
     /**
      * Direct buffer used for input.
      */
     protected final ByteBuffer inputBuffer;
 
-
     /**
      * Direct buffer used for output.
      */
     protected final ByteBuffer outputBuffer;
-
 
     @Override
     protected void registerForEvent(boolean read, boolean write) {
@@ -84,7 +79,6 @@ public class AjpAprProcessor extends AbstractAjpProcessor<Long> {
         //        time SocketWrapper for async timeouts.
     }
 
-
     @Override
     protected void setupSocket(SocketWrapper<Long> socketWrapper) {
         long socketRef = socketWrapper.getSocket().longValue();
@@ -92,14 +86,12 @@ public class AjpAprProcessor extends AbstractAjpProcessor<Long> {
         Socket.setsbb(socketRef, outputBuffer);
     }
 
-
     @Override
-    protected void setTimeout(SocketWrapper<Long> socketWrapper,
-            int timeout) throws IOException {
-        Socket.timeoutSet(
-                socketWrapper.getSocket().longValue(), timeout * 1000);
+    protected void setTimeout(SocketWrapper<Long> socketWrapper, int timeout)
+            throws IOException {
+        Socket.timeoutSet(socketWrapper.getSocket().longValue(), timeout
+                * 1000);
     }
-
 
     @Override
     protected int output(byte[] src, int offset, int length, boolean block)
@@ -129,7 +121,6 @@ public class AjpAprProcessor extends AbstractAjpProcessor<Long> {
 
         return result;
     }
-
 
     private int writeSocket(int pos, int len, boolean block) {
 
@@ -175,7 +166,6 @@ public class AjpAprProcessor extends AbstractAjpProcessor<Long> {
         return result;
     }
 
-
     @Override
     protected boolean read(byte[] buf, int pos, int n, boolean block)
             throws IOException {
@@ -186,26 +176,26 @@ public class AjpAprProcessor extends AbstractAjpProcessor<Long> {
             nextReadBlocks = true;
         }
 
-        if (inputBuffer.capacity() - inputBuffer.limit() <=
-                n - inputBuffer.remaining()) {
+        if (inputBuffer.capacity() - inputBuffer.limit() <= n - inputBuffer
+                .remaining()) {
             inputBuffer.compact();
             inputBuffer.limit(inputBuffer.position());
             inputBuffer.position(0);
         }
         int nRead;
         while (inputBuffer.remaining() < n) {
-            nRead = readSocket(inputBuffer.limit(),
-                    inputBuffer.capacity() - inputBuffer.limit(),
-                    nextReadBlocks);
+            nRead = readSocket(inputBuffer.limit(), inputBuffer.capacity()
+                    - inputBuffer.limit(), nextReadBlocks);
             if (nRead > 0) {
                 inputBuffer.limit(inputBuffer.limit() + nRead);
                 nextReadBlocks = true;
             } else if (-nRead == Status.EAGAIN) {
                 return false;
-            } else if ((-nRead) == Status.ETIMEDOUT || (-nRead) == Status.TIMEUP) {
+            } else if ((-nRead) == Status.ETIMEDOUT
+                    || (-nRead) == Status.TIMEUP) {
                 if (block) {
-                    throw new SocketTimeoutException(
-                            sm.getString("ajpprocessor.readtimeout"));
+                    throw new SocketTimeoutException(sm.getString(
+                            "ajpprocessor.readtimeout"));
                 } else {
                     // Attempting to read from the socket when the poller
                     // has not signalled that there is data to read appears
@@ -223,7 +213,6 @@ public class AjpAprProcessor extends AbstractAjpProcessor<Long> {
         inputBuffer.get(buf, pos, n);
         return true;
     }
-
 
     private int readSocket(int pos, int len, boolean block) {
 
@@ -268,7 +257,6 @@ public class AjpAprProcessor extends AbstractAjpProcessor<Long> {
 
         return result;
     }
-
 
     /**
      * Recycle the processor.

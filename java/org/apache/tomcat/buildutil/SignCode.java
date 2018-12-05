@@ -1,19 +1,17 @@
 /*
-* Licensed to the Apache Software Foundation (ASF) under one or more
-* contributor license agreements.  See the NOTICE file distributed with
-* this work for additional information regarding copyright ownership.
-* The ASF licenses this file to You under the Apache License, Version 2.0
-* (the "License"); you may not use this file except in compliance with
-* the License.  You may obtain a copy of the License at
-*
-*     http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*/
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements. See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.apache.tomcat.buildutil;
 
 import java.io.ByteArrayInputStream;
@@ -62,12 +60,14 @@ public class SignCode extends Task {
 
     static {
         try {
-            SIGNING_SERVICE_URL = new URL("https://api.ws.symantec.com/webtrust/SigningService");
+            SIGNING_SERVICE_URL = new URL(
+                    "https://api.ws.symantec.com/webtrust/SigningService");
         } catch (MalformedURLException e) {
             throw new IllegalArgumentException(e);
         }
         try {
-            SOAP_MSG_FACTORY = MessageFactory.newInstance(SOAPConstants.SOAP_1_1_PROTOCOL);
+            SOAP_MSG_FACTORY = MessageFactory.newInstance(
+                    SOAPConstants.SOAP_1_1_PROTOCOL);
         } catch (SOAPException e) {
             throw new IllegalArgumentException(e);
         }
@@ -85,36 +85,29 @@ public class SignCode extends Task {
         filesets.add(fileset);
     }
 
-
     public void setUserName(String userName) {
         this.userName = userName;
     }
-
 
     public void setPassword(String password) {
         this.password = password;
     }
 
-
     public void setPartnerCode(String partnerCode) {
         this.partnerCode = partnerCode;
     }
-
 
     public void setApplicationName(String applicationName) {
         this.applicationName = applicationName;
     }
 
-
     public void setApplicationVersion(String applicationVersion) {
         this.applicationVersion = applicationVersion;
     }
 
-
     public void setSigningService(String signingService) {
         this.signingService = signingService;
     }
-
 
     @Override
     public void execute() throws BuildException {
@@ -143,43 +136,45 @@ public class SignCode extends Task {
         }
     }
 
-
-    private String makeSigningRequest(List<File> filesToSign) throws SOAPException, IOException {
+    private String makeSigningRequest(List<File> filesToSign)
+            throws SOAPException, IOException {
         log("Constructing the code signing request");
 
         SOAPMessage message = SOAP_MSG_FACTORY.createMessage();
         SOAPBody body = populateEnvelope(message, NS);
 
         SOAPElement requestSigning = body.addChildElement("requestSigning", NS);
-        SOAPElement requestSigningRequest =
-                requestSigning.addChildElement("requestSigningRequest", NS);
+        SOAPElement requestSigningRequest = requestSigning.addChildElement(
+                "requestSigningRequest", NS);
 
-        addCredentials(requestSigningRequest, this.userName, this.password, this.partnerCode);
+        addCredentials(requestSigningRequest, this.userName, this.password,
+                this.partnerCode);
 
-        SOAPElement applicationName =
-                requestSigningRequest.addChildElement("applicationName", NS);
+        SOAPElement applicationName = requestSigningRequest.addChildElement(
+                "applicationName", NS);
         applicationName.addTextNode(this.applicationName);
 
-        SOAPElement applicationVersion =
-                requestSigningRequest.addChildElement("applicationVersion", NS);
+        SOAPElement applicationVersion = requestSigningRequest.addChildElement(
+                "applicationVersion", NS);
         applicationVersion.addTextNode(this.applicationVersion);
 
-        SOAPElement signingServiceName =
-                requestSigningRequest.addChildElement("signingServiceName", NS);
+        SOAPElement signingServiceName = requestSigningRequest.addChildElement(
+                "signingServiceName", NS);
         signingServiceName.addTextNode(this.signingService);
 
         List<String> fileNames = getFileNames(filesToSign);
 
-        SOAPElement commaDelimitedFileNames =
-                requestSigningRequest.addChildElement("commaDelimitedFileNames", NS);
+        SOAPElement commaDelimitedFileNames = requestSigningRequest
+                .addChildElement("commaDelimitedFileNames", NS);
         commaDelimitedFileNames.addTextNode(listToString(fileNames));
 
-        SOAPElement application =
-                requestSigningRequest.addChildElement("application", NS);
+        SOAPElement application = requestSigningRequest.addChildElement(
+                "application", NS);
         application.addTextNode(getApplicationString(fileNames, filesToSign));
 
         // Send the message
-        SOAPConnectionFactory soapConnectionFactory = SOAPConnectionFactory.newInstance();
+        SOAPConnectionFactory soapConnectionFactory = SOAPConnectionFactory
+                .newInstance();
         SOAPConnection connection = soapConnectionFactory.createConnection();
 
         log("Sending siging request to server and waiting for response");
@@ -190,8 +185,10 @@ public class SignCode extends Task {
 
         // Should come back signed
         NodeList bodyNodes = responseBody.getChildNodes();
-        NodeList requestSigningResponseNodes = bodyNodes.item(0).getChildNodes();
-        NodeList returnNodes = requestSigningResponseNodes.item(0).getChildNodes();
+        NodeList requestSigningResponseNodes = bodyNodes.item(0)
+                .getChildNodes();
+        NodeList returnNodes = requestSigningResponseNodes.item(0)
+                .getChildNodes();
 
         String signingSetID = null;
         String signingSetStatus = null;
@@ -205,14 +202,15 @@ public class SignCode extends Task {
             }
         }
 
-        if (!signingService.contains("TEST") && !"SIGNED".equals(signingSetStatus) ||
-                signingService.contains("TEST") && !"INITIALIZED".equals(signingSetStatus) ) {
-            throw new BuildException("Signing failed. Status was: " + signingSetStatus);
+        if (!signingService.contains("TEST") && !"SIGNED".equals(
+                signingSetStatus) || signingService.contains("TEST")
+                        && !"INITIALIZED".equals(signingSetStatus)) {
+            throw new BuildException("Signing failed. Status was: "
+                    + signingSetStatus);
         }
 
         return signingSetID;
     }
-
 
     private String listToString(List<String> list) {
         StringBuilder sb = new StringBuilder(list.size() * 6);
@@ -228,7 +226,6 @@ public class SignCode extends Task {
         return sb.toString();
     }
 
-
     private void downloadSignedFiles(List<File> filesToSign, String id)
             throws SOAPException, IOException {
 
@@ -237,22 +234,25 @@ public class SignCode extends Task {
         SOAPMessage message = SOAP_MSG_FACTORY.createMessage();
         SOAPBody body = populateEnvelope(message, NS);
 
-        SOAPElement getSigningSetDetails = body.addChildElement("getSigningSetDetails", NS);
-        SOAPElement getSigningSetDetailsRequest =
-                getSigningSetDetails.addChildElement("getSigningSetDetailsRequest", NS);
+        SOAPElement getSigningSetDetails = body.addChildElement(
+                "getSigningSetDetails", NS);
+        SOAPElement getSigningSetDetailsRequest = getSigningSetDetails
+                .addChildElement("getSigningSetDetailsRequest", NS);
 
-        addCredentials(getSigningSetDetailsRequest, this.userName, this.password, this.partnerCode);
+        addCredentials(getSigningSetDetailsRequest, this.userName,
+                this.password, this.partnerCode);
 
-        SOAPElement signingSetID =
-                getSigningSetDetailsRequest.addChildElement("signingSetID", NS);
+        SOAPElement signingSetID = getSigningSetDetailsRequest.addChildElement(
+                "signingSetID", NS);
         signingSetID.addTextNode(id);
 
-        SOAPElement returnApplication =
-                getSigningSetDetailsRequest.addChildElement("returnApplication", NS);
+        SOAPElement returnApplication = getSigningSetDetailsRequest
+                .addChildElement("returnApplication", NS);
         returnApplication.addTextNode("true");
 
         // Send the message
-        SOAPConnectionFactory soapConnectionFactory = SOAPConnectionFactory.newInstance();
+        SOAPConnectionFactory soapConnectionFactory = SOAPConnectionFactory
+                .newInstance();
         SOAPConnection connection = soapConnectionFactory.createConnection();
 
         log("Requesting signed files from server and waiting for response");
@@ -265,8 +265,10 @@ public class SignCode extends Task {
 
         // Extract the signed file(s) from the ZIP
         NodeList bodyNodes = responseBody.getChildNodes();
-        NodeList getSigningSetDetailsResponseNodes = bodyNodes.item(0).getChildNodes();
-        NodeList returnNodes = getSigningSetDetailsResponseNodes.item(0).getChildNodes();
+        NodeList getSigningSetDetailsResponseNodes = bodyNodes.item(0)
+                .getChildNodes();
+        NodeList returnNodes = getSigningSetDetailsResponseNodes.item(0)
+                .getChildNodes();
 
         String result = null;
         String data = null;
@@ -281,28 +283,28 @@ public class SignCode extends Task {
         }
 
         if (!"0".equals(result)) {
-            throw new BuildException("Download failed. Result code was: " + result);
+            throw new BuildException("Download failed. Result code was: "
+                    + result);
         }
 
         extractFilesFromApplicationString(data, filesToSign);
     }
 
-
-    private static SOAPBody populateEnvelope(SOAPMessage message, String namespace)
-            throws SOAPException {
+    private static SOAPBody populateEnvelope(SOAPMessage message,
+            String namespace) throws SOAPException {
         SOAPPart soapPart = message.getSOAPPart();
         SOAPEnvelope envelope = soapPart.getEnvelope();
-        envelope.addNamespaceDeclaration(
-                "soapenv","http://schemas.xmlsoap.org/soap/envelope/");
-        envelope.addNamespaceDeclaration(
-                namespace,"http://api.ws.symantec.com/webtrust/codesigningservice");
+        envelope.addNamespaceDeclaration("soapenv",
+                "http://schemas.xmlsoap.org/soap/envelope/");
+        envelope.addNamespaceDeclaration(namespace,
+                "http://api.ws.symantec.com/webtrust/codesigningservice");
         return envelope.getBody();
     }
 
-
     private static void addCredentials(SOAPElement requestSigningRequest,
             String user, String pwd, String code) throws SOAPException {
-        SOAPElement authToken = requestSigningRequest.addChildElement("authToken", NS);
+        SOAPElement authToken = requestSigningRequest.addChildElement(
+                "authToken", NS);
         SOAPElement userName = authToken.addChildElement("userName", NS);
         userName.addTextNode(user);
         SOAPElement password = authToken.addChildElement("password", NS);
@@ -310,7 +312,6 @@ public class SignCode extends Task {
         SOAPElement partnerCode = authToken.addChildElement("partnerCode", NS);
         partnerCode.addTextNode(code);
     }
-
 
     /**
      * Signing service requires unique files names. Since files will be returned
@@ -336,7 +337,6 @@ public class SignCode extends Task {
         return result;
     }
 
-
     /**
      * Zips the files, base 64 encodes the resulting zip and then returns the
      * string. It would be far more efficient to stream this directly to the
@@ -346,10 +346,11 @@ public class SignCode extends Task {
      * @param fileNames Modified names of files
      * @param files     Files to be signed
      */
-    private static String getApplicationString(List<String> fileNames, List<File> files)
-            throws IOException {
+    private static String getApplicationString(List<String> fileNames,
+            List<File> files) throws IOException {
         // 16 MB should be more than enough for Tomcat
-        ByteArrayOutputStream baos = new ByteArrayOutputStream(16 * 1024 * 1024);
+        ByteArrayOutputStream baos = new ByteArrayOutputStream(16 * 1024
+                * 1024);
         try (ZipOutputStream zos = new ZipOutputStream(baos)) {
             byte[] buf = new byte[32 * 1024];
             for (int i = 0; i < files.size(); i++) {
@@ -357,7 +358,7 @@ public class SignCode extends Task {
                     ZipEntry zipEntry = new ZipEntry(fileNames.get(i));
                     zos.putNextEntry(zipEntry);
                     int numRead;
-                    while ( (numRead = fis.read(buf)) >= 0) {
+                    while ((numRead = fis.read(buf)) >= 0) {
                         zos.write(buf, 0, numRead);
                     }
                 }
@@ -367,22 +368,23 @@ public class SignCode extends Task {
         return Base64.encodeBase64String(baos.toByteArray());
     }
 
-
     /**
      * Removes base64 encoding, unzips the files and writes the new files over
      * the top of the old ones.
      */
-    private static void extractFilesFromApplicationString(String data, List<File> files)
-            throws IOException {
-        ByteArrayInputStream bais = new ByteArrayInputStream(Base64.decodeBase64(data));
+    private static void extractFilesFromApplicationString(String data,
+            List<File> files) throws IOException {
+        ByteArrayInputStream bais = new ByteArrayInputStream(Base64
+                .decodeBase64(data));
         try (ZipInputStream zis = new ZipInputStream(bais)) {
             byte[] buf = new byte[32 * 1024];
-            for (int i = 0; i < files.size(); i ++) {
-                try (FileOutputStream fos = new FileOutputStream(files.get(i))) {
+            for (int i = 0; i < files.size(); i++) {
+                try (FileOutputStream fos = new FileOutputStream(files.get(
+                        i))) {
                     zis.getNextEntry();
                     int numRead;
-                    while ( (numRead = zis.read(buf)) >= 0) {
-                        fos.write(buf, 0 , numRead);
+                    while ((numRead = zis.read(buf)) >= 0) {
+                        fos.write(buf, 0, numRead);
                     }
                 }
             }

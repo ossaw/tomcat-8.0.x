@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -15,9 +13,7 @@
  * limitations under the License.
  */
 
-
 package org.apache.catalina.users;
-
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -28,17 +24,17 @@ import org.apache.catalina.UserDatabase;
 import org.apache.catalina.util.RequestUtil;
 
 /**
- * <p>Concrete implementation of {@link org.apache.catalina.User} for the
- * {@link MemoryUserDatabase} implementation of {@link UserDatabase}.</p>
+ * <p>
+ * Concrete implementation of {@link org.apache.catalina.User} for the
+ * {@link MemoryUserDatabase} implementation of {@link UserDatabase}.
+ * </p>
  *
  * @author Craig R. McClanahan
  * @since 4.1
  */
 public class MemoryUser extends AbstractUser {
 
-
     // ----------------------------------------------------------- Constructors
-
 
     /**
      * Package-private constructor used by the factory method in
@@ -49,8 +45,8 @@ public class MemoryUser extends AbstractUser {
      * @param password Logon password of the new user
      * @param fullName Full name of the new user
      */
-    MemoryUser(MemoryUserDatabase database, String username,
-               String password, String fullName) {
+    MemoryUser(MemoryUserDatabase database, String username, String password,
+            String fullName) {
 
         super();
         this.database = database;
@@ -60,30 +56,24 @@ public class MemoryUser extends AbstractUser {
 
     }
 
-
     // ----------------------------------------------------- Instance Variables
-
 
     /**
      * The {@link MemoryUserDatabase} that owns this user.
      */
     protected final MemoryUserDatabase database;
 
-
     /**
      * The set of {@link Group}s that this user is a member of.
      */
     protected final ArrayList<Group> groups = new ArrayList<>();
-
 
     /**
      * The set of {@link Role}s associated with this user.
      */
     protected final ArrayList<Role> roles = new ArrayList<>();
 
-
     // ------------------------------------------------------------- Properties
-
 
     /**
      * Return the set of {@link Group}s to which this user belongs.
@@ -97,7 +87,6 @@ public class MemoryUser extends AbstractUser {
 
     }
 
-
     /**
      * Return the set of {@link Role}s assigned specifically to this user.
      */
@@ -110,7 +99,6 @@ public class MemoryUser extends AbstractUser {
 
     }
 
-
     /**
      * Return the {@link UserDatabase} within which this User is defined.
      */
@@ -121,9 +109,7 @@ public class MemoryUser extends AbstractUser {
 
     }
 
-
     // --------------------------------------------------------- Public Methods
-
 
     /**
      * Add a new {@link Group} to those this user belongs to.
@@ -141,7 +127,6 @@ public class MemoryUser extends AbstractUser {
 
     }
 
-
     /**
      * Add a new {@link Role} to those assigned specifically to this user.
      *
@@ -158,7 +143,6 @@ public class MemoryUser extends AbstractUser {
 
     }
 
-
     /**
      * Is this user in the specified group?
      *
@@ -173,9 +157,8 @@ public class MemoryUser extends AbstractUser {
 
     }
 
-
     /**
-     * Is this user specifically assigned the specified {@link Role}?  This
+     * Is this user specifically assigned the specified {@link Role}? This
      * method does <strong>NOT</strong> check for roles inherited based on
      * {@link Group} membership.
      *
@@ -189,7 +172,6 @@ public class MemoryUser extends AbstractUser {
         }
 
     }
-
 
     /**
      * Remove a {@link Group} from those this user belongs to.
@@ -205,7 +187,6 @@ public class MemoryUser extends AbstractUser {
 
     }
 
-
     /**
      * Remove all {@link Group}s from those this user belongs to.
      */
@@ -217,7 +198,6 @@ public class MemoryUser extends AbstractUser {
         }
 
     }
-
 
     /**
      * Remove a {@link Role} from those assigned to this user.
@@ -233,7 +213,6 @@ public class MemoryUser extends AbstractUser {
 
     }
 
-
     /**
      * Remove all {@link Role}s from those assigned to this user.
      */
@@ -246,14 +225,17 @@ public class MemoryUser extends AbstractUser {
 
     }
 
-
     /**
-     * <p>Return a String representation of this user in XML format.</p>
+     * <p>
+     * Return a String representation of this user in XML format.
+     * </p>
      *
-     * <p><strong>IMPLEMENTATION NOTE</strong> - For backwards compatibility,
+     * <p>
+     * <strong>IMPLEMENTATION NOTE</strong> - For backwards compatibility,
      * the reader that processes this entry will accept either
      * <code>username</code> or <code>name</code> for the username
-     * property.</p>
+     * property.
+     * </p>
      */
     public String toXml() {
 
@@ -303,7 +285,9 @@ public class MemoryUser extends AbstractUser {
     }
 
     /**
-     * <p>Return a String representation of this user.</p>
+     * <p>
+     * Return a String representation of this user.
+     * </p>
      */
     @Override
     public String toString() {
@@ -348,6 +332,5 @@ public class MemoryUser extends AbstractUser {
         }
         return (sb.toString());
     }
-
 
 }

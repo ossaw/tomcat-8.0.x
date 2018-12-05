@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -44,23 +42,24 @@ public class JarWarResourceSet extends AbstractArchiveResourceSet {
      * Creates a new {@link org.apache.catalina.WebResourceSet} based on a JAR
      * file that is nested inside a WAR.
      *
-     * @param root          The {@link WebResourceRoot} this new
-     *                          {@link org.apache.catalina.WebResourceSet} will
-     *                          be added to.
-     * @param webAppMount   The path within the web application at which this
-     *                          {@link org.apache.catalina.WebResourceSet} will
-     *                          be mounted.
-     * @param base          The absolute path to the WAR file on the file system
-     *                          in which the JAR is located.
-     * @param archivePath   The path within the WAR file where the JAR file is
-     *                          located.
-     * @param internalPath  The path within this new {@link
-     *                          org.apache.catalina.WebResourceSet} where
-     *                          resources will be served from. E.g. for a
-     *                          resource JAR, this would be "META-INF/resources"
+     * @param root         The {@link WebResourceRoot} this new
+     *                     {@link org.apache.catalina.WebResourceSet} will
+     *                     be added to.
+     * @param webAppMount  The path within the web application at which this
+     *                     {@link org.apache.catalina.WebResourceSet} will
+     *                     be mounted.
+     * @param base         The absolute path to the WAR file on the file system
+     *                     in which the JAR is located.
+     * @param archivePath  The path within the WAR file where the JAR file is
+     *                     located.
+     * @param internalPath The path within this new {@link
+     *                     org.apache.catalina.WebResourceSet} where
+     *                     resources will be served from. E.g. for a
+     *                     resource JAR, this would be "META-INF/resources"
      *
      * @throws IllegalArgumentException if the webAppMount or internalPath is
-     *         not valid (valid paths must start with '/')
+     *                                  not valid (valid paths must start with
+     *                                  '/')
      */
     public JarWarResourceSet(WebResourceRoot root, String webAppMount,
             String base, String archivePath, String internalPath)
@@ -83,9 +82,9 @@ public class JarWarResourceSet extends AbstractArchiveResourceSet {
     @Override
     protected WebResource createArchiveResource(JarEntry jarEntry,
             String webAppPath, Manifest manifest) {
-        return new JarWarResource(this, webAppPath, getBaseUrlString(), jarEntry, archivePath);
+        return new JarWarResource(this, webAppPath, getBaseUrlString(),
+                jarEntry, archivePath);
     }
-
 
     /**
      * {@inheritDoc}
@@ -94,7 +93,7 @@ public class JarWarResourceSet extends AbstractArchiveResourceSet {
      * returned.
      */
     @Override
-    protected HashMap<String,JarEntry> getArchiveEntries(boolean single) {
+    protected HashMap<String, JarEntry> getArchiveEntries(boolean single) {
         synchronized (archiveLock) {
             if (archiveEntries == null) {
                 JarFile warFile = null;
@@ -134,7 +133,6 @@ public class JarWarResourceSet extends AbstractArchiveResourceSet {
         }
     }
 
-
     /**
      * {@inheritDoc}
      * <p>
@@ -145,7 +143,6 @@ public class JarWarResourceSet extends AbstractArchiveResourceSet {
     protected JarEntry getArchiveEntry(String pathInArchive) {
         throw new IllegalStateException("Coding error");
     }
-
 
     //-------------------------------------------------------- Lifecycle methods
     @Override

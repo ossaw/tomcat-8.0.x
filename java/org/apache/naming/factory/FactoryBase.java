@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -37,8 +35,8 @@ public abstract class FactoryBase implements ObjectFactory {
      * @param obj The reference object describing the object to create
      */
     @Override
-    public final Object getObjectInstance(Object obj, Name name, Context nameCtx,
-            Hashtable<?,?> environment) throws Exception {
+    public final Object getObjectInstance(Object obj, Name name,
+            Context nameCtx, Hashtable<?, ?> environment) throws Exception {
 
         if (isReferenceTypeSupported(obj)) {
             Reference ref = (Reference) obj;
@@ -52,9 +50,11 @@ public abstract class FactoryBase implements ObjectFactory {
             RefAddr factoryRefAddr = ref.get(Constants.FACTORY);
             if (factoryRefAddr != null) {
                 // Using the specified factory
-                String factoryClassName = factoryRefAddr.getContent().toString();
+                String factoryClassName = factoryRefAddr.getContent()
+                        .toString();
                 // Loading factory
-                ClassLoader tcl = Thread.currentThread().getContextClassLoader();
+                ClassLoader tcl = Thread.currentThread()
+                        .getContextClassLoader();
                 Class<?> factoryClass = null;
                 try {
                     if (tcl != null) {
@@ -62,7 +62,7 @@ public abstract class FactoryBase implements ObjectFactory {
                     } else {
                         factoryClass = Class.forName(factoryClassName);
                     }
-                } catch(ClassNotFoundException e) {
+                } catch (ClassNotFoundException e) {
                     NamingException ex = new NamingException(
                             "Could not load resource factory class");
                     ex.initCause(e);
@@ -70,7 +70,7 @@ public abstract class FactoryBase implements ObjectFactory {
                 }
                 try {
                     factory = (ObjectFactory) factoryClass.newInstance();
-                } catch(Throwable t) {
+                } catch (Throwable t) {
                     if (t instanceof NamingException) {
                         throw (NamingException) t;
                     }
@@ -91,7 +91,8 @@ public abstract class FactoryBase implements ObjectFactory {
             }
 
             if (factory != null) {
-                return factory.getObjectInstance(obj, name, nameCtx, environment);
+                return factory.getObjectInstance(obj, name, nameCtx,
+                        environment);
             } else {
                 throw new NamingException("Cannot create resource instance");
             }
@@ -100,12 +101,11 @@ public abstract class FactoryBase implements ObjectFactory {
         return null;
     }
 
-
     /**
      * Determines if this factory supports processing the provided reference
      * object.
      *
-     * @param obj   The object to be processed
+     * @param obj The object to be processed
      *
      * @return <code>true</code> if this factory can process the object,
      *         otherwise <code>false</code>
@@ -116,12 +116,12 @@ public abstract class FactoryBase implements ObjectFactory {
      * If a default factory is available for the given reference type, create
      * the default factory.
      *
-     * @param ref   The reference object to be processed
+     * @param ref The reference object to be processed
      *
-     * @return  The default factory for the given reference object or
-     *          <code>null</code> if no default factory exists.
+     * @return The default factory for the given reference object or
+     *         <code>null</code> if no default factory exists.
      *
-     * @throws NamingException  If the default factory can not be craeted
+     * @throws NamingException If the default factory can not be craeted
      */
     protected abstract ObjectFactory getDefaultFactory(Reference ref)
             throws NamingException;
@@ -129,10 +129,10 @@ public abstract class FactoryBase implements ObjectFactory {
     /**
      * If this reference is a link to another JNDI object, obtain that object.
      *
-     * @param ref   The reference object to be processed
+     * @param ref The reference object to be processed
      *
-     * @return  The linked object or <code>null</code> if linked objects are
-     *          not supported by or not configured for this reference object
+     * @return The linked object or <code>null</code> if linked objects are
+     *         not supported by or not configured for this reference object
      */
     protected abstract Object getLinked(Reference ref) throws NamingException;
 }

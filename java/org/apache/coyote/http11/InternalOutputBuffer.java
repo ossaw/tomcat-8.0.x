@@ -1,18 +1,16 @@
 /*
- *  Licensed to the Apache Software Foundation (ASF) under one or more
- *  contributor license agreements.  See the NOTICE file distributed with
- *  this work for additional information regarding copyright ownership.
- *  The ASF licenses this file to You under the Apache License, Version 2.0
- *  (the "License"); you may not use this file except in compliance with
- *  the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements. See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package org.apache.coyote.http11;
@@ -33,7 +31,7 @@ import org.apache.tomcat.util.net.SocketWrapper;
  * @author <a href="mailto:remm@apache.org">Remy Maucherat</a>
  */
 public class InternalOutputBuffer extends AbstractOutputBuffer<Socket>
-    implements ByteChunk.ByteOutputChannel {
+        implements ByteChunk.ByteOutputChannel {
 
     // ----------------------------------------------------------- Constructors
 
@@ -55,18 +53,15 @@ public class InternalOutputBuffer extends AbstractOutputBuffer<Socket>
      */
     protected OutputStream outputStream;
 
-
     /**
      * Socket buffer.
      */
     private final ByteChunk socketBuffer;
 
-
     /**
      * Socket buffer (extra buffering to reduce number of packets sent).
      */
     private boolean useSocketBuffer = false;
-
 
     /**
      * Set the socket buffer size.
@@ -82,7 +77,6 @@ public class InternalOutputBuffer extends AbstractOutputBuffer<Socket>
         }
     }
 
-
     // --------------------------------------------------------- Public Methods
 
     @Override
@@ -91,7 +85,6 @@ public class InternalOutputBuffer extends AbstractOutputBuffer<Socket>
 
         outputStream = socketWrapper.getSocket().getOutputStream();
     }
-
 
     /**
      * Recycle the output buffer. This should be called when closing the
@@ -102,7 +95,6 @@ public class InternalOutputBuffer extends AbstractOutputBuffer<Socket>
         super.recycle();
         outputStream = null;
     }
-
 
     /**
      * End processing of current HTTP request.
@@ -116,24 +108,20 @@ public class InternalOutputBuffer extends AbstractOutputBuffer<Socket>
         socketBuffer.recycle();
     }
 
-
     // ------------------------------------------------ HTTP/1.1 Output Methods
 
     /**
      * Send an acknowledgment.
      */
     @Override
-    public void sendAck()
-        throws IOException {
+    public void sendAck() throws IOException {
 
         if (!committed)
             outputStream.write(Constants.ACK_BYTES);
 
     }
 
-
     // ------------------------------------------------------ Protected Methods
-
 
     /**
      * Commit the response.
@@ -141,8 +129,7 @@ public class InternalOutputBuffer extends AbstractOutputBuffer<Socket>
      * @throws IOException an underlying I/O error occurred
      */
     @Override
-    protected void commit()
-        throws IOException {
+    protected void commit() throws IOException {
 
         // The response is now committed
         committed = true;
@@ -159,18 +146,16 @@ public class InternalOutputBuffer extends AbstractOutputBuffer<Socket>
 
     }
 
-
     /**
      * Callback to write data from the buffer.
      */
     @Override
     public void realWriteBytes(byte cbuf[], int off, int len)
-        throws IOException {
+            throws IOException {
         if (len > 0) {
             outputStream.write(cbuf, off, len);
         }
     }
-
 
     //-------------------------------------------------- Non-blocking IO methods
 
@@ -183,12 +168,10 @@ public class InternalOutputBuffer extends AbstractOutputBuffer<Socket>
         return false;
     }
 
-
     @Override
     protected void registerWriteInterest() {
         // NO-OP for non-blocking connector
     }
-
 
     @Override
     protected boolean flushBuffer(boolean block) throws IOException {
@@ -201,31 +184,26 @@ public class InternalOutputBuffer extends AbstractOutputBuffer<Socket>
         return false;
     }
 
-
     // ----------------------------------- OutputStreamOutputBuffer Inner Class
 
     /**
      * This class is an output buffer which will write data to an output
      * stream.
      */
-    protected class OutputStreamOutputBuffer
-        implements OutputBuffer {
-
+    protected class OutputStreamOutputBuffer implements OutputBuffer {
 
         /**
          * Write chunk.
          */
         @Override
-        public int doWrite(ByteChunk chunk, Response res)
-            throws IOException {
+        public int doWrite(ByteChunk chunk, Response res) throws IOException {
 
             int length = chunk.getLength();
             if (useSocketBuffer) {
                 socketBuffer.append(chunk.getBuffer(), chunk.getStart(),
-                                    length);
+                        length);
             } else {
-                outputStream.write(chunk.getBuffer(), chunk.getStart(),
-                                   length);
+                outputStream.write(chunk.getBuffer(), chunk.getStart(), length);
             }
             byteCount += chunk.getLength();
             return chunk.getLength();

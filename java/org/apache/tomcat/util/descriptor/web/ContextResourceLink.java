@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -15,8 +13,6 @@
  * limitations under the License.
  */
 package org.apache.tomcat.util.descriptor.web;
-
-
 
 /**
  * Representation of a resource link for a web application, as
@@ -32,7 +28,7 @@ public class ContextResourceLink extends ResourceBase {
 
     // ------------------------------------------------------------- Properties
 
-   /**
+    /**
      * The global name of this resource.
      */
     private String global = null;
@@ -58,7 +54,6 @@ public class ContextResourceLink extends ResourceBase {
     }
     // --------------------------------------------------------- Public Methods
 
-
     /**
      * Return a String representation of this object.
      */
@@ -80,7 +75,6 @@ public class ContextResourceLink extends ResourceBase {
         return (sb.toString());
     }
 
-
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -89,7 +83,6 @@ public class ContextResourceLink extends ResourceBase {
         result = prime * result + ((global == null) ? 0 : global.hashCode());
         return result;
     }
-
 
     @Override
     public boolean equals(Object obj) {

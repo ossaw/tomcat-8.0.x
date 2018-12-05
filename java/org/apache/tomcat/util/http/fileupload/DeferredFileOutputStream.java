@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -21,7 +19,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
-
 /**
  * An output stream which will retain data in memory until a specified
  * threshold is reached, and only then commit it to disk. If the stream is
@@ -33,12 +30,9 @@ import java.io.OutputStream;
  * you want to store it in memory (for speed), but if the file is large you want
  * to store it to file (to avoid memory issues).
  */
-public class DeferredFileOutputStream
-    extends ThresholdingOutputStream
-{
+public class DeferredFileOutputStream extends ThresholdingOutputStream {
 
     // ----------------------------------------------------------- Data members
-
 
     /**
      * The output stream to which data will be written prior to the theshold
@@ -46,14 +40,12 @@ public class DeferredFileOutputStream
      */
     private ByteArrayOutputStream memoryOutputStream;
 
-
     /**
      * The output stream to which data will be written at any given time. This
      * will always be one of <code>memoryOutputStream</code> or
      * <code>diskOutputStream</code>.
      */
     private OutputStream currentOutputStream;
-
 
     /**
      * The file to which output will be directed if the threshold is exceeded.
@@ -77,7 +69,6 @@ public class DeferredFileOutputStream
 
     // ----------------------------------------------------------- Constructors
 
-
     /**
      * Constructs an instance of this class which will trigger an event at the
      * specified threshold, and save data to a file beyond that point.
@@ -85,11 +76,9 @@ public class DeferredFileOutputStream
      * @param threshold  The number of bytes at which to trigger an event.
      * @param outputFile The file to which data is saved beyond the threshold.
      */
-    public DeferredFileOutputStream(int threshold, File outputFile)
-    {
-        this(threshold,  outputFile, null, null, null);
+    public DeferredFileOutputStream(int threshold, File outputFile) {
+        this(threshold, outputFile, null, null, null);
     }
-
 
     /**
      * Constructs an instance of this class which will trigger an event at the
@@ -97,11 +86,12 @@ public class DeferredFileOutputStream
      *
      * @param threshold  The number of bytes at which to trigger an event.
      * @param outputFile The file to which data is saved beyond the threshold.
-     * @param prefix Prefix to use for the temporary file.
-     * @param suffix Suffix to use for the temporary file.
-     * @param directory Temporary file directory.
+     * @param prefix     Prefix to use for the temporary file.
+     * @param suffix     Suffix to use for the temporary file.
+     * @param directory  Temporary file directory.
      */
-    private DeferredFileOutputStream(int threshold, File outputFile, String prefix, String suffix, File directory) {
+    private DeferredFileOutputStream(int threshold, File outputFile,
+            String prefix, String suffix, File directory) {
         super(threshold);
         this.outputFile = outputFile;
 
@@ -112,9 +102,7 @@ public class DeferredFileOutputStream
         this.directory = directory;
     }
 
-
     // --------------------------------------- ThresholdingOutputStream methods
-
 
     /**
      * Returns the current output stream. This may be memory based or disk
@@ -125,11 +113,9 @@ public class DeferredFileOutputStream
      * @exception IOException if an error occurs.
      */
     @Override
-    protected OutputStream getStream() throws IOException
-    {
+    protected OutputStream getStream() throws IOException {
         return currentOutputStream;
     }
-
 
     /**
      * Switches the underlying output stream from a memory based stream to one
@@ -140,8 +126,7 @@ public class DeferredFileOutputStream
      * @exception IOException if an error occurs.
      */
     @Override
-    protected void thresholdReached() throws IOException
-    {
+    protected void thresholdReached() throws IOException {
         if (prefix != null) {
             outputFile = File.createTempFile(prefix, suffix, directory);
         }
@@ -151,9 +136,7 @@ public class DeferredFileOutputStream
         memoryOutputStream = null;
     }
 
-
     // --------------------------------------------------------- Public methods
-
 
     /**
      * Determines whether or not the data for this output stream has been
@@ -162,11 +145,9 @@ public class DeferredFileOutputStream
      * @return {@code true} if the data is available in memory;
      *         {@code false} otherwise.
      */
-    public boolean isInMemory()
-    {
+    public boolean isInMemory() {
         return !isThresholdExceeded();
     }
-
 
     /**
      * Returns the data for this output stream as an array of bytes, assuming
@@ -176,15 +157,12 @@ public class DeferredFileOutputStream
      * @return The data for this output stream, or {@code null} if no such
      *         data is available.
      */
-    public byte[] getData()
-    {
-        if (memoryOutputStream != null)
-        {
+    public byte[] getData() {
+        if (memoryOutputStream != null) {
             return memoryOutputStream.toByteArray();
         }
         return null;
     }
-
 
     /**
      * Returns either the output file specified in the constructor or
@@ -200,11 +178,9 @@ public class DeferredFileOutputStream
      * @return The file for this output stream, or {@code null} if no such
      *         file exists.
      */
-    public File getFile()
-    {
+    public File getFile() {
         return outputFile;
     }
-
 
     /**
      * Closes underlying output stream, and mark this as closed
@@ -212,8 +188,7 @@ public class DeferredFileOutputStream
      * @exception IOException if an error occurs.
      */
     @Override
-    public void close() throws IOException
-    {
+    public void close() throws IOException {
         super.close();
     }
 }

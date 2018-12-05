@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -42,6 +40,7 @@ import org.apache.tomcat.util.threads.ResizableExecutor;
 import org.apache.tomcat.util.threads.TaskQueue;
 import org.apache.tomcat.util.threads.TaskThreadFactory;
 import org.apache.tomcat.util.threads.ThreadPoolExecutor;
+
 /**
  *
  * @author Mladen Turk
@@ -53,24 +52,23 @@ public abstract class AbstractEndpoint<S> {
 
     protected static final String DEFAULT_CIPHERS = "HIGH:!aNULL:!eNULL:!EXPORT:!DES:!RC4:!MD5:!kRSA";
 
-    protected static final StringManager sm = StringManager.getManager("org.apache.tomcat.util.net.res");
+    protected static final StringManager sm = StringManager.getManager(
+            "org.apache.tomcat.util.net.res");
 
     public static interface Handler {
         /**
          * Different types of socket states to react upon.
          */
         public enum SocketState {
-            // TODO Add a new state to the AsyncStateMachine and remove
-            //      ASYNC_END (if possible)
-            OPEN, CLOSED, LONG, ASYNC_END, SENDFILE, UPGRADING, UPGRADED
+        // TODO Add a new state to the AsyncStateMachine and remove
+        //      ASYNC_END (if possible)
+        OPEN, CLOSED, LONG, ASYNC_END, SENDFILE, UPGRADING, UPGRADED
         }
-
 
         /**
          * Obtain the GlobalRequestProcessor associated with the handler.
          */
         public Object getGlobal();
-
 
         /**
          * Recycle resources associated with the handler.
@@ -88,23 +86,24 @@ public abstract class AbstractEndpoint<S> {
         }
 
         protected volatile AcceptorState state = AcceptorState.NEW;
+
         public final AcceptorState getState() {
             return state;
         }
 
         private String threadName;
+
         protected final void setThreadName(final String threadName) {
             this.threadName = threadName;
         }
+
         protected final String getThreadName() {
             return threadName;
         }
     }
 
-
     private static final int INITIAL_ERROR_DELAY = 50;
     private static final int MAX_ERROR_DELAY = 1600;
-
 
     /**
      * Async timeout thread
@@ -130,7 +129,8 @@ public abstract class AbstractEndpoint<S> {
                 long now = System.currentTimeMillis();
                 for (SocketWrapper<S> socket : waitingRequests) {
                     long access = socket.getLastAccess();
-                    if (socket.getTimeout() > 0 && (now - access) > socket.getTimeout()) {
+                    if (socket.getTimeout() > 0 && (now - access) > socket
+                            .getTimeout()) {
                         // Prevent multiple timeouts
                         socket.setTimeout(-1);
                         processSocket(socket, SocketStatus.TIMEOUT, true);
@@ -149,21 +149,17 @@ public abstract class AbstractEndpoint<S> {
             }
         }
 
-
         protected void stop() {
             asyncTimeoutRunning = false;
         }
     }
 
-
     // ----------------------------------------------------------------- Fields
-
 
     /**
      * Running state of the endpoint.
      */
     protected volatile boolean running = false;
-
 
     /**
      * Will be set to true whenever the endpoint is paused.
@@ -175,7 +171,6 @@ public abstract class AbstractEndpoint<S> {
      */
     protected volatile boolean internalExecutor = false;
 
-
     /**
      * counter for nr of connections handled by an endpoint
      */
@@ -185,6 +180,7 @@ public abstract class AbstractEndpoint<S> {
      * Socket properties
      */
     protected SocketProperties socketProperties = new SocketProperties();
+
     public SocketProperties getSocketProperties() {
         return socketProperties;
     }
@@ -193,7 +189,6 @@ public abstract class AbstractEndpoint<S> {
      * Threads used to accept new connections and pass them to worker threads.
      */
     protected Acceptor[] acceptors;
-
 
     // ----------------------------------------------------------------- Properties
 
@@ -212,7 +207,6 @@ public abstract class AbstractEndpoint<S> {
         this.executorTerminationTimeoutMillis = executorTerminationTimeoutMillis;
     }
 
-
     /**
      * Acceptor thread count.
      */
@@ -221,20 +215,26 @@ public abstract class AbstractEndpoint<S> {
     public void setAcceptorThreadCount(int acceptorThreadCount) {
         this.acceptorThreadCount = acceptorThreadCount;
     }
-    public int getAcceptorThreadCount() { return acceptorThreadCount; }
 
+    public int getAcceptorThreadCount() {
+        return acceptorThreadCount;
+    }
 
     /**
      * Priority of the acceptor threads.
      */
     protected int acceptorThreadPriority = Thread.NORM_PRIORITY;
+
     public void setAcceptorThreadPriority(int acceptorThreadPriority) {
         this.acceptorThreadPriority = acceptorThreadPriority;
     }
-    public int getAcceptorThreadPriority() { return acceptorThreadPriority; }
 
+    public int getAcceptorThreadPriority() {
+        return acceptorThreadPriority;
+    }
 
     private int maxConnections = 10000;
+
     public void setMaxConnections(int maxCon) {
         this.maxConnections = maxCon;
         LimitLatch latch = this.connectionLimitLatch;
@@ -250,7 +250,9 @@ public abstract class AbstractEndpoint<S> {
         }
     }
 
-    public int  getMaxConnections() { return this.maxConnections; }
+    public int getMaxConnections() {
+        return this.maxConnections;
+    }
 
     /**
      * Return the current count of connections handled by this endpoint, if the
@@ -259,9 +261,10 @@ public abstract class AbstractEndpoint<S> {
      * property is added here so that this value can be inspected through JMX.
      * It is visible on "ThreadPool" MBean.
      *
-     * <p>The count is incremented by the Acceptor before it tries to accept a
+     * <p>
+     * The count is incremented by the Acceptor before it tries to accept a
      * new connection. Until the limit is reached and thus the count cannot be
-     * incremented,  this value is more by 1 (the count of acceptors) than the
+     * incremented, this value is more by 1 (the count of acceptors) than the
      * actual count of connections that are being served.
      *
      * @return The count
@@ -278,19 +281,28 @@ public abstract class AbstractEndpoint<S> {
      * External Executor based thread pool.
      */
     private Executor executor = null;
+
     public void setExecutor(Executor executor) {
         this.executor = executor;
         this.internalExecutor = (executor == null);
     }
-    public Executor getExecutor() { return executor; }
 
+    public Executor getExecutor() {
+        return executor;
+    }
 
     /**
      * Server socket port.
      */
     private int port;
-    public int getPort() { return port; }
-    public void setPort(int port ) { this.port=port; }
+
+    public int getPort() {
+        return port;
+    }
+
+    public void setPort(int port) {
+        this.port = port;
+    }
 
     public abstract int getLocalPort();
 
@@ -298,8 +310,14 @@ public abstract class AbstractEndpoint<S> {
      * Address for the server socket.
      */
     private InetAddress address;
-    public InetAddress getAddress() { return address; }
-    public void setAddress(InetAddress address) { this.address = address; }
+
+    public InetAddress getAddress() {
+        return address;
+    }
+
+    public void setAddress(InetAddress address) {
+        this.address = address;
+    }
 
     /**
      * Allows the server developer to specify the backlog that
@@ -307,8 +325,15 @@ public abstract class AbstractEndpoint<S> {
      * is 100.
      */
     private int backlog = 100;
-    public void setBacklog(int backlog) { if (backlog > 0) this.backlog = backlog; }
-    public int getBacklog() { return backlog; }
+
+    public void setBacklog(int backlog) {
+        if (backlog > 0)
+            this.backlog = backlog;
+    }
+
+    public int getBacklog() {
+        return backlog;
+    }
 
     /**
      * Controls when the Endpoint binds the port. <code>true</code>, the default
@@ -317,14 +342,22 @@ public abstract class AbstractEndpoint<S> {
      * unbound on {@link #stop()}.
      */
     private boolean bindOnInit = true;
-    public boolean getBindOnInit() { return bindOnInit; }
-    public void setBindOnInit(boolean b) { this.bindOnInit = b; }
+
+    public boolean getBindOnInit() {
+        return bindOnInit;
+    }
+
+    public void setBindOnInit(boolean b) {
+        this.bindOnInit = b;
+    }
+
     private BindState bindState = BindState.UNBOUND;
 
     /**
      * Keepalive timeout, if not set the soTimeout is used.
      */
     private Integer keepAliveTimeout = null;
+
     public int getKeepAliveTimeout() {
         if (keepAliveTimeout == null) {
             return getSoTimeout();
@@ -332,54 +365,74 @@ public abstract class AbstractEndpoint<S> {
             return keepAliveTimeout.intValue();
         }
     }
+
     public void setKeepAliveTimeout(int keepAliveTimeout) {
         this.keepAliveTimeout = Integer.valueOf(keepAliveTimeout);
     }
 
-
     /**
      * Socket TCP no delay.
      */
-    public boolean getTcpNoDelay() { return socketProperties.getTcpNoDelay();}
-    public void setTcpNoDelay(boolean tcpNoDelay) { socketProperties.setTcpNoDelay(tcpNoDelay); }
+    public boolean getTcpNoDelay() {
+        return socketProperties.getTcpNoDelay();
+    }
 
+    public void setTcpNoDelay(boolean tcpNoDelay) {
+        socketProperties.setTcpNoDelay(tcpNoDelay);
+    }
 
     /**
      * Socket linger.
      */
-    public int getSoLinger() { return socketProperties.getSoLingerTime(); }
-    public void setSoLinger(int soLinger) {
-        socketProperties.setSoLingerTime(soLinger);
-        socketProperties.setSoLingerOn(soLinger>=0);
+    public int getSoLinger() {
+        return socketProperties.getSoLingerTime();
     }
 
+    public void setSoLinger(int soLinger) {
+        socketProperties.setSoLingerTime(soLinger);
+        socketProperties.setSoLingerOn(soLinger >= 0);
+    }
 
     /**
      * Socket timeout.
      */
-    public int getSoTimeout() { return socketProperties.getSoTimeout(); }
-    public void setSoTimeout(int soTimeout) { socketProperties.setSoTimeout(soTimeout); }
+    public int getSoTimeout() {
+        return socketProperties.getSoTimeout();
+    }
+
+    public void setSoTimeout(int soTimeout) {
+        socketProperties.setSoTimeout(soTimeout);
+    }
 
     /**
      * SSL engine.
      */
     private boolean SSLEnabled = false;
-    public boolean isSSLEnabled() { return SSLEnabled; }
-    public void setSSLEnabled(boolean SSLEnabled) { this.SSLEnabled = SSLEnabled; }
 
+    public boolean isSSLEnabled() {
+        return SSLEnabled;
+    }
+
+    public void setSSLEnabled(boolean SSLEnabled) {
+        this.SSLEnabled = SSLEnabled;
+    }
 
     private int minSpareThreads = 10;
+
     public int getMinSpareThreads() {
-        return Math.min(minSpareThreads,getMaxThreads());
+        return Math.min(minSpareThreads, getMaxThreads());
     }
+
     public void setMinSpareThreads(int minSpareThreads) {
         this.minSpareThreads = minSpareThreads;
         Executor executor = this.executor;
         if (running && executor != null) {
             if (executor instanceof java.util.concurrent.ThreadPoolExecutor) {
-                ((java.util.concurrent.ThreadPoolExecutor) executor).setCorePoolSize(minSpareThreads);
+                ((java.util.concurrent.ThreadPoolExecutor) executor)
+                        .setCorePoolSize(minSpareThreads);
             } else if (executor instanceof ResizableExecutor) {
-                ((ResizableExecutor) executor).resizePool(minSpareThreads, maxThreads);
+                ((ResizableExecutor) executor).resizePool(minSpareThreads,
+                        maxThreads);
             }
         }
     }
@@ -388,27 +441,33 @@ public abstract class AbstractEndpoint<S> {
      * Maximum amount of worker threads.
      */
     private int maxThreads = 200;
+
     public void setMaxThreads(int maxThreads) {
         this.maxThreads = maxThreads;
         Executor executor = this.executor;
         if (running && executor != null) {
             if (executor instanceof java.util.concurrent.ThreadPoolExecutor) {
-                ((java.util.concurrent.ThreadPoolExecutor) executor).setMaximumPoolSize(maxThreads);
+                ((java.util.concurrent.ThreadPoolExecutor) executor)
+                        .setMaximumPoolSize(maxThreads);
             } else if (executor instanceof ResizableExecutor) {
-                ((ResizableExecutor) executor).resizePool(minSpareThreads, maxThreads);
+                ((ResizableExecutor) executor).resizePool(minSpareThreads,
+                        maxThreads);
             }
         }
     }
+
     public int getMaxThreads() {
         return getMaxThreadsExecutor(running);
     }
+
     protected int getMaxThreadsExecutor(boolean useExecutor) {
         Executor executor = this.executor;
         if (useExecutor && executor != null) {
             if (executor instanceof java.util.concurrent.ThreadPoolExecutor) {
-                return ((java.util.concurrent.ThreadPoolExecutor)executor).getMaximumPoolSize();
+                return ((java.util.concurrent.ThreadPoolExecutor) executor)
+                        .getMaximumPoolSize();
             } else if (executor instanceof ResizableExecutor) {
-                return ((ResizableExecutor)executor).getMaxThreads();
+                return ((ResizableExecutor) executor).getMaxThreads();
             } else {
                 return -1;
             }
@@ -420,10 +479,12 @@ public abstract class AbstractEndpoint<S> {
     /**
      * Max keep alive requests
      */
-    private int maxKeepAliveRequests=100; // as in Apache HTTPD server
+    private int maxKeepAliveRequests = 100; // as in Apache HTTPD server
+
     public int getMaxKeepAliveRequests() {
         return maxKeepAliveRequests;
     }
+
     public void setMaxKeepAliveRequests(int maxKeepAliveRequests) {
         this.maxKeepAliveRequests = maxKeepAliveRequests;
     }
@@ -433,9 +494,11 @@ public abstract class AbstractEndpoint<S> {
      * 100 by default. A value of less than 0 means no limit.
      */
     private int maxHeaderCount = 100; // as in Apache HTTPD server
+
     public int getMaxHeaderCount() {
         return maxHeaderCount;
     }
+
     public void setMaxHeaderCount(int maxHeaderCount) {
         this.maxHeaderCount = maxHeaderCount;
     }
@@ -444,28 +507,44 @@ public abstract class AbstractEndpoint<S> {
      * Name of the thread pool, which will be used for naming child threads.
      */
     private String name = "TP";
-    public void setName(String name) { this.name = name; }
-    public String getName() { return name; }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
+    }
 
     /**
      * The default is true - the created threads will be
-     *  in daemon mode. If set to false, the control thread
-     *  will not be daemon - and will keep the process alive.
+     * in daemon mode. If set to false, the control thread
+     * will not be daemon - and will keep the process alive.
      */
     private boolean daemon = true;
-    public void setDaemon(boolean b) { daemon = b; }
-    public boolean getDaemon() { return daemon; }
 
+    public void setDaemon(boolean b) {
+        daemon = b;
+    }
+
+    public boolean getDaemon() {
+        return daemon;
+    }
 
     /**
      * Priority of the worker threads.
      */
     protected int threadPriority = Thread.NORM_PRIORITY;
-    public void setThreadPriority(int threadPriority) { this.threadPriority = threadPriority; }
-    public int getThreadPriority() { return threadPriority; }
+
+    public void setThreadPriority(int threadPriority) {
+        this.threadPriority = threadPriority;
+    }
+
+    public int getThreadPriority() {
+        return threadPriority;
+    }
 
     protected abstract boolean getDeferAccept();
-
 
     /**
      * Attributes provide a way for configuration to be passed to sub-components
@@ -489,6 +568,7 @@ public abstract class AbstractEndpoint<S> {
         }
         attributes.put(name, value);
     }
+
     /**
      * Used by sub-components to retrieve configuration information.
      */
@@ -500,27 +580,29 @@ public abstract class AbstractEndpoint<S> {
         return value;
     }
 
-
-
     public boolean setProperty(String name, String value) {
         setAttribute(name, value);
         final String socketName = "socket.";
         try {
             if (name.startsWith(socketName)) {
-                return IntrospectionUtils.setProperty(socketProperties, name.substring(socketName.length()), value);
+                return IntrospectionUtils.setProperty(socketProperties, name
+                        .substring(socketName.length()), value);
             } else {
-                return IntrospectionUtils.setProperty(this,name,value,false);
+                return IntrospectionUtils.setProperty(this, name, value, false);
             }
-        }catch ( Exception x ) {
-            getLog().error("Unable to set attribute \""+name+"\" to \""+value+"\"",x);
+        } catch (Exception x) {
+            getLog().error("Unable to set attribute \"" + name + "\" to \""
+                    + value + "\"", x);
             return false;
         }
     }
+
     public String getProperty(String name) {
         String value = (String) getAttribute(name);
         final String socketName = "socket.";
         if (value == null && name.startsWith(socketName)) {
-            Object result = IntrospectionUtils.getProperty(socketProperties, name.substring(socketName.length()));
+            Object result = IntrospectionUtils.getProperty(socketProperties,
+                    name.substring(socketName.length()));
             if (result != null) {
                 value = result.toString();
             }
@@ -576,13 +658,14 @@ public abstract class AbstractEndpoint<S> {
         return paused;
     }
 
-
     public void createExecutor() {
         internalExecutor = true;
         TaskQueue taskqueue = new TaskQueue();
-        TaskThreadFactory tf = new TaskThreadFactory(getName() + "-exec-", daemon, getThreadPriority());
-        executor = new ThreadPoolExecutor(getMinSpareThreads(), getMaxThreads(), 60, TimeUnit.SECONDS,taskqueue, tf);
-        taskqueue.setParent( (ThreadPoolExecutor) executor);
+        TaskThreadFactory tf = new TaskThreadFactory(getName() + "-exec-",
+                daemon, getThreadPriority());
+        executor = new ThreadPoolExecutor(getMinSpareThreads(), getMaxThreads(),
+                60, TimeUnit.SECONDS, taskqueue, tf);
+        taskqueue.setParent((ThreadPoolExecutor) executor);
     }
 
     public void shutdownExecutor() {
@@ -601,7 +684,8 @@ public abstract class AbstractEndpoint<S> {
                         // Ignore
                     }
                     if (tpe.isTerminating()) {
-                        getLog().warn(sm.getString("endpoint.warn.executorShutdown", getName()));
+                        getLog().warn(sm.getString(
+                                "endpoint.warn.executorShutdown", getName()));
                     }
                 }
                 TaskQueue queue = (TaskQueue) tpe.getQueue();
@@ -643,45 +727,48 @@ public abstract class AbstractEndpoint<S> {
                     utmo = getSocketProperties().getUnlockTimeout();
                 s.setSoTimeout(stmo);
                 // TODO Consider hard-coding to s.setSoLinger(true,0)
-                s.setSoLinger(getSocketProperties().getSoLingerOn(),getSocketProperties().getSoLingerTime());
+                s.setSoLinger(getSocketProperties().getSoLingerOn(),
+                        getSocketProperties().getSoLingerTime());
                 if (getLog().isDebugEnabled()) {
-                    getLog().debug("About to unlock socket for:"+saddr);
+                    getLog().debug("About to unlock socket for:" + saddr);
                 }
-                s.connect(saddr,utmo);
+                s.connect(saddr, utmo);
                 if (getDeferAccept()) {
                     /*
-                     * In the case of a deferred accept / accept filters we need to
+                     * In the case of a deferred accept / accept filters we need
+                     * to
                      * send data to wake up the accept. Send OPTIONS * to bypass
                      * even BSD accept filters. The Acceptor will discard it.
                      */
                     OutputStreamWriter sw;
 
-                    sw = new OutputStreamWriter(s.getOutputStream(), "ISO-8859-1");
-                    sw.write("OPTIONS * HTTP/1.0\r\n" +
-                             "User-Agent: Tomcat wakeup connection\r\n\r\n");
+                    sw = new OutputStreamWriter(s.getOutputStream(),
+                            "ISO-8859-1");
+                    sw.write("OPTIONS * HTTP/1.0\r\n"
+                            + "User-Agent: Tomcat wakeup connection\r\n\r\n");
                     sw.flush();
                 }
                 if (getLog().isDebugEnabled()) {
-                    getLog().debug("Socket unlock completed for:"+saddr);
+                    getLog().debug("Socket unlock completed for:" + saddr);
                 }
 
                 // Wait for upto 1000ms acceptor threads to unlock
                 long waitLeft = 1000;
                 for (Acceptor acceptor : acceptors) {
-                    while (waitLeft > 0 &&
-                            acceptor.getState() == AcceptorState.RUNNING) {
+                    while (waitLeft > 0 && acceptor
+                            .getState() == AcceptorState.RUNNING) {
                         Thread.sleep(50);
                         waitLeft -= 50;
                     }
                 }
             }
-        } catch(Exception e) {
+        } catch (Exception e) {
             if (getLog().isDebugEnabled()) {
-                getLog().debug(sm.getString("endpoint.debug.unlock", "" + getPort()), e);
+                getLog().debug(sm.getString("endpoint.debug.unlock", ""
+                        + getPort()), e);
             }
         }
     }
-
 
     // ---------------------------------------------- Request processing methods
 
@@ -693,11 +780,10 @@ public abstract class AbstractEndpoint<S> {
      * @param socketWrapper The socket wrapper to process
      * @param socketStatus  The input status to the processing
      * @param dispatch      Should the processing be performed on a new
-     *                          container thread
+     *                      container thread
      */
     public abstract void processSocket(SocketWrapper<S> socketWrapper,
             SocketStatus socketStatus, boolean dispatch);
-
 
     public void executeNonBlockingDispatches(SocketWrapper<S> socketWrapper) {
         /*
@@ -706,7 +792,6 @@ public abstract class AbstractEndpoint<S> {
          * once the non-container thread completes so that the first calls to
          * onWritePossible() and/or onDataAvailable() as appropriate are made by
          * the container.
-         *
          * Processing the dispatches requires (for BIO and APR/native at least)
          * that the socket has been added to the waitingRequests queue. This may
          * not have occurred by the time that the non-container thread completes
@@ -719,11 +804,13 @@ public abstract class AbstractEndpoint<S> {
          * sure that the socket has been added to the waitingRequests queue.
          */
         synchronized (socketWrapper) {
-            Iterator<DispatchType> dispatches = socketWrapper.getIteratorAndClearDispatches();
+            Iterator<DispatchType> dispatches = socketWrapper
+                    .getIteratorAndClearDispatches();
 
             while (dispatches != null && dispatches.hasNext()) {
                 DispatchType dispatchType = dispatches.next();
-                processSocket(socketWrapper, dispatchType.getSocketStatus(), false);
+                processSocket(socketWrapper, dispatchType.getSocketStatus(),
+                        false);
             }
         }
     }
@@ -738,8 +825,11 @@ public abstract class AbstractEndpoint<S> {
      */
 
     public abstract void bind() throws Exception;
+
     public abstract void unbind() throws Exception;
+
     public abstract void startInternal() throws Exception;
+
     public abstract void stopInternal() throws Exception;
 
     public final void init() throws Exception {
@@ -752,9 +842,10 @@ public abstract class AbstractEndpoint<S> {
 
     protected void testServerCipherSuitesOrderSupport() {
         // Only test this feature if the user explicitly requested its use.
-        if(!"".equals(getUseServerCipherSuitesOrder().trim()) && !JreCompat.isJre8Available()) {
-            throw new UnsupportedOperationException(
-                    sm.getString("endpoint.jsse.cannotHonorServerCipherOrder"));
+        if (!"".equals(getUseServerCipherSuitesOrder().trim()) && !JreCompat
+                .isJre8Available()) {
+            throw new UnsupportedOperationException(sm.getString(
+                    "endpoint.jsse.cannotHonorServerCipherOrder"));
         }
     }
 
@@ -781,12 +872,10 @@ public abstract class AbstractEndpoint<S> {
         }
     }
 
-
     /**
      * Hook to allow Endpoints to provide a specific Acceptor implementation.
      */
     protected abstract Acceptor createAcceptor();
-
 
     /**
      * Pause the endpoint, which will stop it accepting new connections.
@@ -824,17 +913,22 @@ public abstract class AbstractEndpoint<S> {
     }
 
     protected abstract Log getLog();
+
     // Flags to indicate optional feature support
     // Some of these are always hard-coded, some are hard-coded to false (i.e.
     // the endpoint does not support them) and some are configurable.
     public abstract boolean getUseSendfile();
+
     public abstract boolean getUseComet();
+
     public abstract boolean getUseCometTimeout();
+
     public abstract boolean getUsePolling();
 
     protected LimitLatch initializeConnectionLatch() {
-        if (maxConnections==-1) return null;
-        if (connectionLimitLatch==null) {
+        if (maxConnections == -1)
+            return null;
+        if (connectionLimitLatch == null) {
             connectionLimitLatch = new LimitLatch(getMaxConnections());
         }
         return connectionLimitLatch;
@@ -842,26 +936,32 @@ public abstract class AbstractEndpoint<S> {
 
     protected void releaseConnectionLatch() {
         LimitLatch latch = connectionLimitLatch;
-        if (latch!=null) latch.releaseAll();
+        if (latch != null)
+            latch.releaseAll();
         connectionLimitLatch = null;
     }
 
     protected void countUpOrAwaitConnection() throws InterruptedException {
-        if (maxConnections==-1) return;
+        if (maxConnections == -1)
+            return;
         LimitLatch latch = connectionLimitLatch;
-        if (latch!=null) latch.countUpOrAwait();
+        if (latch != null)
+            latch.countUpOrAwait();
     }
 
     protected long countDownConnection() {
-        if (maxConnections==-1) return -1;
+        if (maxConnections == -1)
+            return -1;
         LimitLatch latch = connectionLimitLatch;
-        if (latch!=null) {
+        if (latch != null) {
             long result = latch.countDown();
-            if (result<0) {
-                getLog().warn("Incorrect connection count, multiple socket.close called on the same socket." );
+            if (result < 0) {
+                getLog().warn(
+                        "Incorrect connection count, multiple socket.close called on the same socket.");
             }
             return result;
-        } else return -1;
+        } else
+            return -1;
     }
 
     /**
@@ -872,7 +972,7 @@ public abstract class AbstractEndpoint<S> {
      * files is reached.
      *
      * @param currentErrorDelay The current delay being applied on failure
-     * @return  The delay to apply on the next failure
+     * @return The delay to apply on the next failure
      */
     protected int handleExceptionWithDelay(int currentErrorDelay) {
         // Don't delay on first exception
@@ -899,130 +999,246 @@ public abstract class AbstractEndpoint<S> {
     // --------------------  SSL related properties --------------------
 
     private String algorithm = KeyManagerFactory.getDefaultAlgorithm();
-    public String getAlgorithm() { return algorithm;}
-    public void setAlgorithm(String s ) { this.algorithm = s;}
+
+    public String getAlgorithm() {
+        return algorithm;
+    }
+
+    public void setAlgorithm(String s) {
+        this.algorithm = s;
+    }
 
     private String clientAuth = "false";
-    public String getClientAuth() { return clientAuth;}
-    public void setClientAuth(String s ) { this.clientAuth = s;}
 
-    private String keystoreFile = System.getProperty("user.home")+"/.keystore";
-    public String getKeystoreFile() { return keystoreFile;}
-    public void setKeystoreFile(String s ) { keystoreFile = s; }
+    public String getClientAuth() {
+        return clientAuth;
+    }
+
+    public void setClientAuth(String s) {
+        this.clientAuth = s;
+    }
+
+    private String keystoreFile = System.getProperty("user.home")
+            + "/.keystore";
+
+    public String getKeystoreFile() {
+        return keystoreFile;
+    }
+
+    public void setKeystoreFile(String s) {
+        keystoreFile = s;
+    }
 
     private String keystorePass = null;
-    public String getKeystorePass() { return keystorePass;}
-    public void setKeystorePass(String s ) { this.keystorePass = s;}
+
+    public String getKeystorePass() {
+        return keystorePass;
+    }
+
+    public void setKeystorePass(String s) {
+        this.keystorePass = s;
+    }
 
     private String keystoreType = "JKS";
-    public String getKeystoreType() { return keystoreType;}
-    public void setKeystoreType(String s ) { this.keystoreType = s;}
+
+    public String getKeystoreType() {
+        return keystoreType;
+    }
+
+    public void setKeystoreType(String s) {
+        this.keystoreType = s;
+    }
 
     private String keystoreProvider = null;
-    public String getKeystoreProvider() { return keystoreProvider;}
-    public void setKeystoreProvider(String s ) { this.keystoreProvider = s;}
+
+    public String getKeystoreProvider() {
+        return keystoreProvider;
+    }
+
+    public void setKeystoreProvider(String s) {
+        this.keystoreProvider = s;
+    }
 
     private String sslProtocol = Constants.SSL_PROTO_TLS;
-    public String getSslProtocol() { return sslProtocol;}
-    public void setSslProtocol(String s) { sslProtocol = s;}
+
+    public String getSslProtocol() {
+        return sslProtocol;
+    }
+
+    public void setSslProtocol(String s) {
+        sslProtocol = s;
+    }
 
     private String ciphers = DEFAULT_CIPHERS;
-    public String getCiphers() { return ciphers;}
+
+    public String getCiphers() {
+        return ciphers;
+    }
+
     public void setCiphers(String s) {
         ciphers = s;
     }
+
     /**
-     * @return  The ciphers in use by this Endpoint
+     * @return The ciphers in use by this Endpoint
      */
     public abstract String[] getCiphersUsed();
 
     private String useServerCipherSuitesOrder = "";
-    public String getUseServerCipherSuitesOrder() { return useServerCipherSuitesOrder;}
-    public void setUseServerCipherSuitesOrder(String s) { this.useServerCipherSuitesOrder = s;}
+
+    public String getUseServerCipherSuitesOrder() {
+        return useServerCipherSuitesOrder;
+    }
+
+    public void setUseServerCipherSuitesOrder(String s) {
+        this.useServerCipherSuitesOrder = s;
+    }
 
     private String keyAlias = null;
-    public String getKeyAlias() { return keyAlias;}
-    public void setKeyAlias(String s ) { keyAlias = s;}
+
+    public String getKeyAlias() {
+        return keyAlias;
+    }
+
+    public void setKeyAlias(String s) {
+        keyAlias = s;
+    }
 
     private String keyPass = null;
-    public String getKeyPass() { return keyPass;}
-    public void setKeyPass(String s ) { this.keyPass = s;}
 
-    private String truststoreFile = System.getProperty("javax.net.ssl.trustStore");
-    public String getTruststoreFile() {return truststoreFile;}
-    public void setTruststoreFile(String s) { truststoreFile = s; }
+    public String getKeyPass() {
+        return keyPass;
+    }
 
-    private String truststorePass =
-        System.getProperty("javax.net.ssl.trustStorePassword");
-    public String getTruststorePass() {return truststorePass;}
+    public void setKeyPass(String s) {
+        this.keyPass = s;
+    }
+
+    private String truststoreFile = System.getProperty(
+            "javax.net.ssl.trustStore");
+
+    public String getTruststoreFile() {
+        return truststoreFile;
+    }
+
+    public void setTruststoreFile(String s) {
+        truststoreFile = s;
+    }
+
+    private String truststorePass = System.getProperty(
+            "javax.net.ssl.trustStorePassword");
+
+    public String getTruststorePass() {
+        return truststorePass;
+    }
+
     public void setTruststorePass(String truststorePass) {
         this.truststorePass = truststorePass;
     }
 
-    private String truststoreType =
-        System.getProperty("javax.net.ssl.trustStoreType");
-    public String getTruststoreType() {return truststoreType;}
+    private String truststoreType = System.getProperty(
+            "javax.net.ssl.trustStoreType");
+
+    public String getTruststoreType() {
+        return truststoreType;
+    }
+
     public void setTruststoreType(String truststoreType) {
         this.truststoreType = truststoreType;
     }
 
     private String truststoreProvider = null;
-    public String getTruststoreProvider() {return truststoreProvider;}
+
+    public String getTruststoreProvider() {
+        return truststoreProvider;
+    }
+
     public void setTruststoreProvider(String truststoreProvider) {
         this.truststoreProvider = truststoreProvider;
     }
 
     private String truststoreAlgorithm = null;
-    public String getTruststoreAlgorithm() {return truststoreAlgorithm;}
+
+    public String getTruststoreAlgorithm() {
+        return truststoreAlgorithm;
+    }
+
     public void setTruststoreAlgorithm(String truststoreAlgorithm) {
         this.truststoreAlgorithm = truststoreAlgorithm;
     }
 
     private String trustManagerClassName = null;
-    public String getTrustManagerClassName() {return trustManagerClassName;}
+
+    public String getTrustManagerClassName() {
+        return trustManagerClassName;
+    }
+
     public void setTrustManagerClassName(String trustManagerClassName) {
         this.trustManagerClassName = trustManagerClassName;
     }
 
     private String crlFile = null;
-    public String getCrlFile() {return crlFile;}
+
+    public String getCrlFile() {
+        return crlFile;
+    }
+
     public void setCrlFile(String crlFile) {
         this.crlFile = crlFile;
     }
 
     private String trustMaxCertLength = null;
-    public String getTrustMaxCertLength() {return trustMaxCertLength;}
+
+    public String getTrustMaxCertLength() {
+        return trustMaxCertLength;
+    }
+
     public void setTrustMaxCertLength(String trustMaxCertLength) {
         this.trustMaxCertLength = trustMaxCertLength;
     }
 
     private String sessionCacheSize = null;
-    public String getSessionCacheSize() { return sessionCacheSize;}
-    public void setSessionCacheSize(String s) { sessionCacheSize = s;}
+
+    public String getSessionCacheSize() {
+        return sessionCacheSize;
+    }
+
+    public void setSessionCacheSize(String s) {
+        sessionCacheSize = s;
+    }
 
     private String sessionTimeout = "86400";
-    public String getSessionTimeout() { return sessionTimeout;}
-    public void setSessionTimeout(String s) { sessionTimeout = s;}
+
+    public String getSessionTimeout() {
+        return sessionTimeout;
+    }
+
+    public void setSessionTimeout(String s) {
+        sessionTimeout = s;
+    }
 
     private String allowUnsafeLegacyRenegotiation = null;
+
     public String getAllowUnsafeLegacyRenegotiation() {
         return allowUnsafeLegacyRenegotiation;
     }
+
     public void setAllowUnsafeLegacyRenegotiation(String s) {
         allowUnsafeLegacyRenegotiation = s;
     }
 
-
     private String[] sslEnabledProtocolsarr = new String[0];
+
     public String[] getSslEnabledProtocolsArray() {
         return this.sslEnabledProtocolsarr;
     }
+
     public void setSslEnabledProtocols(String s) {
         if (s == null) {
             this.sslEnabledProtocolsarr = new String[0];
         } else {
             ArrayList<String> sslEnabledProtocols = new ArrayList<>();
-            StringTokenizer t = new StringTokenizer(s,",");
+            StringTokenizer t = new StringTokenizer(s, ",");
             while (t.hasMoreTokens()) {
                 String p = t.nextToken().trim();
                 if (p.length() > 0) {
@@ -1034,13 +1250,12 @@ public abstract class AbstractEndpoint<S> {
         }
     }
 
-
     protected final Set<SocketWrapper<S>> waitingRequests = Collections
             .newSetFromMap(new ConcurrentHashMap<SocketWrapper<S>, Boolean>());
+
     public void removeWaitingRequest(SocketWrapper<S> socketWrapper) {
         waitingRequests.remove(socketWrapper);
     }
-
 
     /**
      * Configures SSLEngine to honor cipher suites ordering based upon
@@ -1051,10 +1266,10 @@ public abstract class AbstractEndpoint<S> {
                 .getUseServerCipherSuitesOrder().trim();
 
         // Only use this feature if the user explicitly requested its use.
-        if(!"".equals(useServerCipherSuitesOrderStr)) {
-            boolean useServerCipherSuitesOrder =
-                    ("true".equalsIgnoreCase(useServerCipherSuitesOrderStr)
-                            || "yes".equalsIgnoreCase(useServerCipherSuitesOrderStr));
+        if (!"".equals(useServerCipherSuitesOrderStr)) {
+            boolean useServerCipherSuitesOrder = ("true".equalsIgnoreCase(
+                    useServerCipherSuitesOrderStr) || "yes".equalsIgnoreCase(
+                            useServerCipherSuitesOrderStr));
             JreCompat.getInstance().setUseServerCipherSuitesOrder(engine,
                     useServerCipherSuitesOrder);
         }
@@ -1064,11 +1279,12 @@ public abstract class AbstractEndpoint<S> {
      * The async timeout thread.
      */
     private AsyncTimeout asyncTimeout = null;
+
     public AsyncTimeout getAsyncTimeout() {
         return asyncTimeout;
     }
+
     public void setAsyncTimeout(AsyncTimeout asyncTimeout) {
         this.asyncTimeout = asyncTimeout;
     }
 }
-

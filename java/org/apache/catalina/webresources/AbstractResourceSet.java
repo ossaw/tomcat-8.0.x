@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -25,8 +23,8 @@ import org.apache.catalina.WebResourceSet;
 import org.apache.catalina.util.LifecycleBase;
 import org.apache.tomcat.util.res.StringManager;
 
-public abstract class AbstractResourceSet extends LifecycleBase
-        implements WebResourceSet {
+public abstract class AbstractResourceSet extends LifecycleBase implements
+        WebResourceSet {
 
     private WebResourceRoot root;
     private String base;
@@ -36,15 +34,13 @@ public abstract class AbstractResourceSet extends LifecycleBase
     private boolean staticOnly;
     private Manifest manifest;
 
-
-    protected static final StringManager sm =
-            StringManager.getManager(Constants.Package);
-
+    protected static final StringManager sm = StringManager.getManager(
+            Constants.Package);
 
     protected final void checkPath(String path) {
         if (path == null || path.length() == 0 || path.charAt(0) != '/') {
-            throw new IllegalArgumentException(
-                    sm.getString("abstractResourceSet.checkPath", path));
+            throw new IllegalArgumentException(sm.getString(
+                    "abstractResourceSet.checkPath", path));
         }
     }
 
@@ -56,7 +52,6 @@ public abstract class AbstractResourceSet extends LifecycleBase
     protected final WebResourceRoot getRoot() {
         return root;
     }
-
 
     protected final String getInternalPath() {
         return internalPath;
@@ -121,7 +116,6 @@ public abstract class AbstractResourceSet extends LifecycleBase
     protected final Manifest getManifest() {
         return manifest;
     }
-
 
     //-------------------------------------------------------- Lifecycle methods
     @Override

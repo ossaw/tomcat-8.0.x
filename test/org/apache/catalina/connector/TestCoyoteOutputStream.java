@@ -1,18 +1,16 @@
 /*
- *  Licensed to the Apache Software Foundation (ASF) under one or more
- *  contributor license agreements.  See the NOTICE file distributed with
- *  this work for additional information regarding copyright ownership.
- *  The ASF licenses this file to You under the Apache License, Version 2.0
- *  (the "License"); you may not use this file except in compliance with
- *  the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements. See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.apache.catalina.connector;
 
@@ -40,62 +38,74 @@ import org.apache.tomcat.util.buf.ByteChunk;
 public class TestCoyoteOutputStream extends TomcatBaseTest {
 
     @Test
-    public void testNonBlockingWriteNoneBlockingWriteNoneContainerThread() throws Exception {
+    public void testNonBlockingWriteNoneBlockingWriteNoneContainerThread()
+            throws Exception {
         doNonBlockingTest(0, 0, true);
     }
 
     @Test
-    public void testNonBlockingWriteOnceBlockingWriteNoneContainerThread() throws Exception {
+    public void testNonBlockingWriteOnceBlockingWriteNoneContainerThread()
+            throws Exception {
         doNonBlockingTest(1, 0, true);
     }
 
     @Test
-    public void testNonBlockingWriteTwiceBlockingWriteNoneContainerThread() throws Exception {
+    public void testNonBlockingWriteTwiceBlockingWriteNoneContainerThread()
+            throws Exception {
         doNonBlockingTest(2, 0, true);
     }
 
     @Test
-    public void testNonBlockingWriteNoneBlockingWriteOnceContainerThread() throws Exception {
+    public void testNonBlockingWriteNoneBlockingWriteOnceContainerThread()
+            throws Exception {
         doNonBlockingTest(0, 1, true);
     }
 
     @Test
-    public void testNonBlockingWriteOnceBlockingWriteOnceContainerThread() throws Exception {
+    public void testNonBlockingWriteOnceBlockingWriteOnceContainerThread()
+            throws Exception {
         doNonBlockingTest(1, 1, true);
     }
 
     @Test
-    public void testNonBlockingWriteTwiceBlockingWriteOnceContainerThread() throws Exception {
+    public void testNonBlockingWriteTwiceBlockingWriteOnceContainerThread()
+            throws Exception {
         doNonBlockingTest(2, 1, true);
     }
 
     @Test
-    public void testNonBlockingWriteNoneBlockingWriteNoneNonContainerThread() throws Exception {
+    public void testNonBlockingWriteNoneBlockingWriteNoneNonContainerThread()
+            throws Exception {
         doNonBlockingTest(0, 0, false);
     }
 
     @Test
-    public void testNonBlockingWriteOnceBlockingWriteNoneNonContainerThread() throws Exception {
+    public void testNonBlockingWriteOnceBlockingWriteNoneNonContainerThread()
+            throws Exception {
         doNonBlockingTest(1, 0, false);
     }
 
     @Test
-    public void testNonBlockingWriteTwiceBlockingWriteNoneNonContainerThread() throws Exception {
+    public void testNonBlockingWriteTwiceBlockingWriteNoneNonContainerThread()
+            throws Exception {
         doNonBlockingTest(2, 0, false);
     }
 
     @Test
-    public void testNonBlockingWriteNoneBlockingWriteOnceNonContainerThread() throws Exception {
+    public void testNonBlockingWriteNoneBlockingWriteOnceNonContainerThread()
+            throws Exception {
         doNonBlockingTest(0, 1, false);
     }
 
     @Test
-    public void testNonBlockingWriteOnceBlockingWriteOnceNonContainerThread() throws Exception {
+    public void testNonBlockingWriteOnceBlockingWriteOnceNonContainerThread()
+            throws Exception {
         doNonBlockingTest(1, 1, false);
     }
 
     @Test
-    public void testNonBlockingWriteTwiceBlockingWriteOnceNonContainerThread() throws Exception {
+    public void testNonBlockingWriteTwiceBlockingWriteOnceNonContainerThread()
+            throws Exception {
         doNonBlockingTest(2, 1, false);
     }
 
@@ -106,11 +116,12 @@ public class TestCoyoteOutputStream extends TomcatBaseTest {
 
         Context root = tomcat.addContext("", TEMP_DIR);
         Wrapper w = Tomcat.addServlet(root, "nbWrite",
-                new NonBlockingWriteServlet(asyncWriteTarget, useContainerThreadToSetListener));
+                new NonBlockingWriteServlet(asyncWriteTarget,
+                        useContainerThreadToSetListener));
         w.setAsyncSupported(true);
         root.addServletMappingDecoded("/nbWrite", "nbWrite");
-        Tomcat.addServlet(root, "write",
-                new BlockingWriteServlet(asyncWriteTarget, syncWriteTarget));
+        Tomcat.addServlet(root, "write", new BlockingWriteServlet(
+                asyncWriteTarget, syncWriteTarget));
         w.setAsyncSupported(true);
         root.addServletMappingDecoded("/write", "write");
 
@@ -156,7 +167,6 @@ public class TestCoyoteOutputStream extends TomcatBaseTest {
             resp.setCharacterEncoding("UTF-8");
             ServletOutputStream sos = resp.getOutputStream();
 
-
             AsyncContext asyncCtxt = req.startAsync();
             asyncCtxt.setTimeout(5);
             Runnable task = new AsyncTask(asyncCtxt, sos);
@@ -173,9 +183,8 @@ public class TestCoyoteOutputStream extends TomcatBaseTest {
             while (sos.isReady()) {
                 int next = asyncWriteCount.getAndIncrement();
                 if (next < asyncWriteTarget) {
-                    sos.write(
-                            ("OK - " + next + System.lineSeparator()).getBytes(
-                                    StandardCharsets.UTF_8));
+                    sos.write(("OK - " + next + System.lineSeparator())
+                            .getBytes(StandardCharsets.UTF_8));
                     sos.flush();
                 } else {
                     asyncCtxt.dispatch("/write");

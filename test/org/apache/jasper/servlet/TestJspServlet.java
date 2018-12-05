@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -33,7 +31,7 @@ import org.apache.catalina.startup.TomcatBaseTest;
 import org.apache.tomcat.util.buf.ByteChunk;
 import org.apache.tomcat.util.descriptor.web.ErrorPage;
 
-public class TestJspServlet  extends TomcatBaseTest {
+public class TestJspServlet extends TomcatBaseTest {
 
     @Test
     public void testBug56568a() throws Exception {
@@ -42,7 +40,8 @@ public class TestJspServlet  extends TomcatBaseTest {
         // Use the test web application so JSP support is available and the
         // default JSP error page can be used.
         File appDir = new File("test/webapp");
-        Context context = tomcat.addWebapp(null, "/test", appDir.getAbsolutePath());
+        Context context = tomcat.addWebapp(null, "/test", appDir
+                .getAbsolutePath());
 
         // Create a servlet that always throws an exception for a PUT request
         Tomcat.addServlet(context, "Bug56568Servlet", new Bug56568aServlet());
@@ -67,13 +66,13 @@ public class TestJspServlet  extends TomcatBaseTest {
         Assert.assertEquals(500, rc);
     }
 
-
     @Test
     public void testBug56568b() throws Exception {
         getTomcatInstanceTestWebapp(false, true);
 
-        int rc = methodUrl("http://localhost:" + getPort() + "/test/jsp/error.jsp",
-                new ByteChunk(), 500000, null, null, "PUT");
+        int rc = methodUrl("http://localhost:" + getPort()
+                + "/test/jsp/error.jsp", new ByteChunk(), 500000, null, null,
+                "PUT");
 
         // Make sure we get a 200 response and not a 405 response
         // which would indicate that error.jsp is complaining about being called
@@ -81,19 +80,18 @@ public class TestJspServlet  extends TomcatBaseTest {
         Assert.assertEquals(200, rc);
     }
 
-
     @Test
     public void testBug56568c() throws Exception {
         getTomcatInstanceTestWebapp(false, true);
 
-        int rc = methodUrl("http://localhost:" + getPort() + "/test/jsp/test.jsp",
-                new ByteChunk(), 500000, null, null, "PUT");
+        int rc = methodUrl("http://localhost:" + getPort()
+                + "/test/jsp/test.jsp", new ByteChunk(), 500000, null, null,
+                "PUT");
 
         // Make sure we get a 405 response which indicates that test.jsp is
         // complaining about being called with the PUT method.
         Assert.assertEquals(405, rc);
     }
-
 
     private static class Bug56568aServlet extends HttpServlet {
 

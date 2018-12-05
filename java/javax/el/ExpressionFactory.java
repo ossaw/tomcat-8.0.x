@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -45,35 +43,33 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
  */
 public abstract class ExpressionFactory {
 
-    private static final boolean IS_SECURITY_ENABLED =
-        (System.getSecurityManager() != null);
+    private static final boolean IS_SECURITY_ENABLED = (System
+            .getSecurityManager() != null);
 
-    private static final String SERVICE_RESOURCE_NAME =
-        "META-INF/services/javax.el.ExpressionFactory";
+    private static final String SERVICE_RESOURCE_NAME = "META-INF/services/javax.el.ExpressionFactory";
 
     private static final String PROPERTY_NAME = "javax.el.ExpressionFactory";
 
     private static final String PROPERTY_FILE;
 
     private static final CacheValue nullTcclFactory = new CacheValue();
-    private static final ConcurrentMap<CacheKey, CacheValue> factoryCache =
-            new ConcurrentHashMap<>();
+    private static final ConcurrentMap<CacheKey, CacheValue> factoryCache = new ConcurrentHashMap<>();
 
     static {
         if (IS_SECURITY_ENABLED) {
             PROPERTY_FILE = AccessController.doPrivileged(
-                    new PrivilegedAction<String>(){
+                    new PrivilegedAction<String>() {
                         @Override
                         public String run() {
-                            return System.getProperty("java.home") + File.separator +
-                                    "lib" + File.separator + "el.properties";
+                            return System.getProperty("java.home")
+                                    + File.separator + "lib" + File.separator
+                                    + "el.properties";
                         }
 
-                    }
-            );
+                    });
         } else {
-            PROPERTY_FILE = System.getProperty("java.home") + File.separator + "lib" +
-                    File.separator + "el.properties";
+            PROPERTY_FILE = System.getProperty("java.home") + File.separator
+                    + "lib" + File.separator + "el.properties";
         }
     }
 
@@ -85,8 +81,9 @@ public abstract class ExpressionFactory {
      * <li>$JRE_HOME/lib/el.properties - key javax.el.ExpressionFactory</li>
      * <li>javax.el.ExpressionFactory</li>
      * <li>Platform default implementation -
-     *     org.apache.el.ExpressionFactoryImpl</li>
+     * org.apache.el.ExpressionFactoryImpl</li>
      * </ol>
+     * 
      * @return the new ExpressionFactory
      */
     public static ExpressionFactory newInstance() {
@@ -97,7 +94,8 @@ public abstract class ExpressionFactory {
      * Create a new {@link ExpressionFactory} passing in the provided
      * {@link Properties}. Search order is the same as {@link #newInstance()}.
      *
-     * @param properties the properties to be passed to the new instance (may be null)
+     * @param properties the properties to be passed to the new instance (may be
+     *                   null)
      * @return the new ExpressionFactory
      */
     public static ExpressionFactory newInstance(Properties properties) {
@@ -152,8 +150,8 @@ public abstract class ExpressionFactory {
                 }
             } catch (ClassNotFoundException e) {
                 throw new ELException(
-                    "Unable to find ExpressionFactory of type: " + className,
-                    e);
+                        "Unable to find ExpressionFactory of type: "
+                                + className, e);
             }
         }
 
@@ -173,20 +171,19 @@ public abstract class ExpressionFactory {
             if (constructor == null) {
                 result = (ExpressionFactory) clazz.newInstance();
             } else {
-                result =
-                    (ExpressionFactory) constructor.newInstance(properties);
+                result = (ExpressionFactory) constructor.newInstance(
+                        properties);
             }
 
-        } catch (InstantiationException | IllegalAccessException | IllegalArgumentException e) {
-            throw new ELException(
-                    "Unable to create ExpressionFactory of type: " + clazz.getName(),
-                    e);
+        } catch (InstantiationException | IllegalAccessException
+                | IllegalArgumentException e) {
+            throw new ELException("Unable to create ExpressionFactory of type: "
+                    + clazz.getName(), e);
         } catch (InvocationTargetException e) {
             Throwable cause = e.getCause();
             Util.handleThrowable(cause);
-            throw new ELException(
-                    "Unable to create ExpressionFactory of type: " + clazz.getName(),
-                    e);
+            throw new ELException("Unable to create ExpressionFactory of type: "
+                    + clazz.getName(), e);
         }
 
         return result;
@@ -203,9 +200,10 @@ public abstract class ExpressionFactory {
      * @return A new value expression formed from the input parameters
      *
      * @throws NullPointerException
-     *              If the expected type is <code>null</code>
+     *                              If the expected type is <code>null</code>
      * @throws ELException
-     *              If there are syntax errors in the provided expression
+     *                              If there are syntax errors in the provided
+     *                              expression
      */
     public abstract ValueExpression createValueExpression(ELContext context,
             String expression, Class<?> expectedType);
@@ -226,9 +224,11 @@ public abstract class ExpressionFactory {
      * @return A new method expression formed from the input parameters.
      *
      * @throws NullPointerException
-     *              If the expected parameters types are <code>null</code>
+     *                              If the expected parameters types are
+     *                              <code>null</code>
      * @throws ELException
-     *              If there are syntax errors in the provided expression
+     *                              If there are syntax errors in the provided
+     *                              expression
      */
     public abstract MethodExpression createMethodExpression(ELContext context,
             String expression, Class<?> expectedReturnType,
@@ -243,7 +243,7 @@ public abstract class ExpressionFactory {
      * @return An instance of the requested type.
      *
      * @throws ELException
-     *              If the conversion fails
+     *                     If the conversion fails
      */
     public abstract Object coerceToType(Object obj, Class<?> expectedType);
 
@@ -261,7 +261,7 @@ public abstract class ExpressionFactory {
      *
      * @since EL 3.0
      */
-    public Map<String,Method> getInitFunctionMap() {
+    public Map<String, Method> getInitFunctionMap() {
         return null;
     }
 
@@ -305,8 +305,7 @@ public abstract class ExpressionFactory {
         private String className;
         private WeakReference<Class<?>> ref;
 
-        public CacheValue() {
-        }
+        public CacheValue() {}
 
         public ReadWriteLock getLock() {
             return lock;
@@ -333,7 +332,7 @@ public abstract class ExpressionFactory {
      * Discover the name of class that implements ExpressionFactory.
      *
      * @param tccl
-     *            {@code ClassLoader}
+     *             {@code ClassLoader}
      * @return Class name. There is default, so it is never {@code null}.
      */
     private static String discoverClassName(ClassLoader tccl) {
@@ -349,8 +348,7 @@ public abstract class ExpressionFactory {
                             public String run() {
                                 return getClassNameJreDir();
                             }
-                        }
-                );
+                        });
             } else {
                 // Second el.properties file
                 className = getClassNameJreDir();
@@ -364,8 +362,7 @@ public abstract class ExpressionFactory {
                             public String run() {
                                 return getClassNameSysProp();
                             }
-                        }
-                );
+                        });
             } else {
                 // Third system property
                 className = getClassNameSysProp();
@@ -404,7 +401,8 @@ public abstract class ExpressionFactory {
             } finally {
                 try {
                     is.close();
-                } catch (IOException ioe) {/*Ignore*/}
+                } catch (IOException ioe) {
+                    /* Ignore */}
             }
         }
 
@@ -414,7 +412,7 @@ public abstract class ExpressionFactory {
     private static String getClassNameJreDir() {
         File file = new File(PROPERTY_FILE);
         if (file.canRead()) {
-            try (InputStream is = new FileInputStream(file)){
+            try (InputStream is = new FileInputStream(file)) {
                 Properties props = new Properties();
                 props.load(is);
                 String value = props.getProperty(PROPERTY_NAME);

@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -21,10 +19,12 @@ import java.lang.ref.SoftReference;
 /**
  * Extension of {@link DefaultPooledObject} to wrap pooled soft references.
  *
- * <p>This class is intended to be thread-safe.</p>
+ * <p>
+ * This class is intended to be thread-safe.
+ * </p>
  *
  * @param <T> the type of the underlying object that the wrapped SoftReference
- * refers to.
+ *        refers to.
  *
  * @since 2.0
  */
@@ -39,7 +39,7 @@ public class PooledSoftReference<T> extends DefaultPooledObject<T> {
      * @param reference SoftReference to be managed by the pool
      */
     public PooledSoftReference(final SoftReference<T> reference) {
-        super(null);  // Null the hard reference in the parent
+        super(null); // Null the hard reference in the parent
         this.reference = reference;
     }
 
@@ -85,10 +85,12 @@ public class PooledSoftReference<T> extends DefaultPooledObject<T> {
     /**
      * Sets the wrapped reference.
      *
-     * <p>This method exists to allow a new, non-registered reference to be
+     * <p>
+     * This method exists to allow a new, non-registered reference to be
      * held by the pool to track objects that have been checked out of the pool.
      * The actual parameter <strong>should</strong> be a reference to the same
-     * object that {@link #getObject()} returns before calling this method.</p>
+     * object that {@link #getObject()} returns before calling this method.
+     * </p>
      *
      * @param reference new reference
      */

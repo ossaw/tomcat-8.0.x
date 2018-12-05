@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -39,14 +37,12 @@ public class StandardSessionFacade implements HttpSession {
         this.session = session;
     }
 
-
     // ----------------------------------------------------- Instance Variables
 
     /**
      * Wrapped session object.
      */
     private final HttpSession session;
-
 
     // ---------------------------------------------------- HttpSession Methods
 
@@ -55,18 +51,15 @@ public class StandardSessionFacade implements HttpSession {
         return session.getCreationTime();
     }
 
-
     @Override
     public String getId() {
         return session.getId();
     }
 
-
     @Override
     public long getLastAccessedTime() {
         return session.getLastAccessedTime();
     }
-
 
     @Override
     public ServletContext getServletContext() {
@@ -74,18 +67,15 @@ public class StandardSessionFacade implements HttpSession {
         return session.getServletContext();
     }
 
-
     @Override
     public void setMaxInactiveInterval(int interval) {
         session.setMaxInactiveInterval(interval);
     }
 
-
     @Override
     public int getMaxInactiveInterval() {
         return session.getMaxInactiveInterval();
     }
-
 
     /**
      * @deprecated As of Version 2.1, this method is deprecated and has no
@@ -97,12 +87,10 @@ public class StandardSessionFacade implements HttpSession {
         return session.getSessionContext();
     }
 
-
     @Override
     public Object getAttribute(String name) {
         return session.getAttribute(name);
     }
-
 
     /**
      * @deprecated As of Version 2.2, this method is replaced by
@@ -114,12 +102,10 @@ public class StandardSessionFacade implements HttpSession {
         return session.getAttribute(name);
     }
 
-
     @Override
     public Enumeration<String> getAttributeNames() {
         return session.getAttributeNames();
     }
-
 
     /**
      * @deprecated As of Version 2.2, this method is replaced by
@@ -131,12 +117,10 @@ public class StandardSessionFacade implements HttpSession {
         return session.getValueNames();
     }
 
-
     @Override
     public void setAttribute(String name, Object value) {
         session.setAttribute(name, value);
     }
-
 
     /**
      * @deprecated As of Version 2.2, this method is replaced by
@@ -148,12 +132,10 @@ public class StandardSessionFacade implements HttpSession {
         session.setAttribute(name, value);
     }
 
-
     @Override
     public void removeAttribute(String name) {
         session.removeAttribute(name);
     }
-
 
     /**
      * @deprecated As of Version 2.2, this method is replaced by
@@ -165,12 +147,10 @@ public class StandardSessionFacade implements HttpSession {
         session.removeAttribute(name);
     }
 
-
     @Override
     public void invalidate() {
         session.invalidate();
     }
-
 
     @Override
     public boolean isNew() {

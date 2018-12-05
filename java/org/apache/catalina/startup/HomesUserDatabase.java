@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -15,14 +13,11 @@
  * limitations under the License.
  */
 
-
 package org.apache.catalina.startup;
-
 
 import java.io.File;
 import java.util.Enumeration;
 import java.util.Hashtable;
-
 
 /**
  * Concrete implementation of the <code>UserDatabase</code> interface
@@ -31,12 +26,9 @@ import java.util.Hashtable;
  *
  * @author Craig R. McClanahan
  */
-public final class HomesUserDatabase
-    implements UserDatabase {
-
+public final class HomesUserDatabase implements UserDatabase {
 
     // --------------------------------------------------------- Constructors
-
 
     /**
      * Initialize a new instance of this user database component.
@@ -47,24 +39,19 @@ public final class HomesUserDatabase
 
     }
 
-
     // --------------------------------------------------- Instance Variables
-
 
     /**
      * The set of home directories for all defined users, keyed by username.
      */
-    private final Hashtable<String,String> homes = new Hashtable<>();
-
+    private final Hashtable<String, String> homes = new Hashtable<>();
 
     /**
      * The UserConfig listener with which we are associated.
      */
     private UserConfig userConfig = null;
 
-
     // ----------------------------------------------------------- Properties
-
 
     /**
      * Return the UserConfig listener with which we are associated.
@@ -75,7 +62,6 @@ public final class HomesUserDatabase
         return (this.userConfig);
 
     }
-
 
     /**
      * Set the UserConfig listener with which we are associated.
@@ -90,9 +76,7 @@ public final class HomesUserDatabase
 
     }
 
-
     // ------------------------------------------------------- Public Methods
-
 
     /**
      * Return an absolute pathname to the home directory for the specified user.
@@ -106,7 +90,6 @@ public final class HomesUserDatabase
 
     }
 
-
     /**
      * Return an enumeration of the usernames defined on this server.
      */
@@ -117,9 +100,7 @@ public final class HomesUserDatabase
 
     }
 
-
     // ------------------------------------------------------ Private Methods
-
 
     /**
      * Initialize our set of users and home directories.

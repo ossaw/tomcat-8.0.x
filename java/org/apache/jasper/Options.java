@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -72,7 +70,8 @@ public interface Options {
     public boolean getDevelopment();
 
     /**
-     * Should we include a source fragment in exception messages, which could be displayed
+     * Should we include a source fragment in exception messages, which could be
+     * displayed
      * to the developer ?
      */
     public boolean getDisplaySourceFragment();
@@ -148,7 +147,7 @@ public interface Options {
      * of a taglib deployed in a jar file (WEB-INF/lib).
      *
      * @return the instance of the TldLocationsCache
-     * for the web-application.
+     *         for the web-application.
      */
     public TldCache getTldCache();
 
@@ -194,7 +193,6 @@ public interface Options {
      * Modification test interval.
      */
     public int getModificationTestInterval();
-
 
     /**
      * Re-compile on failure.

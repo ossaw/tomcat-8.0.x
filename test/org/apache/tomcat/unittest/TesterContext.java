@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -72,6 +70,7 @@ public class TesterContext implements Context {
     private static final Log log = LogFactory.getLog(TesterContext.class);
 
     private List<String> securityRoles = new ArrayList<>();
+
     @Override
     public void addSecurityRole(String role) {
         securityRoles.add(role);
@@ -93,6 +92,7 @@ public class TesterContext implements Context {
     }
 
     private List<SecurityConstraint> securityConstraints = new ArrayList<>();
+
     @Override
     public void addConstraint(SecurityConstraint constraint) {
         securityConstraints.add(constraint);
@@ -108,7 +108,6 @@ public class TesterContext implements Context {
     public void removeConstraint(SecurityConstraint constraint) {
         securityConstraints.remove(constraint);
     }
-
 
     @Override
     public Log getLogger() {
@@ -156,6 +155,7 @@ public class TesterContext implements Context {
     }
 
     private String name = "/test";
+
     @Override
     public String getName() {
         return name;
@@ -167,6 +167,7 @@ public class TesterContext implements Context {
     }
 
     private Container parent = null;
+
     @Override
     public Container getParent() {
         return parent;
@@ -591,10 +592,12 @@ public class TesterContext implements Context {
     }
 
     private ServletContext servletContext;
+
     @Override
     public ServletContext getServletContext() {
         return servletContext;
     }
+
     public void setServletContext(ServletContext servletContext) {
         this.servletContext = servletContext;
     }
@@ -665,12 +668,12 @@ public class TesterContext implements Context {
     }
 
     @Override
-    public boolean getTldValidation(){
+    public boolean getTldValidation() {
         return false;
     }
 
     @Override
-    public void setTldValidation(boolean tldValidation){
+    public void setTldValidation(boolean tldValidation) {
         // NO-OP
     }
 
@@ -740,7 +743,8 @@ public class TesterContext implements Context {
     }
 
     @Override
-    public void addLocaleEncodingMappingParameter(String locale, String encoding) {
+    public void addLocaleEncodingMappingParameter(String locale,
+            String encoding) {
         // NO-OP
     }
 
@@ -1156,7 +1160,8 @@ public class TesterContext implements Context {
     }
 
     @Override
-    public void setAddWebinfClassesResources(boolean addWebinfClassesResources) {
+    public void setAddWebinfClassesResources(
+            boolean addWebinfClassesResources) {
         // NO-OP
     }
 
@@ -1196,12 +1201,12 @@ public class TesterContext implements Context {
     }
 
     @Override
-    public Map<String,String> findPostConstructMethods() {
+    public Map<String, String> findPostConstructMethods() {
         return null;
     }
 
     @Override
-    public Map<String,String> findPreDestroyMethods() {
+    public Map<String, String> findPreDestroyMethods() {
         return null;
     }
 
@@ -1219,64 +1224,95 @@ public class TesterContext implements Context {
     public void setContainerSciFilter(String containerSciFilter) { /* NO-OP */ }
 
     @Override
-    public String getContainerSciFilter() { return null; }
-
-    @Override
-    public ThreadBindingListener getThreadBindingListener() { return null; }
-
-    @Override
-    public void setThreadBindingListener(ThreadBindingListener threadBindingListener) { /* NO-OP */ }
-
-    @Override
-    public ClassLoader bind(boolean usePrivilegedAction, ClassLoader originalClassLoader) {
+    public String getContainerSciFilter() {
         return null;
     }
 
     @Override
-    public void unbind(boolean usePrivilegedAction, ClassLoader originalClassLoader) {
+    public ThreadBindingListener getThreadBindingListener() {
+        return null;
+    }
+
+    @Override
+    public void setThreadBindingListener(
+            ThreadBindingListener threadBindingListener) { /* NO-OP */ }
+
+    @Override
+    public ClassLoader bind(boolean usePrivilegedAction,
+            ClassLoader originalClassLoader) {
+        return null;
+    }
+
+    @Override
+    public void unbind(boolean usePrivilegedAction,
+            ClassLoader originalClassLoader) {
         // NO-OP
     }
 
     @Override
-    public Object getNamingToken() { return null; }
+    public Object getNamingToken() {
+        return null;
+    }
 
     @Override
-    public void setCookieProcessor(CookieProcessor cookieProcessor) { /* NO-OP */ }
+    public void setCookieProcessor(CookieProcessor cookieProcessor) { /*
+                                                                       * NO-OP
+                                                                       */ }
 
     @Override
-    public CookieProcessor getCookieProcessor() { return null; }
+    public CookieProcessor getCookieProcessor() {
+        return null;
+    }
 
     @Override
-    public void setValidateClientProvidedNewSessionId(boolean validateClientProvidedNewSessionId) {
+    public void setValidateClientProvidedNewSessionId(
+            boolean validateClientProvidedNewSessionId) {
         //NO-OP
     }
 
     @Override
-    public boolean getValidateClientProvidedNewSessionId() { return false; }
+    public boolean getValidateClientProvidedNewSessionId() {
+        return false;
+    }
 
     @Override
-    public void setMapperContextRootRedirectEnabled(boolean mapperContextRootRedirectEnabled) {
+    public void setMapperContextRootRedirectEnabled(
+            boolean mapperContextRootRedirectEnabled) {
         // NO-OP
     }
 
     @Override
-    public boolean getMapperContextRootRedirectEnabled() { return false; }
+    public boolean getMapperContextRootRedirectEnabled() {
+        return false;
+    }
 
     @Override
-    public void setMapperDirectoryRedirectEnabled(boolean mapperDirectoryRedirectEnabled) {
+    public void setMapperDirectoryRedirectEnabled(
+            boolean mapperDirectoryRedirectEnabled) {
         // NO-OP
     }
 
     @Override
-    public boolean getMapperDirectoryRedirectEnabled() { return false; }
+    public boolean getMapperDirectoryRedirectEnabled() {
+        return false;
+    }
 
     @Override
-    public void setUseRelativeRedirects(boolean useRelativeRedirects) { /* NO-OP */ }
-    @Override
-    public boolean getUseRelativeRedirects() { return true; }
+    public void setUseRelativeRedirects(boolean useRelativeRedirects) { /*
+                                                                         * NO-OP
+                                                                         */ }
 
     @Override
-    public void setDispatchersUseEncodedPaths(boolean dispatchersUseEncodedPaths) { /* NO-OP */ }
+    public boolean getUseRelativeRedirects() {
+        return true;
+    }
+
     @Override
-    public boolean getDispatchersUseEncodedPaths() { return true; }
+    public void setDispatchersUseEncodedPaths(
+            boolean dispatchersUseEncodedPaths) { /* NO-OP */ }
+
+    @Override
+    public boolean getDispatchersUseEncodedPaths() {
+        return true;
+    }
 }

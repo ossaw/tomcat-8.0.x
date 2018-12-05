@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -155,8 +153,8 @@ public class TestNamingContext extends TomcatBaseTest {
 
             try {
                 Context ctx = new InitialContext();
-                NamingEnumeration<Binding> enm =
-                    ctx.listBindings("java:comp/env/list");
+                NamingEnumeration<Binding> enm = ctx.listBindings(
+                        "java:comp/env/list");
                 while (enm.hasMore()) {
                     Binding b = enm.next();
                     out.print(b.getObject().getClass().getName());
@@ -329,8 +327,8 @@ public class TestNamingContext extends TomcatBaseTest {
                 Context initCtx = new InitialContext();
 
                 Boolean b1 = (Boolean) initCtx.lookup(JNDI_NAME);
-                Boolean b2 = (Boolean) initCtx.lookup(
-                        new CompositeName(JNDI_NAME));
+                Boolean b2 = (Boolean) initCtx.lookup(new CompositeName(
+                        JNDI_NAME));
 
                 out.print(b1);
                 out.print(b2);
@@ -346,23 +344,22 @@ public class TestNamingContext extends TomcatBaseTest {
         Tomcat tomcat = getTomcatInstance();
         tomcat.enableNaming();
 
-        File appDir =
-            new File("test/webapp");
+        File appDir = new File("test/webapp");
         // app dir is relative to server home
-        org.apache.catalina.Context ctxt =
-                tomcat.addWebapp(null, "/test", appDir.getAbsolutePath());
+        org.apache.catalina.Context ctxt = tomcat.addWebapp(null, "/test",
+                appDir.getAbsolutePath());
 
         tomcat.start();
 
         ByteChunk bc = new ByteChunk();
-        int rc = getUrl("http://localhost:" + getPort() +
-                "/test/bug5nnnn/bug53465.jsp", bc, null);
+        int rc = getUrl("http://localhost:" + getPort()
+                + "/test/bug5nnnn/bug53465.jsp", bc, null);
 
         Assert.assertEquals(HttpServletResponse.SC_OK, rc);
         Assert.assertTrue(bc.toString().contains("<p>10</p>"));
 
-        ContextEnvironment ce =
-                ctxt.getNamingResources().findEnvironment("bug53465");
+        ContextEnvironment ce = ctxt.getNamingResources().findEnvironment(
+                "bug53465");
         Assert.assertEquals("Bug53465MappedName", ce.getProperty("mappedName"));
     }
 }

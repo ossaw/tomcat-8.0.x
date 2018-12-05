@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -25,7 +23,6 @@ import org.apache.catalina.Valve;
 import org.apache.catalina.tribes.Channel;
 import org.apache.catalina.tribes.Member;
 
-
 /**
  * A <b>CatalinaCluster</b> interface allows to plug in and out the
  * different cluster implementations
@@ -35,6 +32,7 @@ public interface CatalinaCluster extends Cluster {
 
     /**
      * Sends a message to all the members in the cluster
+     * 
      * @param msg ClusterMessage
      */
     public void send(ClusterMessage msg);
@@ -42,7 +40,7 @@ public interface CatalinaCluster extends Cluster {
     /**
      * Sends a message to a specific member in the cluster.
      *
-     * @param msg ClusterMessage
+     * @param msg  ClusterMessage
      * @param dest Member
      */
     public void send(ClusterMessage msg, Member dest);
@@ -79,14 +77,16 @@ public interface CatalinaCluster extends Cluster {
     /**
      * @return The map of managers
      */
-    public Map<String,ClusterManager> getManagers();
+    public Map<String, ClusterManager> getManagers();
 
     public Manager getManager(String name);
+
     public String getManagerName(String name, Manager manager);
+
     public Valve[] getValves();
 
     public void setChannel(Channel channel);
-    public Channel getChannel();
 
+    public Channel getChannel();
 
 }

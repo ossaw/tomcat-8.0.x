@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -37,8 +35,8 @@ import org.apache.tomcat.util.res.StringManager;
  */
 public class NioChannel implements ByteChannel {
 
-    protected static final StringManager sm =
-            StringManager.getManager("org.apache.tomcat.util.net.res");
+    protected static final StringManager sm = StringManager.getManager(
+            "org.apache.tomcat.util.net.res");
 
     protected static ByteBuffer emptyBuf = ByteBuffer.allocate(0);
 
@@ -48,7 +46,8 @@ public class NioChannel implements ByteChannel {
 
     protected Poller poller;
 
-    public NioChannel(SocketChannel channel, ApplicationBufferHandler bufHandler) {
+    public NioChannel(SocketChannel channel,
+            ApplicationBufferHandler bufHandler) {
         this.sc = channel;
         this.bufHandler = bufHandler;
     }
@@ -64,19 +63,22 @@ public class NioChannel implements ByteChannel {
     }
 
     public int getBufferSize() {
-        if ( bufHandler == null ) return 0;
+        if (bufHandler == null)
+            return 0;
         int size = 0;
-        size += bufHandler.getReadBuffer()!=null?bufHandler.getReadBuffer().capacity():0;
-        size += bufHandler.getWriteBuffer()!=null?bufHandler.getWriteBuffer().capacity():0;
+        size += bufHandler.getReadBuffer() != null ? bufHandler.getReadBuffer()
+                .capacity() : 0;
+        size += bufHandler.getWriteBuffer() != null ? bufHandler
+                .getWriteBuffer().capacity() : 0;
         return size;
     }
 
     /**
      * Returns true if the network buffer has been flushed out and is empty.
      *
-     * @param block     Unused. May be used when overridden
-     * @param s         Unused. May be used when overridden
-     * @param timeout   Unused. May be used when overridden
+     * @param block   Unused. May be used when overridden
+     * @param s       Unused. May be used when overridden
+     * @param timeout Unused. May be used when overridden
      * @return Always returns <code>true</code> since there is no network buffer
      *         in the regular channel
      * @throws IOException
@@ -85,7 +87,6 @@ public class NioChannel implements ByteChannel {
             throws IOException {
         return true;
     }
-
 
     /**
      * Closes this channel.
@@ -99,8 +100,10 @@ public class NioChannel implements ByteChannel {
     }
 
     public void close(boolean force) throws IOException {
-        if (isOpen() || force ) close();
+        if (isOpen() || force)
+            close();
     }
+
     /**
      * Tells whether or not this channel is open.
      *
@@ -139,9 +142,9 @@ public class NioChannel implements ByteChannel {
 
     public Object getAttachment() {
         Poller pol = getPoller();
-        Selector sel = pol!=null?pol.getSelector():null;
-        SelectionKey key = sel!=null?getIOChannel().keyFor(sel):null;
-        Object att = key!=null?key.attachment():null;
+        Selector sel = pol != null ? pol.getSelector() : null;
+        SelectionKey key = sel != null ? getIOChannel().keyFor(sel) : null;
+        Object att = key != null ? key.attachment() : null;
         return att;
     }
 
@@ -188,7 +191,7 @@ public class NioChannel implements ByteChannel {
 
     @Override
     public String toString() {
-        return super.toString()+":"+this.sc.toString();
+        return super.toString() + ":" + this.sc.toString();
     }
 
     public int getOutboundRemaining() {
@@ -197,6 +200,7 @@ public class NioChannel implements ByteChannel {
 
     /**
      * Return true if the buffer wrote data
+     * 
      * @throws IOException
      */
     public boolean flushOutbound() throws IOException {

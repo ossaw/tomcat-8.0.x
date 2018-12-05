@@ -1,18 +1,16 @@
 /*
- *  Licensed to the Apache Software Foundation (ASF) under one or more
- *  contributor license agreements.  See the NOTICE file distributed with
- *  this work for additional information regarding copyright ownership.
- *  The ASF licenses this file to You under the Apache License, Version 2.0
- *  (the "License"); you may not use this file except in compliance with
- *  the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements. See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.apache.tomcat.util.net;
 
@@ -33,11 +31,11 @@ public interface ServerSocketFactory {
      * socket options (such as accept timeout) given to this factory.
      *
      * @param port
-     *            the port to listen to
+     *             the port to listen to
      * @exception IOException
-     *                for networking errors
+     *                                   for networking errors
      * @exception InstantiationException
-     *                for construction errors
+     *                                   for construction errors
      */
     ServerSocket createSocket(int port) throws IOException,
             InstantiationException;
@@ -49,13 +47,13 @@ public interface ServerSocketFactory {
      * given to this factory.
      *
      * @param port
-     *            the port to listen to
+     *                the port to listen to
      * @param backlog
-     *            how many connections are queued
+     *                how many connections are queued
      * @exception IOException
-     *                for networking errors
+     *                                   for networking errors
      * @exception InstantiationException
-     *                for construction errors
+     *                                   for construction errors
      */
     ServerSocket createSocket(int port, int backlog) throws IOException,
             InstantiationException;
@@ -67,15 +65,15 @@ public interface ServerSocketFactory {
      * options (such as accept timeout) given to this factory.
      *
      * @param port
-     *            the port to listen to
+     *                  the port to listen to
      * @param backlog
-     *            how many connections are queued
+     *                  how many connections are queued
      * @param ifAddress
-     *            the network interface address to use
+     *                  the network interface address to use
      * @exception IOException
-     *                for networking errors
+     *                                   for networking errors
      * @exception InstantiationException
-     *                for construction errors
+     *                                   for construction errors
      */
     ServerSocket createSocket(int port, int backlog, InetAddress ifAddress)
             throws IOException, InstantiationException;

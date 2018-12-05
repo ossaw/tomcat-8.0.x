@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -32,12 +30,15 @@ public class SocketValidateReceive {
     static BigDecimal total = new BigDecimal(0);
     static BigDecimal bytes = new BigDecimal(32871);
 
-
     public static void main(String[] args) throws Exception {
         int size = 43800;
-        if (args.length > 0 ) try {size=Integer.parseInt(args[0]);}catch(Exception x){ /* Ignore */ }
+        if (args.length > 0)
+            try {
+                size = Integer.parseInt(args[0]);
+            } catch (Exception x) {
+                /* Ignore */ }
 
-        try(ServerSocket srvSocket = new ServerSocket(9999)) {
+        try (ServerSocket srvSocket = new ServerSocket(9999)) {
             System.out.println("Listening on 9999");
             Socket socket = srvSocket.accept();
             socket.setReceiveBufferSize(size);
@@ -46,34 +47,36 @@ public class SocketValidateReceive {
             Thread t = new Thread() {
                 @Override
                 public void run() {
-                    while ( true ) {
+                    while (true) {
                         try {
                             Thread.sleep(1000);
                             printStats(start, mb, count, df, total);
-                        }catch ( Exception x ) { /* Ignore */ }
+                        } catch (Exception x) {
+                            /* Ignore */ }
                     }
                 }
             };
             t.setDaemon(true);
             t.start();
 
-            while ( true ) {
-                if ( first ) {
-                    first = false; start = System.currentTimeMillis();
+            while (true) {
+                if (first) {
+                    first = false;
+                    start = System.currentTimeMillis();
                 }
                 int len = in.read(buf);
-                if ( len == -1 ) {
+                if (len == -1) {
                     printStats(start, mb, count, df, total);
                     System.exit(1);
                 }
-                count += reader.append(buf,0,len);
+                count += reader.append(buf, 0, len);
 
-                if ( bytes.intValue() != len ) {
-                    bytes = new BigDecimal((double)len);
+                if (bytes.intValue() != len) {
+                    bytes = new BigDecimal((double) len);
                 }
                 total = total.add(bytes);
-                mb += ( (double) len) / 1024 / 1024;
-                if ( ((count) % 10000) == 0 ) {
+                mb += ((double) len) / 1024 / 1024;
+                if (((count) % 10000) == 0) {
                     printStats(start, mb, count, df, total);
                 }
             }
@@ -83,29 +86,33 @@ public class SocketValidateReceive {
     private static void printStats(long start, double mb, int count,
             DecimalFormat df, BigDecimal total) {
         long time = System.currentTimeMillis();
-        double seconds = ((double)(time-start))/1000;
-        System.out.println("Throughput " + df.format(mb/seconds) +
-                " MB/seconds messages " + count + ", total " + mb +
-                " MB, total " + total + " bytes.");
+        double seconds = ((double) (time - start)) / 1000;
+        System.out.println("Throughput " + df.format(mb / seconds)
+                + " MB/seconds messages " + count + ", total " + mb
+                + " MB, total " + total + " bytes.");
     }
 
     public static class MyDataReader {
         int length = 10;
         int cur = 0;
         byte seq = 0;
+
         public MyDataReader(int len) {
             length = len;
         }
 
         public int append(byte[] b, int off, int len) throws Exception {
             int packages = 0;
-            for ( int i=off; i<len; i++ ) {
-                if ( cur == length ) {
+            for (int i = off; i < len; i++) {
+                if (cur == length) {
                     cur = 0;
                     seq++;
                     packages++;
                 }
-                if ( b[i] != seq ) throw new Exception("mismatch on seq:"+seq+" and byte nr:"+cur+" count:"+count+" packages:"+packages);
+                if (b[i] != seq)
+                    throw new Exception("mismatch on seq:" + seq
+                            + " and byte nr:" + cur + " count:" + count
+                            + " packages:" + packages);
                 cur++;
             }
             return packages;

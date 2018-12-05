@@ -1,20 +1,17 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 
 package org.apache.jasper.tagplugins.jstl.core;
 
@@ -27,7 +24,6 @@ import org.apache.jasper.compiler.tagplugin.TagPlugin;
 import org.apache.jasper.compiler.tagplugin.TagPluginContext;
 import org.apache.jasper.tagplugins.jstl.Util;
 
-
 public final class Out implements TagPlugin {
 
     @Override
@@ -35,7 +31,7 @@ public final class Out implements TagPlugin {
 
         //these two data member are to indicate
         //whether the corresponding attribute is specified
-        boolean hasDefault=false, hasEscapeXml=false;
+        boolean hasDefault = false, hasEscapeXml = false;
         hasDefault = ctxt.isAttributeSpecified("default");
         hasEscapeXml = ctxt.isAttributeSpecified("escapeXml");
 
@@ -53,16 +49,16 @@ public final class Out implements TagPlugin {
         ctxt.generateAttribute("value");
         ctxt.generateJavaSource(";");
         ctxt.generateJavaSource("String " + strValName + "=null;");
-        ctxt.generateJavaSource("if(!(" + strObjectName +
-                " instanceof Reader) && "+ strObjectName + " != null){");
-        ctxt.generateJavaSource(
-                strValName + " = " + strObjectName + ".toString();");
+        ctxt.generateJavaSource("if(!(" + strObjectName
+                + " instanceof Reader) && " + strObjectName + " != null){");
+        ctxt.generateJavaSource(strValName + " = " + strObjectName
+                + ".toString();");
         ctxt.generateJavaSource("}");
 
         //initiate the strDefName with null.
         //if the default has been specified, then assign the value to it;
         ctxt.generateJavaSource("String " + strDefName + " = null;");
-        if(hasDefault){
+        if (hasDefault) {
             ctxt.generateJavaSource("if(");
             ctxt.generateAttribute("default");
             ctxt.generateJavaSource(" != null){");
@@ -75,18 +71,17 @@ public final class Out implements TagPlugin {
         //initiate the strEscapeXmlName with true;
         //if the escapeXml is specified, assign the value to it;
         ctxt.generateJavaSource("boolean " + strEscapeXmlName + " = true;");
-        if(hasEscapeXml){
+        if (hasEscapeXml) {
             ctxt.generateJavaSource(strEscapeXmlName + " = ");
             ctxt.generateAttribute("escapeXml");
             ctxt.generateJavaSource(";");
         }
 
         //main part.
-        ctxt.generateJavaSource(
-                "boolean " + strSkipBodyName + " = " +
-                "org.apache.jasper.tagplugins.jstl.core.Out.output(out, " +
-                strObjectName + ", " + strValName + ", " + strDefName + ", " +
-                strEscapeXmlName + ");");
+        ctxt.generateJavaSource("boolean " + strSkipBodyName + " = "
+                + "org.apache.jasper.tagplugins.jstl.core.Out.output(out, "
+                + strObjectName + ", " + strValName + ", " + strDefName + ", "
+                + strEscapeXmlName + ");");
         ctxt.generateJavaSource("if(!" + strSkipBodyName + ") {");
         ctxt.generateBody();
         ctxt.generateJavaSource("}");
@@ -116,7 +111,7 @@ public final class Out implements TagPlugin {
         } else {
             String v = value != null ? value : defaultValue;
             if (v != null) {
-                if(escapeXml){
+                if (escapeXml) {
                     v = Util.escapeXml(v);
                 }
                 out.write(v);

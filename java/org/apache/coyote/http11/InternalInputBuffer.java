@@ -1,18 +1,16 @@
 /*
- *  Licensed to the Apache Software Foundation (ASF) under one or more
- *  contributor license agreements.  See the NOTICE file distributed with
- *  this work for additional information regarding copyright ownership.
- *  The ASF licenses this file to You under the Apache License, Version 2.0
- *  (the "License"); you may not use this file except in compliance with
- *  the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements. See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.apache.coyote.http11;
 
@@ -41,12 +39,10 @@ public class InternalInputBuffer extends AbstractInputBuffer<Socket> {
 
     private static final Log log = LogFactory.getLog(InternalInputBuffer.class);
 
-
     /**
      * Underlying input stream.
      */
     private InputStream inputStream;
-
 
     /**
      * Default constructor.
@@ -69,7 +65,6 @@ public class InternalInputBuffer extends AbstractInputBuffer<Socket> {
 
     }
 
-
     /**
      * Data is always available for blocking IO (if you wait long enough) so
      * return a value of 1. Note that the actual value is never used it is only
@@ -80,20 +75,20 @@ public class InternalInputBuffer extends AbstractInputBuffer<Socket> {
         return 1;
     }
 
-
     /**
      * Read the request line. This function is meant to be used during the
      * HTTP request header parsing. Do NOT attempt to read the request body
      * using it.
      *
      * @throws IOException If an exception occurs during the underlying socket
-     * read operations, or if the given buffer is not big enough to accommodate
-     * the whole line.
+     *                     read operations, or if the given buffer is not big
+     *                     enough to accommodate
+     *                     the whole line.
      */
     @Override
     public boolean parseRequestLine(boolean useAvailableDataOnly)
 
-        throws IOException {
+            throws IOException {
 
         int start = 0;
 
@@ -143,7 +138,8 @@ public class InternalInputBuffer extends AbstractInputBuffer<Socket> {
                 space = true;
                 request.method().setBytes(buf, start, pos - start);
             } else if (!HTTP_TOKEN_CHAR[buf[pos]]) {
-                throw new IllegalArgumentException(sm.getString("iib.invalidmethod"));
+                throw new IllegalArgumentException(sm.getString(
+                        "iib.invalidmethod"));
             }
 
             pos++;
@@ -188,13 +184,13 @@ public class InternalInputBuffer extends AbstractInputBuffer<Socket> {
                 space = true;
                 end = pos;
             } else if ((buf[pos] == Constants.CR)
-                       || (buf[pos] == Constants.LF)) {
+                    || (buf[pos] == Constants.LF)) {
                 // HTTP/0.9 style request
                 eol = true;
                 space = true;
                 end = pos;
             } else if ((buf[pos] == Constants.QUESTION)
-                       && (questionPos == -1)) {
+                    && (questionPos == -1)) {
                 questionPos = pos;
             }
 
@@ -203,8 +199,8 @@ public class InternalInputBuffer extends AbstractInputBuffer<Socket> {
         }
 
         if (questionPos >= 0) {
-            request.queryString().setBytes(buf, questionPos + 1,
-                                           end - questionPos - 1);
+            request.queryString().setBytes(buf, questionPos + 1, end
+                    - questionPos - 1);
             request.requestURI().setBytes(buf, start, questionPos - start);
         } else {
             request.requestURI().setBytes(buf, start, end - start);
@@ -263,16 +259,14 @@ public class InternalInputBuffer extends AbstractInputBuffer<Socket> {
 
     }
 
-
     /**
      * Parse the HTTP headers.
      */
     @Override
-    public boolean parseHeaders()
-        throws IOException {
+    public boolean parseHeaders() throws IOException {
         if (!parsingHeader) {
-            throw new IllegalStateException(
-                    sm.getString("iib.parseheaders.ise.error"));
+            throw new IllegalStateException(sm.getString(
+                    "iib.parseheaders.ise.error"));
         }
 
         while (parseHeader()) {
@@ -284,16 +278,14 @@ public class InternalInputBuffer extends AbstractInputBuffer<Socket> {
         return true;
     }
 
-
     /**
      * Parse an HTTP header.
      *
      * @return false after reading a blank line (which indicates that the
-     * HTTP header parsing is done
+     *         HTTP header parsing is done
      */
     @SuppressWarnings("null") // headerValue cannot be null
-    private boolean parseHeader()
-        throws IOException {
+    private boolean parseHeader() throws IOException {
 
         //
         // Check for blank line
@@ -452,24 +444,19 @@ public class InternalInputBuffer extends AbstractInputBuffer<Socket> {
 
     }
 
-
     @Override
     public void recycle() {
         super.recycle();
         inputStream = null;
     }
 
-
     // ------------------------------------------------------ Protected Methods
-
 
     @Override
     protected void init(SocketWrapper<Socket> socketWrapper,
             AbstractEndpoint<Socket> endpoint) throws IOException {
         inputStream = socketWrapper.getSocket().getInputStream();
     }
-
-
 
     private void skipLine(int start) throws IOException {
         boolean eol = false;
@@ -519,8 +506,8 @@ public class InternalInputBuffer extends AbstractInputBuffer<Socket> {
         if (parsingHeader) {
 
             if (lastValid == buf.length) {
-                throw new IllegalArgumentException
-                    (sm.getString("iib.requestheadertoolarge.error"));
+                throw new IllegalArgumentException(sm.getString(
+                        "iib.requestheadertoolarge.error"));
             }
 
             nRead = inputStream.read(buf, pos, buf.length - lastValid);
@@ -550,12 +537,10 @@ public class InternalInputBuffer extends AbstractInputBuffer<Socket> {
 
     }
 
-
     @Override
     protected final Log getLog() {
         return log;
     }
-
 
     // ------------------------------------- InputStreamInputBuffer Inner Class
 
@@ -563,16 +548,13 @@ public class InternalInputBuffer extends AbstractInputBuffer<Socket> {
      * This class is an input buffer which will read its data from an input
      * stream.
      */
-    protected class InputStreamInputBuffer
-        implements InputBuffer {
-
+    protected class InputStreamInputBuffer implements InputBuffer {
 
         /**
          * Read bytes into the specified chunk.
          */
         @Override
-        public int doRead(ByteChunk chunk, Request req )
-            throws IOException {
+        public int doRead(ByteChunk chunk, Request req) throws IOException {
 
             if (pos >= lastValid) {
                 if (!fill())

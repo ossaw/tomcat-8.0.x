@@ -1,18 +1,16 @@
 /*
- *  Licensed to the Apache Software Foundation (ASF) under one or more
- *  contributor license agreements.  See the NOTICE file distributed with
- *  this work for additional information regarding copyright ownership.
- *  The ASF licenses this file to You under the Apache License, Version 2.0
- *  (the "License"); you may not use this file except in compliance with
- *  the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements. See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.apache.coyote.http11;
 
@@ -83,13 +81,11 @@ public class TestAbstractHttp11Processor extends TomcatBaseTest {
 
         tomcat.start();
 
-        String request =
-                "GET /anything HTTP/1.1" + SimpleHttpClient.CRLF +
-                "Host: any" + SimpleHttpClient.CRLF +
-                 SimpleHttpClient.CRLF;
+        String request = "GET /anything HTTP/1.1" + SimpleHttpClient.CRLF
+                + "Host: any" + SimpleHttpClient.CRLF + SimpleHttpClient.CRLF;
 
         Client client = new Client(tomcat.getConnector().getLocalPort());
-        client.setRequest(new String[] {request});
+        client.setRequest(new String[] { request });
 
         client.connect();
         client.processRequest();
@@ -100,7 +96,7 @@ public class TestAbstractHttp11Processor extends TomcatBaseTest {
         // Should use chunked encoding
         String transferEncoding = null;
         for (String header : client.getResponseHeaders()) {
-             if (header.startsWith("Transfer-Encoding:")) {
+            if (header.startsWith("Transfer-Encoding:")) {
                 transferEncoding = header.substring(18).trim();
             }
         }
@@ -146,77 +142,65 @@ public class TestAbstractHttp11Processor extends TomcatBaseTest {
         }
     }
 
-
     @Test
     public void testWithUnknownExpectation() throws Exception {
         getTomcatInstanceTestWebapp(false, true);
 
-        String request =
-            "POST /echo-params.jsp HTTP/1.1" + SimpleHttpClient.CRLF +
-            "Host: any" + SimpleHttpClient.CRLF +
-            "Expect: unknoen" + SimpleHttpClient.CRLF +
-            SimpleHttpClient.CRLF;
+        String request = "POST /echo-params.jsp HTTP/1.1"
+                + SimpleHttpClient.CRLF + "Host: any" + SimpleHttpClient.CRLF
+                + "Expect: unknoen" + SimpleHttpClient.CRLF
+                + SimpleHttpClient.CRLF;
 
         Client client = new Client(getPort());
-        client.setRequest(new String[] {request});
+        client.setRequest(new String[] { request });
 
         client.connect();
         client.processRequest();
         assertTrue(client.isResponse417());
     }
 
-
     @Test
     public void testWithTEVoid() throws Exception {
         getTomcatInstanceTestWebapp(false, true);
 
-        String request =
-            "POST /echo-params.jsp HTTP/1.1" + SimpleHttpClient.CRLF +
-            "Host: any" + SimpleHttpClient.CRLF +
-            "Transfer-encoding: void" + SimpleHttpClient.CRLF +
-            "Content-Length: 9" + SimpleHttpClient.CRLF +
-            "Content-Type: application/x-www-form-urlencoded" +
-                    SimpleHttpClient.CRLF +
-                    SimpleHttpClient.CRLF +
-            "test=data";
+        String request = "POST /echo-params.jsp HTTP/1.1"
+                + SimpleHttpClient.CRLF + "Host: any" + SimpleHttpClient.CRLF
+                + "Transfer-encoding: void" + SimpleHttpClient.CRLF
+                + "Content-Length: 9" + SimpleHttpClient.CRLF
+                + "Content-Type: application/x-www-form-urlencoded"
+                + SimpleHttpClient.CRLF + SimpleHttpClient.CRLF + "test=data";
 
         Client client = new Client(getPort());
-        client.setRequest(new String[] {request});
+        client.setRequest(new String[] { request });
 
         client.connect();
         client.processRequest();
         assertTrue(client.isResponse501());
     }
-
 
     @Test
     public void testWithTEBuffered() throws Exception {
         getTomcatInstanceTestWebapp(false, true);
 
-        String request =
-            "POST /echo-params.jsp HTTP/1.1" + SimpleHttpClient.CRLF +
-            "Host: any" + SimpleHttpClient.CRLF +
-            "Transfer-encoding: buffered" + SimpleHttpClient.CRLF +
-            "Content-Length: 9" + SimpleHttpClient.CRLF +
-            "Content-Type: application/x-www-form-urlencoded" +
-                    SimpleHttpClient.CRLF +
-                    SimpleHttpClient.CRLF +
-            "test=data";
+        String request = "POST /echo-params.jsp HTTP/1.1"
+                + SimpleHttpClient.CRLF + "Host: any" + SimpleHttpClient.CRLF
+                + "Transfer-encoding: buffered" + SimpleHttpClient.CRLF
+                + "Content-Length: 9" + SimpleHttpClient.CRLF
+                + "Content-Type: application/x-www-form-urlencoded"
+                + SimpleHttpClient.CRLF + SimpleHttpClient.CRLF + "test=data";
 
         Client client = new Client(getPort());
-        client.setRequest(new String[] {request});
+        client.setRequest(new String[] { request });
 
         client.connect();
         client.processRequest();
         assertTrue(client.isResponse501());
     }
 
-
     @Test
     public void testWithTEChunked() throws Exception {
         doTestWithTEChunked(false);
     }
-
 
     @Test
     public void testWithTEChunkedWithCL() throws Exception {
@@ -224,52 +208,43 @@ public class TestAbstractHttp11Processor extends TomcatBaseTest {
         doTestWithTEChunked(true);
     }
 
-
     private void doTestWithTEChunked(boolean withCL) throws Exception {
 
         getTomcatInstanceTestWebapp(false, true);
 
-        String request =
-            "POST /test/echo-params.jsp HTTP/1.1" + SimpleHttpClient.CRLF +
-            "Host: any" + SimpleHttpClient.CRLF +
-            (withCL ? "Content-length: 1" + SimpleHttpClient.CRLF : "") +
-            "Transfer-encoding: chunked" + SimpleHttpClient.CRLF +
-            "Content-Type: application/x-www-form-urlencoded" +
-                    SimpleHttpClient.CRLF +
-            "Connection: close" + SimpleHttpClient.CRLF +
-            SimpleHttpClient.CRLF +
-            "9" + SimpleHttpClient.CRLF +
-            "test=data" + SimpleHttpClient.CRLF +
-            "0" + SimpleHttpClient.CRLF +
-            SimpleHttpClient.CRLF;
+        String request = "POST /test/echo-params.jsp HTTP/1.1"
+                + SimpleHttpClient.CRLF + "Host: any" + SimpleHttpClient.CRLF
+                + (withCL ? "Content-length: 1" + SimpleHttpClient.CRLF : "")
+                + "Transfer-encoding: chunked" + SimpleHttpClient.CRLF
+                + "Content-Type: application/x-www-form-urlencoded"
+                + SimpleHttpClient.CRLF + "Connection: close"
+                + SimpleHttpClient.CRLF + SimpleHttpClient.CRLF + "9"
+                + SimpleHttpClient.CRLF + "test=data" + SimpleHttpClient.CRLF
+                + "0" + SimpleHttpClient.CRLF + SimpleHttpClient.CRLF;
 
         Client client = new Client(getPort());
-        client.setRequest(new String[] {request});
+        client.setRequest(new String[] { request });
 
         client.connect();
         client.processRequest();
         assertTrue(client.isResponse200());
         assertTrue(client.getResponseBody().contains("test - data"));
     }
-
 
     @Test
     public void testWithTEIdentity() throws Exception {
         getTomcatInstanceTestWebapp(false, true);
 
-        String request =
-            "POST /test/echo-params.jsp HTTP/1.1" + SimpleHttpClient.CRLF +
-            "Host: any" + SimpleHttpClient.CRLF +
-            "Transfer-encoding: identity" + SimpleHttpClient.CRLF +
-            "Content-Length: 9" + SimpleHttpClient.CRLF +
-            "Content-Type: application/x-www-form-urlencoded" +
-                    SimpleHttpClient.CRLF +
-            "Connection: close" + SimpleHttpClient.CRLF +
-                SimpleHttpClient.CRLF +
-            "test=data";
+        String request = "POST /test/echo-params.jsp HTTP/1.1"
+                + SimpleHttpClient.CRLF + "Host: any" + SimpleHttpClient.CRLF
+                + "Transfer-encoding: identity" + SimpleHttpClient.CRLF
+                + "Content-Length: 9" + SimpleHttpClient.CRLF
+                + "Content-Type: application/x-www-form-urlencoded"
+                + SimpleHttpClient.CRLF + "Connection: close"
+                + SimpleHttpClient.CRLF + SimpleHttpClient.CRLF + "test=data";
 
         Client client = new Client(getPort());
-        client.setRequest(new String[] {request});
+        client.setRequest(new String[] { request });
 
         client.connect();
         client.processRequest();
@@ -277,52 +252,43 @@ public class TestAbstractHttp11Processor extends TomcatBaseTest {
         assertTrue(client.getResponseBody().contains("test - data"));
     }
 
-
     @Test
     public void testWithTESavedRequest() throws Exception {
         getTomcatInstanceTestWebapp(false, true);
 
-        String request =
-            "POST /echo-params.jsp HTTP/1.1" + SimpleHttpClient.CRLF +
-            "Host: any" + SimpleHttpClient.CRLF +
-            "Transfer-encoding: savedrequest" + SimpleHttpClient.CRLF +
-            "Content-Length: 9" + SimpleHttpClient.CRLF +
-            "Content-Type: application/x-www-form-urlencoded" +
-                    SimpleHttpClient.CRLF +
-                    SimpleHttpClient.CRLF +
-            "test=data";
+        String request = "POST /echo-params.jsp HTTP/1.1"
+                + SimpleHttpClient.CRLF + "Host: any" + SimpleHttpClient.CRLF
+                + "Transfer-encoding: savedrequest" + SimpleHttpClient.CRLF
+                + "Content-Length: 9" + SimpleHttpClient.CRLF
+                + "Content-Type: application/x-www-form-urlencoded"
+                + SimpleHttpClient.CRLF + SimpleHttpClient.CRLF + "test=data";
 
         Client client = new Client(getPort());
-        client.setRequest(new String[] {request});
+        client.setRequest(new String[] { request });
 
         client.connect();
         client.processRequest();
         assertTrue(client.isResponse501());
     }
-
 
     @Test
     public void testWithTEUnsupported() throws Exception {
         getTomcatInstanceTestWebapp(false, true);
 
-        String request =
-            "POST /echo-params.jsp HTTP/1.1" + SimpleHttpClient.CRLF +
-            "Host: any" + SimpleHttpClient.CRLF +
-            "Transfer-encoding: unsupported" + SimpleHttpClient.CRLF +
-            "Content-Length: 9" + SimpleHttpClient.CRLF +
-            "Content-Type: application/x-www-form-urlencoded" +
-                    SimpleHttpClient.CRLF +
-                    SimpleHttpClient.CRLF +
-            "test=data";
+        String request = "POST /echo-params.jsp HTTP/1.1"
+                + SimpleHttpClient.CRLF + "Host: any" + SimpleHttpClient.CRLF
+                + "Transfer-encoding: unsupported" + SimpleHttpClient.CRLF
+                + "Content-Length: 9" + SimpleHttpClient.CRLF
+                + "Content-Type: application/x-www-form-urlencoded"
+                + SimpleHttpClient.CRLF + SimpleHttpClient.CRLF + "test=data";
 
         Client client = new Client(getPort());
-        client.setRequest(new String[] {request});
+        client.setRequest(new String[] { request });
 
         client.connect();
         client.processRequest();
         assertTrue(client.isResponse501());
     }
-
 
     @Test
     public void testPipelining() throws Exception {
@@ -337,14 +303,12 @@ public class TestAbstractHttp11Processor extends TomcatBaseTest {
 
         tomcat.start();
 
-        String requestPart1 =
-            "GET /foo HTTP/1.1" + SimpleHttpClient.CRLF;
-        String requestPart2 =
-            "Host: any" + SimpleHttpClient.CRLF +
-            SimpleHttpClient.CRLF;
+        String requestPart1 = "GET /foo HTTP/1.1" + SimpleHttpClient.CRLF;
+        String requestPart2 = "Host: any" + SimpleHttpClient.CRLF
+                + SimpleHttpClient.CRLF;
 
         final Client client = new Client(tomcat.getConnector().getLocalPort());
-        client.setRequest(new String[] {requestPart1, requestPart2});
+        client.setRequest(new String[] { requestPart1, requestPart2 });
         client.setRequestPause(1000);
         client.setUseContentLength(true);
         client.connect();
@@ -383,7 +347,6 @@ public class TestAbstractHttp11Processor extends TomcatBaseTest {
         assertEquals("OK", client.getResponseBody());
     }
 
-
     @Test
     public void testChunking11NoContentLength() throws Exception {
         Tomcat tomcat = getTomcatInstance();
@@ -398,7 +361,7 @@ public class TestAbstractHttp11Processor extends TomcatBaseTest {
         tomcat.start();
 
         ByteChunk responseBody = new ByteChunk();
-        Map<String,List<String>> responseHeaders = new HashMap<>();
+        Map<String, List<String>> responseHeaders = new HashMap<>();
         int rc = getUrl("http://localhost:" + getPort() + "/test", responseBody,
                 responseHeaders);
 
@@ -426,7 +389,7 @@ public class TestAbstractHttp11Processor extends TomcatBaseTest {
         tomcat.start();
 
         ByteChunk responseBody = new ByteChunk();
-        Map<String,List<String>> responseHeaders = new HashMap<>();
+        Map<String, List<String>> responseHeaders = new HashMap<>();
         int rc = getUrl("http://localhost:" + getPort() + "/test", responseBody,
                 responseHeaders);
 
@@ -458,14 +421,14 @@ public class TestAbstractHttp11Processor extends TomcatBaseTest {
         // No file system docBase required
         Context ctx = tomcat.addContext("", null);
 
-        Tomcat.addServlet(ctx, "LargeHeaderServlet",
-                new LargeHeaderServlet(flush));
+        Tomcat.addServlet(ctx, "LargeHeaderServlet", new LargeHeaderServlet(
+                flush));
         ctx.addServletMappingDecoded("/test", "LargeHeaderServlet");
 
         tomcat.start();
 
         ByteChunk responseBody = new ByteChunk();
-        Map<String,List<String>> responseHeaders = new HashMap<>();
+        Map<String, List<String>> responseHeaders = new HashMap<>();
         int rc = getUrl("http://localhost:" + getPort() + "/test", responseBody,
                 responseHeaders);
 
@@ -477,13 +440,11 @@ public class TestAbstractHttp11Processor extends TomcatBaseTest {
         }
     }
 
-
     private static CountDownLatch bug55772Latch1 = new CountDownLatch(1);
     private static CountDownLatch bug55772Latch2 = new CountDownLatch(1);
     private static CountDownLatch bug55772Latch3 = new CountDownLatch(1);
     private static boolean bug55772IsSecondRequest = false;
     private static boolean bug55772RequestStateLeaked = false;
-
 
     @Test
     public void testBug55772() throws Exception {
@@ -499,26 +460,23 @@ public class TestAbstractHttp11Processor extends TomcatBaseTest {
 
         tomcat.start();
 
-        String request1 = "GET /async?1 HTTP/1.1\r\n" +
-                "Host: localhost:" + getPort() + "\r\n" +
-                "Connection: keep-alive\r\n" +
-                "Cache-Control: max-age=0\r\n" +
-                "Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8\r\n" +
-                "User-Agent: Request1\r\n" +
-                "Accept-Encoding: gzip,deflate,sdch\r\n" +
-                "Accept-Language: en-US,en;q=0.8,fr;q=0.6,es;q=0.4\r\n" +
-                "Cookie: something.that.should.not.leak=true\r\n" +
-                "\r\n";
+        String request1 = "GET /async?1 HTTP/1.1\r\n" + "Host: localhost:"
+                + getPort() + "\r\n" + "Connection: keep-alive\r\n"
+                + "Cache-Control: max-age=0\r\n"
+                + "Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8\r\n"
+                + "User-Agent: Request1\r\n"
+                + "Accept-Encoding: gzip,deflate,sdch\r\n"
+                + "Accept-Language: en-US,en;q=0.8,fr;q=0.6,es;q=0.4\r\n"
+                + "Cookie: something.that.should.not.leak=true\r\n" + "\r\n";
 
-        String request2 = "GET /async?2 HTTP/1.1\r\n" +
-                "Host: localhost:" + getPort() + "\r\n" +
-                "Connection: keep-alive\r\n" +
-                "Cache-Control: max-age=0\r\n" +
-                "Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8\r\n" +
-                "User-Agent: Request2\r\n" +
-                "Accept-Encoding: gzip,deflate,sdch\r\n" +
-                "Accept-Language: en-US,en;q=0.8,fr;q=0.6,es;q=0.4\r\n" +
-                "\r\n";
+        String request2 = "GET /async?2 HTTP/1.1\r\n" + "Host: localhost:"
+                + getPort() + "\r\n" + "Connection: keep-alive\r\n"
+                + "Cache-Control: max-age=0\r\n"
+                + "Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8\r\n"
+                + "User-Agent: Request2\r\n"
+                + "Accept-Encoding: gzip,deflate,sdch\r\n"
+                + "Accept-Language: en-US,en;q=0.8,fr;q=0.6,es;q=0.4\r\n"
+                + "\r\n";
 
         try (final Socket connection = new Socket("localhost", getPort())) {
             connection.setSoLinger(true, 0);
@@ -549,7 +507,6 @@ public class TestAbstractHttp11Processor extends TomcatBaseTest {
         }
     }
 
-
     // https://bz.apache.org/bugzilla/show_bug.cgi?id=57324
     @Test
     public void testNon2xxResponseWithExpectation() throws Exception {
@@ -561,7 +518,8 @@ public class TestAbstractHttp11Processor extends TomcatBaseTest {
         doTestNon2xxResponseAndExpectation(false);
     }
 
-    private void doTestNon2xxResponseAndExpectation(boolean useExpectation) throws Exception {
+    private void doTestNon2xxResponseAndExpectation(boolean useExpectation)
+            throws Exception {
         Tomcat tomcat = getTomcatInstance();
 
         // No file system docBase required
@@ -580,7 +538,7 @@ public class TestAbstractHttp11Processor extends TomcatBaseTest {
         tomcat.start();
 
         byte[] requestBody = "HelloWorld".getBytes(StandardCharsets.UTF_8);
-        Map<String,List<String>> reqHeaders = null;
+        Map<String, List<String>> reqHeaders = null;
         if (useExpectation) {
             reqHeaders = new HashMap<>();
             List<String> expectation = new ArrayList<>();
@@ -588,7 +546,7 @@ public class TestAbstractHttp11Processor extends TomcatBaseTest {
             reqHeaders.put("Expect", expectation);
         }
         ByteChunk responseBody = new ByteChunk();
-        Map<String,List<String>> responseHeaders = new HashMap<>();
+        Map<String, List<String>> responseHeaders = new HashMap<>();
         int rc = postUrl(requestBody, "http://localhost:" + getPort() + "/echo",
                 responseBody, reqHeaders, responseHeaders);
 
@@ -596,24 +554,26 @@ public class TestAbstractHttp11Processor extends TomcatBaseTest {
         List<String> connectionHeaders = responseHeaders.get("Connection");
         if (useExpectation) {
             Assert.assertEquals(1, connectionHeaders.size());
-            Assert.assertEquals("close", connectionHeaders.get(0).toLowerCase(Locale.ENGLISH));
+            Assert.assertEquals("close", connectionHeaders.get(0).toLowerCase(
+                    Locale.ENGLISH));
         } else {
             Assert.assertNull(connectionHeaders);
         }
     }
-
 
     private static class Bug55772Servlet extends HttpServlet {
 
         private static final long serialVersionUID = 1L;
 
         @Override
-        protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        protected void doGet(HttpServletRequest req, HttpServletResponse resp)
+                throws ServletException, IOException {
             if (bug55772IsSecondRequest) {
                 Cookie[] cookies = req.getCookies();
                 if (cookies != null && cookies.length > 0) {
                     for (Cookie cookie : req.getCookies()) {
-                        if (cookie.getName().equalsIgnoreCase("something.that.should.not.leak")) {
+                        if (cookie.getName().equalsIgnoreCase(
+                                "something.that.should.not.leak")) {
                             bug55772RequestStateLeaked = true;
                         }
                     }
@@ -623,7 +583,8 @@ public class TestAbstractHttp11Processor extends TomcatBaseTest {
                 req.getCookies(); // We have to do this so Tomcat will actually parse the cookies from the request
             }
 
-            req.setAttribute("org.apache.catalina.ASYNC_SUPPORTED", Boolean.TRUE);
+            req.setAttribute("org.apache.catalina.ASYNC_SUPPORTED",
+                    Boolean.TRUE);
             AsyncContext asyncContext = req.startAsync();
             asyncContext.setTimeout(5000);
 
@@ -636,7 +597,6 @@ public class TestAbstractHttp11Processor extends TomcatBaseTest {
             bug55772Latch2.countDown();
         }
     }
-
 
     private static final class LargeHeaderServlet extends HttpServlet {
 
@@ -651,8 +611,8 @@ public class TestAbstractHttp11Processor extends TomcatBaseTest {
         @Override
         protected void doGet(HttpServletRequest req, HttpServletResponse resp)
                 throws ServletException, IOException {
-            String largeValue =
-                    CharBuffer.allocate(10000).toString().replace('\0', 'x');
+            String largeValue = CharBuffer.allocate(10000).toString().replace(
+                    '\0', 'x');
             resp.setHeader("x-Test", largeValue);
             if (flush) {
                 resp.flushBuffer();
@@ -665,8 +625,8 @@ public class TestAbstractHttp11Processor extends TomcatBaseTest {
 
     // flushes with no content-length set
     // should result in chunking on HTTP 1.1
-    private static final class NoContentLengthFlushingServlet
-            extends HttpServlet {
+    private static final class NoContentLengthFlushingServlet extends
+            HttpServlet {
 
         private static final long serialVersionUID = 1L;
 
@@ -711,7 +671,6 @@ public class TestAbstractHttp11Processor extends TomcatBaseTest {
         }
     }
 
-
     /*
      * Partially read chunked input is not swallowed when it is read during
      * async processing.
@@ -747,14 +706,14 @@ public class TestAbstractHttp11Processor extends TomcatBaseTest {
         client.disconnect();
     }
 
-
     private static class Bug57621Servlet extends HttpServlet {
 
         private static final long serialVersionUID = 1L;
 
         @Override
-        protected void doPut(HttpServletRequest req, final HttpServletResponse resp)
-                throws ServletException, IOException {
+        protected void doPut(HttpServletRequest req,
+                final HttpServletResponse resp) throws ServletException,
+                IOException {
             final AsyncContext ac = req.startAsync();
             ac.start(new Runnable() {
                 @Override
@@ -772,23 +731,16 @@ public class TestAbstractHttp11Processor extends TomcatBaseTest {
         }
     }
 
-
     private static class Bug57621Client extends SimpleHttpClient {
 
         private Exception doRequest() {
             try {
                 String[] request = new String[2];
-                request[0] =
-                    "PUT http://localhost:8080/test HTTP/1.1" + CRLF +
-                    "Transfer-encoding: chunked" + CRLF +
-                    CRLF +
-                    "2" + CRLF +
-                    "OK";
+                request[0] = "PUT http://localhost:8080/test HTTP/1.1" + CRLF
+                        + "Transfer-encoding: chunked" + CRLF + CRLF + "2"
+                        + CRLF + "OK";
 
-                request[1] =
-                    CRLF +
-                    "0" + CRLF +
-                    CRLF;
+                request[1] = CRLF + "0" + CRLF + CRLF;
 
                 setRequest(request);
                 processRequest(); // blocks until response has been read
@@ -810,7 +762,6 @@ public class TestAbstractHttp11Processor extends TomcatBaseTest {
         }
     }
 
-
     @Test
     public void testBug59310() throws Exception {
         Tomcat tomcat = getTomcatInstance();
@@ -824,16 +775,15 @@ public class TestAbstractHttp11Processor extends TomcatBaseTest {
         tomcat.start();
 
         ByteChunk responseBody = new ByteChunk();
-        Map<String,List<String>> responseHeaders = new HashMap<>();
+        Map<String, List<String>> responseHeaders = new HashMap<>();
 
-        int rc = headUrl("http://localhost:" + getPort() + "/test", responseBody,
-                responseHeaders);
+        int rc = headUrl("http://localhost:" + getPort() + "/test",
+                responseBody, responseHeaders);
 
         assertEquals(HttpServletResponse.SC_OK, rc);
         assertEquals(0, responseBody.getLength());
         assertFalse(responseHeaders.containsKey("Content-Length"));
     }
-
 
     private static class Bug59310Servlet extends HttpServlet {
 
@@ -847,10 +797,8 @@ public class TestAbstractHttp11Processor extends TomcatBaseTest {
 
         @Override
         protected void doHead(HttpServletRequest req, HttpServletResponse resp)
-                throws ServletException, IOException {
-        }
+                throws ServletException, IOException {}
     }
-
 
     /*
      * Tests what happens if a request is completed during a dispatch but the
@@ -874,7 +822,7 @@ public class TestAbstractHttp11Processor extends TomcatBaseTest {
         SocketAddress addr = new InetSocketAddress("localhost", getPort());
         Socket socket = new Socket();
         socket.setSoTimeout(300000);
-        socket.connect(addr,300000);
+        socket.connect(addr, 300000);
         OutputStream os = socket.getOutputStream();
         Writer writer = new OutputStreamWriter(os, "ISO-8859-1");
         InputStream is = socket.getInputStream();
@@ -918,7 +866,6 @@ public class TestAbstractHttp11Processor extends TomcatBaseTest {
         socket.close();
     }
 
-
     private void validateResponse(BufferedReader reader) throws IOException {
         // First line has the response code and should always be 200
         String line = reader.readLine();
@@ -927,7 +874,6 @@ public class TestAbstractHttp11Processor extends TomcatBaseTest {
             line = reader.readLine();
         }
     }
-
 
     private static class SempahoreServlet extends HttpServlet {
 

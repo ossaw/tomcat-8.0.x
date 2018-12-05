@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -21,7 +19,6 @@ import java.util.Locale;
 import javax.servlet.ServletResponse;
 import javax.servlet.ServletResponseWrapper;
 
-
 /**
  * Wrapper around a <code>javax.servlet.ServletResponse</code>
  * that transforms an application response object (which might be the original
@@ -29,9 +26,9 @@ import javax.servlet.ServletResponseWrapper;
  * <code>javax.servlet.ServletResponseWrapper</code> class)
  * back into an internal <code>org.apache.catalina.Response</code>.
  * <p>
- * <strong>WARNING</strong>:  Due to Java's lack of support for multiple
+ * <strong>WARNING</strong>: Due to Java's lack of support for multiple
  * inheritance, all of the logic in <code>ApplicationResponse</code> is
- * duplicated in <code>ApplicationHttpResponse</code>.  Make sure that you
+ * duplicated in <code>ApplicationHttpResponse</code>. Make sure that you
  * keep these two classes in synchronization when making changes!
  *
  * @author Craig R. McClanahan
@@ -45,7 +42,7 @@ class ApplicationResponse extends ServletResponseWrapper {
      *
      * @param response The servlet response being wrapped
      * @param included <code>true</code> if this response is being processed
-     *  by a <code>RequestDispatcher.include()</code> call
+     *                 by a <code>RequestDispatcher.include()</code> call
      */
     public ApplicationResponse(ServletResponse response, boolean included) {
 
@@ -54,9 +51,7 @@ class ApplicationResponse extends ServletResponseWrapper {
 
     }
 
-
     // ----------------------------------------------------- Instance Variables
-
 
     /**
      * Is this wrapped response the subject of an <code>include()</code>
@@ -64,15 +59,13 @@ class ApplicationResponse extends ServletResponseWrapper {
      */
     protected boolean included = false;
 
-
     // ------------------------------------------------ ServletResponse Methods
-
 
     /**
      * Disallow <code>reset()</code> calls on a included response.
      *
      * @exception IllegalStateException if the response has already
-     *  been committed
+     *                                  been committed
      */
     @Override
     public void reset() {
@@ -82,7 +75,6 @@ class ApplicationResponse extends ServletResponseWrapper {
             getResponse().reset();
 
     }
-
 
     /**
      * Disallow <code>setContentLength(int)</code> calls on an included
@@ -98,7 +90,6 @@ class ApplicationResponse extends ServletResponseWrapper {
 
     }
 
-
     /**
      * Disallow <code>setContentLengthLong(long)</code> calls on an included
      * response.
@@ -113,7 +104,6 @@ class ApplicationResponse extends ServletResponseWrapper {
 
     }
 
-
     /**
      * Disallow <code>setContentType()</code> calls on an included response.
      *
@@ -127,7 +117,6 @@ class ApplicationResponse extends ServletResponseWrapper {
 
     }
 
-
     /**
      * Ignore <code>setLocale()</code> calls on an included response.
      *
@@ -138,7 +127,6 @@ class ApplicationResponse extends ServletResponseWrapper {
         if (!included)
             getResponse().setLocale(loc);
     }
-
 
     /**
      * Ignore <code>setBufferSize()</code> calls on an included response.
@@ -151,9 +139,7 @@ class ApplicationResponse extends ServletResponseWrapper {
             getResponse().setBufferSize(size);
     }
 
-
     // ----------------------------------------- ServletResponseWrapper Methods
-
 
     /**
      * Set the response that we are wrapping.
@@ -166,7 +152,6 @@ class ApplicationResponse extends ServletResponseWrapper {
         super.setResponse(response);
 
     }
-
 
     // -------------------------------------------------------- Package Methods
 

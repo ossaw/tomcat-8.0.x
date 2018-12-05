@@ -1,18 +1,16 @@
 /*
- *  Licensed to the Apache Software Foundation (ASF) under one or more
- *  contributor license agreements.  See the NOTICE file distributed with
- *  this work for additional information regarding copyright ownership.
- *  The ASF licenses this file to You under the Apache License, Version 2.0
- *  (the "License"); you may not use this file except in compliance with
- *  the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements. See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.apache.tomcat.util.http;
 
@@ -23,7 +21,8 @@ import java.util.Enumeration;
 import org.apache.tomcat.util.buf.MessageBytes;
 import org.apache.tomcat.util.res.StringManager;
 
-/* XXX XXX XXX Need a major rewrite  !!!!
+/*
+ * XXX XXX XXX Need a major rewrite !!!!
  */
 
 /**
@@ -32,57 +31,58 @@ import org.apache.tomcat.util.res.StringManager;
  * MIME (RFC 2045) applications such as transferring typed data and
  * grouping related items in multipart message bodies.
  *
- * <P> Message headers, as specified in RFC822, include a field name
- * and a field body.  Order has no semantic significance, and several
- * fields with the same name may exist.  However, most fields do not
+ * <P>
+ * Message headers, as specified in RFC822, include a field name
+ * and a field body. Order has no semantic significance, and several
+ * fields with the same name may exist. However, most fields do not
  * (and should not) exist more than once in a header.
  *
- * <P> Many kinds of field body must conform to a specified syntax,
- * including the standard parenthesized comment syntax.  This class
+ * <P>
+ * Many kinds of field body must conform to a specified syntax,
+ * including the standard parenthesized comment syntax. This class
  * supports only two simple syntaxes, for dates and integers.
  *
- * <P> When processing headers, care must be taken to handle the case of
- * multiple same-name fields correctly.  The values of such fields are
- * only available as strings.  They may be accessed by index (treating
+ * <P>
+ * When processing headers, care must be taken to handle the case of
+ * multiple same-name fields correctly. The values of such fields are
+ * only available as strings. They may be accessed by index (treating
  * the header as an array of fields), or by name (returning an array
  * of string values).
  */
 
-/* Headers are first parsed and stored in the order they are
-   received. This is based on the fact that most servlets will not
-   directly access all headers, and most headers are single-valued.
-   ( the alternative - a hash or similar data structure - will add
-   an overhead that is not needed in most cases )
-
-   Apache seems to be using a similar method for storing and manipulating
-   headers.
-
-   Future enhancements:
-   - hash the headers the first time a header is requested ( i.e. if the
-   servlet needs direct access to headers).
-   - scan "common" values ( length, cookies, etc ) during the parse
-   ( addHeader hook )
-
-*/
-
+/*
+ * Headers are first parsed and stored in the order they are
+ * received. This is based on the fact that most servlets will not
+ * directly access all headers, and most headers are single-valued.
+ * ( the alternative - a hash or similar data structure - will add
+ * an overhead that is not needed in most cases )
+ * Apache seems to be using a similar method for storing and manipulating
+ * headers.
+ * Future enhancements:
+ * - hash the headers the first time a header is requested ( i.e. if the
+ * servlet needs direct access to headers).
+ * - scan "common" values ( length, cookies, etc ) during the parse
+ * ( addHeader hook )
+ */
 
 /**
- *  Memory-efficient repository for Mime Headers. When the object is recycled, it
- *  will keep the allocated headers[] and all the MimeHeaderField - no GC is generated.
+ * Memory-efficient repository for Mime Headers. When the object is recycled, it
+ * will keep the allocated headers[] and all the MimeHeaderField - no GC is
+ * generated.
  *
- *  For input headers it is possible to use the MessageByte for Fields - so no GC
- *  will be generated.
+ * For input headers it is possible to use the MessageByte for Fields - so no GC
+ * will be generated.
  *
- *  The only garbage is generated when using the String for header names/values -
- *  this can't be avoided when the servlet calls header methods, but is easy
- *  to avoid inside tomcat. The goal is to use _only_ MessageByte-based Fields,
- *  and reduce to 0 the memory overhead of tomcat.
+ * The only garbage is generated when using the String for header names/values -
+ * this can't be avoided when the servlet calls header methods, but is easy
+ * to avoid inside tomcat. The goal is to use _only_ MessageByte-based Fields,
+ * and reduce to 0 the memory overhead of tomcat.
  *
- *  TODO:
- *  XXX one-buffer parsing - for http ( other protocols don't need that )
- *  XXX remove unused methods
- *  XXX External enumerations, with 0 GC.
- *  XXX use HeaderName ID
+ * TODO:
+ * XXX one-buffer parsing - for http ( other protocols don't need that )
+ * XXX remove unused methods
+ * XXX External enumerations, with 0 GC.
+ * XXX use HeaderName ID
  *
  *
  * @author dac@eng.sun.com
@@ -91,19 +91,19 @@ import org.apache.tomcat.util.res.StringManager;
  * @author kevin seguin
  */
 public class MimeHeaders {
-    /** Initial size - should be == average number of headers per request
-     *  XXX  make it configurable ( fine-tuning of web-apps )
+    /**
+     * Initial size - should be == average number of headers per request
+     * XXX make it configurable ( fine-tuning of web-apps )
      */
-    public static final int DEFAULT_HEADER_SIZE=8;
+    public static final int DEFAULT_HEADER_SIZE = 8;
 
-    private static final StringManager sm =
-            StringManager.getManager("org.apache.tomcat.util.http");
+    private static final StringManager sm = StringManager.getManager(
+            "org.apache.tomcat.util.http");
 
     /**
      * The header fields.
      */
-    private MimeHeaderField[] headers = new
-        MimeHeaderField[DEFAULT_HEADER_SIZE];
+    private MimeHeaderField[] headers = new MimeHeaderField[DEFAULT_HEADER_SIZE];
 
     /**
      * The current number of header fields.
@@ -154,7 +154,7 @@ public class MimeHeaders {
     }
 
     /**
-     * EXPENSIVE!!!  only for debugging.
+     * EXPENSIVE!!! only for debugging.
      */
     @Override
     public String toString() {
@@ -199,9 +199,10 @@ public class MimeHeaders {
         return n >= 0 && n < count ? headers[n].getValue() : null;
     }
 
-    /** Find the index of a header with the given name.
+    /**
+     * Find the index of a header with the given name.
      */
-    public int findHeader( String name, int starting ) {
+    public int findHeader(String name, int starting) {
         // We can use a hash - but it's not clear how much
         // benefit you can get - there is an  overhead
         // and the number of headers is small (4-5 ?)
@@ -234,15 +235,14 @@ public class MimeHeaders {
 
     // -------------------- Adding headers --------------------
 
-
     /**
-     * Adds a partially constructed field to the header.  This
+     * Adds a partially constructed field to the header. This
      * field has not had its name or value initialized.
      */
     private MimeHeaderField createHeader() {
         if (limit > -1 && count >= limit) {
-            throw new IllegalStateException(sm.getString(
-                    "headers.maxCountFail", Integer.valueOf(limit)));
+            throw new IllegalStateException(sm.getString("headers.maxCountFail",
+                    Integer.valueOf(limit)));
         }
         MimeHeaderField mh;
         int len = headers.length;
@@ -263,36 +263,38 @@ public class MimeHeaders {
         return mh;
     }
 
-    /** Create a new named header , return the MessageBytes
-        container for the new value
-    */
-    public MessageBytes addValue( String name ) {
-         MimeHeaderField mh = createHeader();
+    /**
+     * Create a new named header , return the MessageBytes
+     * container for the new value
+     */
+    public MessageBytes addValue(String name) {
+        MimeHeaderField mh = createHeader();
         mh.getName().setString(name);
         return mh.getValue();
     }
 
-    /** Create a new named header using un-translated byte[].
-        The conversion to chars can be delayed until
-        encoding is known.
+    /**
+     * Create a new named header using un-translated byte[].
+     * The conversion to chars can be delayed until
+     * encoding is known.
      */
-    public MessageBytes addValue(byte b[], int startN, int len)
-    {
-        MimeHeaderField mhf=createHeader();
+    public MessageBytes addValue(byte b[], int startN, int len) {
+        MimeHeaderField mhf = createHeader();
         mhf.getName().setBytes(b, startN, len);
         return mhf.getValue();
     }
 
-    /** Allow "set" operations -
-        return a MessageBytes container for the
-        header value ( existing header or new
-        if this .
-    */
-    public MessageBytes setValue( String name ) {
-        for ( int i = 0; i < count; i++ ) {
-            if(headers[i].getName().equalsIgnoreCase(name)) {
-                for ( int j=i+1; j < count; j++ ) {
-                    if(headers[j].getName().equalsIgnoreCase(name)) {
+    /**
+     * Allow "set" operations -
+     * return a MessageBytes container for the
+     * header value ( existing header or new
+     * if this .
+     */
+    public MessageBytes setValue(String name) {
+        for (int i = 0; i < count; i++) {
+            if (headers[i].getName().equalsIgnoreCase(name)) {
+                for (int j = i + 1; j < count; j++) {
+                    if (headers[j].getName().equalsIgnoreCase(name)) {
                         removeHeader(j--);
                     }
                 }
@@ -306,8 +308,8 @@ public class MimeHeaders {
 
     //-------------------- Getting headers --------------------
     /**
-     * Finds and returns a header field with the given name.  If no such
-     * field exists, null is returned.  If more than one such field is
+     * Finds and returns a header field with the given name. If no such
+     * field exists, null is returned. If more than one such field is
      * in the header, an arbitrary one is returned.
      */
     public MessageBytes getValue(String name) {
@@ -347,8 +349,9 @@ public class MimeHeaders {
 
     // -------------------- Removing --------------------
     /**
-     * Removes a header field with the specified name.  Does nothing
+     * Removes a header field with the specified name. Does nothing
      * if such a field could not be found.
+     * 
      * @param name the name of the header field to be removed
      */
     public void removeHeader(String name) {
@@ -364,6 +367,7 @@ public class MimeHeaders {
 
     /**
      * reset and swap with last header
+     * 
      * @param idx the index of the header to remove.
      */
     private void removeHeader(int idx) {
@@ -377,13 +381,14 @@ public class MimeHeaders {
 
 }
 
-/** Enumerate the distinct header names.
-    Each nextElement() is O(n) ( a comparison is
-    done with all previous elements ).
-
-    This is less frequent than add() -
-    we want to keep add O(1).
-*/
+/**
+ * Enumerate the distinct header names.
+ * Each nextElement() is O(n) ( a comparison is
+ * done with all previous elements ).
+ * 
+ * This is less frequent than add() -
+ * we want to keep add O(1).
+ */
 class NamesEnumerator implements Enumeration<String> {
     private int pos;
     private final int size;
@@ -391,24 +396,24 @@ class NamesEnumerator implements Enumeration<String> {
     private final MimeHeaders headers;
 
     public NamesEnumerator(MimeHeaders headers) {
-        this.headers=headers;
-        pos=0;
+        this.headers = headers;
+        pos = 0;
         size = headers.size();
         findNext();
     }
 
     private void findNext() {
-        next=null;
-        for(; pos< size; pos++ ) {
-            next=headers.getName( pos ).toString();
-            for( int j=0; j<pos ; j++ ) {
-                if( headers.getName( j ).equalsIgnoreCase( next )) {
+        next = null;
+        for (; pos < size; pos++) {
+            next = headers.getName(pos).toString();
+            for (int j = 0; j < pos; j++) {
+                if (headers.getName(j).equalsIgnoreCase(next)) {
                     // duplicate.
-                    next=null;
+                    next = null;
                     break;
                 }
             }
-            if( next!=null ) {
+            if (next != null) {
                 // it's not a duplicate
                 break;
             }
@@ -420,20 +425,21 @@ class NamesEnumerator implements Enumeration<String> {
 
     @Override
     public boolean hasMoreElements() {
-        return next!=null;
+        return next != null;
     }
 
     @Override
     public String nextElement() {
-        String current=next;
+        String current = next;
         findNext();
         return current;
     }
 }
 
-/** Enumerate the values for a (possibly ) multiple
-    value element.
-*/
+/**
+ * Enumerate the values for a (possibly ) multiple
+ * value element.
+ */
 class ValuesEnumerator implements Enumeration<String> {
     private int pos;
     private final int size;
@@ -442,19 +448,19 @@ class ValuesEnumerator implements Enumeration<String> {
     private final String name;
 
     ValuesEnumerator(MimeHeaders headers, String name) {
-        this.name=name;
-        this.headers=headers;
-        pos=0;
+        this.name = name;
+        this.headers = headers;
+        pos = 0;
         size = headers.size();
         findNext();
     }
 
     private void findNext() {
-        next=null;
-        for(; pos< size; pos++ ) {
-            MessageBytes n1=headers.getName( pos );
-            if( n1.equalsIgnoreCase( name )) {
-                next=headers.getValue( pos );
+        next = null;
+        for (; pos < size; pos++) {
+            MessageBytes n1 = headers.getName(pos);
+            if (n1.equalsIgnoreCase(name)) {
+                next = headers.getValue(pos);
                 break;
             }
         }
@@ -463,12 +469,12 @@ class ValuesEnumerator implements Enumeration<String> {
 
     @Override
     public boolean hasMoreElements() {
-        return next!=null;
+        return next != null;
     }
 
     @Override
     public String nextElement() {
-        MessageBytes current=next;
+        MessageBytes current = next;
         findNext();
         return current.toString();
     }

@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -19,56 +17,42 @@ package org.apache.catalina.connector;
 import java.io.BufferedReader;
 import java.io.IOException;
 
-
 /**
  * Coyote implementation of the buffered reader.
  *
  * @author Remy Maucherat
  */
-public class CoyoteReader
-    extends BufferedReader {
-
+public class CoyoteReader extends BufferedReader {
 
     // -------------------------------------------------------------- Constants
-
 
     private static final char[] LINE_SEP = { '\r', '\n' };
     private static final int MAX_LINE_LENGTH = 4096;
 
-
     // ----------------------------------------------------- Instance Variables
-
 
     protected InputBuffer ib;
 
-
     protected char[] lineBuffer = null;
 
-
     // ----------------------------------------------------------- Constructors
-
 
     public CoyoteReader(InputBuffer ib) {
         super(ib, 1);
         this.ib = ib;
     }
 
-
     // --------------------------------------------------------- Public Methods
-
 
     /**
      * Prevent cloning the facade.
      */
     @Override
-    protected Object clone()
-        throws CloneNotSupportedException {
+    protected Object clone() throws CloneNotSupportedException {
         throw new CloneNotSupportedException();
     }
 
-
     // -------------------------------------------------------- Package Methods
-
 
     /**
      * Clear facade.
@@ -77,79 +61,59 @@ public class CoyoteReader
         ib = null;
     }
 
-
     // --------------------------------------------------------- Reader Methods
 
-
     @Override
-    public void close()
-        throws IOException {
+    public void close() throws IOException {
         ib.close();
     }
 
-
     @Override
-    public int read()
-        throws IOException {
+    public int read() throws IOException {
         return ib.read();
     }
 
-
     @Override
-    public int read(char[] cbuf)
-        throws IOException {
+    public int read(char[] cbuf) throws IOException {
         return ib.read(cbuf, 0, cbuf.length);
     }
 
-
     @Override
-    public int read(char[] cbuf, int off, int len)
-        throws IOException {
+    public int read(char[] cbuf, int off, int len) throws IOException {
         return ib.read(cbuf, off, len);
     }
 
-
     @Override
-    public long skip(long n)
-        throws IOException {
+    public long skip(long n) throws IOException {
         return ib.skip(n);
     }
 
-
     @Override
-    public boolean ready()
-        throws IOException {
+    public boolean ready() throws IOException {
         return ib.ready();
     }
-
 
     @Override
     public boolean markSupported() {
         return true;
     }
 
-
     @Override
-    public void mark(int readAheadLimit)
-        throws IOException {
+    public void mark(int readAheadLimit) throws IOException {
         ib.mark(readAheadLimit);
     }
 
-
     @Override
-    public void reset()
-        throws IOException {
+    public void reset() throws IOException {
         ib.reset();
     }
 
-
     @Override
-    public String readLine()
-        throws IOException {
+    public String readLine() throws IOException {
 
         if (lineBuffer == null) {
             lineBuffer = new char[MAX_LINE_LENGTH];
-       }
+        }
 
         String result = null;
 
@@ -176,7 +140,7 @@ public class CoyoteReader
                         if (i == (pos + nRead - 1)) {
                             nextchar = (char) read();
                         } else {
-                            nextchar = lineBuffer[i+1];
+                            nextchar = lineBuffer[i + 1];
                         }
                         if (nextchar == LINE_SEP[1]) {
                             skip++;
@@ -212,6 +176,5 @@ public class CoyoteReader
         return result;
 
     }
-
 
 }

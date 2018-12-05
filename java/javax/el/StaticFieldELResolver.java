@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -45,8 +43,8 @@ public class StaticFieldELResolver extends ELResolver {
             try {
                 Field field = clazz.getField(name);
                 int modifiers = field.getModifiers();
-                if (Modifier.isStatic(modifiers) &&
-                        Modifier.isPublic(modifiers)) {
+                if (Modifier.isStatic(modifiers) && Modifier.isPublic(
+                        modifiers)) {
                     return field.get(null);
                 }
             } catch (IllegalArgumentException | IllegalAccessException
@@ -64,7 +62,6 @@ public class StaticFieldELResolver extends ELResolver {
         return null;
     }
 
-
     @Override
     public void setValue(ELContext context, Object base, Object property,
             Object value) {
@@ -78,11 +75,10 @@ public class StaticFieldELResolver extends ELResolver {
             String name = (String) property;
 
             throw new PropertyNotWritableException(Util.message(context,
-                    "staticFieldELResolver.notWriteable", name,
-                    clazz.getName()));
+                    "staticFieldELResolver.notWriteable", name, clazz
+                            .getName()));
         }
     }
-
 
     @Override
     public Object invoke(ELContext context, Object base, Object method,
@@ -99,18 +95,18 @@ public class StaticFieldELResolver extends ELResolver {
             String methodName = (String) method;
 
             if ("<init>".equals(methodName)) {
-                Constructor<?> match =
-                        Util.findConstructor(clazz, paramTypes, params);
+                Constructor<?> match = Util.findConstructor(clazz, paramTypes,
+                        params);
 
-                Object[] parameters = Util.buildParameters(
-                        match.getParameterTypes(), match.isVarArgs(), params);
+                Object[] parameters = Util.buildParameters(match
+                        .getParameterTypes(), match.isVarArgs(), params);
 
                 Object result = null;
 
                 try {
                     result = match.newInstance(parameters);
-                } catch (IllegalArgumentException | IllegalAccessException |
-                        InstantiationException e) {
+                } catch (IllegalArgumentException | IllegalAccessException
+                        | InstantiationException e) {
                     throw new ELException(e);
                 } catch (InvocationTargetException e) {
                     Throwable cause = e.getCause();
@@ -120,8 +116,8 @@ public class StaticFieldELResolver extends ELResolver {
                 return result;
 
             } else {
-                Method match =
-                        Util.findMethod(clazz, methodName, paramTypes, params);
+                Method match = Util.findMethod(clazz, methodName, paramTypes,
+                        params);
 
                 int modifiers = match.getModifiers();
                 if (!Modifier.isStatic(modifiers)) {
@@ -130,8 +126,8 @@ public class StaticFieldELResolver extends ELResolver {
                             clazz.getName()));
                 }
 
-                Object[] parameters = Util.buildParameters(
-                        match.getParameterTypes(), match.isVarArgs(), params);
+                Object[] parameters = Util.buildParameters(match
+                        .getParameterTypes(), match.isVarArgs(), params);
 
                 Object result = null;
                 try {
@@ -164,12 +160,12 @@ public class StaticFieldELResolver extends ELResolver {
             try {
                 Field field = clazz.getField(name);
                 int modifiers = field.getModifiers();
-                if (Modifier.isStatic(modifiers) &&
-                        Modifier.isPublic(modifiers)) {
+                if (Modifier.isStatic(modifiers) && Modifier.isPublic(
+                        modifiers)) {
                     return field.getType();
                 }
-            } catch (IllegalArgumentException | NoSuchFieldException |
-                    SecurityException e) {
+            } catch (IllegalArgumentException | NoSuchFieldException
+                    | SecurityException e) {
                 exception = e;
             }
             String msg = Util.message(context, "staticFieldELResolver.notFound",
@@ -183,7 +179,6 @@ public class StaticFieldELResolver extends ELResolver {
         return null;
     }
 
-
     @Override
     public boolean isReadOnly(ELContext context, Object base, Object property) {
         if (context == null) {
@@ -195,7 +190,6 @@ public class StaticFieldELResolver extends ELResolver {
         }
         return true;
     }
-
 
     /**
      * Always returns <code>null</code>.

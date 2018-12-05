@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -309,17 +307,17 @@ public class Benchmarks {
             if (currentDateStringLocal.get() == null) {
                 StringBuilder current = new StringBuilder(32);
                 current.append('[');
-                current.append(dayFormatterLocal.get().format(
-                        currentDateLocal.get())); // Day
+                current.append(dayFormatterLocal.get().format(currentDateLocal
+                        .get())); // Day
                 current.append('/');
                 current.append(lookup(monthFormatterLocal.get().format(
                         currentDateLocal.get()))); // Month
                 current.append('/');
-                current.append(yearFormatterLocal.get().format(
-                        currentDateLocal.get())); // Year
+                current.append(yearFormatterLocal.get().format(currentDateLocal
+                        .get())); // Year
                 current.append(':');
-                current.append(timeFormatterLocal.get().format(
-                        currentDateLocal.get())); // Time
+                current.append(timeFormatterLocal.get().format(currentDateLocal
+                        .get())); // Time
                 current.append(']');
                 currentDateStringLocal.set(current.toString());
             }
@@ -349,7 +347,8 @@ public class Benchmarks {
             public Date currentDate = new Date();
             public SimpleDateFormat dayFormatter = new SimpleDateFormat("dd");
             public SimpleDateFormat monthFormatter = new SimpleDateFormat("MM");
-            public SimpleDateFormat yearFormatter = new SimpleDateFormat("yyyy");
+            public SimpleDateFormat yearFormatter = new SimpleDateFormat(
+                    "yyyy");
             public SimpleDateFormat timeFormatter = new SimpleDateFormat(
                     "hh:mm:ss");
         }
@@ -374,8 +373,8 @@ public class Benchmarks {
                 current.append('[');
                 current.append(struct.dayFormatter.format(struct.currentDate)); // Day
                 current.append('/');
-                current.append(lookup(struct.monthFormatter
-                        .format(struct.currentDate))); // Month
+                current.append(lookup(struct.monthFormatter.format(
+                        struct.currentDate))); // Month
                 current.append('/');
                 current.append(struct.yearFormatter.format(struct.currentDate)); // Year
                 current.append(':');
@@ -397,8 +396,8 @@ public class Benchmarks {
         }
     }
 
-    private static class TimeDateElementBenchmarkTest_LocalStruct_SBuilder extends
-            TimeDateElementBenchmarkTestBase implements Runnable {
+    private static class TimeDateElementBenchmarkTest_LocalStruct_SBuilder
+            extends TimeDateElementBenchmarkTestBase implements Runnable {
 
         @Override
         public String toString() {
@@ -410,7 +409,8 @@ public class Benchmarks {
             public Date currentDate = new Date();
             public SimpleDateFormat dayFormatter = new SimpleDateFormat("dd");
             public SimpleDateFormat monthFormatter = new SimpleDateFormat("MM");
-            public SimpleDateFormat yearFormatter = new SimpleDateFormat("yyyy");
+            public SimpleDateFormat yearFormatter = new SimpleDateFormat(
+                    "yyyy");
             public SimpleDateFormat timeFormatter = new SimpleDateFormat(
                     "hh:mm:ss");
         }
@@ -435,8 +435,8 @@ public class Benchmarks {
                 current.append('[');
                 current.append(struct.dayFormatter.format(struct.currentDate)); // Day
                 current.append('/');
-                current.append(lookup(struct.monthFormatter
-                        .format(struct.currentDate))); // Month
+                current.append(lookup(struct.monthFormatter.format(
+                        struct.currentDate))); // Month
                 current.append('/');
                 current.append(struct.yearFormatter.format(struct.currentDate)); // Year
                 current.append(':');

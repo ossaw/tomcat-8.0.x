@@ -1,18 +1,16 @@
 /*
- *  Licensed to the Apache Software Foundation (ASF) under one or more
- *  contributor license agreements.  See the NOTICE file distributed with
- *  this work for additional information regarding copyright ownership.
- *  The ASF licenses this file to You under the Apache License, Version 2.0
- *  (the "License"); you may not use this file except in compliance with
- *  the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements. See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package async;
 
@@ -33,19 +31,18 @@ import javax.servlet.http.HttpServletResponse;
 import async.Stockticker.Stock;
 import async.Stockticker.TickListener;
 
-public class AsyncStockServlet extends HttpServlet implements TickListener, AsyncListener{
+public class AsyncStockServlet extends HttpServlet implements TickListener,
+        AsyncListener {
 
     private static final long serialVersionUID = 1L;
 
-    private static final ConcurrentLinkedQueue<AsyncContext> clients =
-            new ConcurrentLinkedQueue<>();
+    private static final ConcurrentLinkedQueue<AsyncContext> clients = new ConcurrentLinkedQueue<>();
     private static final AtomicInteger clientcount = new AtomicInteger(0);
     private static final Stockticker ticker = new Stockticker();
 
     public AsyncStockServlet() {
         System.out.println("AsyncStockServlet created");
     }
-
 
     @Override
     protected void service(HttpServletRequest req, HttpServletResponse resp)
@@ -57,15 +54,14 @@ public class AsyncStockServlet extends HttpServlet implements TickListener, Asyn
             actx.addListener(this);
             resp.setContentType("text/plain");
             clients.add(actx);
-            if (clientcount.incrementAndGet()==1) {
+            if (clientcount.incrementAndGet() == 1) {
                 ticker.addTickListener(this);
             }
         } else {
             new Exception("Async Not Supported").printStackTrace();
-            resp.sendError(400,"Async is not supported.");
+            resp.sendError(400, "Async is not supported.");
         }
     }
-
 
     @Override
     public void tick(Stock stock) {
@@ -81,7 +77,7 @@ public class AsyncStockServlet extends HttpServlet implements TickListener, Asyn
     }
 
     public void writeStock(AsyncContext actx, Stock stock) {
-        HttpServletResponse response = (HttpServletResponse)actx.getResponse();
+        HttpServletResponse response = (HttpServletResponse) actx.getResponse();
         try {
             PrintWriter writer = response.getWriter();
             writer.write("STOCK#");//make client parsing easier
@@ -95,14 +91,18 @@ public class AsyncStockServlet extends HttpServlet implements TickListener, Asyn
             writer.write("\n");
             writer.flush();
             response.flushBuffer();
-        }catch (IOException x) {
-            try {actx.complete();}catch (Exception ignore){/* Ignore */}
+        } catch (IOException x) {
+            try {
+                actx.complete();
+            } catch (Exception ignore) {
+                /* Ignore */}
         }
     }
 
     @Override
     public void onComplete(AsyncEvent event) throws IOException {
-        if (clients.remove(event.getAsyncContext()) && clientcount.decrementAndGet()==0) {
+        if (clients.remove(event.getAsyncContext()) && clientcount
+                .decrementAndGet() == 0) {
             ticker.removeTickListener(this);
         }
     }
@@ -116,7 +116,6 @@ public class AsyncStockServlet extends HttpServlet implements TickListener, Asyn
     public void onTimeout(AsyncEvent event) throws IOException {
         event.getAsyncContext().complete();
     }
-
 
     @Override
     public void onStartAsync(AsyncEvent event) throws IOException {

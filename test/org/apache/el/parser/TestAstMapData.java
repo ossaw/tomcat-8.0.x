@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -31,8 +29,8 @@ import org.junit.Test;
 
 public class TestAstMapData {
 
-    private static final Map<String,String> simpleMap = new HashMap<>();
-    private static final Map<Object,Object> nestedMap = new HashMap<>();
+    private static final Map<String, String> simpleMap = new HashMap<>();
+    private static final Map<Object, Object> nestedMap = new HashMap<>();
 
     static {
         simpleMap.put("a", "1");
@@ -46,15 +44,13 @@ public class TestAstMapData {
         nestedMap.put("d", "4");
     }
 
-
     @Test
     public void testSimple01() {
         ELProcessor processor = new ELProcessor();
-        Object result = processor.getValue(
-                "{'a':'1','b':'2','c':'3'}", Map.class);
+        Object result = processor.getValue("{'a':'1','b':'2','c':'3'}",
+                Map.class);
         Assert.assertEquals(simpleMap, result);
     }
-
 
     @Test
     public void testSimple02() {
@@ -63,17 +59,14 @@ public class TestAstMapData {
         Assert.assertEquals(Collections.EMPTY_MAP, result);
     }
 
-
     @Test
     public void testNested01() {
         ELProcessor processor = new ELProcessor();
         Object result = processor.getValue(
-                "{'simple':{'a':'1','b':'2','c':'3'}," +
-                "'empty':{}," +
-                "'d':'4'}", Map.class);
+                "{'simple':{'a':'1','b':'2','c':'3'}," + "'empty':{},"
+                        + "'d':'4'}", Map.class);
         Assert.assertEquals(nestedMap, result);
     }
-
 
     @Test
     public void testGetType() {
@@ -81,8 +74,8 @@ public class TestAstMapData {
         ELContext context = processor.getELManager().getELContext();
         ExpressionFactory factory = ELManager.getExpressionFactory();
 
-        ValueExpression ve = factory.createValueExpression(
-                context, "${{'a':'1','b':'2','c':'3'}}", Map.class);
+        ValueExpression ve = factory.createValueExpression(context,
+                "${{'a':'1','b':'2','c':'3'}}", Map.class);
 
         Assert.assertEquals(Map.class, ve.getType(context));
         Assert.assertEquals(simpleMap, ve.getValue(context));

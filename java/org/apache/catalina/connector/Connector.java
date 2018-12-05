@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -37,24 +35,22 @@ import org.apache.juli.logging.LogFactory;
 import org.apache.tomcat.util.IntrospectionUtils;
 import org.apache.tomcat.util.res.StringManager;
 
-
 /**
  * Implementation of a Coyote connector.
  *
  * @author Craig R. McClanahan
  * @author Remy Maucherat
  */
-public class Connector extends LifecycleMBeanBase  {
+public class Connector extends LifecycleMBeanBase {
 
     private static final Log log = LogFactory.getLog(Connector.class);
-
 
     /**
      * Alternate flag to enable recycling of facades.
      */
-    public static final boolean RECYCLE_FACADES =
-        Boolean.parseBoolean(System.getProperty("org.apache.catalina.connector.RECYCLE_FACADES", "false"));
-
+    public static final boolean RECYCLE_FACADES = Boolean.parseBoolean(System
+            .getProperty("org.apache.catalina.connector.RECYCLE_FACADES",
+                    "false"));
 
     // ------------------------------------------------------------ Constructor
 
@@ -82,69 +78,58 @@ public class Connector extends LifecycleMBeanBase  {
         }
     }
 
-
     // ----------------------------------------------------- Instance Variables
-
 
     /**
      * The <code>Service</code> we are associated with (if any).
      */
     protected Service service = null;
 
-
     /**
      * Do we allow TRACE ?
      */
     protected boolean allowTrace = false;
-
 
     /**
      * Default timeout for asynchronous requests (ms).
      */
     protected long asyncTimeout = 30000;
 
-
     /**
      * The "enable DNS lookups" flag for this Connector.
      */
     protected boolean enableLookups = false;
-
 
     /*
      * Is generation of X-Powered-By response header enabled/disabled?
      */
     protected boolean xpoweredBy = false;
 
-
     /**
      * The port number on which we listen for requests.
      */
     protected int port = -1;
 
-
     /**
      * The server name to which we should pretend requests to this Connector
-     * were directed.  This is useful when operating Tomcat behind a proxy
-     * server, so that redirects get constructed accurately.  If not specified,
+     * were directed. This is useful when operating Tomcat behind a proxy
+     * server, so that redirects get constructed accurately. If not specified,
      * the server name included in the <code>Host</code> header is used.
      */
     protected String proxyName = null;
 
-
     /**
      * The server port to which we should pretend requests to this Connector
-     * were directed.  This is useful when operating Tomcat behind a proxy
-     * server, so that redirects get constructed accurately.  If not specified,
+     * were directed. This is useful when operating Tomcat behind a proxy
+     * server, so that redirects get constructed accurately. If not specified,
      * the port number specified by the <code>port</code> property is used.
      */
     protected int proxyPort = 0;
-
 
     /**
      * The redirect port for non-SSL to SSL redirects.
      */
     protected int redirectPort = 443;
-
 
     /**
      * The request scheme that will be set on all requests received
@@ -152,20 +137,17 @@ public class Connector extends LifecycleMBeanBase  {
      */
     protected String scheme = "http";
 
-
     /**
      * The secure connection flag that will be set on all requests received
      * through this connector.
      */
     protected boolean secure = false;
 
-
     /**
      * The string manager for this package.
      */
-    protected static final StringManager sm =
-        StringManager.getManager(Constants.Package);
-
+    protected static final StringManager sm = StringManager.getManager(
+            Constants.Package);
 
     /**
      * The maximum number of parameters (GET plus POST) which will be
@@ -179,7 +161,6 @@ public class Connector extends LifecycleMBeanBase  {
      * container. 2MB by default.
      */
     protected int maxPostSize = 2 * 1024 * 1024;
-
 
     /**
      * Maximum size of a POST which will be saved by the container
@@ -198,55 +179,45 @@ public class Connector extends LifecycleMBeanBase  {
      */
     protected HashSet<String> parseBodyMethodsSet;
 
-
     /**
      * Flag to use IP-based virtual hosting.
      */
     protected boolean useIPVHosts = false;
 
-
     /**
      * Coyote Protocol handler class name.
      * Defaults to the Coyote HTTP/1.1 protocolHandler.
      */
-    protected String protocolHandlerClassName =
-        "org.apache.coyote.http11.Http11NioProtocol";
-
+    protected String protocolHandlerClassName = "org.apache.coyote.http11.Http11NioProtocol";
 
     /**
      * Coyote protocol handler.
      */
     protected final ProtocolHandler protocolHandler;
 
-
     /**
      * Coyote adapter.
      */
     protected Adapter adapter = null;
 
+    /**
+     * URI encoding.
+     */
+    protected String URIEncoding = null;
+    protected String URIEncodingLower = null;
 
-     /**
-      * URI encoding.
-      */
-     protected String URIEncoding = null;
-     protected String URIEncodingLower = null;
+    /**
+     * URI encoding as body.
+     */
+    protected boolean useBodyEncodingForURI = false;
 
-
-     /**
-      * URI encoding as body.
-      */
-     protected boolean useBodyEncodingForURI = false;
-
-
-     protected static final HashMap<String,String> replacements =
-             new HashMap<>();
-     static {
-         replacements.put("acceptCount", "backlog");
-         replacements.put("connectionLinger", "soLinger");
-         replacements.put("connectionTimeout", "soTimeout");
-         replacements.put("rootFile", "rootfile");
-     }
-
+    protected static final HashMap<String, String> replacements = new HashMap<>();
+    static {
+        replacements.put("acceptCount", "backlog");
+        replacements.put("connectionLinger", "soLinger");
+        replacements.put("connectionTimeout", "soTimeout");
+        replacements.put("rootFile", "rootfile");
+    }
 
     // ------------------------------------------------------------- Properties
 
@@ -260,7 +231,6 @@ public class Connector extends LifecycleMBeanBase  {
         }
         return IntrospectionUtils.getProperty(protocolHandler, repl);
     }
-
 
     /**
      * Set a configured property.
@@ -280,14 +250,12 @@ public class Connector extends LifecycleMBeanBase  {
         return getProperty(name);
     }
 
-
     /**
      * Set a configured property.
      */
     public void setAttribute(String name, Object value) {
         setProperty(name, String.valueOf(value));
     }
-
 
     /**
      * Return the <code>Service</code> with which we are associated (if any).
@@ -297,7 +265,6 @@ public class Connector extends LifecycleMBeanBase  {
         return (this.service);
 
     }
-
 
     /**
      * Set the <code>Service</code> with which we are associated (if any).
@@ -310,16 +277,14 @@ public class Connector extends LifecycleMBeanBase  {
 
     }
 
-
     /**
-     * True if the TRACE method is allowed.  Default value is "false".
+     * True if the TRACE method is allowed. Default value is "false".
      */
     public boolean getAllowTrace() {
 
         return (this.allowTrace);
 
     }
-
 
     /**
      * Set the allowTrace flag, to disable or enable the TRACE HTTP method.
@@ -333,7 +298,6 @@ public class Connector extends LifecycleMBeanBase  {
 
     }
 
-
     /**
      * Return the default timeout for async requests in ms.
      */
@@ -343,7 +307,6 @@ public class Connector extends LifecycleMBeanBase  {
 
     }
 
-
     /**
      * Set the default timeout for async requests.
      *
@@ -351,11 +314,10 @@ public class Connector extends LifecycleMBeanBase  {
      */
     public void setAsyncTimeout(long asyncTimeout) {
 
-        this.asyncTimeout= asyncTimeout;
+        this.asyncTimeout = asyncTimeout;
         setProperty("asyncTimeout", String.valueOf(asyncTimeout));
 
     }
-
 
     /**
      * Return the "enable DNS lookups" flag.
@@ -365,7 +327,6 @@ public class Connector extends LifecycleMBeanBase  {
         return (this.enableLookups);
 
     }
-
 
     /**
      * Set the "enable DNS lookups" flag.
@@ -378,7 +339,6 @@ public class Connector extends LifecycleMBeanBase  {
         setProperty("enableLookups", String.valueOf(enableLookups));
 
     }
-
 
     /**
      * Return the maximum number of headers that are allowed by the container. A
@@ -407,7 +367,6 @@ public class Connector extends LifecycleMBeanBase  {
         return maxParameterCount;
     }
 
-
     /**
      * Set the maximum number of parameters (GET plus POST) that will be
      * automatically parsed by the container. A value of less than 0 means no
@@ -419,7 +378,6 @@ public class Connector extends LifecycleMBeanBase  {
         this.maxParameterCount = maxParameterCount;
     }
 
-
     /**
      * Return the maximum size of a POST which will be automatically
      * parsed by the container.
@@ -430,19 +388,17 @@ public class Connector extends LifecycleMBeanBase  {
 
     }
 
-
     /**
      * Set the maximum size of a POST which will be automatically
      * parsed by the container.
      *
      * @param maxPostSize The new maximum size in bytes of a POST which will
-     * be automatically parsed by the container
+     *                    be automatically parsed by the container
      */
     public void setMaxPostSize(int maxPostSize) {
 
         this.maxPostSize = maxPostSize;
     }
-
 
     /**
      * Return the maximum size of a POST which will be saved by the container
@@ -454,20 +410,18 @@ public class Connector extends LifecycleMBeanBase  {
 
     }
 
-
     /**
      * Set the maximum size of a POST which will be saved by the container
      * during authentication.
      *
      * @param maxSavePostSize The new maximum size in bytes of a POST which will
-     * be saved by the container during authentication.
+     *                        be saved by the container during authentication.
      */
     public void setMaxSavePostSize(int maxSavePostSize) {
 
         this.maxSavePostSize = maxSavePostSize;
         setProperty("maxSavePostSize", String.valueOf(maxSavePostSize));
     }
-
 
     public String getParseBodyMethods() {
 
@@ -479,12 +433,13 @@ public class Connector extends LifecycleMBeanBase  {
 
         HashSet<String> methodSet = new HashSet<>();
 
-        if( null != methods ) {
+        if (null != methods) {
             methodSet.addAll(Arrays.asList(methods.split("\\s*,\\s*")));
         }
 
-        if( methodSet.contains("TRACE") ) {
-            throw new IllegalArgumentException(sm.getString("coyoteConnector.parseBodyMethodNoTrace"));
+        if (methodSet.contains("TRACE")) {
+            throw new IllegalArgumentException(sm.getString(
+                    "coyoteConnector.parseBodyMethodNoTrace"));
         }
 
         this.parseBodyMethods = methods;
@@ -509,7 +464,6 @@ public class Connector extends LifecycleMBeanBase  {
 
     }
 
-
     /**
      * Set the port number on which we listen for requests.
      *
@@ -522,37 +476,35 @@ public class Connector extends LifecycleMBeanBase  {
 
     }
 
-
     /**
      * Return the port number on which this connector is listening to requests.
-     * If the special value for {@link #getPort} of zero is used then this method
+     * If the special value for {@link #getPort} of zero is used then this
+     * method
      * will report the actual port bound.
      */
     public int getLocalPort() {
         return ((Integer) getProperty("localPort")).intValue();
     }
 
-
     /**
      * Return the Coyote protocol handler in use.
      */
     public String getProtocol() {
 
-        if ("org.apache.coyote.http11.Http11NioProtocol".equals
-            (getProtocolHandlerClassName())
-            || "org.apache.coyote.http11.Http11AprProtocol".equals
-            (getProtocolHandlerClassName())) {
+        if ("org.apache.coyote.http11.Http11NioProtocol".equals(
+                getProtocolHandlerClassName())
+                || "org.apache.coyote.http11.Http11AprProtocol".equals(
+                        getProtocolHandlerClassName())) {
             return "HTTP/1.1";
-        } else if ("org.apache.coyote.ajp.AjpNioProtocol".equals
-                   (getProtocolHandlerClassName())
-                   || "org.apache.coyote.ajp.AjpAprProtocol".equals
-                   (getProtocolHandlerClassName())) {
+        } else if ("org.apache.coyote.ajp.AjpNioProtocol".equals(
+                getProtocolHandlerClassName())
+                || "org.apache.coyote.ajp.AjpAprProtocol".equals(
+                        getProtocolHandlerClassName())) {
             return "AJP/1.3";
         }
         return getProtocolHandlerClassName();
 
     }
-
 
     /**
      * Set the Coyote protocol which will be used by the connector.
@@ -563,31 +515,30 @@ public class Connector extends LifecycleMBeanBase  {
 
         if (AprLifecycleListener.isAprAvailable()) {
             if ("HTTP/1.1".equals(protocol)) {
-                setProtocolHandlerClassName
-                    ("org.apache.coyote.http11.Http11AprProtocol");
+                setProtocolHandlerClassName(
+                        "org.apache.coyote.http11.Http11AprProtocol");
             } else if ("AJP/1.3".equals(protocol)) {
-                setProtocolHandlerClassName
-                    ("org.apache.coyote.ajp.AjpAprProtocol");
+                setProtocolHandlerClassName(
+                        "org.apache.coyote.ajp.AjpAprProtocol");
             } else if (protocol != null) {
                 setProtocolHandlerClassName(protocol);
             } else {
-                setProtocolHandlerClassName
-                    ("org.apache.coyote.http11.Http11AprProtocol");
+                setProtocolHandlerClassName(
+                        "org.apache.coyote.http11.Http11AprProtocol");
             }
         } else {
             if ("HTTP/1.1".equals(protocol)) {
-                setProtocolHandlerClassName
-                    ("org.apache.coyote.http11.Http11NioProtocol");
+                setProtocolHandlerClassName(
+                        "org.apache.coyote.http11.Http11NioProtocol");
             } else if ("AJP/1.3".equals(protocol)) {
-                setProtocolHandlerClassName
-                    ("org.apache.coyote.ajp.AjpNioProtocol");
+                setProtocolHandlerClassName(
+                        "org.apache.coyote.ajp.AjpNioProtocol");
             } else if (protocol != null) {
                 setProtocolHandlerClassName(protocol);
             }
         }
 
     }
-
 
     /**
      * Return the class name of the Coyote protocol handler in use.
@@ -597,7 +548,6 @@ public class Connector extends LifecycleMBeanBase  {
         return (this.protocolHandlerClassName);
 
     }
-
 
     /**
      * Set the class name of the Coyote protocol handler which will be used
@@ -611,7 +561,6 @@ public class Connector extends LifecycleMBeanBase  {
 
     }
 
-
     /**
      * Return the protocol handler associated with the connector.
      */
@@ -620,7 +569,6 @@ public class Connector extends LifecycleMBeanBase  {
         return (this.protocolHandler);
 
     }
-
 
     /**
      * Return the proxy server name for this Connector.
@@ -631,7 +579,6 @@ public class Connector extends LifecycleMBeanBase  {
 
     }
 
-
     /**
      * Set the proxy server name for this Connector.
      *
@@ -639,7 +586,7 @@ public class Connector extends LifecycleMBeanBase  {
      */
     public void setProxyName(String proxyName) {
 
-        if(proxyName != null && proxyName.length() > 0) {
+        if (proxyName != null && proxyName.length() > 0) {
             this.proxyName = proxyName;
             setProperty("proxyName", proxyName);
         } else {
@@ -647,7 +594,6 @@ public class Connector extends LifecycleMBeanBase  {
         }
 
     }
-
 
     /**
      * Return the proxy server port for this Connector.
@@ -657,7 +603,6 @@ public class Connector extends LifecycleMBeanBase  {
         return (this.proxyPort);
 
     }
-
 
     /**
      * Set the proxy server port for this Connector.
@@ -671,7 +616,6 @@ public class Connector extends LifecycleMBeanBase  {
 
     }
 
-
     /**
      * Return the port number to which a request should be redirected if
      * it comes in on a non-SSL port and is subject to a security constraint
@@ -682,7 +626,6 @@ public class Connector extends LifecycleMBeanBase  {
         return (this.redirectPort);
 
     }
-
 
     /**
      * Set the redirect port number.
@@ -696,17 +639,15 @@ public class Connector extends LifecycleMBeanBase  {
 
     }
 
-
     /**
      * Return the scheme that will be assigned to requests received
-     * through this connector.  Default value is "http".
+     * through this connector. Default value is "http".
      */
     public String getScheme() {
 
         return (this.scheme);
 
     }
-
 
     /**
      * Set the scheme that will be assigned to requests received through
@@ -720,17 +661,15 @@ public class Connector extends LifecycleMBeanBase  {
 
     }
 
-
     /**
      * Return the secure connection flag that will be assigned to requests
-     * received through this connector.  Default value is "false".
+     * received through this connector. Default value is "false".
      */
     public boolean getSecure() {
 
         return (this.secure);
 
     }
-
 
     /**
      * Set the secure connection flag that will be assigned to requests
@@ -744,73 +683,68 @@ public class Connector extends LifecycleMBeanBase  {
         setProperty("secure", Boolean.toString(secure));
     }
 
-     /**
-      * Return the character encoding to be used for the URI using the original
-      * case.
-      */
-     public String getURIEncoding() {
-         return this.URIEncoding;
-     }
+    /**
+     * Return the character encoding to be used for the URI using the original
+     * case.
+     */
+    public String getURIEncoding() {
+        return this.URIEncoding;
+    }
 
+    /**
+     * Return the character encoding to be used for the URI using lower case.
+     */
+    public String getURIEncodingLower() {
+        return this.URIEncodingLower;
+    }
 
-     /**
-      * Return the character encoding to be used for the URI using lower case.
-      */
-     public String getURIEncodingLower() {
-         return this.URIEncodingLower;
-     }
+    /**
+     * Set the URI encoding to be used for the URI.
+     *
+     * @param URIEncoding The new URI character encoding.
+     */
+    public void setURIEncoding(String URIEncoding) {
+        this.URIEncoding = URIEncoding;
+        if (URIEncoding == null) {
+            URIEncodingLower = null;
+        } else {
+            this.URIEncodingLower = URIEncoding.toLowerCase(Locale.ENGLISH);
+        }
+        setProperty("uRIEncoding", URIEncoding);
+    }
 
+    /**
+     * Return the true if the entity body encoding should be used for the URI.
+     */
+    public boolean getUseBodyEncodingForURI() {
 
-     /**
-      * Set the URI encoding to be used for the URI.
-      *
-      * @param URIEncoding The new URI character encoding.
-      */
-     public void setURIEncoding(String URIEncoding) {
-         this.URIEncoding = URIEncoding;
-         if (URIEncoding == null) {
-             URIEncodingLower = null;
-         } else {
-             this.URIEncodingLower = URIEncoding.toLowerCase(Locale.ENGLISH);
-         }
-         setProperty("uRIEncoding", URIEncoding);
-     }
+        return (this.useBodyEncodingForURI);
 
+    }
 
-     /**
-      * Return the true if the entity body encoding should be used for the URI.
-      */
-     public boolean getUseBodyEncodingForURI() {
+    /**
+     * Set if the entity body encoding should be used for the URI.
+     *
+     * @param useBodyEncodingForURI The new value for the flag.
+     */
+    public void setUseBodyEncodingForURI(boolean useBodyEncodingForURI) {
 
-         return (this.useBodyEncodingForURI);
+        this.useBodyEncodingForURI = useBodyEncodingForURI;
+        setProperty("useBodyEncodingForURI", String.valueOf(
+                useBodyEncodingForURI));
 
-     }
-
-
-     /**
-      * Set if the entity body encoding should be used for the URI.
-      *
-      * @param useBodyEncodingForURI The new value for the flag.
-      */
-     public void setUseBodyEncodingForURI(boolean useBodyEncodingForURI) {
-
-         this.useBodyEncodingForURI = useBodyEncodingForURI;
-         setProperty
-             ("useBodyEncodingForURI", String.valueOf(useBodyEncodingForURI));
-
-     }
+    }
 
     /**
      * Indicates whether the generation of an X-Powered-By response header for
      * servlet-generated responses is enabled or disabled for this Connector.
      *
      * @return true if generation of X-Powered-By response header is enabled,
-     * false otherwise
+     *         false otherwise
      */
     public boolean getXpoweredBy() {
         return xpoweredBy;
     }
-
 
     /**
      * Enables or disables the generation of an X-Powered-By header (with value
@@ -818,7 +752,7 @@ public class Connector extends LifecycleMBeanBase  {
      * Connector.
      *
      * @param xpoweredBy true if generation of X-Powered-By response header is
-     * to be enabled, false otherwise
+     *                   to be enabled, false otherwise
      */
     public void setXpoweredBy(boolean xpoweredBy) {
         this.xpoweredBy = xpoweredBy;
@@ -843,7 +777,6 @@ public class Connector extends LifecycleMBeanBase  {
         return useIPVHosts;
     }
 
-
     public String getExecutorName() {
         Object obj = protocolHandler.getExecutor();
         if (obj instanceof org.apache.catalina.Executor) {
@@ -853,7 +786,6 @@ public class Connector extends LifecycleMBeanBase  {
     }
 
     // --------------------------------------------------------- Public Methods
-
 
     /**
      * Create (or allocate) and return a Request object suitable for
@@ -867,7 +799,6 @@ public class Connector extends LifecycleMBeanBase  {
 
     }
 
-
     /**
      * Create (or allocate) and return a Response object suitable for
      * receiving the contents of a Response from the responsible Container.
@@ -879,7 +810,6 @@ public class Connector extends LifecycleMBeanBase  {
         return (response);
 
     }
-
 
     protected String createObjectNameKeyProperties(String type) {
 
@@ -908,7 +838,6 @@ public class Connector extends LifecycleMBeanBase  {
         return sb.toString();
     }
 
-
     /**
      * Pause the connector.
      */
@@ -916,11 +845,10 @@ public class Connector extends LifecycleMBeanBase  {
         try {
             protocolHandler.pause();
         } catch (Exception e) {
-            log.error(sm.getString
-                      ("coyoteConnector.protocolHandlerPauseFailed"), e);
+            log.error(sm.getString(
+                    "coyoteConnector.protocolHandlerPauseFailed"), e);
         }
     }
-
 
     /**
      * Pause the connector.
@@ -929,11 +857,10 @@ public class Connector extends LifecycleMBeanBase  {
         try {
             protocolHandler.resume();
         } catch (Exception e) {
-            log.error(sm.getString
-                      ("coyoteConnector.protocolHandlerResumeFailed"), e);
+            log.error(sm.getString(
+                    "coyoteConnector.protocolHandlerResumeFailed"), e);
         }
     }
-
 
     @Override
     protected void initInternal() throws LifecycleException {
@@ -945,26 +872,24 @@ public class Connector extends LifecycleMBeanBase  {
         protocolHandler.setAdapter(adapter);
 
         // Make sure parseBodyMethodsSet has a default
-        if( null == parseBodyMethodsSet ) {
+        if (null == parseBodyMethodsSet) {
             setParseBodyMethods(getParseBodyMethods());
         }
 
-        if (protocolHandler.isAprRequired() &&
-                !AprLifecycleListener.isAprAvailable()) {
-            throw new LifecycleException(
-                    sm.getString("coyoteConnector.protocolHandlerNoApr",
-                            getProtocolHandlerClassName()));
+        if (protocolHandler.isAprRequired() && !AprLifecycleListener
+                .isAprAvailable()) {
+            throw new LifecycleException(sm.getString(
+                    "coyoteConnector.protocolHandlerNoApr",
+                    getProtocolHandlerClassName()));
         }
 
         try {
             protocolHandler.init();
         } catch (Exception e) {
-            throw new LifecycleException
-                (sm.getString
-                 ("coyoteConnector.protocolHandlerInitializationFailed"), e);
+            throw new LifecycleException(sm.getString(
+                    "coyoteConnector.protocolHandlerInitializationFailed"), e);
         }
     }
-
 
     /**
      * Begin processing requests via this Connector.
@@ -986,16 +911,15 @@ public class Connector extends LifecycleMBeanBase  {
             protocolHandler.start();
         } catch (Exception e) {
             String errPrefix = "";
-            if(this.service != null) {
-                errPrefix += "service.getName(): \"" + this.service.getName() + "\"; ";
+            if (this.service != null) {
+                errPrefix += "service.getName(): \"" + this.service.getName()
+                        + "\"; ";
             }
 
-            throw new LifecycleException
-                (errPrefix + " " + sm.getString
-                 ("coyoteConnector.protocolHandlerStartFailed"), e);
+            throw new LifecycleException(errPrefix + " " + sm.getString(
+                    "coyoteConnector.protocolHandlerStartFailed"), e);
         }
     }
-
 
     /**
      * Terminate processing requests via this Connector.
@@ -1010,21 +934,18 @@ public class Connector extends LifecycleMBeanBase  {
         try {
             protocolHandler.stop();
         } catch (Exception e) {
-            throw new LifecycleException
-                (sm.getString
-                 ("coyoteConnector.protocolHandlerStopFailed"), e);
+            throw new LifecycleException(sm.getString(
+                    "coyoteConnector.protocolHandlerStopFailed"), e);
         }
     }
-
 
     @Override
     protected void destroyInternal() throws LifecycleException {
         try {
             protocolHandler.destroy();
         } catch (Exception e) {
-            throw new LifecycleException
-                (sm.getString
-                 ("coyoteConnector.protocolHandlerDestroyFailed"), e);
+            throw new LifecycleException(sm.getString(
+                    "coyoteConnector.protocolHandlerDestroyFailed"), e);
         }
 
         if (getService() != null) {
@@ -1033,7 +954,6 @@ public class Connector extends LifecycleMBeanBase  {
 
         super.destroyInternal();
     }
-
 
     /**
      * Provide a useful toString() implementation as it may be used when logging
@@ -1055,7 +975,6 @@ public class Connector extends LifecycleMBeanBase  {
         sb.append(']');
         return sb.toString();
     }
-
 
     // -------------------- JMX registration  --------------------
 

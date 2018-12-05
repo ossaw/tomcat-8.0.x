@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -97,8 +95,8 @@ public class WebappServiceLoader<T> {
         // if the ServletContext has ORDERED_LIBS, then use that to specify the
         // set of JARs from WEB-INF/lib that should be used for loading services
         @SuppressWarnings("unchecked")
-        List<String> orderedLibs =
-                (List<String>) servletContext.getAttribute(ServletContext.ORDERED_LIBS);
+        List<String> orderedLibs = (List<String>) servletContext.getAttribute(
+                ServletContext.ORDERED_LIBS);
         if (orderedLibs != null) {
             // handle ordered libs directly, ...
             for (String lib : orderedLibs) {
@@ -160,8 +158,9 @@ public class WebappServiceLoader<T> {
     void parseConfigFile(LinkedHashSet<String> servicesFound, URL url)
             throws IOException {
         try (InputStream is = url.openStream();
-            InputStreamReader in = new InputStreamReader(is, StandardCharsets.UTF_8);
-            BufferedReader reader = new BufferedReader(in);) {
+                InputStreamReader in = new InputStreamReader(is,
+                        StandardCharsets.UTF_8);
+                BufferedReader reader = new BufferedReader(in);) {
             String line;
             while ((line = reader.readLine()) != null) {
                 int i = line.indexOf('#');
@@ -177,16 +176,16 @@ public class WebappServiceLoader<T> {
         }
     }
 
-    List<T> loadServices(Class<T> serviceType, LinkedHashSet<String> servicesFound)
-            throws IOException {
+    List<T> loadServices(Class<T> serviceType,
+            LinkedHashSet<String> servicesFound) throws IOException {
         ClassLoader loader = servletContext.getClassLoader();
         List<T> services = new ArrayList<>(servicesFound.size());
         for (String serviceClass : servicesFound) {
             try {
                 Class<?> clazz = Class.forName(serviceClass, true, loader);
                 services.add(serviceType.cast(clazz.newInstance()));
-            } catch (ClassNotFoundException | InstantiationException |
-                    IllegalAccessException | ClassCastException e) {
+            } catch (ClassNotFoundException | InstantiationException
+                    | IllegalAccessException | ClassCastException e) {
                 throw new IOException(e);
             }
         }

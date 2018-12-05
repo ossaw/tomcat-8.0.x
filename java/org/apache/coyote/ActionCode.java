@@ -1,18 +1,16 @@
 /*
- *  Licensed to the Apache Software Foundation (ASF) under one or more
- *  contributor license agreements.  See the NOTICE file distributed with
- *  this work for additional information regarding copyright ownership.
- *  The ASF licenses this file to You under the Apache License, Version 2.0
- *  (the "License"); you may not use this file except in compliance with
- *  the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements. See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package org.apache.coyote;
@@ -27,9 +25,7 @@ package org.apache.coyote;
  * @author Remy Maucherat
  */
 public enum ActionCode {
-    ACK,
-    CLOSE,
-    COMMIT,
+    ACK, CLOSE, COMMIT,
 
     /**
      * A serious error occurred from which it is not possible to recover safely.
@@ -210,8 +206,8 @@ public enum ActionCode {
     ASYNC_IS_TIMINGOUT,
 
     /**
-    * Callback to determine if async is in error.
-    */
+     * Callback to determine if async is in error.
+     */
     ASYNC_IS_ERROR,
 
     /**
@@ -232,8 +228,8 @@ public enum ActionCode {
     NB_READ_INTEREST,
 
     /**
-     *Indicator that the Servlet is interested
-     *in being notified when it can write data
+     * Indicator that the Servlet is interested
+     * in being notified when it can write data
      */
     NB_WRITE_INTEREST,
 

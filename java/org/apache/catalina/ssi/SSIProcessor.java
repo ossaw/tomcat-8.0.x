@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -15,7 +13,6 @@
  * limitations under the License.
  */
 package org.apache.catalina.ssi;
-
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -26,6 +23,7 @@ import java.util.Locale;
 import java.util.StringTokenizer;
 
 import org.apache.catalina.util.IOTools;
+
 /**
  * The entry point to SSI processing. This class does the actual parsing,
  * delegating to the SSIMediator, SSICommand, and SSIExternalResolver as
@@ -40,10 +38,9 @@ public class SSIProcessor {
     /** The end pattern */
     protected static final String COMMAND_END = "-->";
     protected final SSIExternalResolver ssiExternalResolver;
-    protected final HashMap<String,SSICommand> commands = new HashMap<>();
+    protected final HashMap<String, SSICommand> commands = new HashMap<>();
     protected final int debug;
     protected final boolean allowExec;
-
 
     public SSIProcessor(SSIExternalResolver ssiExternalResolver, int debug,
             boolean allowExec) {
@@ -52,7 +49,6 @@ public class SSIProcessor {
         this.allowExec = allowExec;
         addBuiltinCommands();
     }
-
 
     protected void addBuiltinCommands() {
         addCommand("config", new SSIConfig());
@@ -72,11 +68,9 @@ public class SSIProcessor {
         addCommand("else", ssiConditional);
     }
 
-
     public void addCommand(String name, SSICommand command) {
         commands.put(name, command);
     }
-
 
     /**
      * Process a file with server-side commands, reading from reader and
@@ -84,13 +78,14 @@ public class SSIProcessor {
      * this in a streaming way rather than converting it to an array first.
      *
      * @param reader
-     *            the reader to read the file containing SSIs from
+     *               the reader to read the file containing SSIs from
      * @param writer
-     *            the writer to write the file with the SSIs processed.
+     *               the writer to write the file with the SSIs processed.
      * @return the most current modified date resulting from any SSI commands
      * @throws IOException
-     *             when things go horribly awry. Should be unlikely since the
-     *             SSICommand usually catches 'normal' IOExceptions.
+     *                     when things go horribly awry. Should be unlikely
+     *                     since the
+     *                     SSICommand usually catches 'normal' IOExceptions.
      */
     public long process(Reader reader, long lastModifiedDate,
             PrintWriter writer) throws IOException {
@@ -107,20 +102,21 @@ public class SSIProcessor {
             while (index < fileContents.length()) {
                 char c = fileContents.charAt(index);
                 if (!inside) {
-                    if (c == COMMAND_START.charAt(0)
-                            && charCmp(fileContents, index, COMMAND_START)) {
+                    if (c == COMMAND_START.charAt(0) && charCmp(fileContents,
+                            index, COMMAND_START)) {
                         inside = true;
                         index += COMMAND_START.length();
                         command.setLength(0); //clear the command string
                     } else {
-                        if (!ssiMediator.getConditionalState().processConditionalCommandsOnly) {
+                        if (!ssiMediator
+                                .getConditionalState().processConditionalCommandsOnly) {
                             writer.write(c);
                         }
                         index++;
                     }
                 } else {
-                    if (c == COMMAND_END.charAt(0)
-                            && charCmp(fileContents, index, COMMAND_END)) {
+                    if (c == COMMAND_END.charAt(0) && charCmp(fileContents,
+                            index, COMMAND_END)) {
                         inside = false;
                         index += COMMAND_END.length();
                         String strCmd = parseCmd(command);
@@ -131,14 +127,14 @@ public class SSIProcessor {
                         }
                         String[] paramNames = parseParamNames(command, strCmd
                                 .length());
-                        String[] paramValues = parseParamValues(command,
-                                strCmd.length(), paramNames.length);
+                        String[] paramValues = parseParamValues(command, strCmd
+                                .length(), paramNames.length);
                         //We need to fetch this value each time, since it may
                         // change
                         // during the loop
                         String configErrMsg = ssiMediator.getConfigErrMsg();
-                        SSICommand ssiCommand =
-                            commands.get(strCmd.toLowerCase(Locale.ENGLISH));
+                        SSICommand ssiCommand = commands.get(strCmd.toLowerCase(
+                                Locale.ENGLISH));
                         String errorMessage = null;
                         if (ssiCommand == null) {
                             errorMessage = "Unknown command: " + strCmd;
@@ -152,10 +148,12 @@ public class SSIProcessor {
                             // conditional
                             // commands only and the
                             // command is not conditional
-                            if (!ssiMediator.getConditionalState().processConditionalCommandsOnly
+                            if (!ssiMediator
+                                    .getConditionalState().processConditionalCommandsOnly
                                     || ssiCommand instanceof SSIConditional) {
-                                long lmd = ssiCommand.process(ssiMediator, strCmd,
-                                               paramNames, paramValues, writer);
+                                long lmd = ssiCommand.process(ssiMediator,
+                                        strCmd, paramNames, paramValues,
+                                        writer);
                                 if (lmd > lastModifiedDate) {
                                     lastModifiedDate = lmd;
                                 }
@@ -178,7 +176,6 @@ public class SSIProcessor {
         return lastModifiedDate;
     }
 
-
     /**
      * Parse a StringBuilder and take out the param type token. Called from
      * <code>requestHandler</code>
@@ -197,7 +194,8 @@ public class SSIProcessor {
             if (!inside) {
                 while (bIdx < cmd.length() && isSpace(cmd.charAt(bIdx)))
                     bIdx++;
-                if (bIdx >= cmd.length()) break;
+                if (bIdx >= cmd.length())
+                    break;
                 inside = !inside;
             } else {
                 while (bIdx < cmd.length() && cmd.charAt(bIdx) != '=') {
@@ -215,7 +213,8 @@ public class SSIProcessor {
                         escaped = true;
                         continue;
                     }
-                    if (c == '"' && !escaped) quotes++;
+                    if (c == '"' && !escaped)
+                        quotes++;
                     escaped = false;
                 }
             }
@@ -228,7 +227,6 @@ public class SSIProcessor {
         return retString;
     }
 
-
     /**
      * Parse a StringBuilder and take out the param token. Called from
      * <code>requestHandler</code>
@@ -237,7 +235,8 @@ public class SSIProcessor {
      *            a value of type 'StringBuilder'
      * @return a value of type 'String[]'
      */
-    protected String[] parseParamValues(StringBuilder cmd, int start, int count) {
+    protected String[] parseParamValues(StringBuilder cmd, int start,
+            int count) {
         int valIndex = 0;
         boolean inside = false;
         String[] vals = new String[count];
@@ -247,7 +246,8 @@ public class SSIProcessor {
             if (!inside) {
                 while (bIdx < cmd.length() && !isQuote(cmd.charAt(bIdx)))
                     bIdx++;
-                if (bIdx >= cmd.length()) break;
+                if (bIdx >= cmd.length())
+                    break;
                 inside = !inside;
                 endQuote = cmd.charAt(bIdx);
             } else {
@@ -260,17 +260,20 @@ public class SSIProcessor {
                         continue;
                     }
                     // If we reach the other " then stop
-                    if (c == endQuote && !escaped) break;
+                    if (c == endQuote && !escaped)
+                        break;
                     // Since parsing of attributes and var
                     // substitution is done in separate places,
                     // we need to leave escape in the string
-                    if (c == '$' && escaped) sb.append('\\');
+                    if (c == '$' && escaped)
+                        sb.append('\\');
                     escaped = false;
                     sb.append(c);
                 }
                 // If we hit the end without seeing a quote
                 // the signal an error
-                if (bIdx == cmd.length()) return null;
+                if (bIdx == cmd.length())
+                    return null;
                 vals[valIndex++] = sb.toString();
                 sb.delete(0, sb.length()); // clear the buffer
                 inside = !inside;
@@ -278,7 +281,6 @@ public class SSIProcessor {
         }
         return vals;
     }
-
 
     /**
      * Parse a StringBuilder and take out the command token. Called from
@@ -313,11 +315,9 @@ public class SSIProcessor {
         }
     }
 
-
     protected boolean charCmp(String buf, int index, String command) {
         return buf.regionMatches(index, command, 0, command.length());
     }
-
 
     protected boolean isSpace(char c) {
         return c == ' ' || c == '\n' || c == '\t' || c == '\r';

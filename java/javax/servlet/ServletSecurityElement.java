@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -29,12 +27,11 @@ import javax.servlet.annotation.ServletSecurity;
 /**
  *
  * @since Servlet 3.0
- * TODO SERVLET3 - Add comments
+ *        TODO SERVLET3 - Add comments
  */
 public class ServletSecurityElement extends HttpConstraintElement {
 
-    private final Map<String,HttpMethodConstraintElement> methodConstraints =
-        new HashMap<>();
+    private final Map<String, HttpMethodConstraintElement> methodConstraints = new HashMap<>();
 
     /**
      * Use default HttpConstraint.
@@ -45,18 +42,20 @@ public class ServletSecurityElement extends HttpConstraintElement {
 
     /**
      * Use specified HttpConstraintElement.
+     * 
      * @param httpConstraintElement The constraint
      */
     public ServletSecurityElement(HttpConstraintElement httpConstraintElement) {
-        this (httpConstraintElement, null);
+        this(httpConstraintElement, null);
     }
 
     /**
      * Use specific constraints for specified methods and default
      * HttpConstraintElement for all other methods.
+     * 
      * @param httpMethodConstraints Method constraints
      * @throws IllegalArgumentException if a method name is specified more than
-     * once
+     *                                  once
      */
     public ServletSecurityElement(
             Collection<HttpMethodConstraintElement> httpMethodConstraints) {
@@ -64,10 +63,10 @@ public class ServletSecurityElement extends HttpConstraintElement {
         addHttpMethodConstraints(httpMethodConstraints);
     }
 
-
     /**
      * Use specified HttpConstraintElement as default and specific constraints
      * for specified methods.
+     * 
      * @param httpConstraintElement Default constraint
      * @param httpMethodConstraints Method constraints
      * @throws IllegalArgumentException if a method name is specified more than
@@ -82,24 +81,24 @@ public class ServletSecurityElement extends HttpConstraintElement {
 
     /**
      * Create from an annotation.
+     * 
      * @param annotation Annotation to use as the basis for the new instance
      * @throws IllegalArgumentException if a method name is specified more than
      */
     public ServletSecurityElement(ServletSecurity annotation) {
-        this(new HttpConstraintElement(annotation.value().value(),
-                annotation.value().transportGuarantee(),
-                annotation.value().rolesAllowed()));
+        this(new HttpConstraintElement(annotation.value().value(), annotation
+                .value().transportGuarantee(), annotation.value()
+                        .rolesAllowed()));
 
         List<HttpMethodConstraintElement> l = new ArrayList<>();
         HttpMethodConstraint[] constraints = annotation.httpMethodConstraints();
         if (constraints != null) {
             for (int i = 0; i < constraints.length; i++) {
-                HttpMethodConstraintElement e =
-                    new HttpMethodConstraintElement(constraints[i].value(),
-                            new HttpConstraintElement(
-                                    constraints[i].emptyRoleSemantic(),
-                                    constraints[i].transportGuarantee(),
-                                    constraints[i].rolesAllowed()));
+                HttpMethodConstraintElement e = new HttpMethodConstraintElement(
+                        constraints[i].value(), new HttpConstraintElement(
+                                constraints[i].emptyRoleSemantic(),
+                                constraints[i].transportGuarantee(),
+                                constraints[i].rolesAllowed()));
                 l.add(e);
             }
         }
@@ -126,8 +125,8 @@ public class ServletSecurityElement extends HttpConstraintElement {
         for (HttpMethodConstraintElement constraint : httpMethodConstraints) {
             String method = constraint.getMethodName();
             if (methodConstraints.containsKey(method)) {
-                throw new IllegalArgumentException(
-                        "Duplicate method name: " + method);
+                throw new IllegalArgumentException("Duplicate method name: "
+                        + method);
             }
             methodConstraints.put(method, constraint);
         }

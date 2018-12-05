@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -41,29 +39,29 @@ import org.apache.catalina.util.ContextName;
  */
 public class TestHostConfigAutomaticDeployment extends TomcatBaseTest {
 
-    private static final ContextName  APP_NAME = new ContextName("myapp", false);
-    private static final File XML_SOURCE =
-            new File("test/deployment/context.xml");
-    private static final File WAR_XML_SOURCE =
-            new File("test/deployment/context.war");
-    private static final File WAR_XML_COPYXML_FALSE_SOURCE =
-            new File("test/deployment/contextCopyXMLFalse.war");
-    private static final File WAR_XML_COPYXML_TRUE_SOURCE =
-            new File("test/deployment/contextCopyXMLTrue.war");
-    private static final File WAR_XML_UNPACKWAR_FALSE_SOURCE =
-            new File("test/deployment/contextUnpackWARFalse.war");
-    private static final File WAR_XML_UNPACKWAR_TRUE_SOURCE =
-            new File("test/deployment/contextUnpackWARTrue.war");
-    private static final File WAR_SOURCE =
-            new File("test/deployment/noContext.war");
-    private static final File WAR_BROKEN_SOURCE =
-            new File("test/deployment/broken.war");
-    private static final File DIR_XML_SOURCE =
-            new File("test/deployment/dirContext");
-    private static final File DIR_XML_SOURCE_META_INF =
-            new File("test/deployment/dirContext/META-INF");
-    private static final File DIR_SOURCE =
-            new File("test/deployment/dirNoContext");
+    private static final ContextName APP_NAME = new ContextName("myapp", false);
+    private static final File XML_SOURCE = new File(
+            "test/deployment/context.xml");
+    private static final File WAR_XML_SOURCE = new File(
+            "test/deployment/context.war");
+    private static final File WAR_XML_COPYXML_FALSE_SOURCE = new File(
+            "test/deployment/contextCopyXMLFalse.war");
+    private static final File WAR_XML_COPYXML_TRUE_SOURCE = new File(
+            "test/deployment/contextCopyXMLTrue.war");
+    private static final File WAR_XML_UNPACKWAR_FALSE_SOURCE = new File(
+            "test/deployment/contextUnpackWARFalse.war");
+    private static final File WAR_XML_UNPACKWAR_TRUE_SOURCE = new File(
+            "test/deployment/contextUnpackWARTrue.war");
+    private static final File WAR_SOURCE = new File(
+            "test/deployment/noContext.war");
+    private static final File WAR_BROKEN_SOURCE = new File(
+            "test/deployment/broken.war");
+    private static final File DIR_XML_SOURCE = new File(
+            "test/deployment/dirContext");
+    private static final File DIR_XML_SOURCE_META_INF = new File(
+            "test/deployment/dirContext/META-INF");
+    private static final File DIR_SOURCE = new File(
+            "test/deployment/dirNoContext");
 
     private static final int XML = 1;
     private static final int EXT = 2;
@@ -107,473 +105,463 @@ public class TestHostConfigAutomaticDeployment extends TomcatBaseTest {
         addDeleteOnTearDown(external);
     }
 
-
     /*
      * Expected behaviour for deployment of an XML file.
-     * deployXML  copyXML  unpackWARs      XML  WAR  DIR
-     *    Y/N       Y/N       Y/N           Y    N    N
-     *
+     * deployXML copyXML unpackWARs XML WAR DIR
+     * Y/N Y/N Y/N Y N N
      * Note: Context will fail to start because no valid docBase is present.
      */
     @Test
     public void testDeploymentXmlFFF() throws Exception {
         createXmlInConfigBaseForAppbase();
-        doTestDeployment(false, false, false,
-                LifecycleState.FAILED, XML_COOKIE_NAME, true, false, false);
+        doTestDeployment(false, false, false, LifecycleState.FAILED,
+                XML_COOKIE_NAME, true, false, false);
     }
 
     @Test
     public void testDeploymentXmlFFT() throws Exception {
         createXmlInConfigBaseForAppbase();
-        doTestDeployment(false, false, true,
-                LifecycleState.FAILED, XML_COOKIE_NAME, true, false, false);
+        doTestDeployment(false, false, true, LifecycleState.FAILED,
+                XML_COOKIE_NAME, true, false, false);
     }
 
     @Test
     public void testDeploymentXmlFTF() throws Exception {
         createXmlInConfigBaseForAppbase();
-        doTestDeployment(false, true, false,
-                LifecycleState.FAILED, XML_COOKIE_NAME, true, false, false);
+        doTestDeployment(false, true, false, LifecycleState.FAILED,
+                XML_COOKIE_NAME, true, false, false);
     }
 
     @Test
     public void testDeploymentXmlFTT() throws Exception {
         createXmlInConfigBaseForAppbase();
-        doTestDeployment(false, true, true,
-                LifecycleState.FAILED, XML_COOKIE_NAME, true, false, false);
+        doTestDeployment(false, true, true, LifecycleState.FAILED,
+                XML_COOKIE_NAME, true, false, false);
     }
 
     @Test
     public void testDeploymentXmlTFF() throws Exception {
         createXmlInConfigBaseForAppbase();
-        doTestDeployment(true, false, false,
-                LifecycleState.FAILED, XML_COOKIE_NAME, true, false, false);
+        doTestDeployment(true, false, false, LifecycleState.FAILED,
+                XML_COOKIE_NAME, true, false, false);
     }
 
     @Test
     public void testDeploymentXmlTFT() throws Exception {
         createXmlInConfigBaseForAppbase();
-        doTestDeployment(true, false, true,
-                LifecycleState.FAILED, XML_COOKIE_NAME, true, false, false);
+        doTestDeployment(true, false, true, LifecycleState.FAILED,
+                XML_COOKIE_NAME, true, false, false);
     }
 
     @Test
     public void testDeploymentXmlTTF() throws Exception {
         createXmlInConfigBaseForAppbase();
-        doTestDeployment(true, true, false,
-                LifecycleState.FAILED, XML_COOKIE_NAME, true, false, false);
+        doTestDeployment(true, true, false, LifecycleState.FAILED,
+                XML_COOKIE_NAME, true, false, false);
     }
 
     @Test
     public void testDeploymentXmlTTT() throws Exception {
         createXmlInConfigBaseForAppbase();
-        doTestDeployment(true, true, true,
-                LifecycleState.FAILED, XML_COOKIE_NAME, true, false, false);
+        doTestDeployment(true, true, true, LifecycleState.FAILED,
+                XML_COOKIE_NAME, true, false, false);
     }
-
 
     /*
      * Expected behaviour for deployment of an XML file that points to an
      * external WAR.
-     * deployXML  copyXML  unpackWARs      XML  WAR  DIR
-     *    Y/N       Y/N        Y            Y    N    Y
-     *    Y/N       Y/N        N            Y    N    N
-     *
+     * deployXML copyXML unpackWARs XML WAR DIR
+     * Y/N Y/N Y Y N Y
+     * Y/N Y/N N Y N N
      * Notes: No WAR file is present in the appBase because it is an external
-     *        WAR.
-     *        Any context.xml file embedded in the external WAR file is ignored.
+     * WAR.
+     * Any context.xml file embedded in the external WAR file is ignored.
      */
     @Test
     public void testDeploymentXmlExternalWarXmlFFF() throws Exception {
         File war = createWar(WAR_XML_SOURCE, false);
         createXmlInConfigBaseForExternal(war);
-        doTestDeployment(false, false, false,
-                LifecycleState.STARTED, XML_COOKIE_NAME, true, false, false);
+        doTestDeployment(false, false, false, LifecycleState.STARTED,
+                XML_COOKIE_NAME, true, false, false);
     }
 
     @Test
     public void testDeploymentXmlExternalWarXmlFFT() throws Exception {
         File war = createWar(WAR_XML_SOURCE, false);
         createXmlInConfigBaseForExternal(war);
-        doTestDeployment(false, false, true,
-                LifecycleState.STARTED, XML_COOKIE_NAME, true, false, true);
+        doTestDeployment(false, false, true, LifecycleState.STARTED,
+                XML_COOKIE_NAME, true, false, true);
     }
 
     @Test
     public void testDeploymentXmlExternalWarXmlFTF() throws Exception {
         File war = createWar(WAR_XML_SOURCE, false);
         createXmlInConfigBaseForExternal(war);
-        doTestDeployment(false, true, false,
-                LifecycleState.STARTED, XML_COOKIE_NAME, true, false, false);
+        doTestDeployment(false, true, false, LifecycleState.STARTED,
+                XML_COOKIE_NAME, true, false, false);
     }
 
     @Test
     public void testDeploymentXmlExternalWarXmlFTT() throws Exception {
         File war = createWar(WAR_XML_SOURCE, false);
         createXmlInConfigBaseForExternal(war);
-        doTestDeployment(false, true, true,
-                LifecycleState.STARTED, XML_COOKIE_NAME, true, false, true);
+        doTestDeployment(false, true, true, LifecycleState.STARTED,
+                XML_COOKIE_NAME, true, false, true);
     }
 
     @Test
     public void testDeploymentXmlExternalWarXmlTFF() throws Exception {
         File war = createWar(WAR_XML_SOURCE, false);
         createXmlInConfigBaseForExternal(war);
-        doTestDeployment(true, false, false,
-                LifecycleState.STARTED, XML_COOKIE_NAME, true, false, false);
+        doTestDeployment(true, false, false, LifecycleState.STARTED,
+                XML_COOKIE_NAME, true, false, false);
     }
 
     @Test
     public void testDeploymentXmlExternalWarXmlTFT() throws Exception {
         File war = createWar(WAR_XML_SOURCE, false);
         createXmlInConfigBaseForExternal(war);
-        doTestDeployment(true, false, true,
-                LifecycleState.STARTED, XML_COOKIE_NAME, true, false, true);
+        doTestDeployment(true, false, true, LifecycleState.STARTED,
+                XML_COOKIE_NAME, true, false, true);
     }
 
     @Test
     public void testDeploymentXmlExternalWarXmlTTF() throws Exception {
         File war = createWar(WAR_XML_SOURCE, false);
         createXmlInConfigBaseForExternal(war);
-        doTestDeployment(true, true, false,
-                LifecycleState.STARTED, XML_COOKIE_NAME, true, false, false);
+        doTestDeployment(true, true, false, LifecycleState.STARTED,
+                XML_COOKIE_NAME, true, false, false);
     }
 
     @Test
     public void testDeploymentXmlExternalWarXmlTTT() throws Exception {
         File war = createWar(WAR_XML_SOURCE, false);
         createXmlInConfigBaseForExternal(war);
-        doTestDeployment(true, true, true,
-                LifecycleState.STARTED, XML_COOKIE_NAME, true, false, true);
+        doTestDeployment(true, true, true, LifecycleState.STARTED,
+                XML_COOKIE_NAME, true, false, true);
     }
-
 
     /*
      * Expected behaviour for deployment of an XML file that points to an
      * external DIR.
-     * deployXML  copyXML  unpackWARs      XML  WAR  DIR
-     *    Y/N       Y/N       Y/N           Y    N    N
-     *
+     * deployXML copyXML unpackWARs XML WAR DIR
+     * Y/N Y/N Y/N Y N N
      * Notes: Any context.xml file embedded in the external DIR file is ignored.
      */
     @Test
     public void testDeploymentXmlExternalDirXmlFFF() throws Exception {
         File dir = createDirInExternal(true);
         createXmlInConfigBaseForExternal(dir);
-        doTestDeployment(false, false, false,
-                LifecycleState.STARTED, XML_COOKIE_NAME, true, false, false);
+        doTestDeployment(false, false, false, LifecycleState.STARTED,
+                XML_COOKIE_NAME, true, false, false);
     }
 
     @Test
     public void testDeploymentXmlExternalDirXmlFFT() throws Exception {
         File dir = createDirInExternal(true);
         createXmlInConfigBaseForExternal(dir);
-        doTestDeployment(false, false, true,
-                LifecycleState.STARTED, XML_COOKIE_NAME, true, false, false);
+        doTestDeployment(false, false, true, LifecycleState.STARTED,
+                XML_COOKIE_NAME, true, false, false);
     }
 
     @Test
     public void testDeploymentXmlExternalDirXmlFTF() throws Exception {
         File dir = createDirInExternal(true);
         createXmlInConfigBaseForExternal(dir);
-        doTestDeployment(false, true, false,
-                LifecycleState.STARTED, XML_COOKIE_NAME, true, false, false);
+        doTestDeployment(false, true, false, LifecycleState.STARTED,
+                XML_COOKIE_NAME, true, false, false);
     }
 
     @Test
     public void testDeploymentXmlExternalDirXmlFTT() throws Exception {
         File dir = createDirInExternal(true);
         createXmlInConfigBaseForExternal(dir);
-        doTestDeployment(false, true, true,
-                LifecycleState.STARTED, XML_COOKIE_NAME, true, false, false);
+        doTestDeployment(false, true, true, LifecycleState.STARTED,
+                XML_COOKIE_NAME, true, false, false);
     }
 
     @Test
     public void testDeploymentXmlExternalDirXmlTFF() throws Exception {
         File dir = createDirInExternal(true);
         createXmlInConfigBaseForExternal(dir);
-        doTestDeployment(true, false, false,
-                LifecycleState.STARTED, XML_COOKIE_NAME, true, false, false);
+        doTestDeployment(true, false, false, LifecycleState.STARTED,
+                XML_COOKIE_NAME, true, false, false);
     }
 
     @Test
     public void testDeploymentXmlExternalDirXmlTFT() throws Exception {
         File dir = createDirInExternal(true);
         createXmlInConfigBaseForExternal(dir);
-        doTestDeployment(true, false, true,
-                LifecycleState.STARTED, XML_COOKIE_NAME, true, false, false);
+        doTestDeployment(true, false, true, LifecycleState.STARTED,
+                XML_COOKIE_NAME, true, false, false);
     }
 
     @Test
     public void testDeploymentXmlExternalDirXmlTTF() throws Exception {
         File dir = createDirInExternal(true);
         createXmlInConfigBaseForExternal(dir);
-        doTestDeployment(true, true, false,
-                LifecycleState.STARTED, XML_COOKIE_NAME, true, false, false);
+        doTestDeployment(true, true, false, LifecycleState.STARTED,
+                XML_COOKIE_NAME, true, false, false);
     }
 
     @Test
     public void testDeploymentXmlExternalDirXmlTTT() throws Exception {
         File dir = createDirInExternal(true);
         createXmlInConfigBaseForExternal(dir);
-        doTestDeployment(true, true, true,
-                LifecycleState.STARTED, XML_COOKIE_NAME, true, false, false);
+        doTestDeployment(true, true, true, LifecycleState.STARTED,
+                XML_COOKIE_NAME, true, false, false);
     }
-
 
     /*
      * Expected behaviour for deployment of a WAR with an embedded XML file.
-     * deployXML  copyXML  unpackWARs      XML  WAR  DIR
-     *     N        Y/N        N            N    Y    N
-     *     N        Y/N        Y            N    Y    Y
-     *     Y         N         N            N    Y    N
-     *     Y         N         Y            N    Y    Y
-     *     Y         Y         N            Y    Y    N
-     *     Y         Y         Y            Y    Y    Y
+     * deployXML copyXML unpackWARs XML WAR DIR
+     * N Y/N N N Y N
+     * N Y/N Y N Y Y
+     * Y N N N Y N
+     * Y N Y N Y Y
+     * Y Y N Y Y N
+     * Y Y Y Y Y Y
      */
     @Test
     public void testDeploymentWarXmlFFF() throws Exception {
         createWar(WAR_XML_SOURCE, true);
-        doTestDeployment(false, false, false,
-                LifecycleState.FAILED, null, false, true, false);
+        doTestDeployment(false, false, false, LifecycleState.FAILED, null,
+                false, true, false);
     }
 
     @Test
     public void testDeploymentWarXmlFFT() throws Exception {
         createWar(WAR_XML_SOURCE, true);
-        doTestDeployment(false, false, true,
-                LifecycleState.FAILED, null, false, true, true);
+        doTestDeployment(false, false, true, LifecycleState.FAILED, null, false,
+                true, true);
     }
 
     @Test
     public void testDeploymentWarXmlFTF() throws Exception {
         createWar(WAR_XML_SOURCE, true);
-        doTestDeployment(false, true, false,
-                LifecycleState.FAILED, null, false, true, false);
+        doTestDeployment(false, true, false, LifecycleState.FAILED, null, false,
+                true, false);
     }
 
     @Test
     public void testDeploymentWarXmlFTT() throws Exception {
         createWar(WAR_XML_SOURCE, true);
-        doTestDeployment(false, true, true,
-                LifecycleState.FAILED, null, false, true, true);
+        doTestDeployment(false, true, true, LifecycleState.FAILED, null, false,
+                true, true);
     }
 
     @Test
     public void testDeploymentWarXmlTFF() throws Exception {
         createWar(WAR_XML_SOURCE, true);
-        doTestDeployment(true, false, false,
-                LifecycleState.STARTED, WAR_COOKIE_NAME, false, true, false);
+        doTestDeployment(true, false, false, LifecycleState.STARTED,
+                WAR_COOKIE_NAME, false, true, false);
     }
 
     @Test
     public void testDeploymentWarXmlTFT() throws Exception {
         createWar(WAR_XML_SOURCE, true);
-        doTestDeployment(true, false, true,
-                LifecycleState.STARTED, WAR_COOKIE_NAME, false, true, true);
+        doTestDeployment(true, false, true, LifecycleState.STARTED,
+                WAR_COOKIE_NAME, false, true, true);
     }
 
     @Test
     public void testDeploymentWarXmlTTF() throws Exception {
         createWar(WAR_XML_SOURCE, true);
-        doTestDeployment(true, true, false,
-                LifecycleState.STARTED, WAR_COOKIE_NAME, true, true, false);
+        doTestDeployment(true, true, false, LifecycleState.STARTED,
+                WAR_COOKIE_NAME, true, true, false);
     }
 
     @Test
     public void testDeploymentWarXmlTTT() throws Exception {
         createWar(WAR_XML_SOURCE, true);
-        doTestDeployment(true, true, true,
-                LifecycleState.STARTED, WAR_COOKIE_NAME, true, true, true);
+        doTestDeployment(true, true, true, LifecycleState.STARTED,
+                WAR_COOKIE_NAME, true, true, true);
     }
-
 
     /*
      * Expected behaviour for deployment of a WAR without an embedded XML file.
-     * deployXML  copyXML  unpackWARs      XML  WAR  DIR
-     *    Y/N       Y/N        N            N    Y    N
-     *    Y/N       Y/N        Y            N    Y    Y
+     * deployXML copyXML unpackWARs XML WAR DIR
+     * Y/N Y/N N N Y N
+     * Y/N Y/N Y N Y Y
      */
     @Test
     public void testDeploymentWarFFF() throws Exception {
         createWar(WAR_SOURCE, true);
-        doTestDeployment(false, false, false,
-                LifecycleState.STARTED, null, false, true, false);
+        doTestDeployment(false, false, false, LifecycleState.STARTED, null,
+                false, true, false);
     }
 
     @Test
     public void testDeploymentWarFFT() throws Exception {
         createWar(WAR_SOURCE, true);
-        doTestDeployment(false, false, true,
-                LifecycleState.STARTED, null, false, true, true);
+        doTestDeployment(false, false, true, LifecycleState.STARTED, null,
+                false, true, true);
     }
 
     @Test
     public void testDeploymentWarFTF() throws Exception {
         createWar(WAR_SOURCE, true);
-        doTestDeployment(false, true, false,
-                LifecycleState.STARTED, null, false, true, false);
+        doTestDeployment(false, true, false, LifecycleState.STARTED, null,
+                false, true, false);
     }
 
     @Test
     public void testDeploymentWarFTT() throws Exception {
         createWar(WAR_SOURCE, true);
-        doTestDeployment(false, true, true,
-                LifecycleState.STARTED, null, false, true, true);
+        doTestDeployment(false, true, true, LifecycleState.STARTED, null, false,
+                true, true);
     }
 
     @Test
     public void testDeploymentWarTFF() throws Exception {
         createWar(WAR_SOURCE, true);
-        doTestDeployment(true, false, false,
-                LifecycleState.STARTED, null, false, true, false);
+        doTestDeployment(true, false, false, LifecycleState.STARTED, null,
+                false, true, false);
     }
 
     @Test
     public void testDeploymentWarTFT() throws Exception {
         createWar(WAR_SOURCE, true);
-        doTestDeployment(true, false, true,
-                LifecycleState.STARTED, null, false, true, true);
+        doTestDeployment(true, false, true, LifecycleState.STARTED, null, false,
+                true, true);
     }
 
     @Test
     public void testDeploymentWarTTF() throws Exception {
         createWar(WAR_SOURCE, true);
-        doTestDeployment(true, true, false,
-                LifecycleState.STARTED, null, false, true, false);
+        doTestDeployment(true, true, false, LifecycleState.STARTED, null, false,
+                true, false);
     }
 
     @Test
     public void testDeploymentWarTTT() throws Exception {
         createWar(WAR_SOURCE, true);
-        doTestDeployment(true, true, true,
-                LifecycleState.STARTED, null, false, true, true);
+        doTestDeployment(true, true, true, LifecycleState.STARTED, null, false,
+                true, true);
     }
-
 
     /*
      * Expected behaviour for deployment of a DIR with an embedded XML file.
-     * deployXML  copyXML  unpackWARs      XML  WAR  DIR
-     *     N        Y/N       Y/N           N    N    Y
-     *     Y         N        Y/N           N    N    Y
-     *     Y         Y        Y/N           Y    N    Y
+     * deployXML copyXML unpackWARs XML WAR DIR
+     * N Y/N Y/N N N Y
+     * Y N Y/N N N Y
+     * Y Y Y/N Y N Y
      */
     @Test
     public void testDeploymentDirXmlFFF() throws Exception {
         createDirInAppbase(true);
-        doTestDeployment(false, false, false,
-                LifecycleState.FAILED, null, false, false, true);
+        doTestDeployment(false, false, false, LifecycleState.FAILED, null,
+                false, false, true);
     }
 
     @Test
     public void testDeploymentDirXmlFFT() throws Exception {
         createDirInAppbase(true);
-        doTestDeployment(false, false, true,
-                LifecycleState.FAILED, null, false, false, true);
+        doTestDeployment(false, false, true, LifecycleState.FAILED, null, false,
+                false, true);
     }
 
     @Test
     public void testDeploymentDirXmlFTF() throws Exception {
         createDirInAppbase(true);
-        doTestDeployment(false, true, false,
-                LifecycleState.FAILED, null, false, false, true);
+        doTestDeployment(false, true, false, LifecycleState.FAILED, null, false,
+                false, true);
     }
 
     @Test
     public void testDeploymentDirXmlFTT() throws Exception {
         createDirInAppbase(true);
-        doTestDeployment(false, true, true,
-                LifecycleState.FAILED, null, false, false, true);
+        doTestDeployment(false, true, true, LifecycleState.FAILED, null, false,
+                false, true);
     }
 
     @Test
     public void testDeploymentDirXmlTFF() throws Exception {
         createDirInAppbase(true);
-        doTestDeployment(true, false, false,
-                LifecycleState.STARTED, DIR_COOKIE_NAME, false, false, true);
+        doTestDeployment(true, false, false, LifecycleState.STARTED,
+                DIR_COOKIE_NAME, false, false, true);
     }
 
     @Test
     public void testDeploymentDirXmlTFT() throws Exception {
         createDirInAppbase(true);
-        doTestDeployment(true, false, true,
-                LifecycleState.STARTED, DIR_COOKIE_NAME, false, false, true);
+        doTestDeployment(true, false, true, LifecycleState.STARTED,
+                DIR_COOKIE_NAME, false, false, true);
     }
 
     @Test
     public void testDeploymentDirXmlTTF() throws Exception {
         createDirInAppbase(true);
-        doTestDeployment(true, true, false,
-                LifecycleState.STARTED, DIR_COOKIE_NAME, true, false, true);
+        doTestDeployment(true, true, false, LifecycleState.STARTED,
+                DIR_COOKIE_NAME, true, false, true);
     }
 
     @Test
     public void testDeploymentDirXmlTTT() throws Exception {
         createDirInAppbase(true);
-        doTestDeployment(true, true, true,
-                LifecycleState.STARTED, DIR_COOKIE_NAME, true, false, true);
+        doTestDeployment(true, true, true, LifecycleState.STARTED,
+                DIR_COOKIE_NAME, true, false, true);
     }
-
 
     /*
      * Expected behaviour for deployment of a DIR without an embedded XML file.
-     * deployXML  copyXML  unpackWARs      XML  WAR  DIR
-     *    Y/N       Y/N       Y/N           N    N    Y
+     * deployXML copyXML unpackWARs XML WAR DIR
+     * Y/N Y/N Y/N N N Y
      */
     @Test
     public void testDeploymentDirFFF() throws Exception {
         createDirInAppbase(false);
-        doTestDeployment(false, false, false,
-                LifecycleState.STARTED, null, false, false, true);
+        doTestDeployment(false, false, false, LifecycleState.STARTED, null,
+                false, false, true);
     }
 
     @Test
     public void testDeploymentDirFFT() throws Exception {
         createDirInAppbase(false);
-        doTestDeployment(false, false, true,
-                LifecycleState.STARTED, null, false, false, true);
+        doTestDeployment(false, false, true, LifecycleState.STARTED, null,
+                false, false, true);
     }
 
     @Test
     public void testDeploymentDirFTF() throws Exception {
         createDirInAppbase(false);
-        doTestDeployment(false, true, false,
-                LifecycleState.STARTED, null, false, false, true);
+        doTestDeployment(false, true, false, LifecycleState.STARTED, null,
+                false, false, true);
     }
 
     @Test
     public void testDeploymentDirFTT() throws Exception {
         createDirInAppbase(false);
-        doTestDeployment(false, true, true,
-                LifecycleState.STARTED, null, false, false, true);
+        doTestDeployment(false, true, true, LifecycleState.STARTED, null, false,
+                false, true);
     }
 
     @Test
     public void testDeploymentDirTFF() throws Exception {
         createDirInAppbase(false);
-        doTestDeployment(true, false, false,
-                LifecycleState.STARTED, null, false, false, true);
+        doTestDeployment(true, false, false, LifecycleState.STARTED, null,
+                false, false, true);
     }
 
     @Test
     public void testDeploymentDirTFT() throws Exception {
         createDirInAppbase(false);
-        doTestDeployment(true, false, true,
-                LifecycleState.STARTED, null, false, false, true);
+        doTestDeployment(true, false, true, LifecycleState.STARTED, null, false,
+                false, true);
     }
 
     @Test
     public void testDeploymentDirTTF() throws Exception {
         createDirInAppbase(false);
-        doTestDeployment(true, true, false,
-                LifecycleState.STARTED, null, false, false, true);
+        doTestDeployment(true, true, false, LifecycleState.STARTED, null, false,
+                false, true);
     }
 
     @Test
     public void testDeploymentDirTTT() throws Exception {
         createDirInAppbase(false);
-        doTestDeployment(true, true, true,
-                LifecycleState.STARTED, null, false, false, true);
+        doTestDeployment(true, true, true, LifecycleState.STARTED, null, false,
+                false, true);
     }
 
     private void doTestDeployment(boolean deployXML, boolean copyXML,
@@ -605,48 +593,45 @@ public class TestHostConfigAutomaticDeployment extends TomcatBaseTest {
             Assert.assertEquals(cookieName, ctxt.getSessionCookieName());
         }
 
-        File xml = new File(
-                host.getConfigBaseFile(), APP_NAME.getBaseName() + ".xml");
-        Assert.assertEquals(
-                Boolean.valueOf(resultXml), Boolean.valueOf(xml.isFile()));
+        File xml = new File(host.getConfigBaseFile(), APP_NAME.getBaseName()
+                + ".xml");
+        Assert.assertEquals(Boolean.valueOf(resultXml), Boolean.valueOf(xml
+                .isFile()));
 
-        File war = new File(
-                host.getAppBaseFile(), APP_NAME.getBaseName() + ".war");
-        Assert.assertEquals(
-                Boolean.valueOf(resultWar), Boolean.valueOf(war.isFile()));
+        File war = new File(host.getAppBaseFile(), APP_NAME.getBaseName()
+                + ".war");
+        Assert.assertEquals(Boolean.valueOf(resultWar), Boolean.valueOf(war
+                .isFile()));
 
         File dir = new File(host.getAppBase(), APP_NAME.getBaseName());
-        Assert.assertEquals(
-                Boolean.valueOf(resultDir), Boolean.valueOf(dir.isDirectory()));
+        Assert.assertEquals(Boolean.valueOf(resultDir), Boolean.valueOf(dir
+                .isDirectory()));
     }
-
 
     /*
      * Expected behaviour for the deletion of files.
-     *
-     * Artifacts present     Artifact     Artifacts remaining
-     *  XML  WAR  EXT  DIR    Removed     XML  WAR  EXT DIR    Notes
-     *   N    N    N    Y       DIR        -    -    -   N
-     *   N    Y    N    N       WAR        -    N    -   -
-     *   N    Y    N    Y       DIR        -    Y    -   R     1
-     *   N    Y    N    Y       WAR        -    N    -   N
-     *   Y    N    N    N       XML        N    -    -   -
-     *   Y    N    N    Y       DIR        N    -    -   N
-     *   Y    N    N    Y       XML        R    -    -   Y     2
-     *   Y    N    Y    N       EXT        Y    -    N   -
-     *   Y    N    Y    N       XML        N    -    Y   -
-     *   Y    N    Y    Y       DIR        R    -    Y   R     1,2
-     *   Y    N    Y    Y       EXT        Y    -    N   N
-     *   Y    N    Y    Y       XML        N    -    Y   N
-     *   Y    Y    N    N       WAR        N    N    -   -
-     *   Y    Y    N    N       XML        N    N    -   -
-     *   Y    Y    N    Y       DIR        R    Y    -   R     1,2
-     *   Y    Y    N    Y       WAR        N    N    -   -
-     *   Y    Y    N    Y       XML        R    Y    -   Y
-     *
+     * Artifacts present Artifact Artifacts remaining
+     * XML WAR EXT DIR Removed XML WAR EXT DIR Notes
+     * N N N Y DIR - - - N
+     * N Y N N WAR - N - -
+     * N Y N Y DIR - Y - R 1
+     * N Y N Y WAR - N - N
+     * Y N N N XML N - - -
+     * Y N N Y DIR N - - N
+     * Y N N Y XML R - - Y 2
+     * Y N Y N EXT Y - N -
+     * Y N Y N XML N - Y -
+     * Y N Y Y DIR R - Y R 1,2
+     * Y N Y Y EXT Y - N N
+     * Y N Y Y XML N - Y N
+     * Y Y N N WAR N N - -
+     * Y Y N N XML N N - -
+     * Y Y N Y DIR R Y - R 1,2
+     * Y Y N Y WAR N N - -
+     * Y Y N Y XML R Y - Y
      * Notes: 1. The DIR will be re-created since unpackWARs is true.
-     *        2. The XML will be extracted from the WAR/DIR if deployXML and
-     *           copyXML are true.
+     * 2. The XML will be extracted from the WAR/DIR if deployXML and
+     * copyXML are true.
      */
     @Test
     public void testDeleteDirRemoveDir() throws Exception {
@@ -925,144 +910,141 @@ public class TestHostConfigAutomaticDeployment extends TomcatBaseTest {
         }
     }
 
-
     /*
      * Expected behaviour for modification of files.
-     *
-     * Artifacts present      Artifact   Artifacts remaining
-     * XML  WAR  EXT  DIR    Modified    XML  WAR  EXT DIR   Action
-     *  N    N    N    Y       DIR        -    -    -   M     None
-     *  N    Y    N    N       WAR        -    M    -   -   Redeploy
-     *  N    Y    N    Y       DIR        -    Y    -   M     None
-     *  N    Y    N    Y       WAR        -    M    -   R   Redeploy
-     *  Y    N    N    N       XML        M    -    -   -   Redeploy
-     *  Y    N    N    Y       DIR        Y    -    -   M     None
-     *  Y    N    N    Y       XML        M    -    -   Y   Redeploy
-     *  Y    N    Y    N       EXT        Y    -    M   -   Reload if WAR
-     *  Y    N    Y    N       XML        M    -    Y   -   Redeploy
-     *  Y    N    Y    Y       DIR        Y    -    Y   M     None
-     *  Y    N    Y    Y       EXT        Y    -    M   R    Reload
-     *  Y    N    Y    Y       XML        M    -    Y   Y   Redeploy
-     *  Y    Y    N    N       WAR        Y    M    -   -    Reload
-     *  Y    Y    N    N       XML        M    Y    -   -   Redeploy
-     *  Y    Y    N    Y       DIR        Y    Y    -   M     None
-     *  Y    Y    N    Y       WAR        Y    M    -   -    Reload
-     *  Y    Y    N    Y       XML        M    Y    -   Y   Redeploy
+     * Artifacts present Artifact Artifacts remaining
+     * XML WAR EXT DIR Modified XML WAR EXT DIR Action
+     * N N N Y DIR - - - M None
+     * N Y N N WAR - M - - Redeploy
+     * N Y N Y DIR - Y - M None
+     * N Y N Y WAR - M - R Redeploy
+     * Y N N N XML M - - - Redeploy
+     * Y N N Y DIR Y - - M None
+     * Y N N Y XML M - - Y Redeploy
+     * Y N Y N EXT Y - M - Reload if WAR
+     * Y N Y N XML M - Y - Redeploy
+     * Y N Y Y DIR Y - Y M None
+     * Y N Y Y EXT Y - M R Reload
+     * Y N Y Y XML M - Y Y Redeploy
+     * Y Y N N WAR Y M - - Reload
+     * Y Y N N XML M Y - - Redeploy
+     * Y Y N Y DIR Y Y - M None
+     * Y Y N Y WAR Y M - - Reload
+     * Y Y N Y XML M Y - Y Redeploy
      */
     @Test
     public void testModifyDirUpdateDir() throws Exception {
-        doTestModify(false, false, false, false, true, DIR,
-                false, false, true, DIR_COOKIE_NAME, NONE);
+        doTestModify(false, false, false, false, true, DIR, false, false, true,
+                DIR_COOKIE_NAME, NONE);
     }
 
     @Test
     public void testModifyWarUpdateWar() throws Exception {
-        doTestModify(false, false, false, true, false, WAR,
-                false, true, false, WAR_COOKIE_NAME, REDEPLOY);
+        doTestModify(false, false, false, true, false, WAR, false, true, false,
+                WAR_COOKIE_NAME, REDEPLOY);
     }
 
     @Test
     public void testModifyWarDirUpdateDir() throws Exception {
         // DIR_COOKIE_NAME since Tomcat is going to assume DIR is expanded WAR
-        doTestModify(false, false, false, true, true, DIR,
-                false, true, true, DIR_COOKIE_NAME, NONE);
+        doTestModify(false, false, false, true, true, DIR, false, true, true,
+                DIR_COOKIE_NAME, NONE);
     }
 
     @Test
     public void testModifyWarDirUpdateWar() throws Exception {
-        doTestModify(false, false, false, true, true, WAR,
-                false, true, true, WAR_COOKIE_NAME, REDEPLOY);
+        doTestModify(false, false, false, true, true, WAR, false, true, true,
+                WAR_COOKIE_NAME, REDEPLOY);
     }
 
     @Test
     public void testModifyXmlUpdateXml() throws Exception {
-        doTestModify(true, false, false, false, false, XML,
-                true, false, false, XML_COOKIE_NAME, REDEPLOY,
-                LifecycleState.FAILED);
+        doTestModify(true, false, false, false, false, XML, true, false, false,
+                XML_COOKIE_NAME, REDEPLOY, LifecycleState.FAILED);
     }
 
     @Test
     public void testModifyXmlDirUpdateDir() throws Exception {
-        doTestModify(true, false, false, false, true, DIR,
-                true, false, true, XML_COOKIE_NAME, NONE);
+        doTestModify(true, false, false, false, true, DIR, true, false, true,
+                XML_COOKIE_NAME, NONE);
     }
 
     @Test
     public void testModifyXmlDirUpdateXml() throws Exception {
-        doTestModify(true, false, false, false, true, XML,
-                true, false, true, XML_COOKIE_NAME, REDEPLOY);
+        doTestModify(true, false, false, false, true, XML, true, false, true,
+                XML_COOKIE_NAME, REDEPLOY);
     }
 
     @Test
     public void testModifyXmlExtwarUpdateExtwar() throws Exception {
-        doTestModify(true, true, false, false, false, EXT,
-                true, false, false, XML_COOKIE_NAME, RELOAD);
+        doTestModify(true, true, false, false, false, EXT, true, false, false,
+                XML_COOKIE_NAME, RELOAD);
     }
 
     @Test
     public void testModifyXmlExtdirUpdateExtdir() throws Exception {
-        doTestModify(true, false, true, false, false, EXT,
-                true, false, false, XML_COOKIE_NAME, NONE);
+        doTestModify(true, false, true, false, false, EXT, true, false, false,
+                XML_COOKIE_NAME, NONE);
     }
 
     @Test
     public void testModifyXmlExtwarUpdateXml() throws Exception {
-        doTestModify(true, true, false, false, false, XML,
-                true, false, false, XML_COOKIE_NAME, REDEPLOY);
+        doTestModify(true, true, false, false, false, XML, true, false, false,
+                XML_COOKIE_NAME, REDEPLOY);
     }
 
     @Test
     public void testModifyXmlExtdirUpdateXml() throws Exception {
-        doTestModify(true, false, true, false, false, XML,
-                true, false, false, XML_COOKIE_NAME, REDEPLOY);
+        doTestModify(true, false, true, false, false, XML, true, false, false,
+                XML_COOKIE_NAME, REDEPLOY);
     }
 
     @Test
     public void testModifyXmlExtwarDirUpdateDir() throws Exception {
-        doTestModify(true, true, false, false, true, DIR,
-                true, false, false, XML_COOKIE_NAME, NONE);
+        doTestModify(true, true, false, false, true, DIR, true, false, false,
+                XML_COOKIE_NAME, NONE);
     }
 
     @Test
     public void testModifyXmlExtwarDirUpdateExt() throws Exception {
-        doTestModify(true, true, false, false, true, EXT,
-                true, false, true, XML_COOKIE_NAME, RELOAD);
+        doTestModify(true, true, false, false, true, EXT, true, false, true,
+                XML_COOKIE_NAME, RELOAD);
     }
 
     @Test
     public void testModifyXmlExtwarDirUpdateXml() throws Exception {
-        doTestModify(true, true, false, false, true, XML,
-                true, false, false, XML_COOKIE_NAME, REDEPLOY);
+        doTestModify(true, true, false, false, true, XML, true, false, false,
+                XML_COOKIE_NAME, REDEPLOY);
     }
 
     @Test
     public void testModifyXmlWarUpdateWar() throws Exception {
-        doTestModify(true, false, false, true, false, WAR,
-                true, true, false, XML_COOKIE_NAME, RELOAD);
+        doTestModify(true, false, false, true, false, WAR, true, true, false,
+                XML_COOKIE_NAME, RELOAD);
     }
 
     @Test
     public void testModifyXmlWarUpdateXml() throws Exception {
-        doTestModify(true, false, false, true, false, XML,
-                true, true, false, XML_COOKIE_NAME, REDEPLOY);
+        doTestModify(true, false, false, true, false, XML, true, true, false,
+                XML_COOKIE_NAME, REDEPLOY);
     }
 
     @Test
     public void testModifyXmlWarDirUpdateDir() throws Exception {
-        doTestModify(true, false, false, true, true, DIR,
-                true, true, true, XML_COOKIE_NAME, NONE);
+        doTestModify(true, false, false, true, true, DIR, true, true, true,
+                XML_COOKIE_NAME, NONE);
     }
 
     @Test
     public void testModifyXmlWarDirUpdateWar() throws Exception {
-        doTestModify(true, false, false, true, true, WAR,
-                true, true, true, XML_COOKIE_NAME, RELOAD);
+        doTestModify(true, false, false, true, true, WAR, true, true, true,
+                XML_COOKIE_NAME, RELOAD);
     }
 
     @Test
     public void testModifyXmlWarDirUpdateXml() throws Exception {
-        doTestModify(true, false, false, true, true, XML,
-                true, true, true, XML_COOKIE_NAME, REDEPLOY);
+        doTestModify(true, false, false, true, true, XML, true, true, true,
+                XML_COOKIE_NAME, REDEPLOY);
     }
 
     private void doTestModify(boolean startXml, boolean startExternalWar,
@@ -1123,32 +1105,32 @@ public class TestHostConfigAutomaticDeployment extends TomcatBaseTest {
                 if (xml == null) {
                     Assert.fail();
                 } else {
-                    xml.setLastModified(System.currentTimeMillis() -
-                            10 * HostConfig.FILE_MODIFICATION_RESOLUTION_MS);
+                    xml.setLastModified(System.currentTimeMillis() - 10
+                            * HostConfig.FILE_MODIFICATION_RESOLUTION_MS);
                 }
                 break;
             case EXT:
                 if (ext == null) {
                     Assert.fail();
                 } else {
-                    ext.setLastModified(System.currentTimeMillis() -
-                            10 * HostConfig.FILE_MODIFICATION_RESOLUTION_MS);
+                    ext.setLastModified(System.currentTimeMillis() - 10
+                            * HostConfig.FILE_MODIFICATION_RESOLUTION_MS);
                 }
                 break;
             case WAR:
                 if (war == null) {
                     Assert.fail();
                 } else {
-                    war.setLastModified(System.currentTimeMillis() -
-                            10 * HostConfig.FILE_MODIFICATION_RESOLUTION_MS);
+                    war.setLastModified(System.currentTimeMillis() - 10
+                            * HostConfig.FILE_MODIFICATION_RESOLUTION_MS);
                 }
                 break;
             case DIR:
                 if (dir == null) {
                     Assert.fail();
                 } else {
-                    dir.setLastModified(System.currentTimeMillis() -
-                            10 * HostConfig.FILE_MODIFICATION_RESOLUTION_MS);
+                    dir.setLastModified(System.currentTimeMillis() - 10
+                            * HostConfig.FILE_MODIFICATION_RESOLUTION_MS);
                 }
                 break;
             default:
@@ -1194,11 +1176,11 @@ public class TestHostConfigAutomaticDeployment extends TomcatBaseTest {
             if (resultXml) {
                 Assert.assertNotNull(newContext);
                 if (!startExternalWar && !startExternalDir) {
-                    Assert.assertEquals(LifecycleState.FAILED,
-                            newContext.getState());
+                    Assert.assertEquals(LifecycleState.FAILED, newContext
+                            .getState());
                 } else {
-                    Assert.assertEquals(LifecycleState.STARTED,
-                            newContext.getState());
+                    Assert.assertEquals(LifecycleState.STARTED, newContext
+                            .getState());
                 }
             } else {
                 Assert.assertNull(newContext);
@@ -1206,8 +1188,8 @@ public class TestHostConfigAutomaticDeployment extends TomcatBaseTest {
         }
 
         if (newContext != null) {
-            Assert.assertEquals(resultCookieName,
-                    newContext.getSessionCookieName());
+            Assert.assertEquals(resultCookieName, newContext
+                    .getSessionCookieName());
             Assert.assertEquals(resultState, newContext.getState());
         }
 
@@ -1226,133 +1208,129 @@ public class TestHostConfigAutomaticDeployment extends TomcatBaseTest {
         }
     }
 
-
     /*
      * Expected behaviour for the addition of files.
-     *
-     * Artifacts present   copyXML  deployXML  Artifact   Artifacts remaining
-     * XML  WAR  EXT  DIR                       Added      XML  WAR  EXT DIR   Action
-     *  N    Y    N    N      N        Y         DIR        -    Y    -   A     None
-     *  N    N    N    Y      N        Y         WAR        -    A    -   R   Redeploy
-     *  Y    N    N    N      N        Y         DIR        Y    -    -   A     None
-     *  N    N    N    Y      N        Y         XML        A    -    -   Y   Redeploy
-     *  Y    N    N    N      N        Y         WAR        Y    A    -   -    Reload
-     *  N    Y    N    N      N        Y         XML        A    Y    -   -   Redeploy
-     *  Y    Y    N    N      N        Y         DIR        Y    Y    -   A     None
-     *  Y    N    N    Y      N        Y         WAR        Y    A    -   N    Reload
-     *  N    Y    N    Y      N        Y         XML        A    Y    -   Y   Redeploy
-     *  Y    N    Y    N      N        Y         DIR        Y    -    Y   A     None
-     *  Y    N    Y    N      N        Y         WAR        Y    A    Y   -     None
-     *  N    N    N    Y      N        Y         EXT        A    -    A   R   Redeploy
-     *  N    Y    N    N      N        Y         EXT        A    Y    A   -   Redeploy
-     *
-     *  N    N    N    Y     Y/N       N       DIR+XML      -    -    -   Y   Redeploy (failed)
-     *  N    N    N    Y      Y        Y       DIR+XML      A    -    -   Y   Redeploy
-     *  N    N    N    Y      N        Y       DIR+XML      -    -    -   Y   Redeploy
-     *
-     * Addition of a file  is treated as if the added file has been modified
+     * Artifacts present copyXML deployXML Artifact Artifacts remaining
+     * XML WAR EXT DIR Added XML WAR EXT DIR Action
+     * N Y N N N Y DIR - Y - A None
+     * N N N Y N Y WAR - A - R Redeploy
+     * Y N N N N Y DIR Y - - A None
+     * N N N Y N Y XML A - - Y Redeploy
+     * Y N N N N Y WAR Y A - - Reload
+     * N Y N N N Y XML A Y - - Redeploy
+     * Y Y N N N Y DIR Y Y - A None
+     * Y N N Y N Y WAR Y A - N Reload
+     * N Y N Y N Y XML A Y - Y Redeploy
+     * Y N Y N N Y DIR Y - Y A None
+     * Y N Y N N Y WAR Y A Y - None
+     * N N N Y N Y EXT A - A R Redeploy
+     * N Y N N N Y EXT A Y A - Redeploy
+     * N N N Y Y/N N DIR+XML - - - Y Redeploy (failed)
+     * N N N Y Y Y DIR+XML A - - Y Redeploy
+     * N N N Y N Y DIR+XML - - - Y Redeploy
+     * Addition of a file is treated as if the added file has been modified
      * with the following additional actions:
      * - If a WAR is added, any DIR is removed and may be recreated depending on
-     *   unpackWARs.
+     * unpackWARs.
      * - If an XML file is added that refers to an external docBase any WAR or
-     *   DIR in the appBase will be removed. The DIR may be recreated if the
-     *   external resource is a WAR and unpackWARs is true.
+     * DIR in the appBase will be removed. The DIR may be recreated if the
+     * external resource is a WAR and unpackWARs is true.
      * - If a DIR is added when a WAR already exists and unpackWARs is false,
-     *   the DIR will be ignored but a warning will be logged when the DIR is
-     *   first detected. If the WAR is removed, the DIR will be left and may be
-     *   deployed via automatic deployment.
+     * the DIR will be ignored but a warning will be logged when the DIR is
+     * first detected. If the WAR is removed, the DIR will be left and may be
+     * deployed via automatic deployment.
      * - If a WAR is added when an external WAR already exists for the same
-     *   context, the WAR will be treated the same way as a DIR is treated in
-     *   the previous bullet point.
+     * context, the WAR will be treated the same way as a DIR is treated in
+     * the previous bullet point.
      */
     @Test
     public void testAdditionWarAddDir() throws Exception {
-        doTestAddition(false, false, false, true, false, DIR,
-                false, true, true, WAR_COOKIE_NAME, NONE);
+        doTestAddition(false, false, false, true, false, DIR, false, true, true,
+                WAR_COOKIE_NAME, NONE);
     }
 
     @Test
     public void testAdditionDirAddWar() throws Exception {
-        doTestAddition(false, false, false, false, true, WAR,
-                false, true, true, WAR_COOKIE_NAME, REDEPLOY);
+        doTestAddition(false, false, false, false, true, WAR, false, true, true,
+                WAR_COOKIE_NAME, REDEPLOY);
     }
 
     @Test
     public void testAdditionXmlAddDir() throws Exception {
-        doTestAddition(true, false, false, false, false, DIR,
-                true, false, true, XML_COOKIE_NAME, NONE);
+        doTestAddition(true, false, false, false, false, DIR, true, false, true,
+                XML_COOKIE_NAME, NONE);
     }
 
     @Test
     public void testAdditionDirAddXml() throws Exception {
-        doTestAddition(false, false, false, false, true, XML,
-                true, false, true, XML_COOKIE_NAME, REDEPLOY);
+        doTestAddition(false, false, false, false, true, XML, true, false, true,
+                XML_COOKIE_NAME, REDEPLOY);
     }
 
     @Test
     public void testAdditionXmlAddWar() throws Exception {
-        doTestAddition(true, false, false, false, false, WAR,
-                true, true, false, XML_COOKIE_NAME, RELOAD);
+        doTestAddition(true, false, false, false, false, WAR, true, true, false,
+                XML_COOKIE_NAME, RELOAD);
     }
 
     @Test
     public void testAdditionWarAddXml() throws Exception {
-        doTestAddition(false, false, false, true, false, XML,
-                true, true, false, XML_COOKIE_NAME, REDEPLOY);
+        doTestAddition(false, false, false, true, false, XML, true, true, false,
+                XML_COOKIE_NAME, REDEPLOY);
     }
 
     @Test
     public void testAdditionXmlWarAddDir() throws Exception {
-        doTestAddition(true, false, false, true, false, DIR,
-                true, true, true, XML_COOKIE_NAME, NONE);
+        doTestAddition(true, false, false, true, false, DIR, true, true, true,
+                XML_COOKIE_NAME, NONE);
     }
 
     @Test
     public void testAdditionXmlDirAddWar() throws Exception {
-        doTestAddition(true, false, false, false, true, WAR,
-                true, true, false, XML_COOKIE_NAME, RELOAD);
+        doTestAddition(true, false, false, false, true, WAR, true, true, false,
+                XML_COOKIE_NAME, RELOAD);
     }
 
     @Test
     public void testAdditionWarDirAddXml() throws Exception {
-        doTestAddition(false, false, false, true, true, XML,
-                true, true, true, XML_COOKIE_NAME, REDEPLOY);
+        doTestAddition(false, false, false, true, true, XML, true, true, true,
+                XML_COOKIE_NAME, REDEPLOY);
     }
 
     @Test
     public void testAdditionXmlExtwarAddDir() throws Exception {
-        doTestAddition(true, true, false, false, false, DIR,
-                true, false, true, XML_COOKIE_NAME, NONE);
+        doTestAddition(true, true, false, false, false, DIR, true, false, true,
+                XML_COOKIE_NAME, NONE);
     }
 
     @Test
     public void testAdditionXmlExtdirAddDir() throws Exception {
-        doTestAddition(true, false, true, false, false, DIR,
-                true, false, true, XML_COOKIE_NAME, NONE);
+        doTestAddition(true, false, true, false, false, DIR, true, false, true,
+                XML_COOKIE_NAME, NONE);
     }
 
     @Test
     public void testAdditionXmlExtwarAddWar() throws Exception {
-        doTestAddition(true, true, false, false, false, WAR,
-                true, true, false, XML_COOKIE_NAME, NONE);
+        doTestAddition(true, true, false, false, false, WAR, true, true, false,
+                XML_COOKIE_NAME, NONE);
     }
 
     @Test
     public void testAdditionXmlExtdirAddWar() throws Exception {
-        doTestAddition(true, false, true, false, false, WAR,
-                true, true, false, XML_COOKIE_NAME, NONE);
+        doTestAddition(true, false, true, false, false, WAR, true, true, false,
+                XML_COOKIE_NAME, NONE);
     }
 
     @Test
     public void testAdditionDirAddXmlExtwar() throws Exception {
-        doTestAddition(false, false, false, false, true, EXT,
-                true, false, true, XML_COOKIE_NAME, REDEPLOY);
+        doTestAddition(false, false, false, false, true, EXT, true, false, true,
+                XML_COOKIE_NAME, REDEPLOY);
     }
 
     @Test
     public void testAdditionWarAddXmlExtwar() throws Exception {
-        doTestAddition(false, false, false, true, false, EXT,
-                true, true, false, XML_COOKIE_NAME, REDEPLOY);
+        doTestAddition(false, false, false, true, false, EXT, true, true, false,
+                XML_COOKIE_NAME, REDEPLOY);
     }
 
     @Test
@@ -1383,9 +1361,8 @@ public class TestHostConfigAutomaticDeployment extends TomcatBaseTest {
 
     private void doTestAddition(boolean startXml, boolean startExternalWar,
             boolean startExternalDir, boolean startWar, boolean startDir,
-            int toAdd, boolean resultXml, boolean resultWar,
-            boolean resultDir, String resultCookieName, int resultAction)
-            throws Exception {
+            int toAdd, boolean resultXml, boolean resultWar, boolean resultDir,
+            String resultCookieName, int resultAction) throws Exception {
 
         doTestAddition(startXml, startExternalWar, startExternalDir, startWar,
                 startDir, false, true, toAdd, resultXml, resultWar, resultDir,
@@ -1396,8 +1373,7 @@ public class TestHostConfigAutomaticDeployment extends TomcatBaseTest {
             boolean startExternalDir, boolean startWar, boolean startDir,
             boolean copyXML, boolean deployXML, int toAdd, boolean resultXml,
             boolean resultWar, boolean resultDir, String resultCookieName,
-            int resultAction, LifecycleState state)
-            throws Exception {
+            int resultAction, LifecycleState state) throws Exception {
 
         Tomcat tomcat = getTomcatInstance();
         StandardHost host = (StandardHost) tomcat.getHost();
@@ -1515,11 +1491,11 @@ public class TestHostConfigAutomaticDeployment extends TomcatBaseTest {
             if (resultXml) {
                 Assert.assertNotNull(newContext);
                 if (!startExternalWar && !startExternalDir) {
-                    Assert.assertEquals(LifecycleState.FAILED,
-                            newContext.getState());
+                    Assert.assertEquals(LifecycleState.FAILED, newContext
+                            .getState());
                 } else {
-                    Assert.assertEquals(LifecycleState.STARTED,
-                            newContext.getState());
+                    Assert.assertEquals(LifecycleState.STARTED, newContext
+                            .getState());
                 }
             } else {
                 Assert.assertNull(newContext);
@@ -1527,8 +1503,8 @@ public class TestHostConfigAutomaticDeployment extends TomcatBaseTest {
         }
 
         if (newContext != null) {
-            Assert.assertEquals(resultCookieName,
-                    newContext.getSessionCookieName());
+            Assert.assertEquals(resultCookieName, newContext
+                    .getSessionCookieName());
         }
 
         if (resultAction == NONE) {
@@ -1551,49 +1527,48 @@ public class TestHostConfigAutomaticDeployment extends TomcatBaseTest {
         }
     }
 
-
     /*
      * Test context unpackWAR setting.
      * If context.getUnpackWAR != Host.getUnpackWARs the Host wins.
      */
     @Test
-    public void testUnpackWARFFF() throws Exception  {
+    public void testUnpackWARFFF() throws Exception {
         doTestUnpackWAR(false, false, false, false);
     }
 
     @Test
-    public void testUnpackWARFFT() throws Exception  {
+    public void testUnpackWARFFT() throws Exception {
         doTestUnpackWAR(false, false, true, false);
     }
 
     @Test
-    public void testUnpackWARFTF() throws Exception  {
+    public void testUnpackWARFTF() throws Exception {
         doTestUnpackWAR(false, true, false, false);
     }
 
     @Test
-    public void testUnpackWARFTT() throws Exception  {
+    public void testUnpackWARFTT() throws Exception {
         doTestUnpackWAR(false, true, true, false);
     }
 
     @Test
-    public void testUnpackWARTFF() throws Exception  {
+    public void testUnpackWARTFF() throws Exception {
         doTestUnpackWAR(true, false, false, false);
     }
 
     @Test
-    public void testUnpackWARTFT() throws Exception  {
+    public void testUnpackWARTFT() throws Exception {
         // External WAR - therefore XML in WAR will be ignored
         doTestUnpackWAR(true, false, true, true);
     }
 
     @Test
-    public void testUnpackWARTTF() throws Exception  {
+    public void testUnpackWARTTF() throws Exception {
         doTestUnpackWAR(true, true, false, true);
     }
 
     @Test
-    public void testUnpackWARTTT() throws Exception  {
+    public void testUnpackWARTTT() throws Exception {
         doTestUnpackWAR(true, true, true, true);
     }
 
@@ -1620,10 +1595,9 @@ public class TestHostConfigAutomaticDeployment extends TomcatBaseTest {
         host.backgroundProcess();
 
         File dir = new File(host.getAppBase(), APP_NAME.getBaseName());
-        Assert.assertEquals(
-                Boolean.valueOf(resultDir), Boolean.valueOf(dir.isDirectory()));
+        Assert.assertEquals(Boolean.valueOf(resultDir), Boolean.valueOf(dir
+                .isDirectory()));
     }
-
 
     @Test
     public void testBrokenAppWithAntiLockingF() throws Exception {
@@ -1691,14 +1665,14 @@ public class TestHostConfigAutomaticDeployment extends TomcatBaseTest {
         File dest;
         if (useAppbase) {
             dest = new File(getTomcatInstance().getHost().getAppBaseFile(),
-                APP_NAME.getBaseName() + ".war");
+                    APP_NAME.getBaseName() + ".war");
         } else {
             dest = new File(external, "external" + ".war");
         }
         Files.copy(src.toPath(), dest.toPath());
         // Make sure that HostConfig thinks the WAR has been modified.
-        dest.setLastModified(
-                System.currentTimeMillis() - 2 * HostConfig.FILE_MODIFICATION_RESOLUTION_MS);
+        dest.setLastModified(System.currentTimeMillis() - 2
+                * HostConfig.FILE_MODIFICATION_RESOLUTION_MS);
         return dest;
     }
 
@@ -1710,8 +1684,8 @@ public class TestHostConfigAutomaticDeployment extends TomcatBaseTest {
         }
         Files.copy(XML_SOURCE.toPath(), xml.toPath());
         // Make sure that HostConfig thinks the xml has been modified.
-        xml.setLastModified(
-                System.currentTimeMillis() - 2 * HostConfig.FILE_MODIFICATION_RESOLUTION_MS);
+        xml.setLastModified(System.currentTimeMillis() - 2
+                * HostConfig.FILE_MODIFICATION_RESOLUTION_MS);
         return xml;
     }
 
@@ -1746,8 +1720,8 @@ public class TestHostConfigAutomaticDeployment extends TomcatBaseTest {
             fos.write(context.toString().getBytes(StandardCharsets.ISO_8859_1));
         }
         // Make sure that HostConfig thinks the xml has been modified.
-        xml.setLastModified(
-                System.currentTimeMillis() - 2 * HostConfig.FILE_MODIFICATION_RESOLUTION_MS);
+        xml.setLastModified(System.currentTimeMillis() - 2
+                * HostConfig.FILE_MODIFICATION_RESOLUTION_MS);
         return xml;
     }
 
@@ -1760,19 +1734,17 @@ public class TestHostConfigAutomaticDeployment extends TomcatBaseTest {
 
             String type = event.getType();
 
-            if (type.equals(Lifecycle.START_EVENT) ||
-                    type.equals(Lifecycle.STOP_EVENT) ||
-                    type.equals(Lifecycle.AFTER_DESTROY_EVENT)) {
+            if (type.equals(Lifecycle.START_EVENT) || type.equals(
+                    Lifecycle.STOP_EVENT) || type.equals(
+                            Lifecycle.AFTER_DESTROY_EVENT)) {
                 stateHistory.append(type);
             }
         }
-
 
         public String getHistory() {
             return stateHistory.toString();
         }
     }
-
 
     /*
      * Test context copyXML setting.
@@ -1780,42 +1752,42 @@ public class TestHostConfigAutomaticDeployment extends TomcatBaseTest {
      * For external WARs, a context.xml must always already exist
      */
     @Test
-    public void testCopyXMLFFF() throws Exception  {
+    public void testCopyXMLFFF() throws Exception {
         doTestCopyXML(false, false, false, false);
     }
 
     @Test
-    public void testCopyXMLFFT() throws Exception  {
+    public void testCopyXMLFFT() throws Exception {
         doTestCopyXML(false, false, true, true);
     }
 
     @Test
-    public void testCopyXMLFTF() throws Exception  {
+    public void testCopyXMLFTF() throws Exception {
         doTestCopyXML(false, true, false, true);
     }
 
     @Test
-    public void testCopyXMLFTT() throws Exception  {
+    public void testCopyXMLFTT() throws Exception {
         doTestCopyXML(false, true, true, true);
     }
 
     @Test
-    public void testCopyXMLTFF() throws Exception  {
+    public void testCopyXMLTFF() throws Exception {
         doTestCopyXML(true, false, false, true);
     }
 
     @Test
-    public void testCopyXMLTFT() throws Exception  {
+    public void testCopyXMLTFT() throws Exception {
         doTestCopyXML(true, false, true, true);
     }
 
     @Test
-    public void testCopyXMLTTF() throws Exception  {
+    public void testCopyXMLTTF() throws Exception {
         doTestCopyXML(true, true, false, true);
     }
 
     @Test
-    public void testCopyXMLTTT() throws Exception  {
+    public void testCopyXMLTTT() throws Exception {
         doTestCopyXML(true, true, true, true);
     }
 
@@ -1841,21 +1813,20 @@ public class TestHostConfigAutomaticDeployment extends TomcatBaseTest {
 
         host.backgroundProcess();
 
-        File xml = new File(host.getConfigBaseFile(),
-                APP_NAME.getBaseName() + ".xml");
-        Assert.assertEquals(
-                Boolean.valueOf(resultXml), Boolean.valueOf(xml.isFile()));
+        File xml = new File(host.getConfigBaseFile(), APP_NAME.getBaseName()
+                + ".xml");
+        Assert.assertEquals(Boolean.valueOf(resultXml), Boolean.valueOf(xml
+                .isFile()));
 
         Context context = (Context) host.findChild(APP_NAME.getName());
         if (external) {
-            Assert.assertEquals(XML_COOKIE_NAME,
-                    context.getSessionCookieName());
+            Assert.assertEquals(XML_COOKIE_NAME, context
+                    .getSessionCookieName());
         } else {
-            Assert.assertEquals(WAR_COOKIE_NAME,
-                    context.getSessionCookieName());
+            Assert.assertEquals(WAR_COOKIE_NAME, context
+                    .getSessionCookieName());
         }
     }
-
 
     @Test
     public void testSetContextClassName() throws Exception {
@@ -1869,8 +1840,8 @@ public class TestHostConfigAutomaticDeployment extends TomcatBaseTest {
         }
 
         // Copy the WAR file
-        File war = new File(host.getAppBaseFile(),
-                APP_NAME.getBaseName() + ".war");
+        File war = new File(host.getAppBaseFile(), APP_NAME.getBaseName()
+                + ".war");
         Files.copy(WAR_XML_SOURCE.toPath(), war.toPath());
 
         // Deploy the copied war
@@ -1883,69 +1854,60 @@ public class TestHostConfigAutomaticDeployment extends TomcatBaseTest {
         Assert.assertTrue(ctxt instanceof TesterContext);
     }
 
-
     public static class TesterContext extends StandardContext {
         // No functional change
     }
-
 
     @Test
     public void testUpdateWarOfflineNoContextFF() throws Exception {
         doTestUpdateWarOffline(WAR_SOURCE, false, false);
     }
 
-
     @Test
     public void testUpdateWarOfflineNoContextTF() throws Exception {
         doTestUpdateWarOffline(WAR_SOURCE, true, false);
     }
-
 
     @Test
     public void testUpdateWarOfflineNoContextFT() throws Exception {
         doTestUpdateWarOffline(WAR_SOURCE, false, true);
     }
 
-
     @Test
     public void testUpdateWarOfflineNoContextTT() throws Exception {
         doTestUpdateWarOffline(WAR_SOURCE, true, true);
     }
-
 
     @Test
     public void testUpdateWarOfflineContextFF() throws Exception {
         doTestUpdateWarOffline(WAR_XML_SOURCE, false, false);
     }
 
-
     @Test
     public void testUpdateWarOfflineContextTF() throws Exception {
         doTestUpdateWarOffline(WAR_XML_SOURCE, true, false);
     }
-
 
     @Test
     public void testUpdateWarOfflineContextFT() throws Exception {
         doTestUpdateWarOffline(WAR_XML_SOURCE, false, true);
     }
 
-
     @Test
     public void testUpdateWarOfflineContextTT() throws Exception {
         doTestUpdateWarOffline(WAR_XML_SOURCE, true, true);
     }
 
-
-    private void doTestUpdateWarOffline(File srcWar, boolean deployOnStartUp, boolean autoDeploy)
-            throws Exception {
+    private void doTestUpdateWarOffline(File srcWar, boolean deployOnStartUp,
+            boolean autoDeploy) throws Exception {
         Tomcat tomcat = getTomcatInstance();
         StandardHost host = (StandardHost) tomcat.getHost();
         host.setDeployOnStartup(deployOnStartUp);
 
         File war = createWar(srcWar, true);
         // Make the WAR appear to have been created earlier
-        war.setLastModified(war.lastModified() - 2 * HostConfig.FILE_MODIFICATION_RESOLUTION_MS);
+        war.setLastModified(war.lastModified() - 2
+                * HostConfig.FILE_MODIFICATION_RESOLUTION_MS);
 
         tomcat.addWebapp(APP_NAME.getPath(), war.getAbsolutePath());
         tomcat.start();
@@ -1953,7 +1915,8 @@ public class TestHostConfigAutomaticDeployment extends TomcatBaseTest {
         // Get the last modified timestamp for the expanded dir
         File dir = new File(host.getAppBase(), APP_NAME.getBaseName());
         // Make the DIR appear to have been created earlier
-        long lastModified = war.lastModified() - 2 * HostConfig.FILE_MODIFICATION_RESOLUTION_MS;
+        long lastModified = war.lastModified() - 2
+                * HostConfig.FILE_MODIFICATION_RESOLUTION_MS;
         dir.setLastModified(lastModified);
 
         host.stop();
@@ -1965,6 +1928,7 @@ public class TestHostConfigAutomaticDeployment extends TomcatBaseTest {
 
         long newLastModified = dir.lastModified();
 
-        Assert.assertNotEquals("Timestamp hasn't changed", lastModified,  newLastModified);
+        Assert.assertNotEquals("Timestamp hasn't changed", lastModified,
+                newLastModified);
     }
 }

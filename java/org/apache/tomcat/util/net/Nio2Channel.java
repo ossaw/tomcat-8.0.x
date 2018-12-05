@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -50,8 +48,8 @@ public class Nio2Channel implements AsynchronousByteChannel {
      *
      * @throws IOException If a problem was encountered resetting the channel
      */
-    public void reset(AsynchronousSocketChannel channel, SocketWrapper<Nio2Channel> socket)
-            throws IOException {
+    public void reset(AsynchronousSocketChannel channel,
+            SocketWrapper<Nio2Channel> socket) throws IOException {
         this.sc = channel;
         this.socket = socket;
         bufHandler.getReadBuffer().clear();
@@ -63,10 +61,13 @@ public class Nio2Channel implements AsynchronousByteChannel {
     }
 
     public int getBufferSize() {
-        if ( bufHandler == null ) return 0;
+        if (bufHandler == null)
+            return 0;
         int size = 0;
-        size += bufHandler.getReadBuffer()!=null?bufHandler.getReadBuffer().capacity():0;
-        size += bufHandler.getWriteBuffer()!=null?bufHandler.getWriteBuffer().capacity():0;
+        size += bufHandler.getReadBuffer() != null ? bufHandler.getReadBuffer()
+                .capacity() : 0;
+        size += bufHandler.getWriteBuffer() != null ? bufHandler
+                .getWriteBuffer().capacity() : 0;
         return size;
     }
 
@@ -125,7 +126,7 @@ public class Nio2Channel implements AsynchronousByteChannel {
 
     @Override
     public String toString() {
-        return super.toString()+":"+this.sc.toString();
+        return super.toString() + ":" + this.sc.toString();
     }
 
     @Override
@@ -136,12 +137,12 @@ public class Nio2Channel implements AsynchronousByteChannel {
     @Override
     public <A> void read(ByteBuffer dst, A attachment,
             CompletionHandler<Integer, ? super A> handler) {
-        read(dst, Integer.MAX_VALUE, TimeUnit.MILLISECONDS, attachment, handler);
+        read(dst, Integer.MAX_VALUE, TimeUnit.MILLISECONDS, attachment,
+                handler);
     }
 
-    public <A> void read(ByteBuffer dst,
-            long timeout, TimeUnit unit, A attachment,
-            CompletionHandler<Integer, ? super A> handler) {
+    public <A> void read(ByteBuffer dst, long timeout, TimeUnit unit,
+            A attachment, CompletionHandler<Integer, ? super A> handler) {
         sc.read(dst, timeout, unit, attachment, handler);
     }
 
@@ -153,17 +154,18 @@ public class Nio2Channel implements AsynchronousByteChannel {
     @Override
     public <A> void write(ByteBuffer src, A attachment,
             CompletionHandler<Integer, ? super A> handler) {
-        write(src, Integer.MAX_VALUE, TimeUnit.MILLISECONDS, attachment, handler);
+        write(src, Integer.MAX_VALUE, TimeUnit.MILLISECONDS, attachment,
+                handler);
     }
 
-    public <A> void write(ByteBuffer src, long timeout, TimeUnit unit, A attachment,
-            CompletionHandler<Integer, ? super A> handler) {
+    public <A> void write(ByteBuffer src, long timeout, TimeUnit unit,
+            A attachment, CompletionHandler<Integer, ? super A> handler) {
         sc.write(src, timeout, unit, attachment, handler);
     }
 
     public <A> void write(ByteBuffer[] srcs, int offset, int length,
             long timeout, TimeUnit unit, A attachment,
-            CompletionHandler<Long,? super A> handler) {
+            CompletionHandler<Long, ? super A> handler) {
         sc.write(srcs, offset, length, timeout, unit, attachment, handler);
     }
 
@@ -172,19 +174,22 @@ public class Nio2Channel implements AsynchronousByteChannel {
         public boolean cancel(boolean mayInterruptIfRunning) {
             return false;
         }
+
         @Override
         public boolean isCancelled() {
             return false;
         }
+
         @Override
         public boolean isDone() {
             return true;
         }
+
         @Override
-        public Boolean get() throws InterruptedException,
-                ExecutionException {
+        public Boolean get() throws InterruptedException, ExecutionException {
             return Boolean.TRUE;
         }
+
         @Override
         public Boolean get(long timeout, TimeUnit unit)
                 throws InterruptedException, ExecutionException,

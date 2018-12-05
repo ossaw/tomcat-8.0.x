@@ -1,18 +1,16 @@
 /*
- *  Licensed to the Apache Software Foundation (ASF) under one or more
- *  contributor license agreements.  See the NOTICE file distributed with
- *  this work for additional information regarding copyright ownership.
- *  The ASF licenses this file to You under the Apache License, Version 2.0
- *  (the "License"); you may not use this file except in compliance with
- *  the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements. See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package websocket.drawboard;
 
@@ -36,7 +34,8 @@ import websocket.drawboard.wsmessages.StringWebsocketMessage;
 
 /**
  * A Room represents a drawboard where a number of
- * users participate.<br><br>
+ * users participate.<br>
+ * <br>
  *
  * Note: Instance methods should only be invoked by calling
  * {@link #invokeAndWait(Runnable)} to ensure access is correctly synchronized.
@@ -46,35 +45,36 @@ public final class Room {
     /**
      * Specifies the type of a room message that is sent to a client.<br>
      * Note: Currently we are sending simple string messages - for production
-     * apps, a JSON lib should be used for object-level messages.<br><br>
+     * apps, a JSON lib should be used for object-level messages.<br>
+     * <br>
      *
      * The number (single char) will be prefixed to the string when sending
      * the message.
      */
     public static enum MessageType {
-        /**
-         * '0': Error: contains error message.
-         */
-        ERROR('0'),
-        /**
-         * '1': DrawMesssage: contains serialized DrawMessage(s) prefixed
-         *      with the current Player's {@link Player#lastReceivedMessageId}
-         *      and ",".<br>
-         *      Multiple draw messages are concatenated with "|" as separator.
-         */
-        DRAW_MESSAGE('1'),
-        /**
-         * '2': ImageMessage: Contains number of current players in this room.
-         *      After this message a Binary Websocket message will follow,
-         *      containing the current Room image as PNG.<br>
-         *      This is the first message that a Room sends to a new Player.
-         */
-        IMAGE_MESSAGE('2'),
-        /**
-         * '3': PlayerChanged: contains "+" or "-" which indicate a player
-         *      was added or removed to this Room.
-         */
-        PLAYER_CHANGED('3');
+    /**
+     * '0': Error: contains error message.
+     */
+    ERROR('0'),
+    /**
+     * '1': DrawMesssage: contains serialized DrawMessage(s) prefixed
+     * with the current Player's {@link Player#lastReceivedMessageId}
+     * and ",".<br>
+     * Multiple draw messages are concatenated with "|" as separator.
+     */
+    DRAW_MESSAGE('1'),
+    /**
+     * '2': ImageMessage: Contains number of current players in this room.
+     * After this message a Binary Websocket message will follow,
+     * containing the current Room image as PNG.<br>
+     * This is the first message that a Room sends to a new Player.
+     */
+    IMAGE_MESSAGE('2'),
+    /**
+     * '3': PlayerChanged: contains "+" or "-" which indicate a player
+     * was added or removed to this Room.
+     */
+    PLAYER_CHANGED('3');
 
         private final char flag;
 
@@ -83,7 +83,6 @@ public final class Room {
         }
 
     }
-
 
     /**
      * The lock used to synchronize access to this Room.
@@ -112,21 +111,21 @@ public final class Room {
     private static final int TIMER_DELAY = 30;
 
     /**
-     * The current active broadcast timer task. If null, then no Broadcast task is scheduled.
+     * The current active broadcast timer task. If null, then no Broadcast task
+     * is scheduled.
      * The Task will be scheduled if the first player enters the Room, and
-     * cancelled if the last player exits the Room, to avoid unnecessary timer executions.
+     * cancelled if the last player exits the Room, to avoid unnecessary timer
+     * executions.
      */
     private TimerTask activeBroadcastTimerTask;
-
 
     /**
      * The current image of the room drawboard. DrawMessages that are
      * received from Players will be drawn onto this image.
      */
-    private final BufferedImage roomImage =
-            new BufferedImage(900, 600, BufferedImage.TYPE_INT_RGB);
+    private final BufferedImage roomImage = new BufferedImage(900, 600,
+            BufferedImage.TYPE_INT_RGB);
     private final Graphics2D roomGraphics = roomImage.createGraphics();
-
 
     /**
      * The maximum number of players that can join this room.
@@ -138,16 +137,14 @@ public final class Room {
      */
     private final List<Player> players = new ArrayList<>();
 
-
-
     public Room() {
         roomGraphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
                 RenderingHints.VALUE_ANTIALIAS_ON);
 
         // Clear the image with white background.
         roomGraphics.setBackground(Color.WHITE);
-        roomGraphics.clearRect(0, 0, roomImage.getWidth(),
-                roomImage.getHeight());
+        roomGraphics.clearRect(0, 0, roomImage.getWidth(), roomImage
+                .getHeight());
     }
 
     private TimerTask createBroadcastTimerTask() {
@@ -166,6 +163,7 @@ public final class Room {
 
     /**
      * Creates a Player from the given Client and adds it to this room.
+     * 
      * @param client the client
      */
     public Player createAndAddPlayer(Client client) {
@@ -197,12 +195,12 @@ public final class Room {
         ByteArrayOutputStream bout = new ByteArrayOutputStream();
         try {
             ImageIO.write(roomImage, "PNG", bout);
-        } catch (IOException e) { /* Should never happen */ }
-
+        } catch (IOException e) {
+            /* Should never happen */ }
 
         // Send the image as binary message.
-        BinaryWebsocketMessage msg = new BinaryWebsocketMessage(
-                ByteBuffer.wrap(bout.toByteArray()));
+        BinaryWebsocketMessage msg = new BinaryWebsocketMessage(ByteBuffer.wrap(
+                bout.toByteArray()));
         p.getClient().sendMessage(msg);
 
         return p;
@@ -250,13 +248,13 @@ public final class Room {
         broadcastDrawMessage(msg);
     }
 
-
     /**
      * Broadcasts the given drawboard message to all connected players.<br>
      * Note: For DrawMessages, please use
      * {@link #broadcastDrawMessage(DrawMessage)}
      * as this method will buffer them and prefix them with the correct
      * last received Message ID.
+     * 
      * @param type
      * @param content
      */
@@ -266,12 +264,12 @@ public final class Room {
         }
     }
 
-
     /**
      * Broadcast the given DrawMessage. This will buffer the message
      * and the {@link #drawmessageBroadcastTimer} will broadcast them
      * at a regular interval, prefixing them with the player's current
      * {@link Player#lastReceivedMessageId}.
+     * 
      * @param msg
      */
     private void broadcastDrawMessage(DrawMessage msg) {
@@ -279,8 +277,8 @@ public final class Room {
             String msgStr = msg.toString();
 
             for (Player p : players) {
-                String s = String.valueOf(p.getLastReceivedMessageId())
-                        + "," + msgStr;
+                String s = String.valueOf(p.getLastReceivedMessageId()) + ","
+                        + msgStr;
                 p.sendRoomMessage(MessageType.DRAW_MESSAGE, s);
             }
         } else {
@@ -289,7 +287,6 @@ public final class Room {
             }
         }
     }
-
 
     /**
      * Tick handler for the broadcastTimer.
@@ -324,8 +321,10 @@ public final class Room {
     }
 
     /**
-     * A list of cached {@link Runnable}s to prevent recursive invocation of Runnables
-     * by one thread. This variable is only used by one thread at a time and then
+     * A list of cached {@link Runnable}s to prevent recursive invocation of
+     * Runnables
+     * by one thread. This variable is only used by one thread at a time and
+     * then
      * set to <code>null</code>.
      */
     private List<Runnable> cachedRunnables = null;
@@ -338,9 +337,10 @@ public final class Room {
      * runnable on this Room, it will not be executed recursively, but instead
      * cached until the original runnable is finished, to keep the behavior of
      * using a Executor.
+     * 
      * @param task
      */
-    public void invokeAndWait(Runnable task)  {
+    public void invokeAndWait(Runnable task) {
 
         // Check if the current thread already holds a lock on this room.
         // If yes, then we must not directly execute the Runnable but instead
@@ -396,10 +396,10 @@ public final class Room {
         });
     }
 
-
     /**
      * A Player participates in a Room. It is the interface between the
-     * {@link Room} and the {@link Client}.<br><br>
+     * {@link Room} and the {@link Client}.<br>
+     * <br>
      *
      * Note: This means a player object is actually a join between Room and
      * Client.
@@ -422,8 +422,7 @@ public final class Room {
         /**
          * Buffered DrawMessages that will be sent by a Timer.
          */
-        private final List<DrawMessage> bufferedDrawMessages =
-                new ArrayList<>();
+        private final List<DrawMessage> bufferedDrawMessages = new ArrayList<>();
 
         private List<DrawMessage> getBufferedDrawMessages() {
             return bufferedDrawMessages;
@@ -453,18 +452,18 @@ public final class Room {
             }
         }
 
-
         private long getLastReceivedMessageId() {
             return lastReceivedMessageId;
         }
+
         private void setLastReceivedMessageId(long value) {
             lastReceivedMessageId = value;
         }
 
-
         /**
          * Handles the given DrawMessage by drawing it onto this Room's
          * image and by broadcasting it to the connected players.
+         * 
          * @param msg
          * @param msgId
          */
@@ -472,9 +471,9 @@ public final class Room {
             room.internalHandleDrawMessage(this, msg, msgId);
         }
 
-
         /**
          * Sends the given room message.
+         * 
          * @param type
          * @param content
          */

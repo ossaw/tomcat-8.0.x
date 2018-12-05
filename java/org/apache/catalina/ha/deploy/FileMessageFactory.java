@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -47,8 +45,8 @@ import org.apache.tomcat.util.res.StringManager;
 public class FileMessageFactory {
     /*--Static Variables----------------------------------------*/
     private static final Log log = LogFactory.getLog(FileMessageFactory.class);
-    private static final StringManager sm =
-        StringManager.getManager(Constants.Package);
+    private static final StringManager sm = StringManager.getManager(
+            Constants.Package);
 
     /**
      * The number of bytes that we read from file
@@ -137,15 +135,18 @@ public class FileMessageFactory {
      * exist.
      *
      * @param f
-     *            File - the file to be read/written
+     *                     File - the file to be read/written
      * @param openForWrite
-     *            boolean - true means we are writing to the file, false means
-     *            we are reading from the file
+     *                     boolean - true means we are writing to the file,
+     *                     false means
+     *                     we are reading from the file
      * @throws FileNotFoundException -
-     *             if the file to be read doesn't exist
-     * @throws IOException -
-     *             if the system fails to open input/output streams to the file
-     *             or if it fails to create the file to be written to.
+     *                               if the file to be read doesn't exist
+     * @throws IOException           -
+     *                               if the system fails to open input/output
+     *                               streams to the file
+     *                               or if it fails to create the file to be
+     *                               written to.
      */
     private FileMessageFactory(File f, boolean openForWrite)
             throws FileNotFoundException, IOException {
@@ -163,7 +164,7 @@ public class FileMessageFactory {
             size = file.length();
             totalNrOfMessages = (size / READ_SIZE) + 1;
             in = new FileInputStream(f);
-        }//end if
+        } //end if
         creationTime = System.currentTimeMillis();
     }
 
@@ -173,14 +174,16 @@ public class FileMessageFactory {
      * writeMessage can be invoked.
      *
      * @param f
-     *            File - the file to be read or written
+     *                     File - the file to be read or written
      * @param openForWrite
-     *            boolean - true, means we are writing to the file, false means
-     *            we are reading from it
+     *                     boolean - true, means we are writing to the file,
+     *                     false means
+     *                     we are reading from it
      * @throws FileNotFoundException -
-     *             if the file to be read doesn't exist
-     * @throws IOException -
-     *             if it fails to create the file that is to be written
+     *                               if the file to be read doesn't exist
+     * @throws IOException           -
+     *                               if it fails to create the file that is to
+     *                               be written
      * @return FileMessageFactory
      */
     public static FileMessageFactory getInstance(File f, boolean openForWrite)
@@ -198,11 +201,12 @@ public class FileMessageFactory {
      * the same with another.
      *
      * @param f
-     *            FileMessage - the message to be populated with file data
+     *          FileMessage - the message to be populated with file data
      * @throws IllegalArgumentException -
-     *             if the factory is for writing or is closed
-     * @throws IOException -
-     *             if a file read exception occurs
+     *                                  if the factory is for writing or is
+     *                                  closed
+     * @throws IOException              -
+     *                                  if a file read exception occurs
      * @return FileMessage - returns the same message passed in as a parameter,
      *         or null if EOF
      */
@@ -218,7 +222,7 @@ public class FileMessageFactory {
             f.setTotalNrOfMsgs(totalNrOfMessages);
             f.setMessageNumber(++nrOfMessagesProcessed);
             return f;
-        }//end if
+        } //end if
     }
 
     /**
@@ -228,9 +232,10 @@ public class FileMessageFactory {
      * @param msg
      *            FileMessage - message containing data to be written
      * @throws IllegalArgumentException -
-     *             if the factory is opened for read or closed
-     * @throws IOException -
-     *             if a file write error occurs
+     *                                  if the factory is opened for read or
+     *                                  closed
+     * @throws IOException              -
+     *                                  if a file write error occurs
      * @return returns true if the file is complete and outputstream is closed,
      *         false otherwise.
      */
@@ -240,39 +245,39 @@ public class FileMessageFactory {
             throw new IllegalArgumentException(
                     "Can't write message, this factory is reading.");
         if (log.isDebugEnabled())
-            log.debug("Message " + msg + " data " + HexUtils.toHexString(msg.getData())
-                    + " data length " + msg.getDataLength() + " out " + out);
+            log.debug("Message " + msg + " data " + HexUtils.toHexString(msg
+                    .getData()) + " data length " + msg.getDataLength()
+                    + " out " + out);
 
         if (msg.getMessageNumber() <= lastMessageProcessed.get()) {
             // Duplicate of message already processed
-            log.warn("Receive Message again -- Sender ActTimeout too short [ name: "
-                    + msg.getContextName()
-                    + " war: "
-                    + msg.getFileName()
-                    + " data: "
-                    + HexUtils.toHexString(msg.getData())
-                    + " data length: " + msg.getDataLength() + " ]");
+            log.warn(
+                    "Receive Message again -- Sender ActTimeout too short [ name: "
+                            + msg.getContextName() + " war: " + msg
+                                    .getFileName() + " data: " + HexUtils
+                                            .toHexString(msg.getData())
+                            + " data length: " + msg.getDataLength() + " ]");
             return false;
         }
 
-        FileMessage previous =
-            msgBuffer.put(Long.valueOf(msg.getMessageNumber()), msg);
-        if (previous !=null) {
+        FileMessage previous = msgBuffer.put(Long.valueOf(msg
+                .getMessageNumber()), msg);
+        if (previous != null) {
             // Duplicate of message not yet processed
-            log.warn("Receive Message again -- Sender ActTimeout too short [ name: "
-                    + msg.getContextName()
-                    + " war: "
-                    + msg.getFileName()
-                    + " data: "
-                    + HexUtils.toHexString(msg.getData())
-                    + " data length: " + msg.getDataLength() + " ]");
+            log.warn(
+                    "Receive Message again -- Sender ActTimeout too short [ name: "
+                            + msg.getContextName() + " war: " + msg
+                                    .getFileName() + " data: " + HexUtils
+                                            .toHexString(msg.getData())
+                            + " data length: " + msg.getDataLength() + " ]");
             return false;
         }
 
         FileMessage next = null;
         synchronized (this) {
             if (!isWriting) {
-                next = msgBuffer.get(Long.valueOf(lastMessageProcessed.get() + 1));
+                next = msgBuffer.get(Long.valueOf(lastMessageProcessed.get()
+                        + 1));
                 if (next != null) {
                     isWriting = true;
                 } else {
@@ -292,9 +297,9 @@ public class FileMessageFactory {
                 cleanup();
                 return true;
             }
-            synchronized(this) {
-                next =
-                    msgBuffer.get(Long.valueOf(lastMessageProcessed.get() + 1));
+            synchronized (this) {
+                next = msgBuffer.get(Long.valueOf(lastMessageProcessed.get()
+                        + 1));
                 if (next == null) {
                     isWriting = false;
                 }
@@ -335,7 +340,7 @@ public class FileMessageFactory {
      * proceed.
      *
      * @param openForWrite
-     *            boolean
+     *                     boolean
      * @throws IllegalArgumentException
      */
     protected void checkState(boolean openForWrite)
@@ -359,16 +364,16 @@ public class FileMessageFactory {
      * Example usage.
      *
      * @param args
-     *            String[], args[0] - read from filename, args[1] write to
-     *            filename
+     *             String[], args[0] - read from filename, args[1] write to
+     *             filename
      * @throws Exception
      */
     public static void main(String[] args) throws Exception {
 
-        System.out
-                .println("Usage: FileMessageFactory fileToBeRead fileToBeWritten");
-        System.out
-                .println("Usage: This will make a copy of the file on the local file system");
+        System.out.println(
+                "Usage: FileMessageFactory fileToBeRead fileToBeWritten");
+        System.out.println(
+                "Usage: This will make a copy of the file on the local file system");
         FileMessageFactory read = getInstance(new File(args[0]), false);
         FileMessageFactory write = getInstance(new File(args[1]), true);
         FileMessage msg = new FileMessage(null, args[0], args[0]);
@@ -384,7 +389,7 @@ public class FileMessageFactory {
             write.writeMessage(msg);
             cnt++;
             msg = read.readMessage(msg);
-        }//while
+        } //while
         System.out.println("Actually wrote " + cnt + " messages.");
     }///main
 
@@ -398,7 +403,8 @@ public class FileMessageFactory {
             int timeIdle = (int) ((timeNow - creationTime) / 1000L);
             if (timeIdle > maxValidTime) {
                 cleanup();
-                if (file.exists()) file.delete();
+                if (file.exists())
+                    file.delete();
                 return false;
             }
         }

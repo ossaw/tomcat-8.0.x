@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -24,12 +22,13 @@ import java.net.UnknownHostException;
 /**
  * A simple multicast test that replicates the core elements of Tomcat's
  * multicast membership. If this works then multicast membership should work.
- * Useful notes for various operating systems follow.<p>
+ * Useful notes for various operating systems follow.
+ * <p>
  * OSX
  * <ul>
  * <li>The firewall blocks multicast between processes on the local machine so
- *     you will need to disable the OSX firewall before the test below will
- *     work.</li>
+ * you will need to disable the OSX firewall before the test below will
+ * work.</li>
  * </ul>
  * Windows Server 2008
  * <ul>
@@ -45,13 +44,12 @@ public class TesterMulticast {
     static {
         InetAddress result = null;
         try {
-             result = InetAddress.getByName(ADDRESS);
+            result = InetAddress.getByName(ADDRESS);
         } catch (UnknownHostException e) {
             // deal with later
         }
         INET_ADDRESS = result;
     }
-
 
     public static void main(String[] args) throws Exception {
         // Start Rx Thread
@@ -65,7 +63,6 @@ public class TesterMulticast {
         Thread txThread = new Thread(tx);
         txThread.setDaemon(true);
         txThread.start();
-
 
         Thread.sleep(10000);
 
@@ -87,7 +84,7 @@ public class TesterMulticast {
                 p.setPort(PORT);
                 while (run) {
                     s.receive(p);
-                    String d = new String (p.getData());
+                    String d = new String(p.getData());
                     System.out.println("Rx: " + d);
                 }
             } catch (Exception e) {

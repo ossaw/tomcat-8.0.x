@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -62,13 +60,12 @@ public class Snake {
         sendMessage("{\"type\": \"kill\"}");
     }
 
-
     protected void sendMessage(String msg) {
         try {
             session.getBasicRemote().sendText(msg);
         } catch (IOException ioe) {
-            CloseReason cr =
-                    new CloseReason(CloseCodes.CLOSED_ABNORMALLY, ioe.getMessage());
+            CloseReason cr = new CloseReason(CloseCodes.CLOSED_ABNORMALLY, ioe
+                    .getMessage());
             try {
                 session.close(cr);
             } catch (IOException ioe2) {
@@ -104,7 +101,8 @@ public class Snake {
 
     private void handleCollisions(Collection<Snake> snakes) {
         for (Snake snake : snakes) {
-            boolean headCollision = id != snake.id && snake.getHead().equals(head);
+            boolean headCollision = id != snake.id && snake.getHead().equals(
+                    head);
             boolean tailCollision = snake.getTail().contains(head);
             if (headCollision || tailCollision) {
                 kill();
@@ -129,15 +127,15 @@ public class Snake {
 
     public synchronized String getLocationsJson() {
         StringBuilder sb = new StringBuilder();
-        sb.append(String.format("{\"x\": %d, \"y\": %d}",
-                Integer.valueOf(head.x), Integer.valueOf(head.y)));
+        sb.append(String.format("{\"x\": %d, \"y\": %d}", Integer.valueOf(
+                head.x), Integer.valueOf(head.y)));
         for (Location location : tail) {
             sb.append(',');
-            sb.append(String.format("{\"x\": %d, \"y\": %d}",
-                    Integer.valueOf(location.x), Integer.valueOf(location.y)));
+            sb.append(String.format("{\"x\": %d, \"y\": %d}", Integer.valueOf(
+                    location.x), Integer.valueOf(location.y)));
         }
-        return String.format("{\"id\":%d,\"body\":[%s]}",
-                Integer.valueOf(id), sb.toString());
+        return String.format("{\"id\":%d,\"body\":[%s]}", Integer.valueOf(id),
+                sb.toString());
     }
 
     public int getId() {

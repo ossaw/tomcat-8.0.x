@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -67,8 +65,8 @@ public class TestELParser {
 
         TesterBeanA beanA = new TesterBeanA();
         beanA.setInt("five");
-        ValueExpression var =
-            factory.createValueExpression(beanA, TesterBeanA.class);
+        ValueExpression var = factory.createValueExpression(beanA,
+                TesterBeanA.class);
         context.getVariableMapper().setVariable("beanA", var);
 
         // Should fail
@@ -89,8 +87,8 @@ public class TestELParser {
 
         TesterBeanA beanA = new TesterBeanA();
         beanA.setInt("five");
-        ValueExpression var =
-            factory.createValueExpression(beanA, TesterBeanA.class);
+        ValueExpression var = factory.createValueExpression(beanA,
+                TesterBeanA.class);
         context.getVariableMapper().setVariable("this", var);
 
         // Should fail
@@ -102,7 +100,6 @@ public class TestELParser {
         }
         assertNotNull(e);
     }
-
 
     @Test
     public void bug56179a() {
@@ -178,8 +175,8 @@ public class TestELParser {
         ExpressionFactory factory = ExpressionFactory.newInstance();
         ELContext context = new ELContextImpl(factory);
 
-        ValueExpression var =
-            factory.createValueExpression(Boolean.TRUE, Boolean.class);
+        ValueExpression var = factory.createValueExpression(Boolean.TRUE,
+                Boolean.class);
         context.getVariableMapper().setVariable("test", var);
 
         StringBuilder expr = new StringBuilder();
@@ -192,8 +189,8 @@ public class TestELParser {
             expr.append(")");
         }
         expr.append("}");
-        ValueExpression ve = factory.createValueExpression(
-                context, expr.toString(), String.class);
+        ValueExpression ve = factory.createValueExpression(context, expr
+                .toString(), String.class);
 
         String result = (String) ve.getValue(context);
         assertEquals("true", result);
@@ -205,14 +202,14 @@ public class TestELParser {
         ELContext context = new ELContextImpl(factory);
 
         TesterBeanC beanC = new TesterBeanC();
-        ValueExpression var =
-            factory.createValueExpression(beanC, TesterBeanC.class);
+        ValueExpression var = factory.createValueExpression(beanC,
+                TesterBeanC.class);
         context.getVariableMapper().setVariable("myBean", var);
 
         ValueExpression ve = factory.createValueExpression(context,
-            "${(myBean.int1 > 1 and myBean.myBool) or "+
-            "((myBean.myBool or myBean.myBool1) and myBean.int1 > 1)}",
-            Boolean.class);
+                "${(myBean.int1 > 1 and myBean.myBool) or "
+                        + "((myBean.myBool or myBean.myBool1) and myBean.int1 > 1)}",
+                Boolean.class);
         assertEquals(Boolean.FALSE, ve.getValue(context));
         beanC.setInt1(2);
         beanC.setMyBool1(true);
@@ -223,8 +220,8 @@ public class TestELParser {
         ExpressionFactory factory = ExpressionFactory.newInstance();
         ELContext context = new ELContextImpl(factory);
 
-        ValueExpression ve = factory.createValueExpression(
-                context, expression, String.class);
+        ValueExpression ve = factory.createValueExpression(context, expression,
+                String.class);
 
         String result = (String) ve.getValue(context);
         assertEquals(expected, result);

@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -15,9 +13,7 @@
  * limitations under the License.
  */
 
-
 package chat;
-
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -32,26 +28,23 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.catalina.comet.CometEvent;
 import org.apache.catalina.comet.CometProcessor;
 
-
 /**
  * Helper class to implement Comet functionality.
  */
-public class ChatServlet
-    extends HttpServlet implements CometProcessor {
+public class ChatServlet extends HttpServlet implements CometProcessor {
 
     private static final long serialVersionUID = 1L;
 
     private static final String CHARSET = "UTF-8";
 
-    protected final ArrayList<HttpServletResponse> connections =
-            new ArrayList<>();
+    protected final ArrayList<HttpServletResponse> connections = new ArrayList<>();
     protected transient MessageSender messageSender = null;
 
     @Override
     public void init() throws ServletException {
         messageSender = new MessageSender();
-        Thread messageSenderThread =
-            new Thread(messageSender, "MessageSender[" + getServletContext().getContextPath() + "]");
+        Thread messageSenderThread = new Thread(messageSender, "MessageSender["
+                + getServletContext().getContextPath() + "]");
         messageSenderThread.setDaemon(true);
         messageSenderThread.start();
     }
@@ -71,8 +64,7 @@ public class ChatServlet
      * @throws ServletException
      */
     @Override
-    public void event(CometEvent event)
-        throws IOException, ServletException {
+    public void event(CometEvent event) throws IOException, ServletException {
 
         // Note: There should really be two servlets in this example, to avoid
         // mixing Comet stuff with regular connection processing
@@ -89,7 +81,8 @@ public class ChatServlet
                     event.close();
                     return;
                 }
-                String nickname = (String) request.getSession(true).getAttribute("nickname");
+                String nickname = (String) request.getSession(true)
+                        .getAttribute("nickname");
                 String message = request.getParameter("message");
                 messageSender.send(nickname, message);
                 response.sendRedirect("post.jsp");
@@ -98,7 +91,8 @@ public class ChatServlet
             }
             if (request.getSession(true).getAttribute("nickname") == null) {
                 // Redirect to "login"
-                log("Redirect to login for session: " + request.getSession(true).getId());
+                log("Redirect to login for session: " + request.getSession(true)
+                        .getId());
                 response.sendRedirect("login.jsp");
                 event.close();
                 return;
@@ -115,28 +109,32 @@ public class ChatServlet
 
     protected void begin(@SuppressWarnings("unused") CometEvent event,
             HttpServletRequest request, HttpServletResponse response)
-        throws IOException {
+            throws IOException {
         log("Begin for session: " + request.getSession(true).getId());
 
         response.setContentType("text/html; charset=" + CHARSET);
 
         PrintWriter writer = response.getWriter();
-        writer.println("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\">");
-        writer.println("<html><head><title>JSP Chat</title></head><body bgcolor=\"#FFFFFF\">");
-        writer.println("<div>Welcome to the chat. <a href='chat'>Click here to reload this window</a></div>");
+        writer.println(
+                "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\">");
+        writer.println(
+                "<html><head><title>JSP Chat</title></head><body bgcolor=\"#FFFFFF\">");
+        writer.println(
+                "<div>Welcome to the chat. <a href='chat'>Click here to reload this window</a></div>");
         writer.flush();
 
-        synchronized(connections) {
+        synchronized (connections) {
             connections.add(response);
         }
 
-        messageSender.send("Tomcat", request.getSession(true).getAttribute("nickname") + " joined the chat.");
+        messageSender.send("Tomcat", request.getSession(true).getAttribute(
+                "nickname") + " joined the chat.");
     }
 
-    protected void end(CometEvent event, HttpServletRequest request, HttpServletResponse response)
-        throws IOException {
+    protected void end(CometEvent event, HttpServletRequest request,
+            HttpServletResponse response) throws IOException {
         log("End for session: " + request.getSession(true).getId());
-        synchronized(connections) {
+        synchronized (connections) {
             connections.remove(response);
         }
 
@@ -146,17 +144,17 @@ public class ChatServlet
         event.close();
     }
 
-    protected void error(CometEvent event, HttpServletRequest request, HttpServletResponse response)
-        throws IOException {
+    protected void error(CometEvent event, HttpServletRequest request,
+            HttpServletResponse response) throws IOException {
         log("Error for session: " + request.getSession(true).getId());
-        synchronized(connections) {
+        synchronized (connections) {
             connections.remove(response);
         }
         event.close();
     }
 
-    protected void read(CometEvent event, HttpServletRequest request, HttpServletResponse response)
-        throws IOException {
+    protected void read(CometEvent event, HttpServletRequest request,
+            HttpServletResponse response) throws IOException {
         InputStream is = request.getInputStream();
         byte[] buf = new byte[512];
         while (is.available() > 0) {
@@ -174,18 +172,20 @@ public class ChatServlet
     }
 
     @Override
-    protected void service(HttpServletRequest request, HttpServletResponse response)
-        throws IOException, ServletException {
+    protected void service(HttpServletRequest request,
+            HttpServletResponse response) throws IOException, ServletException {
         // Compatibility method: equivalent method using the regular connection model
         response.setContentType("text/html; charset=" + CHARSET);
         PrintWriter writer = response.getWriter();
-        writer.println("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\">");
-        writer.println("<html><head><title>JSP Chat</title></head><body bgcolor=\"#FFFFFF\">");
+        writer.println(
+                "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\">");
+        writer.println(
+                "<html><head><title>JSP Chat</title></head><body bgcolor=\"#FFFFFF\">");
         writer.println("Chat example only supports Comet processing. ");
-        writer.println("Configure a connector that supports Comet and try again.");
+        writer.println(
+                "Configure a connector that supports Comet and try again.");
         writer.println("</body></html>");
     }
-
 
     /**
      * Poller class.
@@ -214,7 +214,8 @@ public class ChatServlet
         }
 
         /**
-         * The background thread that listens for incoming TCP/IP connections and
+         * The background thread that listens for incoming TCP/IP connections
+         * and
          * hands them off to an appropriate processor.
          */
         @Override
@@ -240,7 +241,8 @@ public class ChatServlet
                         try {
                             PrintWriter writer = connections.get(i).getWriter();
                             for (int j = 0; j < pendingMessages.length; j++) {
-                                writer.println("<div>"+filter(pendingMessages[j]) + "</div>");
+                                writer.println("<div>" + filter(
+                                        pendingMessages[j]) + "</div>");
                             }
                             writer.flush();
                         } catch (IOException e) {
@@ -271,20 +273,20 @@ public class ChatServlet
         StringBuilder result = new StringBuilder(content.length + 50);
         for (int i = 0; i < content.length; i++) {
             switch (content[i]) {
-            case '<':
-                result.append("&lt;");
-                break;
-            case '>':
-                result.append("&gt;");
-                break;
-            case '&':
-                result.append("&amp;");
-                break;
-            case '"':
-                result.append("&quot;");
-                break;
-            default:
-                result.append(content[i]);
+                case '<':
+                    result.append("&lt;");
+                    break;
+                case '>':
+                    result.append("&gt;");
+                    break;
+                case '&':
+                    result.append("&amp;");
+                    break;
+                case '"':
+                    result.append("&quot;");
+                    break;
+                default:
+                    result.append(content[i]);
             }
         }
         return (result.toString());

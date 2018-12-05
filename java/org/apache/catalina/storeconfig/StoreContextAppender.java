@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -39,13 +37,16 @@ public class StoreContextAppender extends StoreAppender {
      * @param value
      */
     @Override
-    protected void printAttribute(PrintWriter writer, int indent, Object bean, StoreDescription desc, String attributeName, Object bean2, Object value) {
+    protected void printAttribute(PrintWriter writer, int indent, Object bean,
+            StoreDescription desc, String attributeName, Object bean2,
+            Object value) {
         if (isPrintValue(bean, bean2, attributeName, desc)) {
-            if(attributeName.equals("docBase")) {
-                if(bean instanceof StandardContext) {
-                    String docBase = ((StandardContext)bean).getOriginalDocBase() ;
-                    if(docBase != null)
-                        value = docBase ;
+            if (attributeName.equals("docBase")) {
+                if (bean instanceof StandardContext) {
+                    String docBase = ((StandardContext) bean)
+                            .getOriginalDocBase();
+                    if (docBase != null)
+                        value = docBase;
                 }
             }
             printValue(writer, indent, attributeName, value);
@@ -56,10 +57,10 @@ public class StoreContextAppender extends StoreAppender {
      * Print Context Values. <ul><li> Spezial handling to default workDir.
      * </li><li> Don't save path at external context.xml </li><li> Don't
      * generate docBase for host.appBase webapps <LI></ul>
-     *
-     * @see org.apache.catalina.config.StoreAppender#isPrintValue(java.lang.Object,
-     *      java.lang.Object, java.lang.String,
-     *      org.apache.catalina.config.StoreDescription)
+     * @see
+     * org.apache.catalina.config.StoreAppender#isPrintValue(java.lang.Object,
+     * java.lang.Object, java.lang.String,
+     * org.apache.catalina.config.StoreDescription)
      */
     @Override
     public boolean isPrintValue(Object bean, Object bean2, String attrName,
@@ -71,14 +72,13 @@ public class StoreContextAppender extends StoreAppender {
                 String defaultWorkDir = getDefaultWorkDir(context);
                 isPrint = !defaultWorkDir.equals(context.getWorkDir());
             } else if ("path".equals(attrName)) {
-                isPrint = desc.isStoreSeparate()
-                            && desc.isExternalAllowed()
-                            && context.getConfigFile() == null;
+                isPrint = desc.isStoreSeparate() && desc.isExternalAllowed()
+                        && context.getConfigFile() == null;
             } else if ("docBase".equals(attrName)) {
                 Container host = context.getParent();
                 if (host instanceof StandardHost) {
                     File appBase = getAppBase(((StandardHost) host));
-                    File docBase = getDocBase(context,appBase);
+                    File docBase = getDocBase(context, appBase);
                     isPrint = !appBase.equals(docBase.getParentFile());
                 }
             }
@@ -105,9 +105,9 @@ public class StoreContextAppender extends StoreAppender {
     protected File getDocBase(StandardContext context, File appBase) {
 
         File docBase;
-        String contextDocBase = context.getOriginalDocBase() ;
-        if(contextDocBase == null)
-            contextDocBase = context.getDocBase() ;
+        String contextDocBase = context.getOriginalDocBase();
+        if (contextDocBase == null)
+            contextDocBase = context.getDocBase();
         File file = new File(contextDocBase);
         if (!file.isAbsolute())
             file = new File(appBase, contextDocBase);
@@ -155,8 +155,9 @@ public class StoreContextAppender extends StoreAppender {
      * default context.xml and context.xml.default TODO Cache a Default
      * StandardContext ( with reloading strategy) TODO remove really all
      * elements, but detection is hard... To Listener or Valve from same class?>
-     *
-     * @see org.apache.catalina.storeconfig.StoreAppender#defaultInstance(java.lang.Object)
+     * @see
+     * org.apache.catalina.storeconfig.StoreAppender#defaultInstance(java.lang.
+     * Object)
      */
     @Override
     public Object defaultInstance(Object bean) throws InstantiationException,

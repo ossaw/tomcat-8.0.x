@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -36,7 +34,7 @@ import org.apache.jasper.compiler.ELNode.Text;
 
 public class ELParser {
 
-    private Token curToken;  // current token
+    private Token curToken; // current token
     private Token prevToken; // previous token
     private String whiteSpace = "";
 
@@ -52,11 +50,12 @@ public class ELParser {
 
     private final boolean isDeferredSyntaxAllowedAsLiteral;
 
-    private static final String reservedWords[] = { "and", "div", "empty",
-            "eq", "false", "ge", "gt", "instanceof", "le", "lt", "mod", "ne",
-            "not", "null", "or", "true" };
+    private static final String reservedWords[] = { "and", "div", "empty", "eq",
+            "false", "ge", "gt", "instanceof", "le", "lt", "mod", "ne", "not",
+            "null", "or", "true" };
 
-    public ELParser(String expression, boolean isDeferredSyntaxAllowedAsLiteral) {
+    public ELParser(String expression,
+            boolean isDeferredSyntaxAllowedAsLiteral) {
         index = 0;
         this.expression = expression;
         this.isDeferredSyntaxAllowedAsLiteral = isDeferredSyntaxAllowedAsLiteral;
@@ -67,10 +66,12 @@ public class ELParser {
      * Parse an EL expression
      *
      * @param expression
-     *            The input expression string of the form Char* ('${' Char*
-     *            '}')* Char*
+     *                                         The input expression string of
+     *                                         the form Char* ('${' Char*
+     *                                         '}')* Char*
      * @param isDeferredSyntaxAllowedAsLiteral
-     *                      Are deferred expressions treated as literals?
+     *                                         Are deferred expressions treated
+     *                                         as literals?
      * @return Parsed EL expression in ELNode.Nodes
      */
     public static ELNode.Nodes parse(String expression,
@@ -96,9 +97,10 @@ public class ELParser {
      *
      * @return An ELNode.Nodes representing the EL expression
      *
-     * Note: This can not be refactored to use the standard EL implementation as
-     *       the EL API does not provide the level of access required to the
-     *       parsed expression.
+     *         Note: This can not be refactored to use the standard EL
+     *         implementation as
+     *         the EL API does not provide the level of access required to the
+     *         parsed expression.
      */
     private ELNode.Nodes parseEL() {
 
@@ -140,8 +142,9 @@ public class ELParser {
      * arguments
      */
     private boolean parseFunction() {
-        if (!(curToken instanceof Id) || isELReserved(curToken.toTrimmedString()) ||
-                prevToken instanceof Char && prevToken.toChar() == '.') {
+        if (!(curToken instanceof Id) || isELReserved(curToken
+                .toTrimmedString()) || prevToken instanceof Char && prevToken
+                        .toChar() == '.') {
             return false;
         }
         String s1 = null; // Function prefix
@@ -164,7 +167,8 @@ public class ELParser {
                 }
             }
             if (curToken.toChar() == '(') {
-                ELexpr.add(new ELNode.Function(s1, s2, expression.substring(start, index - 1)));
+                ELexpr.add(new ELNode.Function(s1, s2, expression.substring(
+                        start, index - 1)));
                 return true;
             }
             curToken = original;
@@ -207,13 +211,14 @@ public class ELParser {
             if (ch == '\\') {
                 // Is this the start of a "\$" or "\#" escape sequence?
                 char p0 = peek(0);
-                if (p0 == '$' || (p0 == '#' && !isDeferredSyntaxAllowedAsLiteral)) {
+                if (p0 == '$' || (p0 == '#'
+                        && !isDeferredSyntaxAllowedAsLiteral)) {
                     buf.append(nextChar());
                 } else {
                     buf.append(ch);
                 }
-            } else if ((ch == '$' || (ch == '#' && !isDeferredSyntaxAllowedAsLiteral)) &&
-                    peek(0) == '{') {
+            } else if ((ch == '$' || (ch == '#'
+                    && !isDeferredSyntaxAllowedAsLiteral)) && peek(0) == '{') {
                 this.type = ch;
                 nextChar();
                 break;
@@ -224,13 +229,12 @@ public class ELParser {
         return buf.toString();
     }
 
-
     /**
      * Escape '$' and '#', inverting the unescaping performed in
      * {@link #skipUntilEL()} but only for ${ and #{ sequences since escaping
      * for $ and # is optional.
      *
-     * @param input Non-EL input to be escaped
+     * @param input                            Non-EL input to be escaped
      * @param isDeferredSyntaxAllowedAsLiteral
      *
      * @return The escaped version of the input
@@ -242,7 +246,7 @@ public class ELParser {
         StringBuilder output = null;
         for (int i = 0; i < len; i++) {
             char ch = input.charAt(i);
-            if (ch =='$' || (!isDeferredSyntaxAllowedAsLiteral && ch == '#')) {
+            if (ch == '$' || (!isDeferredSyntaxAllowedAsLiteral && ch == '#')) {
                 if (i + 1 < len && input.charAt(i + 1) == '{') {
                     if (output == null) {
                         output = new StringBuilder(len + 20);
@@ -262,12 +266,11 @@ public class ELParser {
         }
     }
 
-
     /**
      * Escape '\\', '\'' and '\"', inverting the unescaping performed in
      * {@link #skipUntilEL()}.
      *
-     * @param input Non-EL input to be escaped
+     * @param input                            Non-EL input to be escaped
      * @param isDeferredSyntaxAllowedAsLiteral
      *
      * @return The escaped version of the input
@@ -319,7 +322,6 @@ public class ELParser {
         }
     }
 
-
     /*
      * @return true if there is something left in EL expression buffer other
      * than white spaces.
@@ -338,7 +340,6 @@ public class ELParser {
     /*
      * Implementation note: This method assumes that it is always preceded by a
      * call to hasNext() in order for whitespace handling to be correct.
-     *
      * @return The next token in the EL expression buffer.
      */
     private Token nextToken() {
@@ -347,12 +348,12 @@ public class ELParser {
             char ch = nextChar();
             if (Character.isJavaIdentifierStart(ch)) {
                 int start = index - 1;
-                while (index < expression.length() &&
-                        Character.isJavaIdentifierPart(
-                                ch = expression.charAt(index))) {
+                while (index < expression.length() && Character
+                        .isJavaIdentifierPart(ch = expression.charAt(index))) {
                     nextChar();
                 }
-                return new Id(getAndResetWhiteSpace(), expression.substring(start, index));
+                return new Id(getAndResetWhiteSpace(), expression.substring(
+                        start, index));
             }
 
             if (ch == '\'' || ch == '"') {
@@ -542,7 +543,6 @@ public class ELParser {
         return type;
     }
 
-
     static class TextBuilder extends ELNode.Visitor {
 
         protected final boolean isDeferredSyntaxAllowedAsLiteral;
@@ -566,13 +566,15 @@ public class ELParser {
 
         @Override
         public void visit(Function n) throws JasperException {
-            output.append(escapeLiteralExpression(n.getOriginalText(), isDeferredSyntaxAllowedAsLiteral));
+            output.append(escapeLiteralExpression(n.getOriginalText(),
+                    isDeferredSyntaxAllowedAsLiteral));
             output.append('(');
         }
 
         @Override
         public void visit(Text n) throws JasperException {
-            output.append(escapeLiteralExpression(n.getText(),isDeferredSyntaxAllowedAsLiteral));
+            output.append(escapeLiteralExpression(n.getText(),
+                    isDeferredSyntaxAllowedAsLiteral));
         }
 
         @Override

@@ -1,18 +1,16 @@
 /*
- *  Licensed to the Apache Software Foundation (ASF) under one or more
- *  contributor license agreements.  See the NOTICE file distributed with
- *  this work for additional information regarding copyright ownership.
- *  The ASF licenses this file to You under the Apache License, Version 2.0
- *  (the "License"); you may not use this file except in compliance with
- *  the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements. See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.apache.coyote.http11.upgrade;
 
@@ -31,7 +29,8 @@ import org.apache.tomcat.util.net.SocketWrapper;
 
 public class AprServletInputStream extends AbstractServletInputStream {
 
-    private static final Log log = LogFactory.getLog(AprServletInputStream.class);
+    private static final Log log = LogFactory.getLog(
+            AprServletInputStream.class);
 
     private final SocketWrapper<Long> wrapper;
     private final long socket;
@@ -39,8 +38,8 @@ public class AprServletInputStream extends AbstractServletInputStream {
     private volatile boolean eagain = false;
     private volatile boolean closed = false;
 
-
-    public AprServletInputStream(SocketWrapper<Long> wrapper, ByteBuffer leftoverInput) {
+    public AprServletInputStream(SocketWrapper<Long> wrapper,
+            ByteBuffer leftoverInput) {
         this.wrapper = wrapper;
         this.socket = wrapper.getSocket().longValue();
         if (leftoverInput != null) {
@@ -49,13 +48,13 @@ public class AprServletInputStream extends AbstractServletInputStream {
         }
     }
 
-
     @Override
     protected int doRead(boolean block, byte[] b, int off, int len)
             throws IOException {
 
         if (closed) {
-            throw new IOException(sm.getString("apr.closed", Long.valueOf(socket)));
+            throw new IOException(sm.getString("apr.closed", Long.valueOf(
+                    socket)));
         }
 
         if (leftoverInput != null) {
@@ -118,29 +117,27 @@ public class AprServletInputStream extends AbstractServletInputStream {
             // identified any issues with this but log it so it can be tracked
             // if it is suspected of causing issues in the future.
             if (log.isDebugEnabled()) {
-                log.debug(sm.getString("apr.read.sslGeneralError",
-                        Long.valueOf(socket), wrapper));
+                log.debug(sm.getString("apr.read.sslGeneralError", Long.valueOf(
+                        socket), wrapper));
             }
             eagain = true;
             return 0;
         } else if (-result == Status.APR_EOF) {
             throw new EOFException(sm.getString("apr.clientAbort"));
-        } else if ((OS.IS_WIN32 || OS.IS_WIN64) &&
-                (-result == Status.APR_OS_START_SYSERR + 10053)) {
+        } else if ((OS.IS_WIN32 || OS.IS_WIN64)
+                && (-result == Status.APR_OS_START_SYSERR + 10053)) {
             // 10053 on Windows is connection aborted
             throw new EOFException(sm.getString("apr.clientAbort"));
         } else {
-            throw new IOException(sm.getString("apr.read.error",
-                    Integer.valueOf(-result), Long.valueOf(socket), wrapper));
+            throw new IOException(sm.getString("apr.read.error", Integer
+                    .valueOf(-result), Long.valueOf(socket), wrapper));
         }
     }
-
 
     @Override
     protected boolean doIsReady() {
         return !eagain;
     }
-
 
     @Override
     protected void doClose() throws IOException {

@@ -1,19 +1,17 @@
 /*
-* Licensed to the Apache Software Foundation (ASF) under one or more
-* contributor license agreements.  See the NOTICE file distributed with
-* this work for additional information regarding copyright ownership.
-* The ASF licenses this file to You under the Apache License, Version 2.0
-* (the "License"); you may not use this file except in compliance with
-* the License.  You may obtain a copy of the License at
-*
-*     http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*/
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements. See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package compressionFilters;
 
 import java.io.IOException;
@@ -34,8 +32,8 @@ import javax.servlet.http.HttpServletResponseWrapper;
  * @author Amy Roh
  * @author Dmitri Valdin
  */
-public class CompressionServletResponseWrapper
-        extends HttpServletResponseWrapper {
+public class CompressionServletResponseWrapper extends
+        HttpServletResponseWrapper {
 
     // ----------------------------------------------------- Constructor
 
@@ -47,10 +45,10 @@ public class CompressionServletResponseWrapper
         super(response);
         origResponse = response;
         if (debug > 1) {
-            System.out.println("CompressionServletResponseWrapper constructor gets called");
+            System.out.println(
+                    "CompressionServletResponseWrapper constructor gets called");
         }
     }
-
 
     // ----------------------------------------------------- Instance Variables
 
@@ -64,7 +62,6 @@ public class CompressionServletResponseWrapper
      * <code>getOutputStream()</code>, if any.
      */
     protected ServletOutputStream stream = null;
-
 
     /**
      * The PrintWriter that has been returned by
@@ -80,12 +77,13 @@ public class CompressionServletResponseWrapper
     /**
      * The compression buffer size
      */
-    protected int compressionBuffer = 8192;  // 8KB default
+    protected int compressionBuffer = 8192; // 8KB default
 
     /**
      * The mime types to compress
      */
-    protected String[] compressionMimeTypes = {"text/html", "text/xml", "text/plain"};
+    protected String[] compressionMimeTypes = { "text/html", "text/xml",
+            "text/plain" };
 
     /**
      * Debug level
@@ -95,11 +93,9 @@ public class CompressionServletResponseWrapper
     /**
      * keeps a copy of all headers set
      */
-    private final Map<String,String> headerCopies = new HashMap<>();
-
+    private final Map<String, String> headerCopies = new HashMap<>();
 
     // --------------------------------------------------------- Public Methods
-
 
     /**
      * Set threshold number
@@ -126,8 +122,8 @@ public class CompressionServletResponseWrapper
      */
     public void setCompressionMimeTypes(String[] mimeTypes) {
         if (debug > 1) {
-            System.out.println("setCompressionMimeTypes to " +
-                    Arrays.toString(mimeTypes));
+            System.out.println("setCompressionMimeTypes to " + Arrays.toString(
+                    mimeTypes));
         }
         this.compressionMimeTypes = mimeTypes;
     }
@@ -138,7 +134,6 @@ public class CompressionServletResponseWrapper
     public void setDebugLevel(int debug) {
         this.debug = debug;
     }
-
 
     /**
      * Create and return a ServletOutputStream to write the content
@@ -151,8 +146,8 @@ public class CompressionServletResponseWrapper
             System.out.println("createOutputStream gets called");
         }
 
-        CompressionResponseStream stream = new CompressionResponseStream(
-                this, origResponse.getOutputStream());
+        CompressionResponseStream stream = new CompressionResponseStream(this,
+                origResponse.getOutputStream());
         stream.setDebugLevel(debug);
         stream.setCompressionThreshold(compressionThreshold);
         stream.setCompressionBuffer(compressionBuffer);
@@ -160,7 +155,6 @@ public class CompressionServletResponseWrapper
 
         return stream;
     }
-
 
     /**
      * Finish a response.
@@ -178,9 +172,7 @@ public class CompressionServletResponseWrapper
         }
     }
 
-
     // ------------------------------------------------ ServletResponse Methods
-
 
     /**
      * Flush the buffer and commit this response.
@@ -192,7 +184,7 @@ public class CompressionServletResponseWrapper
         if (debug > 1) {
             System.out.println("flush buffer @ GZipServletResponseWrapper");
         }
-        ((CompressionResponseStream)stream).flush();
+        ((CompressionResponseStream) stream).flush();
 
     }
 
@@ -200,19 +192,21 @@ public class CompressionServletResponseWrapper
      * Return the servlet output stream associated with this Response.
      *
      * @exception IllegalStateException if <code>getWriter</code> has
-     *  already been called for this response
-     * @exception IOException if an input/output error occurs
+     *                                  already been called for this response
+     * @exception IOException           if an input/output error occurs
      */
     @Override
     public ServletOutputStream getOutputStream() throws IOException {
 
         if (writer != null)
-            throw new IllegalStateException("getWriter() has already been called for this response");
+            throw new IllegalStateException(
+                    "getWriter() has already been called for this response");
 
         if (stream == null)
             stream = createOutputStream();
         if (debug > 1) {
-            System.out.println("stream is set to "+stream+" in getOutputStream");
+            System.out.println("stream is set to " + stream
+                    + " in getOutputStream");
         }
 
         return (stream);
@@ -223,8 +217,8 @@ public class CompressionServletResponseWrapper
      * Return the writer associated with this Response.
      *
      * @exception IllegalStateException if <code>getOutputStream</code> has
-     *  already been called for this response
-     * @exception IOException if an input/output error occurs
+     *                                  already been called for this response
+     * @exception IOException           if an input/output error occurs
      */
     @Override
     public PrintWriter getWriter() throws IOException {
@@ -233,11 +227,12 @@ public class CompressionServletResponseWrapper
             return (writer);
 
         if (stream != null)
-            throw new IllegalStateException("getOutputStream() has already been called for this response");
+            throw new IllegalStateException(
+                    "getOutputStream() has already been called for this response");
 
         stream = createOutputStream();
         if (debug > 1) {
-            System.out.println("stream is set to "+stream+" in getWriter");
+            System.out.println("stream is set to " + stream + " in getWriter");
         }
         String charEnc = origResponse.getCharacterEncoding();
         if (debug > 1) {
@@ -263,12 +258,14 @@ public class CompressionServletResponseWrapper
     public void addHeader(String name, String value) {
         if (headerCopies.containsKey(name)) {
             String existingValue = headerCopies.get(name);
-            if ((existingValue != null) && (existingValue.length() > 0)) headerCopies.put(name, existingValue + "," + value);
-            else headerCopies.put(name, value);
-        } else headerCopies.put(name, value);
+            if ((existingValue != null) && (existingValue.length() > 0))
+                headerCopies.put(name, existingValue + "," + value);
+            else
+                headerCopies.put(name, value);
+        } else
+            headerCopies.put(name, value);
         super.addHeader(name, value);
     }
-
 
     @Override
     public void setHeader(String name, String value) {

@@ -1,18 +1,16 @@
 /*
- *  Licensed to the Apache Software Foundation (ASF) under one or more
- *  contributor license agreements.  See the NOTICE file distributed with
- *  this work for additional information regarding copyright ownership.
- *  The ASF licenses this file to You under the Apache License, Version 2.0
- *  (the "License"); you may not use this file except in compliance with
- *  the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements. See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.apache.tomcat.websocket.server;
 
@@ -37,7 +35,7 @@ import javax.websocket.server.ServerEndpointConfig;
 
 import org.junit.Assert;
 import org.junit.Before;
-//import org.junit.Ignore;
+// import org.junit.Ignore;
 import org.junit.Test;
 
 import org.apache.catalina.Context;
@@ -59,7 +57,6 @@ public class TestClose extends WebSocketBaseTest {
     // the endpoint
     private static volatile Events events;
 
-
     public static class Events {
         // Used to block in the @OnMessage
         public final CountDownLatch onMessageWait = new CountDownLatch(1);
@@ -78,7 +75,6 @@ public class TestClose extends WebSocketBaseTest {
         public volatile boolean onMessageSends = false;
     }
 
-
     private static void awaitLatch(CountDownLatch latch, String failMessage) {
         try {
             if (!latch.await(30000, TimeUnit.MILLISECONDS)) {
@@ -90,7 +86,6 @@ public class TestClose extends WebSocketBaseTest {
         }
     }
 
-
     public static void awaitOnClose(CloseCode... codes) {
         Set<CloseCode> set = new HashSet<>();
         for (CloseCode code : codes) {
@@ -99,20 +94,18 @@ public class TestClose extends WebSocketBaseTest {
         awaitOnClose(set);
     }
 
-
     public static void awaitOnClose(Set<CloseCode> codes) {
         awaitLatch(events.onCloseCalled, "onClose not called");
         CloseCode received = events.closeReason.getCloseCode();
         Assert.assertTrue("Rx: " + received, codes.contains(received));
     }
 
-
     public static void awaitOnError(Class<? extends Throwable> exceptionClazz) {
         awaitLatch(events.onErrorCalled, "onError not called");
         Assert.assertTrue(events.onErrorThrowable.getClass().getName(),
-                exceptionClazz.isAssignableFrom(events.onErrorThrowable.getClass()));
+                exceptionClazz.isAssignableFrom(events.onErrorThrowable
+                        .getClass()));
     }
-
 
     @Override
     @Before
@@ -121,24 +114,24 @@ public class TestClose extends WebSocketBaseTest {
         events = new Events();
     }
 
-
     @Test
     public void testTcpClose() throws Exception {
         startServer(TestEndpointConfig.class);
 
-        TesterWsCloseClient client = new TesterWsCloseClient("localhost", getPort());
+        TesterWsCloseClient client = new TesterWsCloseClient("localhost",
+                getPort());
         client.httpUpgrade(BaseEndpointConfig.PATH);
         client.closeSocket();
 
         awaitOnClose(CloseCodes.CLOSED_ABNORMALLY);
     }
 
-
     @Test
     public void testTcpReset() throws Exception {
         startServer(TestEndpointConfig.class);
 
-        TesterWsCloseClient client = new TesterWsCloseClient("localhost", getPort());
+        TesterWsCloseClient client = new TesterWsCloseClient("localhost",
+                getPort());
         client.httpUpgrade(BaseEndpointConfig.PATH);
         client.forceCloseSocket();
 
@@ -147,12 +140,12 @@ public class TestClose extends WebSocketBaseTest {
         awaitOnClose(CloseCodes.CLOSED_ABNORMALLY);
     }
 
-
     @Test
     public void testWsCloseThenTcpClose() throws Exception {
         startServer(TestEndpointConfig.class);
 
-        TesterWsCloseClient client = new TesterWsCloseClient("localhost", getPort());
+        TesterWsCloseClient client = new TesterWsCloseClient("localhost",
+                getPort());
         client.httpUpgrade(BaseEndpointConfig.PATH);
         client.sendCloseFrame(CloseCodes.GOING_AWAY);
         client.closeSocket();
@@ -160,12 +153,12 @@ public class TestClose extends WebSocketBaseTest {
         awaitOnClose(CloseCodes.GOING_AWAY);
     }
 
-
     @Test
     public void testWsCloseThenTcpReset() throws Exception {
         startServer(TestEndpointConfig.class);
 
-        TesterWsCloseClient client = new TesterWsCloseClient("localhost", getPort());
+        TesterWsCloseClient client = new TesterWsCloseClient("localhost",
+                getPort());
         client.httpUpgrade(BaseEndpointConfig.PATH);
         client.sendCloseFrame(CloseCodes.GOING_AWAY);
         client.forceCloseSocket();
@@ -180,12 +173,12 @@ public class TestClose extends WebSocketBaseTest {
         awaitOnClose(CloseCodes.CLOSED_ABNORMALLY, CloseCodes.GOING_AWAY);
     }
 
-
     @Test
     public void testTcpCloseInOnMessage() throws Exception {
         startServer(TestEndpointConfig.class);
 
-        TesterWsCloseClient client = new TesterWsCloseClient("localhost", getPort());
+        TesterWsCloseClient client = new TesterWsCloseClient("localhost",
+                getPort());
         client.httpUpgrade(BaseEndpointConfig.PATH);
         client.sendMessage("Test");
         awaitLatch(events.onMessageCalled, "onMessage not called");
@@ -196,12 +189,12 @@ public class TestClose extends WebSocketBaseTest {
         awaitOnClose(CloseCodes.CLOSED_ABNORMALLY);
     }
 
-
     @Test
     public void testTcpResetInOnMessage() throws Exception {
         startServer(TestEndpointConfig.class);
 
-        TesterWsCloseClient client = new TesterWsCloseClient("localhost", getPort());
+        TesterWsCloseClient client = new TesterWsCloseClient("localhost",
+                getPort());
         client.httpUpgrade(BaseEndpointConfig.PATH);
         client.sendMessage("Test");
         awaitLatch(events.onMessageCalled, "onMessage not called");
@@ -213,13 +206,11 @@ public class TestClose extends WebSocketBaseTest {
         awaitOnClose(CloseCodes.CLOSED_ABNORMALLY);
     }
 
-
     @Test
     public void testTcpCloseWhenOnMessageSends() throws Exception {
         events.onMessageSends = true;
         testTcpCloseInOnMessage();
     }
-
 
     @Test
     public void testTcpResetWhenOnMessageSends() throws Exception {
@@ -227,14 +218,14 @@ public class TestClose extends WebSocketBaseTest {
         testTcpResetInOnMessage();
     }
 
-
     @Test
     public void testWsCloseThenTcpCloseWhenOnMessageSends() throws Exception {
         events.onMessageSends = true;
 
         startServer(TestEndpointConfig.class);
 
-        TesterWsCloseClient client = new TesterWsCloseClient("localhost", getPort());
+        TesterWsCloseClient client = new TesterWsCloseClient("localhost",
+                getPort());
         client.httpUpgrade(BaseEndpointConfig.PATH);
         client.sendMessage("Test");
         awaitLatch(events.onMessageCalled, "onMessage not called");
@@ -247,14 +238,14 @@ public class TestClose extends WebSocketBaseTest {
         awaitOnClose(CloseCodes.CLOSED_ABNORMALLY, CloseCodes.NORMAL_CLOSURE);
     }
 
-
     @Test
     public void testWsCloseThenTcpResetWhenOnMessageSends() throws Exception {
         events.onMessageSends = true;
 
         startServer(TestEndpointConfig.class);
 
-        TesterWsCloseClient client = new TesterWsCloseClient("localhost", getPort());
+        TesterWsCloseClient client = new TesterWsCloseClient("localhost",
+                getPort());
         client.httpUpgrade(BaseEndpointConfig.PATH);
         client.sendMessage("Test");
         awaitLatch(events.onMessageCalled, "onMessage not called");
@@ -266,13 +257,13 @@ public class TestClose extends WebSocketBaseTest {
         awaitOnClose(CloseCodes.CLOSED_ABNORMALLY);
     }
 
-
     public static class TestEndpoint {
 
         @OnOpen
         public void onOpen(Session session) {
             session.getUserProperties().put(
-                    "org.apache.tomcat.websocket.BLOCKING_SEND_TIMEOUT", Long.valueOf(3000));
+                    "org.apache.tomcat.websocket.BLOCKING_SEND_TIMEOUT", Long
+                            .valueOf(3000));
             log.info("Session opened");
         }
 
@@ -294,7 +285,7 @@ public class TestClose extends WebSocketBaseTest {
                     // triggers an error here.
                     while (count < 10) {
                         count++;
-                    session.getBasicRemote().sendText("Test reply");
+                        session.getBasicRemote().sendText("Test reply");
                         Thread.sleep(500);
                     }
                 } catch (IOException | InterruptedException e) {
@@ -318,7 +309,6 @@ public class TestClose extends WebSocketBaseTest {
         }
     }
 
-
     public static class TestEndpointConfig extends BaseEndpointConfig {
 
         @Override
@@ -327,7 +317,6 @@ public class TestClose extends WebSocketBaseTest {
         }
 
     }
-
 
     private Tomcat startServer(
             final Class<? extends WsContextListener> configClass)
@@ -344,7 +333,6 @@ public class TestClose extends WebSocketBaseTest {
         return tomcat;
     }
 
-
     public abstract static class BaseEndpointConfig extends WsContextListener {
 
         public static final String PATH = "/test";
@@ -355,8 +343,7 @@ public class TestClose extends WebSocketBaseTest {
         public void contextInitialized(ServletContextEvent sce) {
             super.contextInitialized(sce);
 
-            ServerContainer sc = (ServerContainer) sce
-                    .getServletContext()
+            ServerContainer sc = (ServerContainer) sce.getServletContext()
                     .getAttribute(
                             Constants.SERVER_CONTAINER_SERVLET_CONTEXT_ATTRIBUTE);
 

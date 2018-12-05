@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -18,7 +16,6 @@ package org.apache.tomcat.util.http.fileupload;
 
 import java.io.IOException;
 import java.io.OutputStream;
-
 
 /**
  * An output stream which triggers an event when a specified number of bytes of
@@ -34,33 +31,26 @@ import java.io.OutputStream;
  * is actually reached, since it triggers when a pending write operation would
  * cause the threshold to be exceeded.
  */
-public abstract class ThresholdingOutputStream
-    extends OutputStream
-{
+public abstract class ThresholdingOutputStream extends OutputStream {
 
     // ----------------------------------------------------------- Data members
-
 
     /**
      * The threshold at which the event will be triggered.
      */
     private final int threshold;
 
-
     /**
      * The number of bytes written to the output stream.
      */
     private long written;
-
 
     /**
      * Whether or not the configured threshold has been exceeded.
      */
     private boolean thresholdExceeded;
 
-
     // ----------------------------------------------------------- Constructors
-
 
     /**
      * Constructs an instance of this class which will trigger an event at the
@@ -68,14 +58,11 @@ public abstract class ThresholdingOutputStream
      *
      * @param threshold The number of bytes at which to trigger an event.
      */
-    public ThresholdingOutputStream(int threshold)
-    {
+    public ThresholdingOutputStream(int threshold) {
         this.threshold = threshold;
     }
 
-
     // --------------------------------------------------- OutputStream methods
-
 
     /**
      * Writes the specified byte to this output stream.
@@ -85,13 +72,11 @@ public abstract class ThresholdingOutputStream
      * @exception IOException if an error occurs.
      */
     @Override
-    public void write(int b) throws IOException
-    {
+    public void write(int b) throws IOException {
         checkThreshold(1);
         getStream().write(b);
         written++;
     }
-
 
     /**
      * Writes <code>b.length</code> bytes from the specified byte array to this
@@ -102,13 +87,11 @@ public abstract class ThresholdingOutputStream
      * @exception IOException if an error occurs.
      */
     @Override
-    public void write(byte b[]) throws IOException
-    {
+    public void write(byte b[]) throws IOException {
         checkThreshold(b.length);
         getStream().write(b);
         written += b.length;
     }
-
 
     /**
      * Writes <code>len</code> bytes from the specified byte array starting at
@@ -121,13 +104,11 @@ public abstract class ThresholdingOutputStream
      * @exception IOException if an error occurs.
      */
     @Override
-    public void write(byte b[], int off, int len) throws IOException
-    {
+    public void write(byte b[], int off, int len) throws IOException {
         checkThreshold(len);
         getStream().write(b, off, len);
         written += len;
     }
-
 
     /**
      * Flushes this output stream and forces any buffered output bytes to be
@@ -136,11 +117,9 @@ public abstract class ThresholdingOutputStream
      * @exception IOException if an error occurs.
      */
     @Override
-    public void flush() throws IOException
-    {
+    public void flush() throws IOException {
         getStream().flush();
     }
-
 
     /**
      * Closes this output stream and releases any system resources associated
@@ -149,22 +128,16 @@ public abstract class ThresholdingOutputStream
      * @exception IOException if an error occurs.
      */
     @Override
-    public void close() throws IOException
-    {
-        try
-        {
+    public void close() throws IOException {
+        try {
             flush();
-        }
-        catch (IOException ignored)
-        {
+        } catch (IOException ignored) {
             // ignore
         }
         getStream().close();
     }
 
-
     // --------------------------------------------------------- Public methods
-
 
     /**
      * Determines whether or not the configured threshold has been exceeded for
@@ -173,14 +146,11 @@ public abstract class ThresholdingOutputStream
      * @return {@code true} if the threshold has been reached;
      *         {@code false} otherwise.
      */
-    public boolean isThresholdExceeded()
-    {
+    public boolean isThresholdExceeded() {
         return written > threshold;
     }
 
-
     // ------------------------------------------------------ Protected methods
-
 
     /**
      * Checks to see if writing the specified number of bytes would cause the
@@ -192,17 +162,14 @@ public abstract class ThresholdingOutputStream
      *
      * @exception IOException if an error occurs.
      */
-    protected void checkThreshold(int count) throws IOException
-    {
-        if (!thresholdExceeded && written + count > threshold)
-        {
+    protected void checkThreshold(int count) throws IOException {
+        if (!thresholdExceeded && written + count > threshold) {
             thresholdExceeded = true;
             thresholdReached();
         }
     }
 
     // ------------------------------------------------------- Abstract methods
-
 
     /**
      * Returns the underlying output stream, to which the corresponding
@@ -213,7 +180,6 @@ public abstract class ThresholdingOutputStream
      * @exception IOException if an error occurs.
      */
     protected abstract OutputStream getStream() throws IOException;
-
 
     /**
      * Indicates that the configured threshold has been reached, and that a

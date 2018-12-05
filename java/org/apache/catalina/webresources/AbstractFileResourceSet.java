@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -86,8 +84,8 @@ public abstract class AbstractFileResourceSet extends AbstractResourceSet {
             if (fileAbsPath.endsWith("."))
                 fileAbsPath = fileAbsPath + '/';
             String absPath = normalize(fileAbsPath);
-            if ((absoluteBase.length() < absPath.length())
-                && (canonicalBase.length() < canPath.length())) {
+            if ((absoluteBase.length() < absPath.length()) && (canonicalBase
+                    .length() < canPath.length())) {
                 absPath = absPath.substring(absoluteBase.length() + 1);
                 if (absPath.equals(""))
                     absPath = "/";
@@ -107,7 +105,7 @@ public abstract class AbstractFileResourceSet extends AbstractResourceSet {
     /**
      * Return a context-relative path, beginning with a "/", that represents
      * the canonical version of the specified path after ".." and "." elements
-     * are resolved out.  If the specified path attempts to go outside the
+     * are resolved out. If the specified path attempts to go outside the
      * boundaries of the current context (i.e. too many ".." path elements
      * are present), return <code>null</code> instead.
      *
@@ -136,7 +134,6 @@ public abstract class AbstractFileResourceSet extends AbstractResourceSet {
         // NO-OP
     }
 
-
     //-------------------------------------------------------- Lifecycle methods
 
     @Override
@@ -156,7 +153,6 @@ public abstract class AbstractFileResourceSet extends AbstractResourceSet {
             throw new IllegalArgumentException(e);
         }
     }
-
 
     protected abstract void checkType(File file);
 }

@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -19,7 +17,6 @@ package org.apache.tomcat.util.http.fileupload;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-
 
 /**
  * General file manipulation utilities.
@@ -53,7 +50,7 @@ public class FileUtils {
     /**
      * Deletes a directory recursively.
      *
-     * @param directory  directory to delete
+     * @param directory directory to delete
      * @throws IOException in case deletion is unsuccessful
      */
     public static void deleteDirectory(File directory) throws IOException {
@@ -66,8 +63,7 @@ public class FileUtils {
         }
 
         if (!directory.delete()) {
-            String message =
-                "Unable to delete directory " + directory + ".";
+            String message = "Unable to delete directory " + directory + ".";
             throw new IOException(message);
         }
     }
@@ -90,7 +86,7 @@ public class FileUtils {
         }
 
         File[] files = directory.listFiles();
-        if (files == null) {  // null if security restricted
+        if (files == null) { // null if security restricted
             throw new IOException("Failed to list contents of " + directory);
         }
 
@@ -110,19 +106,20 @@ public class FileUtils {
 
     //-----------------------------------------------------------------------
     /**
-     * Deletes a file. If file is a directory, delete it and all sub-directories.
+     * Deletes a file. If file is a directory, delete it and all
+     * sub-directories.
      * <p>
      * The difference between File.delete() and this method are:
      * <ul>
      * <li>A directory to be deleted does not have to be empty.</li>
      * <li>You get exceptions when a file or directory cannot be deleted.
-     *      (java.io.File methods returns a boolean)</li>
+     * (java.io.File methods returns a boolean)</li>
      * </ul>
      *
-     * @param file  file or directory to delete, must not be {@code null}
-     * @throws NullPointerException if the directory is {@code null}
+     * @param file file or directory to delete, must not be {@code null}
+     * @throws NullPointerException  if the directory is {@code null}
      * @throws FileNotFoundException if the file was not found
-     * @throws IOException in case deletion is unsuccessful
+     * @throws IOException           in case deletion is unsuccessful
      */
     public static void forceDelete(File file) throws IOException {
         if (file.isDirectory()) {
@@ -130,11 +127,11 @@ public class FileUtils {
         } else {
             boolean filePresent = file.exists();
             if (!file.delete()) {
-                if (!filePresent){
-                    throw new FileNotFoundException("File does not exist: " + file);
+                if (!filePresent) {
+                    throw new FileNotFoundException("File does not exist: "
+                            + file);
                 }
-                String message =
-                    "Unable to delete file: " + file;
+                String message = "Unable to delete file: " + file;
                 throw new IOException(message);
             }
         }
@@ -144,9 +141,9 @@ public class FileUtils {
      * Schedules a file to be deleted when JVM exits.
      * If file is directory delete it and all sub-directories.
      *
-     * @param file  file or directory to delete, must not be {@code null}
+     * @param file file or directory to delete, must not be {@code null}
      * @throws NullPointerException if the file is {@code null}
-     * @throws IOException in case deletion is unsuccessful
+     * @throws IOException          in case deletion is unsuccessful
      */
     public static void forceDeleteOnExit(File file) throws IOException {
         if (file.isDirectory()) {
@@ -159,11 +156,12 @@ public class FileUtils {
     /**
      * Schedules a directory recursively for deletion on JVM exit.
      *
-     * @param directory  directory to delete, must not be {@code null}
+     * @param directory directory to delete, must not be {@code null}
      * @throws NullPointerException if the directory is {@code null}
-     * @throws IOException in case deletion is unsuccessful
+     * @throws IOException          in case deletion is unsuccessful
      */
-    private static void deleteDirectoryOnExit(File directory) throws IOException {
+    private static void deleteDirectoryOnExit(File directory)
+            throws IOException {
         if (!directory.exists()) {
             return;
         }
@@ -177,11 +175,12 @@ public class FileUtils {
     /**
      * Cleans a directory without deleting it.
      *
-     * @param directory  directory to clean, must not be {@code null}
+     * @param directory directory to clean, must not be {@code null}
      * @throws NullPointerException if the directory is {@code null}
-     * @throws IOException in case cleaning is unsuccessful
+     * @throws IOException          in case cleaning is unsuccessful
      */
-    private static void cleanDirectoryOnExit(File directory) throws IOException {
+    private static void cleanDirectoryOnExit(File directory)
+            throws IOException {
         if (!directory.exists()) {
             String message = directory + " does not exist";
             throw new IllegalArgumentException(message);
@@ -193,7 +192,7 @@ public class FileUtils {
         }
 
         File[] files = directory.listFiles();
-        if (files == null) {  // null if security restricted
+        if (files == null) { // null if security restricted
             throw new IOException("Failed to list contents of " + directory);
         }
 
@@ -211,9 +210,9 @@ public class FileUtils {
         }
     }
 
-
     /**
-     * Determines whether the specified file is a Symbolic Link rather than an actual file.
+     * Determines whether the specified file is a Symbolic Link rather than an
+     * actual file.
      * <p>
      * Will not return true if there is a Symbolic Link anywhere in the path,
      * only if the specific file is.
@@ -243,7 +242,8 @@ public class FileUtils {
             fileInCanonicalDir = new File(canonicalDir, file.getName());
         }
 
-        if (fileInCanonicalDir.getCanonicalFile().equals(fileInCanonicalDir.getAbsoluteFile())) {
+        if (fileInCanonicalDir.getCanonicalFile().equals(fileInCanonicalDir
+                .getAbsoluteFile())) {
             return false;
         } else {
             return true;

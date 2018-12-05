@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -69,7 +67,6 @@ public class SSIMediator {
         urlEncoder.addSafeCharacter(')');
     }
 
-
     public SSIMediator(SSIExternalResolver ssiExternalResolver,
             long lastModifiedDate) {
         this.ssiExternalResolver = ssiExternalResolver;
@@ -77,18 +74,16 @@ public class SSIMediator {
         setConfigTimeFmt(DEFAULT_CONFIG_TIME_FMT, true);
     }
 
-
     public void setConfigErrMsg(String configErrMsg) {
         this.configErrMsg = configErrMsg;
     }
-
 
     public void setConfigTimeFmt(String configTimeFmt) {
         setConfigTimeFmt(configTimeFmt, false);
     }
 
-
-    public void setConfigTimeFmt(String configTimeFmt, boolean fromConstructor) {
+    public void setConfigTimeFmt(String configTimeFmt,
+            boolean fromConstructor) {
         this.configTimeFmt = configTimeFmt;
         this.strftime = new Strftime(configTimeFmt, Locale.US);
         //Variables like DATE_LOCAL, DATE_GMT, and LAST_MODIFIED need to be
@@ -97,31 +92,25 @@ public class SSIMediator {
         setDateVariables(fromConstructor);
     }
 
-
     public void setConfigSizeFmt(String configSizeFmt) {
         this.configSizeFmt = configSizeFmt;
     }
-
 
     public String getConfigErrMsg() {
         return configErrMsg;
     }
 
-
     public String getConfigTimeFmt() {
         return configTimeFmt;
     }
-
 
     public String getConfigSizeFmt() {
         return configSizeFmt;
     }
 
-
     public SSIConditionalState getConditionalState() {
         return conditionalState;
     }
-
 
     public Collection<String> getVariableNames() {
         Set<String> variableNames = new HashSet<>();
@@ -143,39 +132,32 @@ public class SSIMediator {
         return variableNames;
     }
 
-
     public long getFileSize(String path, boolean virtual) throws IOException {
         return ssiExternalResolver.getFileSize(path, virtual);
     }
-
 
     public long getFileLastModified(String path, boolean virtual)
             throws IOException {
         return ssiExternalResolver.getFileLastModified(path, virtual);
     }
 
-
     public String getFileText(String path, boolean virtual) throws IOException {
         return ssiExternalResolver.getFileText(path, virtual);
     }
-
 
     protected boolean isNameReserved(String name) {
         return name.startsWith(className + ".");
     }
 
-
     public String getVariableValue(String variableName) {
         return getVariableValue(variableName, "none");
     }
-
 
     public void setVariableValue(String variableName, String variableValue) {
         if (!isNameReserved(variableName)) {
             ssiExternalResolver.setVariableValue(variableName, variableValue);
         }
     }
-
 
     public String getVariableValue(String variableName, String encoding) {
         String lowerCaseVariableName = variableName.toLowerCase(Locale.ENGLISH);
@@ -187,8 +169,8 @@ public class SSIMediator {
             variableValue = ssiExternalResolver.getVariableValue(variableName);
             if (variableValue == null) {
                 variableName = variableName.toUpperCase(Locale.ENGLISH);
-                variableValue = ssiExternalResolver
-                        .getVariableValue(className + "." + variableName);
+                variableValue = ssiExternalResolver.getVariableValue(className
+                        + "." + variableName);
             }
             if (variableValue != null) {
                 variableValue = encode(variableValue, encoding);
@@ -197,7 +179,6 @@ public class SSIMediator {
         return variableValue;
     }
 
-
     /**
      * Applies variable substitution to the specified String and returns the
      * new resolved string.
@@ -205,7 +186,8 @@ public class SSIMediator {
     public String substituteVariables(String val) {
         // If it has no references or HTML entities then no work
         // need to be done
-        if (val.indexOf('$') < 0 && val.indexOf('&') < 0) return val;
+        if (val.indexOf('$') < 0 && val.indexOf('&') < 0)
+            return val;
 
         // HTML decoding
         val = val.replace("&lt;", "<");
@@ -218,8 +200,8 @@ public class SSIMediator {
         while (charStart > -1) {
             int charEnd = sb.indexOf(";", charStart);
             if (charEnd > -1) {
-                char c = (char) Integer.parseInt(
-                        sb.substring(charStart + 2, charEnd));
+                char c = (char) Integer.parseInt(sb.substring(charStart + 2,
+                        charEnd));
                 sb.delete(charStart, charEnd + 1);
                 sb.insert(charStart, c);
                 charStart = sb.indexOf("&#");
@@ -236,7 +218,8 @@ public class SSIMediator {
                     break;
                 }
             }
-            if (i == sb.length()) break;
+            if (i == sb.length())
+                break;
             // Check to see if the $ is escaped
             if (i > 1 && sb.charAt(i - 2) == '\\') {
                 sb.deleteCharAt(i - 2);
@@ -255,15 +238,18 @@ public class SSIMediator {
             }
             // Find the end of the var reference
             for (; i < sb.length(); i++) {
-                if (sb.charAt(i) == endChar) break;
+                if (sb.charAt(i) == endChar)
+                    break;
             }
             end = i;
             nameEnd = end;
-            if (endChar == '}') end++;
+            if (endChar == '}')
+                end++;
             // We should now have enough to extract the var name
             String varName = sb.substring(nameStart, nameEnd);
             String value = getVariableValue(varName);
-            if (value == null) value = "";
+            if (value == null)
+                value = "";
             // Replace the var name with its value
             sb.replace(start, end, value);
             // Start searching for the next $ after the value
@@ -272,7 +258,6 @@ public class SSIMediator {
         }
         return sb.toString();
     }
-
 
     protected String formatDate(Date date, TimeZone timeZone) {
         String retVal;
@@ -290,7 +275,6 @@ public class SSIMediator {
         return retVal;
     }
 
-
     protected String encode(String value, String encoding) {
         String retVal = null;
         if (encoding.equalsIgnoreCase("url")) {
@@ -306,16 +290,13 @@ public class SSIMediator {
         return retVal;
     }
 
-
     public void log(String message) {
         ssiExternalResolver.log(message, null);
     }
 
-
     public void log(String message, Throwable throwable) {
         ssiExternalResolver.log(message, throwable);
     }
-
 
     protected void setDateVariables(boolean fromConstructor) {
         boolean alreadySet = ssiExternalResolver.getVariableValue(className

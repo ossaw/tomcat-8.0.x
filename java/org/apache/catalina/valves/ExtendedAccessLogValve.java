@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -46,47 +44,49 @@ import org.apache.tomcat.util.ExceptionUtils;
  *
  * The following fields are supported:
  * <ul>
- * <li><code>c-dns</code>:  Client hostname (or ip address if
+ * <li><code>c-dns</code>: Client hostname (or ip address if
  * <code>enableLookups</code> for the connector is false)</li>
- * <li><code>c-ip</code>:  Client ip address</li>
- * <li><code>bytes</code>:  bytes served</li>
- * <li><code>cs-method</code>:  request method</li>
- * <li><code>cs-uri</code>:  The full uri requested</li>
- * <li><code>cs-uri-query</code>:  The query string</li>
- * <li><code>cs-uri-stem</code>:  The uri without query string</li>
- * <li><code>date</code>:  The date in yyyy-mm-dd  format for GMT</li>
- * <li><code>s-dns</code>: The server dns entry </li>
- * <li><code>s-ip</code>:  The server ip address</li>
- * <li><code>cs(XXX)</code>:  The value of header XXX from client to server</li>
- * <li><code>sc(XXX)</code>: The value of header XXX from server to client </li>
- * <li><code>sc-status</code>:  The status code</li>
- * <li><code>time</code>:  Time the request was served</li>
- * <li><code>time-taken</code>:  Time (in seconds) taken to serve the request</li>
- * <li><code>x-threadname</code>: Current request thread name (can compare later with stacktraces)</li>
- * <li><code>x-A(XXX)</code>: Pull XXX attribute from the servlet context </li>
- * <li><code>x-C(XXX)</code>: Pull the first cookie of the name XXX </li>
- * <li><code>x-O(XXX)</code>: Pull the all response header values XXX </li>
- * <li><code>x-R(XXX)</code>: Pull XXX attribute from the servlet request </li>
- * <li><code>x-S(XXX)</code>: Pull XXX attribute from the session </li>
- * <li><code>x-P(...)</code>:  Call request.getParameter(...)
- *                             and URLencode it. Helpful to capture
- *                             certain POST parameters.
+ * <li><code>c-ip</code>: Client ip address</li>
+ * <li><code>bytes</code>: bytes served</li>
+ * <li><code>cs-method</code>: request method</li>
+ * <li><code>cs-uri</code>: The full uri requested</li>
+ * <li><code>cs-uri-query</code>: The query string</li>
+ * <li><code>cs-uri-stem</code>: The uri without query string</li>
+ * <li><code>date</code>: The date in yyyy-mm-dd format for GMT</li>
+ * <li><code>s-dns</code>: The server dns entry</li>
+ * <li><code>s-ip</code>: The server ip address</li>
+ * <li><code>cs(XXX)</code>: The value of header XXX from client to server</li>
+ * <li><code>sc(XXX)</code>: The value of header XXX from server to client</li>
+ * <li><code>sc-status</code>: The status code</li>
+ * <li><code>time</code>: Time the request was served</li>
+ * <li><code>time-taken</code>: Time (in seconds) taken to serve the
+ * request</li>
+ * <li><code>x-threadname</code>: Current request thread name (can compare later
+ * with stacktraces)</li>
+ * <li><code>x-A(XXX)</code>: Pull XXX attribute from the servlet context</li>
+ * <li><code>x-C(XXX)</code>: Pull the first cookie of the name XXX</li>
+ * <li><code>x-O(XXX)</code>: Pull the all response header values XXX</li>
+ * <li><code>x-R(XXX)</code>: Pull XXX attribute from the servlet request</li>
+ * <li><code>x-S(XXX)</code>: Pull XXX attribute from the session</li>
+ * <li><code>x-P(...)</code>: Call request.getParameter(...)
+ * and URLencode it. Helpful to capture
+ * certain POST parameters.
  * </li>
  * <li>For any of the x-H(...) the following method will be called from the
- *                HttpServletRequest object </li>
- * <li><code>x-H(authType)</code>: getAuthType </li>
- * <li><code>x-H(characterEncoding)</code>: getCharacterEncoding </li>
- * <li><code>x-H(contentLength)</code>: getContentLength </li>
- * <li><code>x-H(locale)</code>:  getLocale</li>
- * <li><code>x-H(protocol)</code>: getProtocol </li>
- * <li><code>x-H(remoteUser)</code>:  getRemoteUser</li>
+ * HttpServletRequest object</li>
+ * <li><code>x-H(authType)</code>: getAuthType</li>
+ * <li><code>x-H(characterEncoding)</code>: getCharacterEncoding</li>
+ * <li><code>x-H(contentLength)</code>: getContentLength</li>
+ * <li><code>x-H(locale)</code>: getLocale</li>
+ * <li><code>x-H(protocol)</code>: getProtocol</li>
+ * <li><code>x-H(remoteUser)</code>: getRemoteUser</li>
  * <li><code>x-H(requestedSessionId)</code>: getRequestedSessionId</li>
  * <li><code>x-H(requestedSessionIdFromCookie)</code>:
- *                  isRequestedSessionIdFromCookie </li>
+ * isRequestedSessionIdFromCookie</li>
  * <li><code>x-H(requestedSessionIdValid)</code>:
- *                  isRequestedSessionIdValid</li>
- * <li><code>x-H(scheme)</code>:  getScheme</li>
- * <li><code>x-H(secure)</code>:  isSecure</li>
+ * isRequestedSessionIdValid</li>
+ * <li><code>x-H(scheme)</code>: getScheme</li>
+ * <li><code>x-H(secure)</code>: isSecure</li>
  * </ul>
  *
  *
@@ -126,17 +126,15 @@ import org.apache.tomcat.util.ExceptionUtils;
  */
 public class ExtendedAccessLogValve extends AccessLogValve {
 
-    private static final Log log = LogFactory.getLog(ExtendedAccessLogValve.class);
+    private static final Log log = LogFactory.getLog(
+            ExtendedAccessLogValve.class);
 
     // ----------------------------------------------------- Instance Variables
-
 
     /**
      * The descriptive information about this implementation.
      */
-    protected static final String extendedAccessLogInfo =
-        "org.apache.catalina.valves.ExtendedAccessLogValve/2.1";
-
+    protected static final String extendedAccessLogInfo = "org.apache.catalina.valves.ExtendedAccessLogValve/2.1";
 
     // -------------------------------------------------------- Private Methods
 
@@ -144,11 +142,11 @@ public class ExtendedAccessLogValve extends AccessLogValve {
      * Wrap the incoming value with double quotes (") and escape any double
      * quotes appearing in the value using two double quotes ("").
      *
-     *  @param value - The value to wrap
-     *  @return '-' if null. Otherwise, toString() will
-     *     be called on the object and the value will be wrapped
-     *     in quotes and any quotes will be escaped with 2
-     *     sets of quotes.
+     * @param value - The value to wrap
+     * @return '-' if null. Otherwise, toString() will
+     *         be called on the object and the value will be wrapped
+     *         in quotes and any quotes will be escaped with 2
+     *         sets of quotes.
      */
     static String wrap(Object value) {
         String svalue;
@@ -191,23 +189,20 @@ public class ExtendedAccessLogValve extends AccessLogValve {
     @Override
     protected synchronized void open() {
         super.open();
-        if (currentLogFile.length()==0) {
+        if (currentLogFile.length() == 0) {
             writer.println("#Fields: " + pattern);
             writer.println("#Version: 2.0");
             writer.println("#Software: " + ServerInfo.getServerInfo());
         }
     }
 
-
     // ------------------------------------------------------ Lifecycle Methods
-
 
     protected static class DateElement implements AccessLogElement {
         // Milli-seconds in 24 hours
         private static final long INTERVAL = (1000 * 60 * 60 * 24);
 
-        private static final ThreadLocal<ElementTimestampStruct> currentDate =
-                new ThreadLocal<ElementTimestampStruct>() {
+        private static final ThreadLocal<ElementTimestampStruct> currentDate = new ThreadLocal<ElementTimestampStruct>() {
             @Override
             protected ElementTimestampStruct initialValue() {
                 return new ElementTimestampStruct("yyyy-MM-dd");
@@ -219,12 +214,12 @@ public class ExtendedAccessLogValve extends AccessLogValve {
                 Response response, long time) {
             ElementTimestampStruct eds = currentDate.get();
             long millis = eds.currentTimestamp.getTime();
-            if (date.getTime() > (millis + INTERVAL -1) ||
-                    date.getTime() < millis) {
-                eds.currentTimestamp.setTime(
-                        date.getTime() - (date.getTime() % INTERVAL));
-                eds.currentTimestampString =
-                    eds.currentTimestampFormat.format(eds.currentTimestamp);
+            if (date.getTime() > (millis + INTERVAL - 1) || date
+                    .getTime() < millis) {
+                eds.currentTimestamp.setTime(date.getTime() - (date.getTime()
+                        % INTERVAL));
+                eds.currentTimestampString = eds.currentTimestampFormat.format(
+                        eds.currentTimestamp);
             }
             buf.append(eds.currentTimestampString);
         }
@@ -234,8 +229,7 @@ public class ExtendedAccessLogValve extends AccessLogValve {
         // Milli-seconds in a second
         private static final long INTERVAL = 1000;
 
-        private static final ThreadLocal<ElementTimestampStruct> currentTime =
-                new ThreadLocal<ElementTimestampStruct>() {
+        private static final ThreadLocal<ElementTimestampStruct> currentTime = new ThreadLocal<ElementTimestampStruct>() {
             @Override
             protected ElementTimestampStruct initialValue() {
                 return new ElementTimestampStruct("HH:mm:ss");
@@ -247,12 +241,12 @@ public class ExtendedAccessLogValve extends AccessLogValve {
                 Response response, long time) {
             ElementTimestampStruct eds = currentTime.get();
             long millis = eds.currentTimestamp.getTime();
-            if (date.getTime() > (millis + INTERVAL -1) ||
-                    date.getTime() < millis) {
-                eds.currentTimestamp.setTime(
-                        date.getTime() - (date.getTime() % INTERVAL));
-                eds.currentTimestampString =
-                    eds.currentTimestampFormat.format(eds.currentTimestamp);
+            if (date.getTime() > (millis + INTERVAL - 1) || date
+                    .getTime() < millis) {
+                eds.currentTimestamp.setTime(date.getTime() - (date.getTime()
+                        % INTERVAL));
+                eds.currentTimestampString = eds.currentTimestampFormat.format(
+                        eds.currentTimestamp);
             }
             buf.append(eds.currentTimestampString);
         }
@@ -264,6 +258,7 @@ public class ExtendedAccessLogValve extends AccessLogValve {
         public RequestHeaderElement(String header) {
             this.header = header;
         }
+
         @Override
         public void addElement(CharArrayWriter buf, Date date, Request request,
                 Response response, long time) {
@@ -291,6 +286,7 @@ public class ExtendedAccessLogValve extends AccessLogValve {
         public ServletContextElement(String attribute) {
             this.attribute = attribute;
         }
+
         @Override
         public void addElement(CharArrayWriter buf, Date date, Request request,
                 Response response, long time) {
@@ -305,6 +301,7 @@ public class ExtendedAccessLogValve extends AccessLogValve {
         public CookieElement(String name) {
             this.name = name;
         }
+
         @Override
         public void addElement(CharArrayWriter buf, Date date, Request request,
                 Response response, long time) {
@@ -320,7 +317,8 @@ public class ExtendedAccessLogValve extends AccessLogValve {
     /**
      * write a specific response header - x-O(xxx)
      */
-    protected static class ResponseAllHeaderElement implements AccessLogElement {
+    protected static class ResponseAllHeaderElement implements
+            AccessLogElement {
         private final String header;
 
         public ResponseAllHeaderElement(String header) {
@@ -345,7 +343,7 @@ public class ExtendedAccessLogValve extends AccessLogValve {
                     }
                     buf.append(wrap(buffer.toString()));
                 }
-                return ;
+                return;
             }
             buf.append("-");
         }
@@ -371,6 +369,7 @@ public class ExtendedAccessLogValve extends AccessLogValve {
         public SessionAttributeElement(String attribute) {
             this.attribute = attribute;
         }
+
         @Override
         public void addElement(CharArrayWriter buf, Date date, Request request,
                 Response response, long time) {
@@ -390,11 +389,12 @@ public class ExtendedAccessLogValve extends AccessLogValve {
         public RequestParameterElement(String parameter) {
             this.parameter = parameter;
         }
+
         /**
-         *  urlEncode the given string. If null or empty, return null.
+         * urlEncode the given string. If null or empty, return null.
          */
         private String urlEncode(String value) {
-            if (null==value || value.length()==0) {
+            if (null == value || value.length() == 0) {
                 return null;
             }
             try {
@@ -432,8 +432,8 @@ public class ExtendedAccessLogValve extends AccessLogValve {
         }
 
         public String getToken() throws IOException {
-            if(ended) {
-                return null ;
+            if (ended) {
+                return null;
             }
 
             String result = null;
@@ -443,27 +443,27 @@ public class ExtendedAccessLogValve extends AccessLogValve {
             int c = sr.read();
             while (c != -1) {
                 switch (c) {
-                case ' ':
-                    result = buf.toString();
-                    buf = new StringBuilder();
-                    buf.append((char) c);
-                    return result;
-                case '-':
-                    result = buf.toString();
-                    buf = new StringBuilder();
-                    subToken = true;
-                    return result;
-                case '(':
-                    result = buf.toString();
-                    buf = new StringBuilder();
-                    parameter = true;
-                    return result;
-                case ')':
-                    result = buf.toString();
-                    buf = new StringBuilder();
-                    break;
-                default:
-                    buf.append((char) c);
+                    case ' ':
+                        result = buf.toString();
+                        buf = new StringBuilder();
+                        buf.append((char) c);
+                        return result;
+                    case '-':
+                        result = buf.toString();
+                        buf = new StringBuilder();
+                        subToken = true;
+                        return result;
+                    case '(':
+                        result = buf.toString();
+                        buf = new StringBuilder();
+                        parameter = true;
+                        return result;
+                    case ')':
+                        result = buf.toString();
+                        buf = new StringBuilder();
+                        break;
+                    default:
+                        buf.append((char) c);
                 }
                 c = sr.read();
             }
@@ -475,7 +475,7 @@ public class ExtendedAccessLogValve extends AccessLogValve {
             }
         }
 
-        public String getParameter()throws IOException {
+        public String getParameter() throws IOException {
             String result;
             if (!parameter) {
                 return null;
@@ -495,8 +495,8 @@ public class ExtendedAccessLogValve extends AccessLogValve {
         }
 
         public String getWhiteSpaces() throws IOException {
-            if(isEnded()) {
-                return "" ;
+            if (isEnded()) {
+                return "";
             }
             StringBuilder whiteSpaces = new StringBuilder();
             if (buf.length() > 0) {
@@ -522,7 +522,7 @@ public class ExtendedAccessLogValve extends AccessLogValve {
 
         public String getRemains() throws IOException {
             StringBuilder remains = new StringBuilder();
-            for(int c = sr.read(); c != -1; c = sr.read()) {
+            for (int c = sr.read(); c != -1; c = sr.read()) {
                 remains.append((char) c);
             }
             return remains.toString();
@@ -568,7 +568,8 @@ public class ExtendedAccessLogValve extends AccessLogValve {
                 token = tokenizer.getToken();
             }
             if (log.isDebugEnabled()) {
-                log.debug("finished decoding with element size of: " + list.size());
+                log.debug("finished decoding with element size of: " + list
+                        .size());
             }
             return list.toArray(new AccessLogElement[0]);
         } catch (IOException e) {
@@ -577,7 +578,8 @@ public class ExtendedAccessLogValve extends AccessLogValve {
         }
     }
 
-    protected AccessLogElement getLogElement(String token, PatternTokenizer tokenizer) throws IOException {
+    protected AccessLogElement getLogElement(String token,
+            PatternTokenizer tokenizer) throws IOException {
         if ("date".equals(token)) {
             return new DateElement();
         } else if ("time".equals(token)) {
@@ -685,8 +687,8 @@ public class ExtendedAccessLogValve extends AccessLogValve {
             }
             return new RequestHeaderElement(parameter);
         }
-        log.error("The next characters couldn't be decoded: "
-                + tokenizer.getRemains());
+        log.error("The next characters couldn't be decoded: " + tokenizer
+                .getRemains());
         return null;
     }
 
@@ -707,13 +709,13 @@ public class ExtendedAccessLogValve extends AccessLogValve {
             }
             return new ResponseHeaderElement(parameter);
         }
-        log.error("The next characters couldn't be decoded: "
-                + tokenizer.getRemains());
+        log.error("The next characters couldn't be decoded: " + tokenizer
+                .getRemains());
         return null;
     }
 
     protected AccessLogElement getProxyElement(PatternTokenizer tokenizer)
-        throws IOException {
+            throws IOException {
         String token = null;
         if (tokenizer.hasSubToken()) {
             tokenizer.getToken();
@@ -729,7 +731,8 @@ public class ExtendedAccessLogValve extends AccessLogValve {
     protected AccessLogElement getXParameterElement(PatternTokenizer tokenizer)
             throws IOException {
         if (!tokenizer.hasSubToken()) {
-            log.error("x param in wrong format. Needs to be 'x-#(...)' read the docs!");
+            log.error(
+                    "x param in wrong format. Needs to be 'x-#(...)' read the docs!");
             return null;
         }
         String token = tokenizer.getToken();
@@ -738,7 +741,8 @@ public class ExtendedAccessLogValve extends AccessLogValve {
         }
 
         if (!tokenizer.hasParameter()) {
-            log.error("x param in wrong format. Needs to be 'x-#(...)' read the docs!");
+            log.error(
+                    "x param in wrong format. Needs to be 'x-#(...)' read the docs!");
             return null;
         }
         String parameter = tokenizer.getParameter();
@@ -796,8 +800,8 @@ public class ExtendedAccessLogValve extends AccessLogValve {
                 @Override
                 public void addElement(CharArrayWriter buf, Date date,
                         Request request, Response response, long time) {
-                    buf.append(wrap(""
-                            + request.isRequestedSessionIdFromCookie()));
+                    buf.append(wrap("" + request
+                            .isRequestedSessionIdFromCookie()));
                 }
             };
         } else if ("requestedSessionIdValid".equals(parameter)) {

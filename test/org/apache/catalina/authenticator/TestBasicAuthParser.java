@@ -1,18 +1,16 @@
 /*
- *  Licensed to the Apache Software Foundation (ASF) under one or more
- *  contributor license agreements.  See the NOTICE file distributed with
- *  this work for additional information regarding copyright ownership.
- *  The ASF licenses this file to You under the Apache License, Version 2.0
- *  (the "License"); you may not use this file except in compliance with
- *  the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements. See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.apache.catalina.authenticator;
 
@@ -41,10 +39,9 @@ public class TestBasicAuthParser {
      */
     @Test
     public void testGoodCredentials() throws Exception {
-        final BasicAuthHeader AUTH_HEADER =
-                new BasicAuthHeader(NICE_METHOD, USER_NAME, PASSWORD);
-        BasicAuthenticator.BasicCredentials credentials =
-                new BasicAuthenticator.BasicCredentials(
+        final BasicAuthHeader AUTH_HEADER = new BasicAuthHeader(NICE_METHOD,
+                USER_NAME, PASSWORD);
+        BasicAuthenticator.BasicCredentials credentials = new BasicAuthenticator.BasicCredentials(
                 AUTH_HEADER.getHeader());
         Assert.assertEquals(USER_NAME, credentials.getUsername());
         Assert.assertEquals(PASSWORD, credentials.getPassword());
@@ -52,10 +49,9 @@ public class TestBasicAuthParser {
 
     @Test
     public void testGoodCredentialsNoPassword() throws Exception {
-        final BasicAuthHeader AUTH_HEADER =
-                new BasicAuthHeader(NICE_METHOD, USER_NAME, null);
-        BasicAuthenticator.BasicCredentials credentials =
-                new BasicAuthenticator.BasicCredentials(
+        final BasicAuthHeader AUTH_HEADER = new BasicAuthHeader(NICE_METHOD,
+                USER_NAME, null);
+        BasicAuthenticator.BasicCredentials credentials = new BasicAuthenticator.BasicCredentials(
                 AUTH_HEADER.getHeader());
         Assert.assertEquals(USER_NAME, credentials.getUsername());
         Assert.assertNull(credentials.getPassword());
@@ -64,10 +60,9 @@ public class TestBasicAuthParser {
     @Test
     public void testGoodCrib() throws Exception {
         final String BASE64_CRIB = "dXNlcmlkOnNlY3JldA==";
-        final BasicAuthHeader AUTH_HEADER =
-                new BasicAuthHeader(NICE_METHOD, BASE64_CRIB);
-        BasicAuthenticator.BasicCredentials credentials =
-                new BasicAuthenticator.BasicCredentials(
+        final BasicAuthHeader AUTH_HEADER = new BasicAuthHeader(NICE_METHOD,
+                BASE64_CRIB);
+        BasicAuthenticator.BasicCredentials credentials = new BasicAuthenticator.BasicCredentials(
                 AUTH_HEADER.getHeader());
         Assert.assertEquals(USER_NAME, credentials.getUsername());
         Assert.assertEquals(PASSWORD, credentials.getPassword());
@@ -76,10 +71,9 @@ public class TestBasicAuthParser {
     @Test
     public void testGoodCribUserOnly() throws Exception {
         final String BASE64_CRIB = "dXNlcmlk";
-        final BasicAuthHeader AUTH_HEADER =
-                new BasicAuthHeader(NICE_METHOD, BASE64_CRIB);
-        BasicAuthenticator.BasicCredentials credentials =
-                new BasicAuthenticator.BasicCredentials(
+        final BasicAuthHeader AUTH_HEADER = new BasicAuthHeader(NICE_METHOD,
+                BASE64_CRIB);
+        BasicAuthenticator.BasicCredentials credentials = new BasicAuthenticator.BasicCredentials(
                 AUTH_HEADER.getHeader());
         Assert.assertEquals(USER_NAME, credentials.getUsername());
         Assert.assertNull(credentials.getPassword());
@@ -89,10 +83,9 @@ public class TestBasicAuthParser {
     public void testGoodCribOnePad() throws Exception {
         final String PASSWORD1 = "secrets";
         final String BASE64_CRIB = "dXNlcmlkOnNlY3JldHM=";
-        final BasicAuthHeader AUTH_HEADER =
-                new BasicAuthHeader(NICE_METHOD, BASE64_CRIB);
-        BasicAuthenticator.BasicCredentials credentials =
-                new BasicAuthenticator.BasicCredentials(
+        final BasicAuthHeader AUTH_HEADER = new BasicAuthHeader(NICE_METHOD,
+                BASE64_CRIB);
+        BasicAuthenticator.BasicCredentials credentials = new BasicAuthenticator.BasicCredentials(
                 AUTH_HEADER.getHeader());
         Assert.assertEquals(USER_NAME, credentials.getUsername());
         Assert.assertEquals(PASSWORD1, credentials.getPassword());
@@ -110,15 +103,13 @@ public class TestBasicAuthParser {
     @Test
     public void testGoodCribLineWrap() throws Exception {
         final String USER_LONG = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-                + "abcdefghijklmnopqrstuvwxyz0123456789+/AAAABBBBCCCC"
-                + "DDDD";                   // 80 characters
+                + "abcdefghijklmnopqrstuvwxyz0123456789+/AAAABBBBCCCC" + "DDDD"; // 80 characters
         final String BASE64_CRIB = "QUJDREVGR0hJSktMTU5PUFFSU1RVVldY"
-                + "WVphYmNkZWZnaGlqa2xtbm9wcXJzdHV2d3h5ejAxMjM0"
-                + "\n" + "NTY3ODkrL0FBQUFCQkJCQ0NDQ0REREQ=";
-        final BasicAuthHeader AUTH_HEADER =
-                new BasicAuthHeader(NICE_METHOD, BASE64_CRIB);
-        BasicAuthenticator.BasicCredentials credentials =
-                new BasicAuthenticator.BasicCredentials(
+                + "WVphYmNkZWZnaGlqa2xtbm9wcXJzdHV2d3h5ejAxMjM0" + "\n"
+                + "NTY3ODkrL0FBQUFCQkJCQ0NDQ0REREQ=";
+        final BasicAuthHeader AUTH_HEADER = new BasicAuthHeader(NICE_METHOD,
+                BASE64_CRIB);
+        BasicAuthenticator.BasicCredentials credentials = new BasicAuthenticator.BasicCredentials(
                 AUTH_HEADER.getHeader());
         Assert.assertEquals(USER_LONG, credentials.getUsername());
     }
@@ -132,19 +123,16 @@ public class TestBasicAuthParser {
     public void testGoodCribBase64Big() throws Exception {
         // Our decoder accepts a long token without complaint.
         final String USER_LONG = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-                + "abcdefghijklmnopqrstuvwxyz0123456789+/AAAABBBBCCCC"
-                + "DDDD";                   // 80 characters
+                + "abcdefghijklmnopqrstuvwxyz0123456789+/AAAABBBBCCCC" + "DDDD"; // 80 characters
         final String BASE64_CRIB = "QUJDREVGR0hJSktMTU5PUFFSU1RVVldY"
                 + "WVphYmNkZWZnaGlqa2xtbm9wcXJzdHV2d3h5ejAxMjM0"
                 + "NTY3ODkrL0FBQUFCQkJCQ0NDQ0REREQ="; // no new line
-        final BasicAuthHeader AUTH_HEADER =
-                new BasicAuthHeader(NICE_METHOD, BASE64_CRIB);
-        BasicAuthenticator.BasicCredentials credentials =
-                new BasicAuthenticator.BasicCredentials(
+        final BasicAuthHeader AUTH_HEADER = new BasicAuthHeader(NICE_METHOD,
+                BASE64_CRIB);
+        BasicAuthenticator.BasicCredentials credentials = new BasicAuthenticator.BasicCredentials(
                 AUTH_HEADER.getHeader());
         Assert.assertEquals(USER_LONG, credentials.getUsername());
     }
-
 
     /*
      * verify the parser follows RFC2617 by treating the auth-scheme
@@ -153,10 +141,9 @@ public class TestBasicAuthParser {
     @Test
     public void testAuthMethodCaseBasic() throws Exception {
         final String METHOD = "bAsIc";
-        final BasicAuthHeader AUTH_HEADER =
-                new BasicAuthHeader(METHOD, USER_NAME, PASSWORD);
-        BasicAuthenticator.BasicCredentials credentials =
-                new BasicAuthenticator.BasicCredentials(
+        final BasicAuthHeader AUTH_HEADER = new BasicAuthHeader(METHOD,
+                USER_NAME, PASSWORD);
+        BasicAuthenticator.BasicCredentials credentials = new BasicAuthenticator.BasicCredentials(
                 AUTH_HEADER.getHeader());
         Assert.assertEquals(USER_NAME, credentials.getUsername());
         Assert.assertEquals(PASSWORD, credentials.getPassword());
@@ -168,16 +155,15 @@ public class TestBasicAuthParser {
     @Test
     public void testAuthMethodBadMethod() throws Exception {
         final String METHOD = "BadMethod";
-        final BasicAuthHeader AUTH_HEADER =
-                new BasicAuthHeader(METHOD, USER_NAME, PASSWORD);
+        final BasicAuthHeader AUTH_HEADER = new BasicAuthHeader(METHOD,
+                USER_NAME, PASSWORD);
         @SuppressWarnings("unused")
         BasicAuthenticator.BasicCredentials credentials = null;
         try {
-            credentials = new BasicAuthenticator.BasicCredentials(
-                AUTH_HEADER.getHeader());
+            credentials = new BasicAuthenticator.BasicCredentials(AUTH_HEADER
+                    .getHeader());
             Assert.fail("IllegalArgumentException expected");
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             Assert.assertTrue(e instanceof IllegalArgumentException);
             Assert.assertTrue(e.getMessage().contains("header method"));
         }
@@ -186,22 +172,19 @@ public class TestBasicAuthParser {
     /*
      * Confirm the Basic parser tolerates excess white space after
      * the authentication method.
-     *
      * RFC2617 does not define the separation syntax between the auth-scheme
      * and basic-credentials tokens. Tomcat tolerates any amount of white
      * (within the limits of HTTP header sizes).
      */
     @Test
     public void testAuthMethodExtraLeadingSpace() throws Exception {
-        final BasicAuthHeader AUTH_HEADER =
-                new BasicAuthHeader(NICE_METHOD + " ", USER_NAME, PASSWORD);
-        final BasicAuthenticator.BasicCredentials credentials =
-                new BasicAuthenticator.BasicCredentials(
+        final BasicAuthHeader AUTH_HEADER = new BasicAuthHeader(NICE_METHOD
+                + " ", USER_NAME, PASSWORD);
+        final BasicAuthenticator.BasicCredentials credentials = new BasicAuthenticator.BasicCredentials(
                 AUTH_HEADER.getHeader());
         Assert.assertEquals(USER_NAME, credentials.getUsername());
         Assert.assertEquals(PASSWORD, credentials.getPassword());
     }
-
 
     /*
      * invalid decoded credentials cases
@@ -209,10 +192,9 @@ public class TestBasicAuthParser {
     @Test
     public void testWrongPassword() throws Exception {
         final String PWD_WRONG = "wrong";
-        final BasicAuthHeader AUTH_HEADER =
-                new BasicAuthHeader(NICE_METHOD, USER_NAME, PWD_WRONG);
-        BasicAuthenticator.BasicCredentials credentials =
-                new BasicAuthenticator.BasicCredentials(
+        final BasicAuthHeader AUTH_HEADER = new BasicAuthHeader(NICE_METHOD,
+                USER_NAME, PWD_WRONG);
+        BasicAuthenticator.BasicCredentials credentials = new BasicAuthenticator.BasicCredentials(
                 AUTH_HEADER.getHeader());
         Assert.assertEquals(USER_NAME, credentials.getUsername());
         Assert.assertNotSame(PASSWORD, credentials.getPassword());
@@ -221,10 +203,9 @@ public class TestBasicAuthParser {
     @Test
     public void testMissingUsername() throws Exception {
         final String EMPTY_USER_NAME = "";
-        final BasicAuthHeader AUTH_HEADER =
-                new BasicAuthHeader(NICE_METHOD, EMPTY_USER_NAME, PASSWORD);
-        BasicAuthenticator.BasicCredentials credentials =
-                new BasicAuthenticator.BasicCredentials(
+        final BasicAuthHeader AUTH_HEADER = new BasicAuthHeader(NICE_METHOD,
+                EMPTY_USER_NAME, PASSWORD);
+        BasicAuthenticator.BasicCredentials credentials = new BasicAuthenticator.BasicCredentials(
                 AUTH_HEADER.getHeader());
         Assert.assertEquals(EMPTY_USER_NAME, credentials.getUsername());
         Assert.assertEquals(PASSWORD, credentials.getPassword());
@@ -233,10 +214,9 @@ public class TestBasicAuthParser {
     @Test
     public void testShortUsername() throws Exception {
         final String SHORT_USER_NAME = "a";
-        final BasicAuthHeader AUTH_HEADER =
-                new BasicAuthHeader(NICE_METHOD, SHORT_USER_NAME, PASSWORD);
-        BasicAuthenticator.BasicCredentials credentials =
-                new BasicAuthenticator.BasicCredentials(
+        final BasicAuthHeader AUTH_HEADER = new BasicAuthHeader(NICE_METHOD,
+                SHORT_USER_NAME, PASSWORD);
+        BasicAuthenticator.BasicCredentials credentials = new BasicAuthenticator.BasicCredentials(
                 AUTH_HEADER.getHeader());
         Assert.assertEquals(SHORT_USER_NAME, credentials.getUsername());
         Assert.assertEquals(PASSWORD, credentials.getPassword());
@@ -245,10 +225,9 @@ public class TestBasicAuthParser {
     @Test
     public void testShortPassword() throws Exception {
         final String SHORT_PASSWORD = "a";
-        final BasicAuthHeader AUTH_HEADER =
-                new BasicAuthHeader(NICE_METHOD, USER_NAME, SHORT_PASSWORD);
-        BasicAuthenticator.BasicCredentials credentials =
-                new BasicAuthenticator.BasicCredentials(
+        final BasicAuthHeader AUTH_HEADER = new BasicAuthHeader(NICE_METHOD,
+                USER_NAME, SHORT_PASSWORD);
+        BasicAuthenticator.BasicCredentials credentials = new BasicAuthenticator.BasicCredentials(
                 AUTH_HEADER.getHeader());
         Assert.assertEquals(USER_NAME, credentials.getUsername());
         Assert.assertEquals(SHORT_PASSWORD, credentials.getPassword());
@@ -257,10 +236,9 @@ public class TestBasicAuthParser {
     @Test
     public void testPasswordHasSpaceEmbedded() throws Exception {
         final String PASSWORD_SPACE = "abc def";
-        final BasicAuthHeader AUTH_HEADER =
-                new BasicAuthHeader(NICE_METHOD, USER_NAME, PASSWORD_SPACE);
-        BasicAuthenticator.BasicCredentials credentials =
-                new BasicAuthenticator.BasicCredentials(
+        final BasicAuthHeader AUTH_HEADER = new BasicAuthHeader(NICE_METHOD,
+                USER_NAME, PASSWORD_SPACE);
+        BasicAuthenticator.BasicCredentials credentials = new BasicAuthenticator.BasicCredentials(
                 AUTH_HEADER.getHeader());
         Assert.assertEquals(USER_NAME, credentials.getUsername());
         Assert.assertEquals(PASSWORD_SPACE, credentials.getPassword());
@@ -269,10 +247,9 @@ public class TestBasicAuthParser {
     @Test
     public void testPasswordHasColonEmbedded() throws Exception {
         final String PASSWORD_COLON = "abc:def";
-        final BasicAuthHeader AUTH_HEADER =
-                new BasicAuthHeader(NICE_METHOD, USER_NAME, PASSWORD_COLON);
-        BasicAuthenticator.BasicCredentials credentials =
-                new BasicAuthenticator.BasicCredentials(
+        final BasicAuthHeader AUTH_HEADER = new BasicAuthHeader(NICE_METHOD,
+                USER_NAME, PASSWORD_COLON);
+        BasicAuthenticator.BasicCredentials credentials = new BasicAuthenticator.BasicCredentials(
                 AUTH_HEADER.getHeader());
         Assert.assertEquals(USER_NAME, credentials.getUsername());
         Assert.assertEquals(PASSWORD_COLON, credentials.getPassword());
@@ -281,10 +258,9 @@ public class TestBasicAuthParser {
     @Test
     public void testPasswordHasColonLeading() throws Exception {
         final String PASSWORD_COLON = ":abcdef";
-        final BasicAuthHeader AUTH_HEADER =
-                new BasicAuthHeader(NICE_METHOD, USER_NAME, PASSWORD_COLON);
-        BasicAuthenticator.BasicCredentials credentials =
-                new BasicAuthenticator.BasicCredentials(
+        final BasicAuthHeader AUTH_HEADER = new BasicAuthHeader(NICE_METHOD,
+                USER_NAME, PASSWORD_COLON);
+        BasicAuthenticator.BasicCredentials credentials = new BasicAuthenticator.BasicCredentials(
                 AUTH_HEADER.getHeader());
         Assert.assertEquals(USER_NAME, credentials.getUsername());
         Assert.assertEquals(PASSWORD_COLON, credentials.getPassword());
@@ -293,10 +269,9 @@ public class TestBasicAuthParser {
     @Test
     public void testPasswordHasColonTrailing() throws Exception {
         final String PASSWORD_COLON = "abcdef:";
-        final BasicAuthHeader AUTH_HEADER =
-                new BasicAuthHeader(NICE_METHOD, USER_NAME, PASSWORD_COLON);
-        BasicAuthenticator.BasicCredentials credentials =
-                new BasicAuthenticator.BasicCredentials(
+        final BasicAuthHeader AUTH_HEADER = new BasicAuthHeader(NICE_METHOD,
+                USER_NAME, PASSWORD_COLON);
+        BasicAuthenticator.BasicCredentials credentials = new BasicAuthenticator.BasicCredentials(
                 AUTH_HEADER.getHeader());
         Assert.assertEquals(USER_NAME, credentials.getUsername());
         Assert.assertEquals(PASSWORD_COLON, credentials.getPassword());
@@ -305,16 +280,14 @@ public class TestBasicAuthParser {
     /*
      * Confirm the Basic parser tolerates excess white space after
      * the base64 blob.
-     *
      * RFC2617 does not define this case, but asks servers to be
      * tolerant of this kind of client deviation.
      */
     @Test
     public void testAuthMethodExtraTrailingSpace() throws Exception {
-        final BasicAuthHeader AUTH_HEADER =
-                new BasicAuthHeader(NICE_METHOD, USER_NAME, PASSWORD, "    ");
-        BasicAuthenticator.BasicCredentials credentials =
-                new BasicAuthenticator.BasicCredentials(
+        final BasicAuthHeader AUTH_HEADER = new BasicAuthHeader(NICE_METHOD,
+                USER_NAME, PASSWORD, "    ");
+        BasicAuthenticator.BasicCredentials credentials = new BasicAuthenticator.BasicCredentials(
                 AUTH_HEADER.getHeader());
         Assert.assertEquals(USER_NAME, credentials.getUsername());
         Assert.assertEquals(PASSWORD, credentials.getPassword());
@@ -323,17 +296,15 @@ public class TestBasicAuthParser {
     /*
      * Confirm the Basic parser tolerates excess white space around
      * the username inside the base64 blob.
-     *
      * RFC2617 does not define the separation syntax between the auth-scheme
      * and basic-credentials tokens. Tomcat should tolerate any reasonable
      * amount of white space.
      */
     @Test
     public void testUserExtraSpace() throws Exception {
-        final BasicAuthHeader AUTH_HEADER =
-                new BasicAuthHeader(NICE_METHOD, " " + USER_NAME + " ", PASSWORD);
-        BasicAuthenticator.BasicCredentials credentials =
-                new BasicAuthenticator.BasicCredentials(
+        final BasicAuthHeader AUTH_HEADER = new BasicAuthHeader(NICE_METHOD, " "
+                + USER_NAME + " ", PASSWORD);
+        BasicAuthenticator.BasicCredentials credentials = new BasicAuthenticator.BasicCredentials(
                 AUTH_HEADER.getHeader());
         Assert.assertEquals(USER_NAME, credentials.getUsername());
         Assert.assertEquals(PASSWORD, credentials.getPassword());
@@ -342,26 +313,22 @@ public class TestBasicAuthParser {
     /*
      * Confirm the Basic parser tolerates excess white space around
      * the username within the base64 blob.
-     *
      * RFC2617 does not define the separation syntax between the auth-scheme
      * and basic-credentials tokens. Tomcat should tolerate any reasonable
      * amount of white space.
      */
     @Test
     public void testPasswordExtraSpace() throws Exception {
-        final BasicAuthHeader AUTH_HEADER =
-                new BasicAuthHeader(NICE_METHOD, USER_NAME, " " + PASSWORD + " ");
-        BasicAuthenticator.BasicCredentials credentials =
-                new BasicAuthenticator.BasicCredentials(
-                    AUTH_HEADER.getHeader());
+        final BasicAuthHeader AUTH_HEADER = new BasicAuthHeader(NICE_METHOD,
+                USER_NAME, " " + PASSWORD + " ");
+        BasicAuthenticator.BasicCredentials credentials = new BasicAuthenticator.BasicCredentials(
+                AUTH_HEADER.getHeader());
         Assert.assertEquals(USER_NAME, credentials.getUsername());
         Assert.assertEquals(PASSWORD, credentials.getPassword());
     }
 
-
     /*
      * invalid base64 string tests
-     *
      * Refer to RFC2045 section 6.8.
      */
 
@@ -374,11 +341,10 @@ public class TestBasicAuthParser {
     public void testBadBase64InlineEquals() throws Exception {
         final String BASE64_CRIB = "dXNlcmlkOnNlY3J=dAo=";
         final String TRUNCATED_PWD = "secr";
-        final BasicAuthHeader AUTH_HEADER =
-                new BasicAuthHeader(NICE_METHOD, BASE64_CRIB);
-        BasicAuthenticator.BasicCredentials credentials =
-                new BasicAuthenticator.BasicCredentials(
-                    AUTH_HEADER.getHeader());
+        final BasicAuthHeader AUTH_HEADER = new BasicAuthHeader(NICE_METHOD,
+                BASE64_CRIB);
+        BasicAuthenticator.BasicCredentials credentials = new BasicAuthenticator.BasicCredentials(
+                AUTH_HEADER.getHeader());
         Assert.assertEquals(USER_NAME, credentials.getUsername());
         Assert.assertNotSame(PASSWORD, credentials.getPassword());
         Assert.assertEquals(TRUNCATED_PWD, credentials.getPassword());
@@ -392,11 +358,10 @@ public class TestBasicAuthParser {
     @Test
     public void testBadBase64Char() throws Exception {
         final String BASE64_CRIB = "dXNlcmlkOnNl-3JldHM=";
-        final BasicAuthHeader AUTH_HEADER =
-                new BasicAuthHeader(NICE_METHOD, BASE64_CRIB);
-        BasicAuthenticator.BasicCredentials credentials =
-                new BasicAuthenticator.BasicCredentials(
-                    AUTH_HEADER.getHeader());
+        final BasicAuthHeader AUTH_HEADER = new BasicAuthHeader(NICE_METHOD,
+                BASE64_CRIB);
+        BasicAuthenticator.BasicCredentials credentials = new BasicAuthenticator.BasicCredentials(
+                AUTH_HEADER.getHeader());
         Assert.assertEquals(USER_NAME, credentials.getUsername());
         Assert.assertNotSame(PASSWORD, credentials.getPassword());
     }
@@ -412,11 +377,10 @@ public class TestBasicAuthParser {
     public void testBadBase64LastChar() throws Exception {
         final String BASE64_CRIB = "dXNlcmlkOnNlY3JldA-=";
         final String POSSIBLY_DAMAGED_PWD = "secret";
-        final BasicAuthHeader AUTH_HEADER =
-                new BasicAuthHeader(NICE_METHOD, BASE64_CRIB);
-        BasicAuthenticator.BasicCredentials credentials =
-                new BasicAuthenticator.BasicCredentials(
-                    AUTH_HEADER.getHeader());
+        final BasicAuthHeader AUTH_HEADER = new BasicAuthHeader(NICE_METHOD,
+                BASE64_CRIB);
+        BasicAuthenticator.BasicCredentials credentials = new BasicAuthenticator.BasicCredentials(
+                AUTH_HEADER.getHeader());
         Assert.assertEquals(USER_NAME, credentials.getUsername());
         Assert.assertEquals(POSSIBLY_DAMAGED_PWD, credentials.getPassword());
     }
@@ -429,11 +393,10 @@ public class TestBasicAuthParser {
     @Test
     public void testBadBase64TooManyEquals() throws Exception {
         final String BASE64_CRIB = "dXNlcmlkOnNlY3JldA===";
-        final BasicAuthHeader AUTH_HEADER =
-                new BasicAuthHeader(NICE_METHOD, BASE64_CRIB);
-        BasicAuthenticator.BasicCredentials credentials =
-                new BasicAuthenticator.BasicCredentials(
-                    AUTH_HEADER.getHeader());
+        final BasicAuthHeader AUTH_HEADER = new BasicAuthHeader(NICE_METHOD,
+                BASE64_CRIB);
+        BasicAuthenticator.BasicCredentials credentials = new BasicAuthenticator.BasicCredentials(
+                AUTH_HEADER.getHeader());
         Assert.assertEquals(USER_NAME, credentials.getUsername());
         Assert.assertEquals(PASSWORD, credentials.getPassword());
     }
@@ -448,15 +411,13 @@ public class TestBasicAuthParser {
     @Test
     public void testBadBase64BadLength() throws Exception {
         final String BASE64_CRIB = "dXNlcmlkOnNlY3JldA";
-        final BasicAuthHeader AUTH_HEADER =
-                new BasicAuthHeader(NICE_METHOD, BASE64_CRIB);
-        BasicAuthenticator.BasicCredentials credentials =
-                new BasicAuthenticator.BasicCredentials(
-                    AUTH_HEADER.getHeader());
+        final BasicAuthHeader AUTH_HEADER = new BasicAuthHeader(NICE_METHOD,
+                BASE64_CRIB);
+        BasicAuthenticator.BasicCredentials credentials = new BasicAuthenticator.BasicCredentials(
+                AUTH_HEADER.getHeader());
         Assert.assertEquals(USER_NAME, credentials.getUsername());
         Assert.assertEquals(PASSWORD, credentials.getPassword());
     }
-
 
     /*
      * Encapsulate the logic to generate an HTTP header
@@ -465,9 +426,9 @@ public class TestBasicAuthParser {
      */
     private final class BasicAuthHeader {
 
-        private  final String HTTP_AUTH = "authorization: ";
-        private  final byte[] HEADER =
-                HTTP_AUTH.getBytes(StandardCharsets.ISO_8859_1);
+        private final String HTTP_AUTH = "authorization: ";
+        private final byte[] HEADER = HTTP_AUTH.getBytes(
+                StandardCharsets.ISO_8859_1);
         private ByteChunk authHeader;
         private int initialOffset = 0;
 
@@ -482,32 +443,28 @@ public class TestBasicAuthParser {
         /*
          * This method creates valid base64 blobs with optional trailing data
          */
-        private BasicAuthHeader(String method, String username,
-                String password, String extraBlob) {
+        private BasicAuthHeader(String method, String username, String password,
+                String extraBlob) {
             prefix(method);
 
-            String userCredentials =
-                    ((password == null) || (password.length() < 1))
-                    ? username
-                    : username + ":" + password;
-            byte[] credentialsBytes =
-                    userCredentials.getBytes(StandardCharsets.ISO_8859_1);
+            String userCredentials = ((password == null) || (password
+                    .length() < 1)) ? username : username + ":" + password;
+            byte[] credentialsBytes = userCredentials.getBytes(
+                    StandardCharsets.ISO_8859_1);
             String base64auth = Base64.encodeBase64String(credentialsBytes);
-            byte[] base64Bytes =
-                    base64auth.getBytes(StandardCharsets.ISO_8859_1);
+            byte[] base64Bytes = base64auth.getBytes(
+                    StandardCharsets.ISO_8859_1);
 
-            byte[] extraBytes =
-                    ((extraBlob == null) || (extraBlob.length() < 1))
-                    ? null :
-                    extraBlob.getBytes(StandardCharsets.ISO_8859_1);
+            byte[] extraBytes = ((extraBlob == null) || (extraBlob
+                    .length() < 1)) ? null
+                            : extraBlob.getBytes(StandardCharsets.ISO_8859_1);
 
             try {
                 authHeader.append(base64Bytes, 0, base64Bytes.length);
                 if (extraBytes != null) {
                     authHeader.append(extraBytes, 0, extraBytes.length);
                 }
-            }
-            catch (IOException ioe) {
+            } catch (IOException ioe) {
                 throw new IllegalStateException("unable to extend ByteChunk:"
                         + ioe.getMessage());
             }
@@ -526,8 +483,7 @@ public class TestBasicAuthParser {
 
             try {
                 authHeader.append(fakeBytes, 0, fakeBytes.length);
-            }
-            catch (IOException ioe) {
+            } catch (IOException ioe) {
                 throw new IllegalStateException("unable to extend ByteChunk:"
                         + ioe.getMessage());
             }
@@ -548,8 +504,7 @@ public class TestBasicAuthParser {
 
             try {
                 authHeader.append(methodBytes, 0, methodBytes.length);
-            }
-            catch (IOException ioe) {
+            } catch (IOException ioe) {
                 throw new IllegalStateException("unable to extend ByteChunk:"
                         + ioe.getMessage());
             }

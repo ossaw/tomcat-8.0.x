@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -90,6 +88,7 @@ public abstract class TomcatBaseTest extends LoggingBaseTest {
     /**
      * Make the Tomcat instance preconfigured with test/webapp available to
      * sub-classes.
+     * 
      * @param addJstl Should JSTL support be added to the test webapp
      * @param start   Should the Tomcat instance be started
      *
@@ -108,8 +107,8 @@ public abstract class TomcatBaseTest extends LoggingBaseTest {
             File lib = new File("webapps/examples/WEB-INF/lib");
             ctx.setResources(new StandardRoot(ctx));
             ctx.getResources().createWebResourceSet(
-                    WebResourceRoot.ResourceSetType.POST, "/WEB-INF/lib",
-                    lib.getAbsolutePath(), null, "/");
+                    WebResourceRoot.ResourceSetType.POST, "/WEB-INF/lib", lib
+                            .getAbsolutePath(), null, "/");
         }
 
         if (start) {
@@ -150,8 +149,8 @@ public abstract class TomcatBaseTest extends LoggingBaseTest {
         String protocol = getProtocol();
         Connector connector = new Connector(protocol);
         // Listen only on localhost
-        connector.setAttribute("address",
-                InetAddress.getByName("localhost").getHostAddress());
+        connector.setAttribute("address", InetAddress.getByName("localhost")
+                .getHostAddress());
         // Use random free port
         connector.setPort(0);
         // Mainly set to reduce timeouts during async tests
@@ -172,11 +171,11 @@ public abstract class TomcatBaseTest extends LoggingBaseTest {
         tomcat.setBaseDir(catalinaBase.getAbsolutePath());
         tomcat.getHost().setAppBase(appBase.getAbsolutePath());
 
-        accessLogEnabled = Boolean.parseBoolean(
-            System.getProperty("tomcat.test.accesslog", "false"));
+        accessLogEnabled = Boolean.parseBoolean(System.getProperty(
+                "tomcat.test.accesslog", "false"));
         if (accessLogEnabled) {
-            String accessLogDirectory = System
-                    .getProperty("tomcat.test.reports");
+            String accessLogDirectory = System.getProperty(
+                    "tomcat.test.reports");
             if (accessLogDirectory == null) {
                 accessLogDirectory = new File(getBuildDirectory(), "logs")
                         .toString();
@@ -212,8 +211,8 @@ public abstract class TomcatBaseTest extends LoggingBaseTest {
             // Some tests may call tomcat.destroy(), some tests may just call
             // tomcat.stop(), some not call either method. Make sure that stop()
             // & destroy() are called as necessary.
-            if (tomcat.server != null
-                    && tomcat.server.getState() != LifecycleState.DESTROYED) {
+            if (tomcat.server != null && tomcat.server
+                    .getState() != LifecycleState.DESTROYED) {
                 if (tomcat.server.getState() != LifecycleState.STOPPED) {
                     tomcat.stop();
                 }
@@ -231,8 +230,7 @@ public abstract class TomcatBaseTest extends LoggingBaseTest {
 
         private static final long serialVersionUID = 1L;
 
-        public static final String RESPONSE_TEXT =
-            "<html><body><p>Hello World</p></body></html>";
+        public static final String RESPONSE_TEXT = "<html><body><p>Hello World</p></body></html>";
 
         @Override
         protected void doGet(HttpServletRequest req, HttpServletResponse resp)
@@ -241,7 +239,6 @@ public abstract class TomcatBaseTest extends LoggingBaseTest {
             out.print(RESPONSE_TEXT);
         }
     }
-
 
     public static final class RequestDescriptor {
 
@@ -337,47 +334,53 @@ public abstract class TomcatBaseTest extends LoggingBaseTest {
             sessionAttributes.put(name, value);
         }
 
-        public void compare (RequestDescriptor request) {
+        public void compare(RequestDescriptor request) {
             Map<String, String> base;
             Map<String, String> cmp;
             base = request.getRequestInfo();
             cmp = this.getRequestInfo();
-            for (String name: base.keySet()) {
-                Assert.assertEquals("Request info " + name, base.get(name), cmp.get(name));
+            for (String name : base.keySet()) {
+                Assert.assertEquals("Request info " + name, base.get(name), cmp
+                        .get(name));
             }
             base = request.getContextInitParameters();
             cmp = this.getContextInitParameters();
-            for (String name: base.keySet()) {
-                Assert.assertEquals("Context parameter " + name, base.get(name), cmp.get(name));
+            for (String name : base.keySet()) {
+                Assert.assertEquals("Context parameter " + name, base.get(name),
+                        cmp.get(name));
             }
             base = request.getContextAttributes();
             cmp = this.getContextAttributes();
-            for (String name: base.keySet()) {
-                Assert.assertEquals("Context attribute " + name, base.get(name), cmp.get(name));
+            for (String name : base.keySet()) {
+                Assert.assertEquals("Context attribute " + name, base.get(name),
+                        cmp.get(name));
             }
             base = request.getHeaders();
             cmp = this.getHeaders();
-            for (String name: base.keySet()) {
-                Assert.assertEquals("Header " + name, base.get(name), cmp.get(name));
+            for (String name : base.keySet()) {
+                Assert.assertEquals("Header " + name, base.get(name), cmp.get(
+                        name));
             }
             base = request.getAttributes();
             cmp = this.getAttributes();
-            for (String name: base.keySet()) {
-                Assert.assertEquals("Attribute " + name, base.get(name), cmp.get(name));
+            for (String name : base.keySet()) {
+                Assert.assertEquals("Attribute " + name, base.get(name), cmp
+                        .get(name));
             }
             base = request.getParams();
             cmp = this.getParams();
-            for (String name: base.keySet()) {
-                Assert.assertEquals("Param " + name, base.get(name), cmp.get(name));
+            for (String name : base.keySet()) {
+                Assert.assertEquals("Param " + name, base.get(name), cmp.get(
+                        name));
             }
             base = request.getSessionAttributes();
             cmp = this.getSessionAttributes();
-            for (String name: base.keySet()) {
-                Assert.assertEquals("Session attribute " + name, base.get(name), cmp.get(name));
+            for (String name : base.keySet()) {
+                Assert.assertEquals("Session attribute " + name, base.get(name),
+                        cmp.get(name));
             }
         }
     }
-
 
     public static final class SnoopResult {
 
@@ -391,7 +394,7 @@ public abstract class TomcatBaseTest extends LoggingBaseTest {
 
             RequestDescriptor request = new RequestDescriptor();
 
-            for (String line: body.split(System.lineSeparator())) {
+            for (String line : body.split(System.lineSeparator())) {
                 n = line.indexOf(": ");
                 if (n > 0) {
                     key = line.substring(0, n);
@@ -437,8 +440,8 @@ public abstract class TomcatBaseTest extends LoggingBaseTest {
         @SuppressWarnings("deprecation")
         @Override
         public void service(HttpServletRequest request,
-                            HttpServletResponse response)
-                throws ServletException, IOException {
+                HttpServletResponse response) throws ServletException,
+                IOException {
 
             String name;
             StringBuilder value;
@@ -456,17 +459,17 @@ public abstract class TomcatBaseTest extends LoggingBaseTest {
             out.println("CONTEXT-MAJOR-VERSION: " + ctx.getMajorVersion());
             out.println("CONTEXT-MINOR-VERSION: " + ctx.getMinorVersion());
             out.println("CONTEXT-SERVER-INFO: " + ctx.getServerInfo());
-            for (Enumeration<String> e = ctx.getInitParameterNames();
-                 e.hasMoreElements();) {
+            for (Enumeration<String> e = ctx.getInitParameterNames(); e
+                    .hasMoreElements();) {
                 name = e.nextElement();
-                out.println("CONTEXT-INIT-PARAM:" + name + ": " +
-                            ctx.getInitParameter(name));
+                out.println("CONTEXT-INIT-PARAM:" + name + ": " + ctx
+                        .getInitParameter(name));
             }
-            for (Enumeration<String> e = ctx.getAttributeNames();
-                 e.hasMoreElements();) {
+            for (Enumeration<String> e = ctx.getAttributeNames(); e
+                    .hasMoreElements();) {
                 name = e.nextElement();
-                out.println("CONTEXT-ATTRIBUTE:" + name + ": " +
-                            ctx.getAttribute(name));
+                out.println("CONTEXT-ATTRIBUTE:" + name + ": " + ctx
+                        .getAttribute(name));
             }
             out.println("REQUEST-CONTEXT-PATH: " + request.getContextPath());
             out.println("REQUEST-SERVER-NAME: " + request.getServerName());
@@ -485,26 +488,26 @@ public abstract class TomcatBaseTest extends LoggingBaseTest {
             out.println("REQUEST-SERVLET-PATH: " + request.getServletPath());
             out.println("REQUEST-METHOD: " + request.getMethod());
             out.println("REQUEST-PATH-INFO: " + request.getPathInfo());
-            out.println("REQUEST-PATH-TRANSLATED: " +
-                        request.getPathTranslated());
+            out.println("REQUEST-PATH-TRANSLATED: " + request
+                    .getPathTranslated());
             out.println("REQUEST-QUERY-STRING: " + request.getQueryString());
             out.println("REQUEST-REMOTE-USER: " + request.getRemoteUser());
             out.println("REQUEST-AUTH-TYPE: " + request.getAuthType());
-            out.println("REQUEST-USER-PRINCIPAL: " +
-                        request.getUserPrincipal());
-            out.println("REQUEST-CHARACTER-ENCODING: " +
-                        request.getCharacterEncoding());
-            out.println("REQUEST-CONTENT-LENGTH: " +
-                        request.getContentLengthLong());
+            out.println("REQUEST-USER-PRINCIPAL: " + request
+                    .getUserPrincipal());
+            out.println("REQUEST-CHARACTER-ENCODING: " + request
+                    .getCharacterEncoding());
+            out.println("REQUEST-CONTENT-LENGTH: " + request
+                    .getContentLengthLong());
             out.println("REQUEST-CONTENT-TYPE: " + request.getContentType());
             out.println("REQUEST-LOCALE: " + request.getLocale());
 
-            for (Enumeration<String> e = request.getHeaderNames();
-                 e.hasMoreElements();) {
+            for (Enumeration<String> e = request.getHeaderNames(); e
+                    .hasMoreElements();) {
                 name = e.nextElement();
                 value = new StringBuilder();
-                for (Enumeration<String> h = request.getHeaders(name);
-                     h.hasMoreElements();) {
+                for (Enumeration<String> h = request.getHeaders(name); h
+                        .hasMoreElements();) {
                     value.append(h.nextElement());
                     if (h.hasMoreElements()) {
                         value.append(";");
@@ -513,16 +516,17 @@ public abstract class TomcatBaseTest extends LoggingBaseTest {
                 out.println("HEADER:" + name + ": " + value);
             }
 
-            for (Enumeration<String> e = request.getAttributeNames();
-                 e.hasMoreElements();) {
+            for (Enumeration<String> e = request.getAttributeNames(); e
+                    .hasMoreElements();) {
                 name = e.nextElement();
                 attribute = request.getAttribute(name);
-                out.println("ATTRIBUTE:" + name + ": " +
-                            (attribute != null ? attribute : "(null)"));
+                out.println("ATTRIBUTE:" + name + ": " + (attribute != null
+                        ? attribute
+                        : "(null)"));
             }
 
-            for (Enumeration<String> e = request.getParameterNames();
-                 e.hasMoreElements();) {
+            for (Enumeration<String> e = request.getParameterNames(); e
+                    .hasMoreElements();) {
                 name = e.nextElement();
                 value = new StringBuilder();
                 String values[] = request.getParameterValues(name);
@@ -536,30 +540,30 @@ public abstract class TomcatBaseTest extends LoggingBaseTest {
                 out.println("PARAM/" + name + ": " + value);
             }
 
-            out.println("SESSION-REQUESTED-ID: " +
-                        request.getRequestedSessionId());
-            out.println("SESSION-REQUESTED-ID-COOKIE: " +
-                        request.isRequestedSessionIdFromCookie());
-            out.println("SESSION-REQUESTED-ID-URL: " +
-                        request.isRequestedSessionIdFromUrl());
-            out.println("SESSION-REQUESTED-ID-VALID: " +
-                        request.isRequestedSessionIdValid());
+            out.println("SESSION-REQUESTED-ID: " + request
+                    .getRequestedSessionId());
+            out.println("SESSION-REQUESTED-ID-COOKIE: " + request
+                    .isRequestedSessionIdFromCookie());
+            out.println("SESSION-REQUESTED-ID-URL: " + request
+                    .isRequestedSessionIdFromUrl());
+            out.println("SESSION-REQUESTED-ID-VALID: " + request
+                    .isRequestedSessionIdValid());
 
             if (session != null) {
                 out.println("SESSION-ID: " + session.getId());
-                out.println("SESSION-CREATION-TIME: " +
-                        session.getCreationTime());
-                out.println("SESSION-LAST-ACCESSED-TIME: " +
-                        session.getLastAccessedTime());
-                out.println("SESSION-MAX-INACTIVE-INTERVAL: " +
-                        session.getMaxInactiveInterval());
+                out.println("SESSION-CREATION-TIME: " + session
+                        .getCreationTime());
+                out.println("SESSION-LAST-ACCESSED-TIME: " + session
+                        .getLastAccessedTime());
+                out.println("SESSION-MAX-INACTIVE-INTERVAL: " + session
+                        .getMaxInactiveInterval());
                 out.println("SESSION-IS-NEW: " + session.isNew());
-                for (Enumeration<String> e = session.getAttributeNames();
-                     e.hasMoreElements();) {
+                for (Enumeration<String> e = session.getAttributeNames(); e
+                        .hasMoreElements();) {
                     name = e.nextElement();
                     attribute = session.getAttribute(name);
-                    out.println("SESSION-ATTRIBUTE:" + name + ": " +
-                                (attribute != null ? attribute : "(null)"));
+                    out.println("SESSION-ATTRIBUTE:" + name + ": "
+                            + (attribute != null ? attribute : "(null)"));
                 }
             }
 
@@ -578,7 +582,6 @@ public abstract class TomcatBaseTest extends LoggingBaseTest {
             out.println("REQUEST-BODY-SIZE: " + bodySize);
         }
     }
-
 
     /**
      * Servlet that simply echos the request body back as the response body.
@@ -605,9 +608,8 @@ public abstract class TomcatBaseTest extends LoggingBaseTest {
         }
     }
 
-
     /*
-     *  Wrapper for getting the response.
+     * Wrapper for getting the response.
      */
     public static ByteChunk getUrl(String path) throws IOException {
         ByteChunk out = new ByteChunk();
@@ -639,8 +641,8 @@ public abstract class TomcatBaseTest extends LoggingBaseTest {
 
     public static int methodUrl(String path, ByteChunk out, int readTimeout,
             Map<String, List<String>> reqHead,
-            Map<String, List<String>> resHead,
-            String method) throws IOException {
+            Map<String, List<String>> resHead, String method)
+            throws IOException {
 
         URL url = new URL(path);
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -656,8 +658,8 @@ public abstract class TomcatBaseTest extends LoggingBaseTest {
                     }
                     valueList.append(value);
                 }
-                connection.setRequestProperty(entry.getKey(),
-                        valueList.toString());
+                connection.setRequestProperty(entry.getKey(), valueList
+                        .toString());
             }
         }
         connection.connect();
@@ -676,7 +678,7 @@ public abstract class TomcatBaseTest extends LoggingBaseTest {
             try (BufferedInputStream bis = new BufferedInputStream(is)) {
                 byte[] buf = new byte[2048];
                 int rd = 0;
-                while((rd = bis.read(buf)) > 0) {
+                while ((rd = bis.read(buf)) > 0) {
                     out.append(buf, 0, rd);
                 }
             }
@@ -699,8 +701,9 @@ public abstract class TomcatBaseTest extends LoggingBaseTest {
     public static int postUrl(final byte[] body, String path, ByteChunk out,
             Map<String, List<String>> reqHead,
             Map<String, List<String>> resHead) throws IOException {
-            BytesStreamer s = new BytesStreamer() {
+        BytesStreamer s = new BytesStreamer() {
             boolean done = false;
+
             @Override
             public byte[] next() {
                 done = true;
@@ -710,26 +713,26 @@ public abstract class TomcatBaseTest extends LoggingBaseTest {
 
             @Override
             public int getLength() {
-                return body!=null?body.length:0;
+                return body != null ? body.length : 0;
             }
 
             @Override
             public int available() {
-                if (done) return 0;
-                else return getLength();
+                if (done)
+                    return 0;
+                else
+                    return getLength();
             }
         };
-        return postUrl(false,s,path,out,reqHead,resHead);
+        return postUrl(false, s, path, out, reqHead, resHead);
     }
 
-
-    public static int postUrl(boolean stream, BytesStreamer streamer, String path, ByteChunk out,
-                Map<String, List<String>> reqHead,
-                Map<String, List<String>> resHead) throws IOException {
+    public static int postUrl(boolean stream, BytesStreamer streamer,
+            String path, ByteChunk out, Map<String, List<String>> reqHead,
+            Map<String, List<String>> resHead) throws IOException {
 
         URL url = new URL(path);
-        HttpURLConnection connection =
-            (HttpURLConnection) url.openConnection();
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.setDoOutput(true);
         connection.setReadTimeout(1000000);
         if (reqHead != null) {
@@ -741,12 +744,12 @@ public abstract class TomcatBaseTest extends LoggingBaseTest {
                     }
                     valueList.append(value);
                 }
-                connection.setRequestProperty(entry.getKey(),
-                        valueList.toString());
+                connection.setRequestProperty(entry.getKey(), valueList
+                        .toString());
             }
         }
         if (streamer != null && stream) {
-            if (streamer.getLength()>0) {
+            if (streamer.getLength() > 0) {
                 connection.setFixedLengthStreamingMode(streamer.getLength());
             } else {
                 connection.setChunkedStreamingMode(1024);
@@ -783,7 +786,7 @@ public abstract class TomcatBaseTest extends LoggingBaseTest {
         try (BufferedInputStream bis = new BufferedInputStream(is)) {
             byte[] buf = new byte[2048];
             int rd = 0;
-            while((rd = bis.read(buf)) > 0) {
+            while ((rd = bis.read(buf)) > 0) {
                 out.append(buf, 0, rd);
             }
         }
@@ -825,7 +828,6 @@ public abstract class TomcatBaseTest extends LoggingBaseTest {
         }
     }
 
-
     public static void recursiveCopy(final Path src, final Path dest)
             throws IOException {
 
@@ -844,8 +846,8 @@ public abstract class TomcatBaseTest extends LoggingBaseTest {
                 Files.copy(file, destPath);
                 // Make sure that HostConfig thinks all newly copied files have
                 // been modified.
-                destPath.toFile().setLastModified(
-                        System.currentTimeMillis() - 2 * HostConfig.FILE_MODIFICATION_RESOLUTION_MS);
+                destPath.toFile().setLastModified(System.currentTimeMillis() - 2
+                        * HostConfig.FILE_MODIFICATION_RESOLUTION_MS);
                 return FileVisitResult.CONTINUE;
             }
 
@@ -860,6 +862,7 @@ public abstract class TomcatBaseTest extends LoggingBaseTest {
                     throws IOException {
                 // NO-OP
                 return FileVisitResult.CONTINUE;
-            }});
+            }
+        });
     }
 }

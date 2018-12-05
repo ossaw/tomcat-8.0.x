@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -21,31 +19,24 @@ import java.util.Collection;
 
 import javax.servlet.descriptor.JspPropertyGroupDescriptor;
 
-
-
-public class JspPropertyGroupDescriptorImpl
-        implements JspPropertyGroupDescriptor{
+public class JspPropertyGroupDescriptorImpl implements
+        JspPropertyGroupDescriptor {
 
     private final JspPropertyGroup jspPropertyGroup;
 
-
-    public JspPropertyGroupDescriptorImpl(
-            JspPropertyGroup jspPropertyGroup) {
+    public JspPropertyGroupDescriptorImpl(JspPropertyGroup jspPropertyGroup) {
         this.jspPropertyGroup = jspPropertyGroup;
     }
-
 
     @Override
     public String getBuffer() {
         return jspPropertyGroup.getBuffer();
     }
 
-
     @Override
     public String getDefaultContentType() {
         return jspPropertyGroup.getDefaultContentType();
     }
-
 
     @Override
     public String getDeferredSyntaxAllowedAsLiteral() {
@@ -58,7 +49,6 @@ public class JspPropertyGroupDescriptorImpl
         return result;
     }
 
-
     @Override
     public String getElIgnored() {
         String result = null;
@@ -70,31 +60,27 @@ public class JspPropertyGroupDescriptorImpl
         return result;
     }
 
-
     @Override
     public String getErrorOnUndeclaredNamespace() {
         String result = null;
 
         if (jspPropertyGroup.getErrorOnUndeclaredNamespace() != null) {
-            result =
-                jspPropertyGroup.getErrorOnUndeclaredNamespace().toString();
+            result = jspPropertyGroup.getErrorOnUndeclaredNamespace()
+                    .toString();
         }
 
         return result;
     }
-
 
     @Override
     public Collection<String> getIncludeCodas() {
         return new ArrayList<>(jspPropertyGroup.getIncludeCodas());
     }
 
-
     @Override
     public Collection<String> getIncludePreludes() {
         return new ArrayList<>(jspPropertyGroup.getIncludePreludes());
     }
-
 
     @Override
     public String getIsXml() {
@@ -107,12 +93,10 @@ public class JspPropertyGroupDescriptorImpl
         return result;
     }
 
-
     @Override
     public String getPageEncoding() {
         return jspPropertyGroup.getPageEncoding();
     }
-
 
     @Override
     public String getScriptingInvalid() {
@@ -125,7 +109,6 @@ public class JspPropertyGroupDescriptorImpl
         return result;
     }
 
-
     @Override
     public String getTrimDirectiveWhitespaces() {
         String result = null;
@@ -136,7 +119,6 @@ public class JspPropertyGroupDescriptorImpl
 
         return result;
     }
-
 
     @Override
     public Collection<String> getUrlPatterns() {

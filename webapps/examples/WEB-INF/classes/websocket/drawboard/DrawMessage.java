@@ -1,18 +1,16 @@
 /*
- *  Licensed to the Apache Software Foundation (ASF) under one or more
- *  contributor license agreements.  See the NOTICE file distributed with
- *  this work for additional information regarding copyright ownership.
- *  The ASF licenses this file to You under the Apache License, Version 2.0
- *  (the "License"); you may not use this file except in compliance with
- *  the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements. See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package websocket.drawboard;
 
@@ -26,7 +24,8 @@ import java.awt.geom.Rectangle2D;
 /**
  * A message that represents a drawing action.
  * Note that we use primitive types instead of Point, Color etc.
- * to reduce object allocation.<br><br>
+ * to reduce object allocation.<br>
+ * <br>
  *
  * TODO: But a Color objects needs to be created anyway for drawing this
  * onto a Graphics2D object, so this probably does not save much.
@@ -49,6 +48,7 @@ public final class DrawMessage {
     public int getType() {
         return type;
     }
+
     public void setType(int type) {
         this.type = type;
     }
@@ -56,6 +56,7 @@ public final class DrawMessage {
     public double getThickness() {
         return thickness;
     }
+
     public void setThickness(double thickness) {
         this.thickness = thickness;
     }
@@ -63,24 +64,31 @@ public final class DrawMessage {
     public byte getColorR() {
         return colorR;
     }
+
     public void setColorR(byte colorR) {
         this.colorR = colorR;
     }
+
     public byte getColorG() {
         return colorG;
     }
+
     public void setColorG(byte colorG) {
         this.colorG = colorG;
     }
+
     public byte getColorB() {
         return colorB;
     }
+
     public void setColorB(byte colorB) {
         this.colorB = colorB;
     }
+
     public byte getColorA() {
         return colorA;
     }
+
     public void setColorA(byte colorA) {
         this.colorA = colorA;
     }
@@ -88,24 +96,31 @@ public final class DrawMessage {
     public double getX1() {
         return x1;
     }
+
     public void setX1(double x1) {
         this.x1 = x1;
     }
+
     public double getX2() {
         return x2;
     }
+
     public void setX2(double x2) {
         this.x2 = x2;
     }
+
     public double getY1() {
         return y1;
     }
+
     public void setY1(double y1) {
         this.y1 = y1;
     }
+
     public double getY2() {
         return y2;
     }
+
     public void setY2(double y2) {
         this.y2 = y2;
     }
@@ -118,11 +133,10 @@ public final class DrawMessage {
     public boolean isLastInChain() {
         return lastInChain;
     }
+
     public void setLastInChain(boolean lastInChain) {
         this.lastInChain = lastInChain;
     }
-
-
 
     public DrawMessage(int type, byte colorR, byte colorG, byte colorB,
             byte colorA, double thickness, double x1, double x2, double y1,
@@ -141,22 +155,21 @@ public final class DrawMessage {
         this.lastInChain = lastInChain;
     }
 
-
     /**
      * Draws this DrawMessage onto the given Graphics2D.
+     * 
      * @param g
      */
     public void draw(Graphics2D g) {
 
-        g.setStroke(new BasicStroke((float) thickness,
-                BasicStroke.CAP_ROUND, BasicStroke.JOIN_MITER));
-        g.setColor(new Color(colorR & 0xFF, colorG & 0xFF, colorB & 0xFF,
-                colorA & 0xFF));
+        g.setStroke(new BasicStroke((float) thickness, BasicStroke.CAP_ROUND,
+                BasicStroke.JOIN_MITER));
+        g.setColor(new Color(colorR & 0xFF, colorG & 0xFF, colorB & 0xFF, colorA
+                & 0xFF));
 
         if (x1 == x2 && y1 == y2) {
             // Always draw as arc to meet the behavior in the HTML5 Canvas.
-            Arc2D arc = new Arc2D.Double(x1, y1, 0, 0,
-                    0d, 360d, Arc2D.OPEN);
+            Arc2D arc = new Arc2D.Double(x1, y1, 0, 0, 0d, 360d, Arc2D.OPEN);
             g.draw(arc);
 
         } else if (type == 1 || type == 2) {
@@ -165,8 +178,7 @@ public final class DrawMessage {
             g.draw(line);
 
         } else if (type == 3 || type == 4) {
-            double x1 = this.x1, x2 = this.x2,
-                    y1 = this.y1, y2 = this.y2;
+            double x1 = this.x1, x2 = this.x2, y1 = this.y1, y2 = this.y2;
             if (x1 > x2) {
                 x1 = this.x2;
                 x2 = this.x1;
@@ -180,14 +192,14 @@ public final class DrawMessage {
 
             if (type == 3) {
                 // Draw a rectangle.
-                Rectangle2D rect = new Rectangle2D.Double(x1, y1,
-                        x2 - x1, y2 - y1);
+                Rectangle2D rect = new Rectangle2D.Double(x1, y1, x2 - x1, y2
+                        - y1);
                 g.draw(rect);
 
             } else if (type == 4) {
                 // Draw an ellipse.
-                Arc2D arc = new Arc2D.Double(x1, y1, x2 - x1, y2 - y1,
-                        0d, 360d, Arc2D.OPEN);
+                Arc2D arc = new Arc2D.Double(x1, y1, x2 - x1, y2 - y1, 0d, 360d,
+                        Arc2D.OPEN);
                 g.draw(arc);
 
             }
@@ -205,8 +217,9 @@ public final class DrawMessage {
 
         return type + "," + (colorR & 0xFF) + "," + (colorG & 0xFF) + ","
                 + (colorB & 0xFF) + "," + (colorA & 0xFF) + "," + thickness
-                + "," + x1 + "," + y1 + "," + x2 + "," + y2 + ","
-                + (lastInChain ? "1" : "0");
+                + "," + x1 + "," + y1 + "," + x2 + "," + y2 + "," + (lastInChain
+                        ? "1"
+                        : "0");
     }
 
     public static DrawMessage parseFromString(String str)
@@ -246,9 +259,9 @@ public final class DrawMessage {
             throw new ParseException(ex);
         }
 
-        DrawMessage m = new DrawMessage(type, colors[0], colors[1],
-                colors[2], colors[3], thickness, coords[0], coords[2],
-                coords[1], coords[3], last);
+        DrawMessage m = new DrawMessage(type, colors[0], colors[1], colors[2],
+                colors[3], thickness, coords[0], coords[2], coords[1],
+                coords[3], last);
 
         return m;
     }
@@ -264,7 +277,5 @@ public final class DrawMessage {
             super(message);
         }
     }
-
-
 
 }

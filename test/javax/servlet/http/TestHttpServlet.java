@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -48,15 +46,14 @@ public class TestHttpServlet extends TomcatBaseTest {
 
         tomcat.start();
 
-        Map<String,List<String>> resHeaders= new HashMap<>();
+        Map<String, List<String>> resHeaders = new HashMap<>();
         int rc = headUrl("http://localhost:" + getPort() + "/", new ByteChunk(),
-               resHeaders);
+                resHeaders);
 
         Assert.assertEquals(HttpServletResponse.SC_OK, rc);
-        Assert.assertEquals(LargeBodyServlet.RESPONSE_LENGTH,
-                resHeaders.get("Content-Length").get(0));
+        Assert.assertEquals(LargeBodyServlet.RESPONSE_LENGTH, resHeaders.get(
+                "Content-Length").get(0));
     }
-
 
     private static class LargeBodyServlet extends HttpServlet {
 
@@ -69,7 +66,6 @@ public class TestHttpServlet extends TomcatBaseTest {
             resp.setHeader("content-length", RESPONSE_LENGTH);
         }
     }
-
 
     /**
      * Verifies that the same Content-Length is returned for both GET and HEAD
@@ -92,7 +88,7 @@ public class TestHttpServlet extends TomcatBaseTest {
 
         tomcat.start();
 
-        Map<String,List<String>> resHeaders= new HashMap<>();
+        Map<String, List<String>> resHeaders = new HashMap<>();
         String path = "http://localhost:" + getPort() + "/outer";
         ByteChunk out = new ByteChunk();
 
@@ -110,7 +106,6 @@ public class TestHttpServlet extends TomcatBaseTest {
         tomcat.stop();
     }
 
-
     private static class Bug57602ServletOuter extends HttpServlet {
 
         private static final long serialVersionUID = 1L;
@@ -126,7 +121,6 @@ public class TestHttpServlet extends TomcatBaseTest {
             pw.println("Footer");
         }
     }
-
 
     private static class Bug57602ServletInner extends HttpServlet {
 

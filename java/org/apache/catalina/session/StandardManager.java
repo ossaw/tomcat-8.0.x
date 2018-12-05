@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -50,7 +48,7 @@ import org.apache.tomcat.util.ExceptionUtils;
  * when the entire server is shut down and restarted, or when a particular
  * web application is reloaded.
  * <p>
- * <b>IMPLEMENTATION NOTE</b>:  Correct behavior of session storing and
+ * <b>IMPLEMENTATION NOTE</b>: Correct behavior of session storing and
  * reloading depends upon external calls to the <code>start()</code> and
  * <code>stop()</code> methods of this class at the correct times.
  *
@@ -62,35 +60,33 @@ public class StandardManager extends ManagerBase {
 
     // ---------------------------------------------------- Security Classes
 
-    private class PrivilegedDoLoad
-        implements PrivilegedExceptionAction<Void> {
+    private class PrivilegedDoLoad implements PrivilegedExceptionAction<Void> {
 
         PrivilegedDoLoad() {
             // NOOP
         }
 
         @Override
-        public Void run() throws Exception{
-           doLoad();
-           return null;
+        public Void run() throws Exception {
+            doLoad();
+            return null;
         }
     }
 
-    private class PrivilegedDoUnload
-        implements PrivilegedExceptionAction<Void> {
+    private class PrivilegedDoUnload implements
+            PrivilegedExceptionAction<Void> {
 
         PrivilegedDoUnload() {
             // NOOP
         }
 
         @Override
-        public Void run() throws Exception{
+        public Void run() throws Exception {
             doUnload();
             return null;
         }
 
     }
-
 
     // ----------------------------------------------------- Instance Variables
 
@@ -98,7 +94,6 @@ public class StandardManager extends ManagerBase {
      * The descriptive name of this Manager implementation (for logging).
      */
     protected static final String name = "StandardManager";
-
 
     /**
      * Path name of the disk file in which active sessions are saved
@@ -110,14 +105,12 @@ public class StandardManager extends ManagerBase {
      */
     protected String pathname = "SESSIONS.ser";
 
-
     // ------------------------------------------------------------- Properties
 
     @Override
     public String getName() {
         return name;
     }
-
 
     /**
      * @return The session persistence pathname, if any.
@@ -126,9 +119,8 @@ public class StandardManager extends ManagerBase {
         return pathname;
     }
 
-
     /**
-     * Set the session persistence pathname to the specified value.  If no
+     * Set the session persistence pathname to the specified value. If no
      * persistence support is desired, set the pathname to <code>null</code>.
      *
      * @param pathname New session persistence pathname
@@ -139,20 +131,19 @@ public class StandardManager extends ManagerBase {
         support.firePropertyChange("pathname", oldPathname, this.pathname);
     }
 
-
     // --------------------------------------------------------- Public Methods
 
     @Override
     public void load() throws ClassNotFoundException, IOException {
-        if (SecurityUtil.isPackageProtectionEnabled()){
-            try{
-                AccessController.doPrivileged( new PrivilegedDoLoad() );
-            } catch (PrivilegedActionException ex){
+        if (SecurityUtil.isPackageProtectionEnabled()) {
+            try {
+                AccessController.doPrivileged(new PrivilegedDoLoad());
+            } catch (PrivilegedActionException ex) {
                 Exception exception = ex.getException();
                 if (exception instanceof ClassNotFoundException) {
-                    throw (ClassNotFoundException)exception;
+                    throw (ClassNotFoundException) exception;
                 } else if (exception instanceof IOException) {
-                    throw (IOException)exception;
+                    throw (IOException) exception;
                 }
                 if (log.isDebugEnabled()) {
                     log.debug("Unreported exception in load() ", exception);
@@ -163,15 +154,14 @@ public class StandardManager extends ManagerBase {
         }
     }
 
-
     /**
      * Load any currently active sessions that were previously unloaded
-     * to the appropriate persistence mechanism, if any.  If persistence is not
+     * to the appropriate persistence mechanism, if any. If persistence is not
      * supported, this method returns without doing anything.
      *
      * @exception ClassNotFoundException if a serialized class cannot be
-     *  found during the reload
-     * @exception IOException if an input/output error occurs
+     *                                   found during the reload
+     * @exception IOException            if an input/output error occurs
      */
     protected void doLoad() throws ClassNotFoundException, IOException {
         if (log.isDebugEnabled()) {
@@ -206,7 +196,8 @@ public class StandardManager extends ManagerBase {
 
             // Load the previously unloaded active sessions
             synchronized (sessions) {
-                try (ObjectInputStream ois = new CustomObjectInputStream(bis, classLoader, logger,
+                try (ObjectInputStream ois = new CustomObjectInputStream(bis,
+                        classLoader, logger,
                         getSessionAttributeValueClassNamePattern(),
                         getWarnOnSessionAttributeFilterFailure())) {
                     Integer count = (Integer) ois.readObject();
@@ -246,16 +237,15 @@ public class StandardManager extends ManagerBase {
         }
     }
 
-
     @Override
     public void unload() throws IOException {
         if (SecurityUtil.isPackageProtectionEnabled()) {
             try {
                 AccessController.doPrivileged(new PrivilegedDoUnload());
-            } catch (PrivilegedActionException ex){
+            } catch (PrivilegedActionException ex) {
                 Exception exception = ex.getException();
                 if (exception instanceof IOException) {
-                    throw (IOException)exception;
+                    throw (IOException) exception;
                 }
                 if (log.isDebugEnabled()) {
                     log.debug("Unreported exception in unLoad()", exception);
@@ -266,10 +256,9 @@ public class StandardManager extends ManagerBase {
         }
     }
 
-
     /**
      * Save any currently active sessions in the appropriate persistence
-     * mechanism, if any.  If persistence is not supported, this method
+     * mechanism, if any. If persistence is not supported, this method
      * returns without doing anything.
      *
      * @exception IOException if an input/output error occurs
@@ -296,7 +285,8 @@ public class StandardManager extends ManagerBase {
         // Keep a note of sessions that are expired
         ArrayList<StandardSession> list = new ArrayList<>();
 
-        try (FileOutputStream fos = new FileOutputStream(file.getAbsolutePath());
+        try (FileOutputStream fos = new FileOutputStream(file
+                .getAbsolutePath());
                 BufferedOutputStream bos = new BufferedOutputStream(fos);
                 ObjectOutputStream oos = new ObjectOutputStream(bos)) {
 
@@ -308,8 +298,7 @@ public class StandardManager extends ManagerBase {
                 oos.writeObject(Integer.valueOf(sessions.size()));
                 Iterator<Session> elements = sessions.values().iterator();
                 while (elements.hasNext()) {
-                    StandardSession session =
-                        (StandardSession) elements.next();
+                    StandardSession session = (StandardSession) elements.next();
                     list.add(session);
                     session.passivate();
                     session.writeObjectData(oos);
@@ -338,13 +327,13 @@ public class StandardManager extends ManagerBase {
         }
     }
 
-
     /**
      * Start this component and implement the requirements
      * of {@link org.apache.catalina.util.LifecycleBase#startInternal()}.
      *
      * @exception LifecycleException if this component detects a fatal error
-     *  that prevents this component from being used
+     *                               that prevents this component from being
+     *                               used
      */
     @Override
     protected synchronized void startInternal() throws LifecycleException {
@@ -362,13 +351,13 @@ public class StandardManager extends ManagerBase {
         setState(LifecycleState.STARTING);
     }
 
-
     /**
      * Stop this component and implement the requirements
      * of {@link org.apache.catalina.util.LifecycleBase#stopInternal()}.
      *
      * @exception LifecycleException if this component detects a fatal error
-     *  that prevents this component from being used
+     *                               that prevents this component from being
+     *                               used
      */
     @Override
     protected synchronized void stopInternal() throws LifecycleException {
@@ -408,7 +397,6 @@ public class StandardManager extends ManagerBase {
         super.stopInternal();
     }
 
-
     // ------------------------------------------------------ Protected Methods
 
     /**
@@ -423,7 +411,8 @@ public class StandardManager extends ManagerBase {
         if (!file.isAbsolute()) {
             Context context = getContext();
             ServletContext servletContext = context.getServletContext();
-            File tempdir = (File) servletContext.getAttribute(ServletContext.TEMPDIR);
+            File tempdir = (File) servletContext.getAttribute(
+                    ServletContext.TEMPDIR);
             if (tempdir != null) {
                 file = new File(tempdir, pathname);
             }

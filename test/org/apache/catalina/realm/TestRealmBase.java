@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -51,13 +49,10 @@ public class TestRealmBase {
     // All digested passwords are the digested form of "password"
     private static final String PWD_MD5 = "5f4dcc3b5aa765d61d8327deb882cf99";
     private static final String PWD_SHA = "5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8";
-    private static final String PWD_MD5_PREFIX =
-            "{MD5}X03MO1qnZdYdgyfeuILPmQ==";
-    private static final String PWD_SHA_PREFIX =
-            "{SHA}W6ph5Mm5Pz8GgiULbPgzG37mj9g=";
+    private static final String PWD_MD5_PREFIX = "{MD5}X03MO1qnZdYdgyfeuILPmQ==";
+    private static final String PWD_SHA_PREFIX = "{SHA}W6ph5Mm5Pz8GgiULbPgzG37mj9g=";
     // Salt added to "password" is "salttoprotectpassword"
-    private static final String PWD_SSHA_PREFIX =
-            "{SSHA}oFLhvfQVqFykEWu8v1pPE6nN0QRzYWx0dG9wcm90ZWN0cGFzc3dvcmQ=";
+    private static final String PWD_SSHA_PREFIX = "{SSHA}oFLhvfQVqFykEWu8v1pPE6nN0QRzYWx0dG9wcm90ZWN0cGFzc3dvcmQ=";
 
     @Test
     public void testDigestMD5() throws Exception {
@@ -84,8 +79,8 @@ public class TestRealmBase {
         doTestDigestDigestPasswords(PWD, "SHA", PWD_SSHA_PREFIX);
     }
 
-    private void doTestDigestDigestPasswords(String password,
-            String digest, String digestedPassword) throws Exception {
+    private void doTestDigestDigestPasswords(String password, String digest,
+            String digestedPassword) throws Exception {
         Context context = new TesterContext();
         TesterMapRealm realm = new TesterMapRealm();
         realm.setContainer(context);
@@ -116,7 +111,6 @@ public class TestRealmBase {
         doRoleTest(userRoles, constraintRoles, applicationRoles, true);
     }
 
-
     @Test
     public void testUserWithNoRoles() throws IOException {
         List<String> userRoles = new ArrayList<>();
@@ -129,7 +123,6 @@ public class TestRealmBase {
 
         doRoleTest(userRoles, constraintRoles, applicationRoles, false);
     }
-
 
     @Test
     public void testUserWithSingleRoleAndAllRoles() throws IOException {
@@ -145,7 +138,6 @@ public class TestRealmBase {
         doRoleTest(userRoles, constraintRoles, applicationRoles, true);
     }
 
-
     @Test
     public void testUserWithoutNoRolesAndAllRoles() throws IOException {
         List<String> userRoles = new ArrayList<>();
@@ -158,7 +150,6 @@ public class TestRealmBase {
 
         doRoleTest(userRoles, constraintRoles, applicationRoles, false);
     }
-
 
     @Test
     public void testAllRolesWithNoAppRole() throws IOException {
@@ -173,7 +164,6 @@ public class TestRealmBase {
         doRoleTest(userRoles, constraintRoles, applicationRoles, false);
     }
 
-
     @Test
     public void testAllAuthenticatedUsers() throws IOException {
         List<String> userRoles = new ArrayList<>();
@@ -185,7 +175,6 @@ public class TestRealmBase {
 
         doRoleTest(userRoles, constraintRoles, applicationRoles, true);
     }
-
 
     @Test
     public void testAllAuthenticatedUsersAsAppRoleNoUser() throws IOException {
@@ -200,7 +189,6 @@ public class TestRealmBase {
 
         doRoleTest(userRoles, constraintRoles, applicationRoles, false);
     }
-
 
     @Test
     public void testAllAuthenticatedUsersAsAppRoleWithUser()
@@ -217,7 +205,6 @@ public class TestRealmBase {
         doRoleTest(userRoles, constraintRoles, applicationRoles, true);
     }
 
-
     @Test
     public void testNoAuthConstraint() throws IOException {
         // No auth constraint == allow access for all
@@ -225,7 +212,6 @@ public class TestRealmBase {
 
         doRoleTest(null, null, applicationRoles, true);
     }
-
 
     /*
      * The combining constraints tests are based on the scenarios described in
@@ -251,7 +237,6 @@ public class TestRealmBase {
                 applicationRoles, true);
     }
 
-
     @Test
     public void testCombineConstraints02() throws IOException {
         // Allowed roles should be the union of the roles in the constraints
@@ -271,7 +256,6 @@ public class TestRealmBase {
                 applicationRoles, true);
     }
 
-
     @Test
     public void testCombineConstraints03() throws IOException {
         // Allowed roles should be the union of the roles in the constraints
@@ -290,7 +274,6 @@ public class TestRealmBase {
         doRoleTest(userRoles, constraintOneRoles, constraintTwoRoles,
                 applicationRoles, false);
     }
-
 
     @Test
     public void testCombineConstraints04() throws IOException {
@@ -312,7 +295,6 @@ public class TestRealmBase {
                 applicationRoles, false);
     }
 
-
     @Test
     public void testCombineConstraints05() throws IOException {
         // Allowed roles should be the union of the roles in the constraints
@@ -332,7 +314,6 @@ public class TestRealmBase {
         doRoleTest(userRoles, constraintOneRoles, constraintTwoRoles,
                 applicationRoles, true);
     }
-
 
     @Test
     public void testCombineConstraints06() throws IOException {
@@ -354,7 +335,6 @@ public class TestRealmBase {
                 applicationRoles, true);
     }
 
-
     @Test
     public void testCombineConstraints07() throws IOException {
         // Allowed roles should be the union of the roles in the constraints
@@ -374,7 +354,6 @@ public class TestRealmBase {
                 applicationRoles, false);
     }
 
-
     @Test
     public void testCombineConstraints08() throws IOException {
         // Allowed roles should be the union of the roles in the constraints
@@ -393,7 +372,6 @@ public class TestRealmBase {
         doRoleTest(userRoles, constraintOneRoles, constraintTwoRoles,
                 applicationRoles, true);
     }
-
 
     @Test
     public void testCombineConstraints09() throws IOException {
@@ -415,7 +393,6 @@ public class TestRealmBase {
                 applicationRoles, true);
     }
 
-
     @Test
     public void testCombineConstraints10() throws IOException {
         // Allowed roles should be the union of the roles in the constraints
@@ -436,7 +413,6 @@ public class TestRealmBase {
                 applicationRoles, true);
     }
 
-
     @Test
     public void testCombineConstraints11() throws IOException {
         // Allowed roles should be the union of the roles in the constraints
@@ -455,7 +431,6 @@ public class TestRealmBase {
                 applicationRoles, false);
     }
 
-
     @Test
     public void testCombineConstraints12() throws IOException {
         // Allowed roles should be the union of the roles in the constraints
@@ -467,10 +442,8 @@ public class TestRealmBase {
         constraintTwoRoles.add(ROLE1);
         applicationRoles.add(ROLE1);
 
-        doRoleTest(null, null, constraintTwoRoles,
-                applicationRoles, true);
+        doRoleTest(null, null, constraintTwoRoles, applicationRoles, true);
     }
-
 
     @Test
     public void testCombineConstraints13() throws IOException {
@@ -483,10 +456,8 @@ public class TestRealmBase {
         constraintTwoRoles.add(SecurityConstraint.ROLE_ALL_ROLES);
         applicationRoles.add(ROLE1);
 
-        doRoleTest(null, null, constraintTwoRoles,
-                applicationRoles, true);
+        doRoleTest(null, null, constraintTwoRoles, applicationRoles, true);
     }
-
 
     @Test
     public void testCombineConstraints14() throws IOException {
@@ -499,10 +470,8 @@ public class TestRealmBase {
         constraintTwoRoles.add(SecurityConstraint.ROLE_ALL_AUTHENTICATED_USERS);
         applicationRoles.add(ROLE1);
 
-        doRoleTest(null, null, constraintTwoRoles,
-                applicationRoles, true);
+        doRoleTest(null, null, constraintTwoRoles, applicationRoles, true);
     }
-
 
     @Test
     public void testCombineConstraints15() throws IOException {
@@ -522,7 +491,6 @@ public class TestRealmBase {
                 applicationRoles, false);
     }
 
-
     @Test
     public void testCombineConstraints16() throws IOException {
         // Allowed roles should be the union of the roles in the constraints
@@ -540,7 +508,6 @@ public class TestRealmBase {
         doRoleTest(userRoles, constraintOneRoles, constraintTwoRoles,
                 applicationRoles, false);
     }
-
 
     @Test
     public void testCombineConstraints17() throws IOException {
@@ -560,14 +527,13 @@ public class TestRealmBase {
                 applicationRoles, false);
     }
 
-
     /**
-     * @param userRoles         <code>null</code> tests unauthenticated access
-     *                          otherwise access is tested with an authenticated
-     *                          user with the listed roles
-     * @param constraintRoles   <code>null</code> is equivalent to no auth
-     *                          constraint whereas an empty list is equivalent
-     *                          to an auth constraint that defines no roles.
+     * @param userRoles       <code>null</code> tests unauthenticated access
+     *                        otherwise access is tested with an authenticated
+     *                        user with the listed roles
+     * @param constraintRoles <code>null</code> is equivalent to no auth
+     *                        constraint whereas an empty list is equivalent
+     *                        to an auth constraint that defines no roles.
      */
     private void doRoleTest(List<String> userRoles,
             List<String> constraintRoles, List<String> applicationRoles,
@@ -578,7 +544,6 @@ public class TestRealmBase {
         doRoleTest(userRoles, constraintRoles, constraintTwoRoles,
                 applicationRoles, expected);
     }
-
 
     private void doRoleTest(List<String> userRoles,
             List<String> constraintOneRoles, List<String> constraintTwoRoles,
@@ -610,8 +575,8 @@ public class TestRealmBase {
                 }
             }
         }
-        SecurityConstraint[] constraints =
-                new SecurityConstraint[] { constraintOne, constraintTwo };
+        SecurityConstraint[] constraints = new SecurityConstraint[] {
+                constraintOne, constraintTwo };
 
         // Set up the mock request and response
         Request request = new Request();
@@ -630,12 +595,11 @@ public class TestRealmBase {
         }
 
         // Check if user meets constraints
-        boolean result = mapRealm.hasResourcePermission(
-                request, response, constraints, null);
+        boolean result = mapRealm.hasResourcePermission(request, response,
+                constraints, null);
 
         Assert.assertEquals(Boolean.valueOf(expected), Boolean.valueOf(result));
     }
-
 
     /*
      * This test case covers the special case in section 13.4.1 of the Servlet
@@ -645,15 +609,14 @@ public class TestRealmBase {
     public void testHttpConstraint() throws IOException {
         // Get the annotation from the test case
         Class<TesterServletSecurity01> clazz = TesterServletSecurity01.class;
-        ServletSecurity servletSecurity =
-                clazz.getAnnotation(ServletSecurity.class);
+        ServletSecurity servletSecurity = clazz.getAnnotation(
+                ServletSecurity.class);
 
         // Convert the annotation into constraints
-        ServletSecurityElement servletSecurityElement =
-                new ServletSecurityElement(servletSecurity);
-        SecurityConstraint[] constraints =
-                SecurityConstraint.createConstraints(
-                        servletSecurityElement, "/*");
+        ServletSecurityElement servletSecurityElement = new ServletSecurityElement(
+                servletSecurity);
+        SecurityConstraint[] constraints = SecurityConstraint.createConstraints(
+                servletSecurityElement, "/*");
 
         // Create a separate constraint that covers DELETE
         SecurityConstraint deleteConstraint = new SecurityConstraint();
@@ -694,99 +657,99 @@ public class TestRealmBase {
         // All users should be able to perform a GET
         request.setMethod("GET");
 
-        SecurityConstraint[] constraintsGet =
-                mapRealm.findSecurityConstraints(request, context);
+        SecurityConstraint[] constraintsGet = mapRealm.findSecurityConstraints(
+                request, context);
 
         request.setUserPrincipal(null);
-        Assert.assertTrue(mapRealm.hasResourcePermission(
-                request, response, constraintsGet, null));
+        Assert.assertTrue(mapRealm.hasResourcePermission(request, response,
+                constraintsGet, null));
         request.setUserPrincipal(gp1);
-        Assert.assertTrue(mapRealm.hasResourcePermission(
-                request, response, constraintsGet, null));
+        Assert.assertTrue(mapRealm.hasResourcePermission(request, response,
+                constraintsGet, null));
         request.setUserPrincipal(gp2);
-        Assert.assertTrue(mapRealm.hasResourcePermission(
-                request, response, constraintsGet, null));
+        Assert.assertTrue(mapRealm.hasResourcePermission(request, response,
+                constraintsGet, null));
         request.setUserPrincipal(gp99);
-        Assert.assertTrue(mapRealm.hasResourcePermission(
-                request, response, constraintsGet, null));
+        Assert.assertTrue(mapRealm.hasResourcePermission(request, response,
+                constraintsGet, null));
 
         // Only user1 should be able to perform a POST as only that user has
         // role1.
         request.setMethod("POST");
 
-        SecurityConstraint[] constraintsPost =
-                mapRealm.findSecurityConstraints(request, context);
+        SecurityConstraint[] constraintsPost = mapRealm.findSecurityConstraints(
+                request, context);
 
         request.setUserPrincipal(null);
-        Assert.assertFalse(mapRealm.hasResourcePermission(
-                request, response, constraintsPost, null));
+        Assert.assertFalse(mapRealm.hasResourcePermission(request, response,
+                constraintsPost, null));
         request.setUserPrincipal(gp1);
-        Assert.assertTrue(mapRealm.hasResourcePermission(
-                request, response, constraintsPost, null));
+        Assert.assertTrue(mapRealm.hasResourcePermission(request, response,
+                constraintsPost, null));
         request.setUserPrincipal(gp2);
-        Assert.assertFalse(mapRealm.hasResourcePermission(
-                request, response, constraintsPost, null));
+        Assert.assertFalse(mapRealm.hasResourcePermission(request, response,
+                constraintsPost, null));
         request.setUserPrincipal(gp99);
-        Assert.assertFalse(mapRealm.hasResourcePermission(
-                request, response, constraintsPost, null));
+        Assert.assertFalse(mapRealm.hasResourcePermission(request, response,
+                constraintsPost, null));
 
         // Only users with application roles (role1 or role2 so user1 or user2)
         // should be able to perform a PUT.
         request.setMethod("PUT");
 
-        SecurityConstraint[] constraintsPut =
-                mapRealm.findSecurityConstraints(request, context);
+        SecurityConstraint[] constraintsPut = mapRealm.findSecurityConstraints(
+                request, context);
 
         request.setUserPrincipal(null);
-        Assert.assertFalse(mapRealm.hasResourcePermission(
-                request, response, constraintsPut, null));
+        Assert.assertFalse(mapRealm.hasResourcePermission(request, response,
+                constraintsPut, null));
         request.setUserPrincipal(gp1);
-        Assert.assertTrue(mapRealm.hasResourcePermission(
-                request, response, constraintsPut, null));
+        Assert.assertTrue(mapRealm.hasResourcePermission(request, response,
+                constraintsPut, null));
         request.setUserPrincipal(gp2);
-        Assert.assertTrue(mapRealm.hasResourcePermission(
-                request, response, constraintsPut, null));
+        Assert.assertTrue(mapRealm.hasResourcePermission(request, response,
+                constraintsPut, null));
         request.setUserPrincipal(gp99);
-        Assert.assertFalse(mapRealm.hasResourcePermission(
-                request, response, constraintsPut, null));
+        Assert.assertFalse(mapRealm.hasResourcePermission(request, response,
+                constraintsPut, null));
 
         // Any authenticated user should be able to perform a TRACE.
         request.setMethod("TRACE");
 
-        SecurityConstraint[] constraintsTrace =
-                mapRealm.findSecurityConstraints(request, context);
+        SecurityConstraint[] constraintsTrace = mapRealm
+                .findSecurityConstraints(request, context);
 
         request.setUserPrincipal(null);
-        Assert.assertFalse(mapRealm.hasResourcePermission(
-                request, response, constraintsTrace, null));
+        Assert.assertFalse(mapRealm.hasResourcePermission(request, response,
+                constraintsTrace, null));
         request.setUserPrincipal(gp1);
-        Assert.assertTrue(mapRealm.hasResourcePermission(
-                request, response, constraintsTrace, null));
+        Assert.assertTrue(mapRealm.hasResourcePermission(request, response,
+                constraintsTrace, null));
         request.setUserPrincipal(gp2);
-        Assert.assertTrue(mapRealm.hasResourcePermission(
-                request, response, constraintsTrace, null));
+        Assert.assertTrue(mapRealm.hasResourcePermission(request, response,
+                constraintsTrace, null));
         request.setUserPrincipal(gp99);
-        Assert.assertTrue(mapRealm.hasResourcePermission(
-                request, response, constraintsTrace, null));
+        Assert.assertTrue(mapRealm.hasResourcePermission(request, response,
+                constraintsTrace, null));
 
         // Only user1 should be able to perform a DELETE as only that user has
         // role1.
         request.setMethod("DELETE");
 
-        SecurityConstraint[] constraintsDelete =
-                mapRealm.findSecurityConstraints(request, context);
+        SecurityConstraint[] constraintsDelete = mapRealm
+                .findSecurityConstraints(request, context);
 
         request.setUserPrincipal(null);
-        Assert.assertFalse(mapRealm.hasResourcePermission(
-                request, response, constraintsDelete, null));
+        Assert.assertFalse(mapRealm.hasResourcePermission(request, response,
+                constraintsDelete, null));
         request.setUserPrincipal(gp1);
-        Assert.assertTrue(mapRealm.hasResourcePermission(
-                request, response, constraintsDelete, null));
+        Assert.assertTrue(mapRealm.hasResourcePermission(request, response,
+                constraintsDelete, null));
         request.setUserPrincipal(gp2);
-        Assert.assertFalse(mapRealm.hasResourcePermission(
-                request, response, constraintsDelete, null));
+        Assert.assertFalse(mapRealm.hasResourcePermission(request, response,
+                constraintsDelete, null));
         request.setUserPrincipal(gp99);
-        Assert.assertFalse(mapRealm.hasResourcePermission(
-                request, response, constraintsDelete, null));
+        Assert.assertFalse(mapRealm.hasResourcePermission(request, response,
+                constraintsDelete, null));
     }
 }

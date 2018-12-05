@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -189,7 +187,7 @@ public class TestContextConfigAnnotation {
         config.processAnnotationsFile(fFile, webxml, false);
         FilterDef fdef = webxml.getFilters().get("paramFilter");
         assertNotNull(fdef);
-        assertEquals("Servlet says: ",fdef.getParameterMap().get("message"));
+        assertEquals("Servlet says: ", fdef.getParameterMap().get("message"));
     }
 
     @Test
@@ -204,7 +202,6 @@ public class TestContextConfigAnnotation {
         filterDef.setLargeIcon("LargeIcon");
         filterDef.setSmallIcon("SmallIcon");
         filterDef.setAsyncSupported("true");
-
 
         webxml.addFilter(filterDef);
         FilterMap filterMap = new FilterMap();
@@ -221,16 +218,16 @@ public class TestContextConfigAnnotation {
         config.processAnnotationsFile(fFile, webxml, false);
         FilterDef fdef = webxml.getFilters().get("paramFilter");
         assertNotNull(fdef);
-        assertEquals(filterDef,fdef);
-        assertEquals("tomcat",fdef.getParameterMap().get("message"));
+        assertEquals(filterDef, fdef);
+        assertEquals("tomcat", fdef.getParameterMap().get("message"));
         Set<FilterMap> filterMappings = webxml.getFilterMappings();
         assertTrue(filterMappings.contains(filterMap));
         // annotation mapping not added s. Servlet Spec 3.0 (Nov 2009)
         // 8.2.3.3.vi page 81
         String[] urlPatterns = filterMap.getURLPatterns();
         assertNotNull(urlPatterns);
-        assertEquals(1,urlPatterns.length);
-        assertEquals("/param1",urlPatterns[0]);
+        assertEquals(1, urlPatterns.length);
+        assertEquals("/param1", urlPatterns[0]);
 
         // check simple Parameter
         assertEquals("Description", fdef.getDescription());
@@ -242,8 +239,8 @@ public class TestContextConfigAnnotation {
 
         String[] dis = filterMap.getDispatcherNames();
         assertEquals(2, dis.length);
-        assertEquals(DispatcherType.ERROR.toString(),dis[0]);
-        assertEquals(DispatcherType.ASYNC.toString(),dis[1]);
+        assertEquals(DispatcherType.ERROR.toString(), dis[0]);
+        assertEquals(DispatcherType.ASYNC.toString(), dis[1]);
 
     }
 
@@ -323,27 +320,44 @@ public class TestContextConfigAnnotation {
 
         @Override
         public void backgroundProcess() {}
+
         @Override
         public ClassLoader getClassLoader() {
             return this.getClass().getClassLoader();
         }
+
         @Override
-        public Context getContext() { return null; }
+        public Context getContext() {
+            return null;
+        }
+
         @Override
         public void setContext(Context context) {}
+
         @Override
-        public boolean getDelegate() { return false; }
+        public boolean getDelegate() {
+            return false;
+        }
+
         @Override
         public void setDelegate(boolean delegate) {}
+
         @Override
-        public boolean getReloadable() { return false; }
+        public boolean getReloadable() {
+            return false;
+        }
+
         @Override
         public void setReloadable(boolean reloadable) {}
+
         @Override
-        public void addPropertyChangeListener(PropertyChangeListener l) {
+        public void addPropertyChangeListener(PropertyChangeListener l) {}
+
+        @Override
+        public boolean modified() {
+            return false;
         }
-        @Override
-        public boolean modified() { return false; }
+
         @Override
         public void removePropertyChangeListener(PropertyChangeListener l) {}
     }
@@ -355,7 +369,8 @@ public class TestContextConfigAnnotation {
      * @return File Resource
      * @throws URISyntaxException
      */
-    private File paramClassResource(String className) throws URISyntaxException {
+    private File paramClassResource(String className)
+            throws URISyntaxException {
         URL url = getClass().getClassLoader().getResource(className + ".class");
         assertNotNull(url);
 

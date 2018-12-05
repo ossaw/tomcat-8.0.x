@@ -1,18 +1,16 @@
 /*
- *  Licensed to the Apache Software Foundation (ASF) under one or more
- *  contributor license agreements.  See the NOTICE file distributed with
- *  this work for additional information regarding copyright ownership.
- *  The ASF licenses this file to You under the Apache License, Version 2.0
- *  (the "License"); you may not use this file except in compliance with
- *  the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements. See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.apache.tomcat.websocket.pojo;
 
@@ -61,15 +59,14 @@ public class TestPojoMethodMapping extends TomcatBaseTest {
         Tomcat.addServlet(ctx, "default", new DefaultServlet());
         ctx.addServletMappingDecoded("/", "default");
 
-        WebSocketContainer wsContainer =
-                ContainerProvider.getWebSocketContainer();
-
+        WebSocketContainer wsContainer = ContainerProvider
+                .getWebSocketContainer();
 
         tomcat.start();
 
         SimpleClient client = new SimpleClient();
-        URI uri = new URI("ws://localhost:" + getPort() + "/" + PARAM_ONE +
-                "/" + PARAM_TWO + "/" + PARAM_THREE);
+        URI uri = new URI("ws://localhost:" + getPort() + "/" + PARAM_ONE + "/"
+                + PARAM_TWO + "/" + PARAM_THREE);
 
         Session session = wsContainer.connectToServer(client, uri);
         session.getBasicRemote().sendText("NO-OP");
@@ -85,8 +82,8 @@ public class TestPojoMethodMapping extends TomcatBaseTest {
             Thread.sleep(100);
         }
         if (count == 50) {
-            Assert.fail("Server did not process an onClose event within 5 " +
-                    "seconds of the client sending a close message");
+            Assert.fail("Server did not process an onClose event within 5 "
+                    + "seconds of the client sending a close message");
         }
 
         // Check no errors
@@ -97,30 +94,28 @@ public class TestPojoMethodMapping extends TomcatBaseTest {
         Assert.assertEquals("Found errors", 0, errors.size());
     }
 
-
-    @ServerEndpoint(value="/{one}/{two}/{three}",
-            configurator=SingletonConfigurator.class)
+    @ServerEndpoint(value = "/{one}/{two}/{three}", configurator = SingletonConfigurator.class)
     public static final class Server {
 
         private final List<String> errors = new ArrayList<>();
         private volatile boolean closed;
 
         @OnOpen
-        public void onOpen(@PathParam("one") String p1, @PathParam("two")int p2,
-                @PathParam("three")boolean p3) {
+        public void onOpen(@PathParam("one") String p1,
+                @PathParam("two") int p2, @PathParam("three") boolean p3) {
             checkParams("onOpen", p1, p2, p3);
         }
 
         @OnMessage
         public void onMessage(@SuppressWarnings("unused") String msg,
-                @PathParam("one") String p1, @PathParam("two")int p2,
-                @PathParam("three")boolean p3) {
+                @PathParam("one") String p1, @PathParam("two") int p2,
+                @PathParam("three") boolean p3) {
             checkParams("onMessage", p1, p2, p3);
         }
 
         @OnClose
         public void onClose(@PathParam("one") String p1,
-                @PathParam("two")int p2, @PathParam("three")boolean p3) {
+                @PathParam("two") int p2, @PathParam("three") boolean p3) {
             checkParams("onClose", p1, p2, p3);
             closed = true;
         }
@@ -141,8 +136,8 @@ public class TestPojoMethodMapping extends TomcatBaseTest {
 
         private void checkParam(String method, String expected, String actual) {
             if (!expected.equals(actual)) {
-                errors.add("Method [" + method + "]. Expected [" + expected +
-                        "] was + [" + actual + "]");
+                errors.add("Method [" + method + "]. Expected [" + expected
+                        + "] was + [" + actual + "]");
             }
         }
     }

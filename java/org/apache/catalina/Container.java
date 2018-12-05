@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -25,52 +23,51 @@ import org.apache.catalina.connector.Request;
 import org.apache.catalina.connector.Response;
 import org.apache.juli.logging.Log;
 
-
 /**
  * A <b>Container</b> is an object that can execute requests received from
- * a client, and return responses based on those requests.  A Container may
+ * a client, and return responses based on those requests. A Container may
  * optionally support a pipeline of Valves that process the request in an
  * order configured at runtime, by implementing the <b>Pipeline</b> interface
  * as well.
  * <p>
- * Containers will exist at several conceptual levels within Catalina.  The
+ * Containers will exist at several conceptual levels within Catalina. The
  * following examples represent common cases:
  * <ul>
  * <li><b>Engine</b> - Representation of the entire Catalina servlet engine,
- *     most likely containing one or more subcontainers that are either Host
- *     or Context implementations, or other custom groups.
+ * most likely containing one or more subcontainers that are either Host
+ * or Context implementations, or other custom groups.
  * <li><b>Host</b> - Representation of a virtual host containing a number
- *     of Contexts.
+ * of Contexts.
  * <li><b>Context</b> - Representation of a single ServletContext, which will
- *     typically contain one or more Wrappers for the supported servlets.
+ * typically contain one or more Wrappers for the supported servlets.
  * <li><b>Wrapper</b> - Representation of an individual servlet definition
- *     (which may support multiple servlet instances if the servlet itself
- *     implements SingleThreadModel).
+ * (which may support multiple servlet instances if the servlet itself
+ * implements SingleThreadModel).
  * </ul>
  * A given deployment of Catalina need not include Containers at all of the
- * levels described above.  For example, an administration application
+ * levels described above. For example, an administration application
  * embedded within a network device (such as a router) might only contain
  * a single Context and a few Wrappers, or even a single Wrapper if the
- * application is relatively small.  Therefore, Container implementations
+ * application is relatively small. Therefore, Container implementations
  * need to be designed so that they will operate correctly in the absence
  * of parent Containers in a given deployment.
  * <p>
  * A Container may also be associated with a number of support components
  * that provide functionality which might be shared (by attaching it to a
- * parent Container) or individually customized.  The following support
+ * parent Container) or individually customized. The following support
  * components are currently recognized:
  * <ul>
  * <li><b>Loader</b> - Class loader to use for integrating new Java classes
- *     for this Container into the JVM in which Catalina is running.
+ * for this Container into the JVM in which Catalina is running.
  * <li><b>Logger</b> - Implementation of the <code>log()</code> method
- *     signatures of the <code>ServletContext</code> interface.
+ * signatures of the <code>ServletContext</code> interface.
  * <li><b>Manager</b> - Manager for the pool of Sessions associated with
- *     this Container.
+ * this Container.
  * <li><b>Realm</b> - Read-only interface to a security domain, for
- *     authenticating user identities and their corresponding roles.
+ * authenticating user identities and their corresponding roles.
  * <li><b>Resources</b> - JNDI directory context enabling access to static
- *     resources, enabling custom linkages to existing server components when
- *     Catalina is embedded in a larger server.
+ * resources, enabling custom linkages to existing server components when
+ * Catalina is embedded in a larger server.
  * </ul>
  *
  * @author Craig R. McClanahan
@@ -78,9 +75,7 @@ import org.apache.juli.logging.Log;
  */
 public interface Container extends Lifecycle {
 
-
     // ----------------------------------------------------- Manifest Constants
-
 
     /**
      * The ContainerEvent event type sent when a child container is added
@@ -88,13 +83,11 @@ public interface Container extends Lifecycle {
      */
     public static final String ADD_CHILD_EVENT = "addChild";
 
-
     /**
      * The ContainerEvent event type sent when a valve is added
      * by <code>addValve()</code>, if this Container supports pipelines.
      */
     public static final String ADD_VALVE_EVENT = "addValve";
-
 
     /**
      * The ContainerEvent event type sent when a child container is removed
@@ -102,25 +95,22 @@ public interface Container extends Lifecycle {
      */
     public static final String REMOVE_CHILD_EVENT = "removeChild";
 
-
     /**
      * The ContainerEvent event type sent when a valve is removed
      * by <code>removeValve()</code>, if this Container supports pipelines.
      */
     public static final String REMOVE_VALVE_EVENT = "removeValve";
 
-
     // ------------------------------------------------------------- Properties
 
     /**
      * Obtain the log to which events for this container should be logged.
      *
-     * @return The Logger with which this Container is associated.  If there is
+     * @return The Logger with which this Container is associated. If there is
      *         no associated Logger, return the Logger associated with the
      *         parent Container (if any); otherwise return <code>null</code>.
      */
     public Log getLogger();
-
 
     /**
      * Obtain the JMX name for this container.
@@ -128,7 +118,6 @@ public interface Container extends Lifecycle {
      * @return the JMX name associated with this container.
      */
     public ObjectName getObjectName();
-
 
     /**
      * Obtain the JMX domain under which this container will be / has been
@@ -138,16 +127,14 @@ public interface Container extends Lifecycle {
      */
     public String getDomain();
 
-
     /**
      * Calculate the key properties string to be added to an object's
      * {@link ObjectName} to indicate that it is associated with this container.
      *
-     * @return          A string suitable for appending to the ObjectName
+     * @return A string suitable for appending to the ObjectName
      *
      */
     public String getMBeanKeyProperties();
-
 
     /**
      * Return the Pipeline object that manages the Valves associated with
@@ -156,7 +143,6 @@ public interface Container extends Lifecycle {
      * @return The Pipeline
      */
     public Pipeline getPipeline();
-
 
     /**
      * Get the Cluster for this container.
@@ -167,14 +153,12 @@ public interface Container extends Lifecycle {
      */
     public Cluster getCluster();
 
-
     /**
      * Set the Cluster with which this Container is associated.
      *
      * @param cluster the Cluster with which this Container is associated.
      */
     public void setCluster(Cluster cluster);
-
 
     /**
      * Get the delay between the invocation of the backgroundProcess method on
@@ -192,7 +176,6 @@ public interface Container extends Lifecycle {
      */
     public int getBackgroundProcessorDelay();
 
-
     /**
      * Set the delay between the invocation of the execute method on this
      * container and its children.
@@ -202,30 +185,28 @@ public interface Container extends Lifecycle {
      */
     public void setBackgroundProcessorDelay(int delay);
 
-
     /**
      * Return a name string (suitable for use by humans) that describes this
-     * Container.  Within the set of child containers belonging to a particular
+     * Container. Within the set of child containers belonging to a particular
      * parent, Container names must be unique.
      *
      * @return The human readable name of this container.
      */
     public String getName();
 
-
     /**
      * Set a name string (suitable for use by humans) that describes this
-     * Container.  Within the set of child containers belonging to a particular
+     * Container. Within the set of child containers belonging to a particular
      * parent, Container names must be unique.
      *
      * @param name New name of this container
      *
      * @exception IllegalStateException if this Container has already been
-     *  added to the children of a parent Container (after which the name
-     *  may not be changed)
+     *                                  added to the children of a parent
+     *                                  Container (after which the name
+     *                                  may not be changed)
      */
     public void setName(String name);
-
 
     /**
      * Get the parent container.
@@ -236,20 +217,18 @@ public interface Container extends Lifecycle {
      */
     public Container getParent();
 
-
     /**
      * Set the parent Container to which this Container is being added as a
-     * child.  This Container may refuse to become attached to the specified
+     * child. This Container may refuse to become attached to the specified
      * Container by throwing an exception.
      *
      * @param container Container to which this Container is being added
-     *  as a child
+     *                  as a child
      *
      * @exception IllegalArgumentException if this Container refuses to become
-     *  attached to the specified Container
+     *                                     attached to the specified Container
      */
     public void setParent(Container container);
-
 
     /**
      * Get the parent class loader.
@@ -259,7 +238,6 @@ public interface Container extends Lifecycle {
      *         parent has been set, return the system class loader.
      */
     public ClassLoader getParentClassLoader();
-
 
     /**
      * Set the parent class loader for this component. For {@link Context}s
@@ -271,7 +249,6 @@ public interface Container extends Lifecycle {
      */
     public void setParentClassLoader(ClassLoader parent);
 
-
     /**
      * Obtain the Realm with which this Container is associated.
      *
@@ -281,7 +258,6 @@ public interface Container extends Lifecycle {
      */
     public Realm getRealm();
 
-
     /**
      * Set the Realm with which this Container is associated.
      *
@@ -289,9 +265,7 @@ public interface Container extends Lifecycle {
      */
     public void setRealm(Realm realm);
 
-
     // --------------------------------------------------------- Public Methods
-
 
     /**
      * Execute a periodic task, such as reloading, etc. This method will be
@@ -300,26 +274,26 @@ public interface Container extends Lifecycle {
      */
     public void backgroundProcess();
 
-
     /**
      * Add a new child Container to those associated with this Container,
-     * if supported.  Prior to adding this Container to the set of children,
+     * if supported. Prior to adding this Container to the set of children,
      * the child's <code>setParent()</code> method must be called, with this
-     * Container as an argument.  This method may thrown an
+     * Container as an argument. This method may thrown an
      * <code>IllegalArgumentException</code> if this Container chooses not
      * to be attached to the specified Container, in which case it is not added
      *
      * @param child New child Container to be added
      *
      * @exception IllegalArgumentException if this exception is thrown by
-     *  the <code>setParent()</code> method of the child Container
+     *                                     the <code>setParent()</code> method
+     *                                     of the child Container
      * @exception IllegalArgumentException if the new child does not have
-     *  a name unique from that of existing children of this Container
-     * @exception IllegalStateException if this Container does not support
-     *  child Containers
+     *                                     a name unique from that of existing
+     *                                     children of this Container
+     * @exception IllegalStateException    if this Container does not support
+     *                                     child Containers
      */
     public void addChild(Container child);
-
 
     /**
      * Add a container event listener to this component.
@@ -328,14 +302,12 @@ public interface Container extends Lifecycle {
      */
     public void addContainerListener(ContainerListener listener);
 
-
     /**
      * Add a property change listener to this component.
      *
      * @param listener The listener to add
      */
     public void addPropertyChangeListener(PropertyChangeListener listener);
-
 
     /**
      * Obtain a child Container by name.
@@ -347,7 +319,6 @@ public interface Container extends Lifecycle {
      */
     public Container findChild(String name);
 
-
     /**
      * Obtain the child Containers associated with this Container.
      *
@@ -355,7 +326,6 @@ public interface Container extends Lifecycle {
      *         Container has no children, a zero-length array is returned.
      */
     public Container[] findChildren();
-
 
     /**
      * Obtain the container listeners associated with this Container.
@@ -366,7 +336,6 @@ public interface Container extends Lifecycle {
      */
     public ContainerListener[] findContainerListeners();
 
-
     /**
      * Remove an existing child Container from association with this parent
      * Container.
@@ -375,14 +344,12 @@ public interface Container extends Lifecycle {
      */
     public void removeChild(Container child);
 
-
     /**
      * Remove a container event listener from this component.
      *
      * @param listener The listener to remove
      */
     public void removeContainerListener(ContainerListener listener);
-
 
     /**
      * Remove a property change listener from this component.
@@ -391,10 +358,9 @@ public interface Container extends Lifecycle {
      */
     public void removePropertyChangeListener(PropertyChangeListener listener);
 
-
     /**
      * Notify all container event listeners that a particular event has
-     * occurred for this Container.  The default implementation performs
+     * occurred for this Container. The default implementation performs
      * this notification synchronously using the calling thread.
      *
      * @param type Event type
@@ -402,21 +368,20 @@ public interface Container extends Lifecycle {
      */
     public void fireContainerEvent(String type, Object data);
 
-
     /**
      * Log a request/response that was destined for this container but has been
      * handled earlier in the processing chain so that the request/response
      * still appears in the correct access logs.
-     * @param request       Request (associated with the response) to log
-     * @param response      Response (associated with the request) to log
-     * @param time          Time taken to process the request/response in
-     *                      milliseconds (use 0 if not known)
-     * @param   useDefault  Flag that indicates that the request/response should
-     *                      be logged in the engine's default access log
+     * 
+     * @param request    Request (associated with the response) to log
+     * @param response   Response (associated with the request) to log
+     * @param time       Time taken to process the request/response in
+     *                   milliseconds (use 0 if not known)
+     * @param useDefault Flag that indicates that the request/response should
+     *                   be logged in the engine's default access log
      */
     public void logAccess(Request request, Response response, long time,
             boolean useDefault);
-
 
     /**
      * Obtain the AccessLog to use to log a request/response that is destined
@@ -429,7 +394,6 @@ public interface Container extends Lifecycle {
      */
     public AccessLog getAccessLog();
 
-
     /**
      * Obtain the number of threads available for starting and stopping any
      * children associated with this container. This allows start/stop calls to
@@ -440,23 +404,21 @@ public interface Container extends Lifecycle {
      */
     public int getStartStopThreads();
 
-
     /**
      * Sets the number of threads available for starting and stopping any
      * children associated with this container. This allows start/stop calls to
      * children to be processed in parallel.
-     * @param   startStopThreads    The new number of threads to be used
+     * 
+     * @param startStopThreads The new number of threads to be used
      */
     public void setStartStopThreads(int startStopThreads);
-
 
     /**
      * Obtain the location of CATALINA_BASE.
      *
-     * @return  The location of CATALINA_BASE.
+     * @return The location of CATALINA_BASE.
      */
     public File getCatalinaBase();
-
 
     /**
      * Obtain the location of CATALINA_HOME.

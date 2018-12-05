@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -41,69 +39,71 @@ import org.apache.tomcat.util.IntrospectionUtils;
 import org.apache.tomcat.util.digester.Digester;
 
 /**
- * <p>Implementation of the JAAS <strong>LoginModule</strong> interface,
- * primarily for use in testing <code>JAASRealm</code>.  It utilizes an
+ * <p>
+ * Implementation of the JAAS <strong>LoginModule</strong> interface,
+ * primarily for use in testing <code>JAASRealm</code>. It utilizes an
  * XML-format data file of username/password/role information identical to
- * that supported by <code>org.apache.catalina.realm.MemoryRealm</code>.</p>
+ * that supported by <code>org.apache.catalina.realm.MemoryRealm</code>.
+ * </p>
  *
- * <p>This class recognizes the following string-valued options, which are
+ * <p>
+ * This class recognizes the following string-valued options, which are
  * specified in the configuration file and passed to {@link
  * #initialize(Subject, CallbackHandler, Map, Map)} in the <code>options</code>
- * argument:</p>
+ * argument:
+ * </p>
  * <ul>
  * <li><strong>pathname</strong> - Relative (to the pathname specified by the
- *     "catalina.base" system property) or absolute pathname to the
- *     XML file containing our user information, in the format supported by
- *     {@link MemoryRealm}.  The default value matches the MemoryRealm
- *     default.</li>
+ * "catalina.base" system property) or absolute pathname to the
+ * XML file containing our user information, in the format supported by
+ * {@link MemoryRealm}. The default value matches the MemoryRealm
+ * default.</li>
  * <li><strong>credentialHandlerClassName</strong> - The fully qualified class
- *     name of the CredentialHandler to use. If not specified, {@link
- *     MessageDigestCredentialHandler} will be used.</li>
+ * name of the CredentialHandler to use. If not specified, {@link
+ * MessageDigestCredentialHandler} will be used.</li>
  * <li>Any additional options will be used to identify and call setters on the
- *     {@link CredentialHandler}. For example, <code>algorithm=SHA256</code>
- *     would result in a call to {@link
- *     MessageDigestCredentialHandler#setAlgorithm(String)} with a parameter of
- *     <code>"SHA256"</code></li>
+ * {@link CredentialHandler}. For example, <code>algorithm=SHA256</code>
+ * would result in a call to {@link
+ * MessageDigestCredentialHandler#setAlgorithm(String)} with a parameter of
+ * <code>"SHA256"</code></li>
  * </ul>
  *
- * <p><strong>IMPLEMENTATION NOTE</strong> - This class implements
+ * <p>
+ * <strong>IMPLEMENTATION NOTE</strong> - This class implements
  * <code>Realm</code> only to satisfy the calling requirements of the
- * <code>GenericPrincipal</code> constructor.  It does not actually perform
- * the functionality required of a <code>Realm</code> implementation.</p>
+ * <code>GenericPrincipal</code> constructor. It does not actually perform
+ * the functionality required of a <code>Realm</code> implementation.
+ * </p>
  *
  * @author Craig R. McClanahan
  */
 public class JAASMemoryLoginModule extends MemoryRealm implements LoginModule {
     // We need to extend MemoryRealm to avoid class cast
 
-    private static final Log log = LogFactory.getLog(JAASMemoryLoginModule.class);
+    private static final Log log = LogFactory.getLog(
+            JAASMemoryLoginModule.class);
 
     // ----------------------------------------------------- Instance Variables
-
 
     /**
      * The callback handler responsible for answering our requests.
      */
     protected CallbackHandler callbackHandler = null;
 
-
     /**
      * Has our own <code>commit()</code> returned successfully?
      */
     protected boolean committed = false;
 
-
     /**
      * The configuration information for this <code>LoginModule</code>.
      */
-    protected Map<String,?> options = null;
-
+    protected Map<String, ?> options = null;
 
     /**
      * The absolute or relative pathname to the XML configuration file.
      */
     protected String pathname = "conf/tomcat-users.xml";
-
 
     /**
      * The <code>Principal</code> identified by our validation, or
@@ -111,19 +111,16 @@ public class JAASMemoryLoginModule extends MemoryRealm implements LoginModule {
      */
     protected Principal principal = null;
 
-
     /**
      * The state information that is shared with other configured
      * <code>LoginModule</code> instances.
      */
-    protected Map<String,?> sharedState = null;
-
+    protected Map<String, ?> sharedState = null;
 
     /**
      * The subject for which we are performing authentication.
      */
     protected Subject subject = null;
-
 
     // --------------------------------------------------------- Public Methods
 
@@ -135,12 +132,12 @@ public class JAASMemoryLoginModule extends MemoryRealm implements LoginModule {
 
     /**
      * Phase 2 of authenticating a <code>Subject</code> when Phase 1
-     * fails.  This method is called if the <code>LoginContext</code>
+     * fails. This method is called if the <code>LoginContext</code>
      * failed somewhere in the overall authentication chain.
      *
      * @return <code>true</code> if this method succeeded, or
-     *  <code>false</code> if this <code>LoginModule</code> should be
-     *  ignored
+     *         <code>false</code> if this <code>LoginModule</code> should be
+     *         ignored
      *
      * @exception LoginException if the abort fails
      */
@@ -165,15 +162,14 @@ public class JAASMemoryLoginModule extends MemoryRealm implements LoginModule {
         return (true);
     }
 
-
     /**
      * Phase 2 of authenticating a <code>Subject</code> when Phase 1
-     * was successful.  This method is called if the <code>LoginContext</code>
+     * was successful. This method is called if the <code>LoginContext</code>
      * succeeded in the overall authentication chain.
      *
      * @return <code>true</code> if the authentication succeeded, or
-     *  <code>false</code> if this <code>LoginModule</code> should be
-     *  ignored
+     *         <code>false</code> if this <code>LoginModule</code> should be
+     *         ignored
      *
      * @exception LoginException if the commit fails
      */
@@ -196,7 +192,8 @@ public class JAASMemoryLoginModule extends MemoryRealm implements LoginModule {
             if (principal instanceof GenericPrincipal) {
                 String roles[] = ((GenericPrincipal) principal).getRoles();
                 for (int i = 0; i < roles.length; i++) {
-                    subject.getPrincipals().add(new GenericPrincipal(roles[i], null, null));
+                    subject.getPrincipals().add(new GenericPrincipal(roles[i],
+                            null, null));
                 }
 
             }
@@ -206,22 +203,21 @@ public class JAASMemoryLoginModule extends MemoryRealm implements LoginModule {
         return (true);
     }
 
-
     /**
      * Initialize this <code>LoginModule</code> with the specified
      * configuration information.
      *
-     * @param subject The <code>Subject</code> to be authenticated
+     * @param subject         The <code>Subject</code> to be authenticated
      * @param callbackHandler A <code>CallbackHandler</code> for communicating
-     *  with the end user as necessary
-     * @param sharedState State information shared with other
-     *  <code>LoginModule</code> instances
-     * @param options Configuration information for this specific
-     *  <code>LoginModule</code> instance
+     *                        with the end user as necessary
+     * @param sharedState     State information shared with other
+     *                        <code>LoginModule</code> instances
+     * @param options         Configuration information for this specific
+     *                        <code>LoginModule</code> instance
      */
     @Override
     public void initialize(Subject subject, CallbackHandler callbackHandler,
-                           Map<String,?> sharedState, Map<String,?> options) {
+            Map<String, ?> sharedState, Map<String, ?> options) {
         if (log.isDebugEnabled()) {
             log.debug("Init");
         }
@@ -244,7 +240,8 @@ public class JAASMemoryLoginModule extends MemoryRealm implements LoginModule {
             try {
                 Class<?> clazz = Class.forName((String) option);
                 credentialHandler = (CredentialHandler) clazz.newInstance();
-            } catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
+            } catch (InstantiationException | IllegalAccessException
+                    | ClassNotFoundException e) {
                 throw new IllegalArgumentException(e);
             }
         }
@@ -252,7 +249,7 @@ public class JAASMemoryLoginModule extends MemoryRealm implements LoginModule {
             credentialHandler = new MessageDigestCredentialHandler();
         }
 
-        for (Entry<String,?> entry : options.entrySet()) {
+        for (Entry<String, ?> entry : options.entrySet()) {
             if ("pathname".equals(entry.getKey())) {
                 continue;
             }
@@ -262,8 +259,8 @@ public class JAASMemoryLoginModule extends MemoryRealm implements LoginModule {
             // Skip any non-String values since any value we are interested in
             // will be a String.
             if (entry.getValue() instanceof String) {
-                IntrospectionUtils.setProperty(credentialHandler, entry.getKey(),
-                        (String) entry.getValue());
+                IntrospectionUtils.setProperty(credentialHandler, entry
+                        .getKey(), (String) entry.getValue());
             }
         }
         setCredentialHandler(credentialHandler);
@@ -272,13 +269,12 @@ public class JAASMemoryLoginModule extends MemoryRealm implements LoginModule {
         load();
     }
 
-
     /**
      * Phase 1 of authenticating a <code>Subject</code>.
      *
      * @return <code>true</code> if the authentication succeeded, or
-     *  <code>false</code> if this <code>LoginModule</code> should be
-     *  ignored
+     *         <code>false</code> if this <code>LoginModule</code> should be
+     *         ignored
      *
      * @exception LoginException if the authentication fails
      */
@@ -312,8 +308,8 @@ public class JAASMemoryLoginModule extends MemoryRealm implements LoginModule {
         try {
             callbackHandler.handle(callbacks);
             username = ((NameCallback) callbacks[0]).getName();
-            password =
-                new String(((PasswordCallback) callbacks[1]).getPassword());
+            password = new String(((PasswordCallback) callbacks[1])
+                    .getPassword());
             nonce = ((TextInputCallback) callbacks[2]).getText();
             nc = ((TextInputCallback) callbacks[3]).getText();
             cnonce = ((TextInputCallback) callbacks[4]).getText();
@@ -350,12 +346,11 @@ public class JAASMemoryLoginModule extends MemoryRealm implements LoginModule {
         }
     }
 
-
     /**
      * Log out this user.
      *
      * @return <code>true</code> in all cases because the
-     *  <code>LoginModule</code> should not be ignored
+     *         <code>LoginModule</code> should not be ignored
      *
      * @exception LoginException if logging out failed
      */
@@ -366,7 +361,6 @@ public class JAASMemoryLoginModule extends MemoryRealm implements LoginModule {
         principal = null;
         return (true);
     }
-
 
     // ---------------------------------------------------------- Realm Methods
     // ------------------------------------------------------ Protected Methods
@@ -380,14 +374,16 @@ public class JAASMemoryLoginModule extends MemoryRealm implements LoginModule {
         if (!file.isAbsolute()) {
             String catalinaBase = getCatalinaBase();
             if (catalinaBase == null) {
-                log.warn("Unable to determine Catalina base to load file " + pathname);
+                log.warn("Unable to determine Catalina base to load file "
+                        + pathname);
                 return;
             } else {
                 file = new File(catalinaBase, pathname);
             }
         }
         if (!file.exists() || !file.canRead()) {
-            log.warn("Cannot load configuration file " + file.getAbsolutePath());
+            log.warn("Cannot load configuration file " + file
+                    .getAbsolutePath());
             return;
         }
 
@@ -399,7 +395,8 @@ public class JAASMemoryLoginModule extends MemoryRealm implements LoginModule {
             digester.push(this);
             digester.parse(file);
         } catch (Exception e) {
-            log.warn("Error processing configuration file " + file.getAbsolutePath(), e);
+            log.warn("Error processing configuration file " + file
+                    .getAbsolutePath(), e);
             return;
         } finally {
             digester.reset();

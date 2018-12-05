@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -16,11 +14,10 @@
  */
 package org.apache.tomcat.util.http;
 
-
 /**
  * Static constants for this package.
  *
- * @deprecated  Will be removed in Tomcat 9.
+ * @deprecated Will be removed in Tomcat 9.
  */
 @Deprecated
 public final class CookieSupport {
@@ -42,7 +39,8 @@ public final class CookieSupport {
      * If true, separators that are not explicitly dis-allowed by the v0 cookie
      * spec but are disallowed by the HTTP spec will be allowed in v0 cookie
      * names and values. These characters are: \"()/:&lt;=&gt;?@[\\]{} Note that
-     * the inclusion of / depends on the value of {@link #FWD_SLASH_IS_SEPARATOR}.
+     * the inclusion of / depends on the value of
+     * {@link #FWD_SLASH_IS_SEPARATOR}.
      */
     public static final boolean ALLOW_HTTP_SEPARATORS_IN_V0;
 
@@ -69,7 +67,7 @@ public final class CookieSupport {
      * spec, these are comma, semi-colon and white-space. The HTTP spec
      * definition of linear white space is [CRLF] 1*( SP | HT )
      */
-    private static final char[] V0_SEPARATORS = {',', ';', ' ', '\t'};
+    private static final char[] V0_SEPARATORS = { ',', ';', ' ', '\t' };
     private static final boolean[] V0_SEPARATOR_FLAGS = new boolean[128];
 
     /**
@@ -82,8 +80,7 @@ public final class CookieSupport {
 
     static {
         STRICT_SERVLET_COMPLIANCE = Boolean.parseBoolean(System.getProperty(
-                "org.apache.catalina.STRICT_SERVLET_COMPLIANCE",
-                "false"));
+                "org.apache.catalina.STRICT_SERVLET_COMPLIANCE", "false"));
 
         ALLOW_EQUALS_IN_VALUE = Boolean.parseBoolean(System.getProperty(
                 "org.apache.tomcat.util.http.ServerCookie.ALLOW_EQUALS_IN_VALUE",
@@ -93,7 +90,7 @@ public final class CookieSupport {
                 "org.apache.tomcat.util.http.ServerCookie.ALLOW_HTTP_SEPARATORS_IN_V0",
                 "false"));
 
-        String  fwdSlashIsSeparator = System.getProperty(
+        String fwdSlashIsSeparator = System.getProperty(
                 "org.apache.tomcat.util.http.ServerCookie.FWD_SLASH_IS_SEPARATOR");
         if (fwdSlashIsSeparator == null) {
             FWD_SLASH_IS_SEPARATOR = STRICT_SERVLET_COMPLIANCE;
@@ -105,20 +102,20 @@ public final class CookieSupport {
                 "org.apache.tomcat.util.http.ServerCookie.ALLOW_NAME_ONLY",
                 "false"));
 
-
         /*
-        Excluding the '/' char by default violates the RFC, but
-        it looks like a lot of people put '/'
-        in unquoted values: '/': ; //47
-        '\t':9 ' ':32 '\"':34 '(':40 ')':41 ',':44 ':':58 ';':59 '<':60
-        '=':61 '>':62 '?':63 '@':64 '[':91 '\\':92 ']':93 '{':123 '}':125
-        */
+         * Excluding the '/' char by default violates the RFC, but
+         * it looks like a lot of people put '/'
+         * in unquoted values: '/': ; //47
+         * '\t':9 ' ':32 '\"':34 '(':40 ')':41 ',':44 ':':58 ';':59 '<':60
+         * '=':61 '>':62 '?':63 '@':64 '[':91 '\\':92 ']':93 '{':123 '}':125
+         */
         if (CookieSupport.FWD_SLASH_IS_SEPARATOR) {
             HTTP_SEPARATORS = new char[] { '\t', ' ', '\"', '(', ')', ',', '/',
-                    ':', ';', '<', '=', '>', '?', '@', '[', '\\', ']', '{', '}' };
+                    ':', ';', '<', '=', '>', '?', '@', '[', '\\', ']', '{',
+                    '}' };
         } else {
-            HTTP_SEPARATORS = new char[] { '\t', ' ', '\"', '(', ')', ',',
-                    ':', ';', '<', '=', '>', '?', '@', '[', '\\', ']', '{', '}' };
+            HTTP_SEPARATORS = new char[] { '\t', ' ', '\"', '(', ')', ',', ':',
+                    ';', '<', '=', '>', '?', '@', '[', '\\', ']', '{', '}' };
         }
         for (int i = 0; i < 128; i++) {
             V0_SEPARATOR_FLAGS[i] = false;
@@ -153,8 +150,9 @@ public final class CookieSupport {
     /**
      * Returns true if the byte is a separator as defined by V1 of the cookie
      * spec, RFC2109.
+     * 
      * @throws IllegalArgumentException if a control character was supplied as
-     *         input
+     *                                  input
      */
     public static final boolean isHttpSeparator(final char c) {
         if (c < 0x20 || c >= 0x7f) {
@@ -166,7 +164,6 @@ public final class CookieSupport {
 
         return HTTP_SEPARATOR_FLAGS[c];
     }
-
 
     // ------------------------------------------------------------- Constructor
     private CookieSupport() {

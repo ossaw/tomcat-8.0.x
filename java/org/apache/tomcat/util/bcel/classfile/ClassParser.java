@@ -1,19 +1,16 @@
 /*
- *  Licensed to the Apache Software Foundation (ASF) under one or more
- *  contributor license agreements.  See the NOTICE file distributed with
- *  this work for additional information regarding copyright ownership.
- *  The ASF licenses this file to You under the Apache License, Version 2.0
- *  (the "License"); you may not use this file except in compliance with
- *  the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- *
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements. See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.apache.tomcat.util.bcel.classfile;
 
@@ -57,9 +54,9 @@ public final class ClassParser {
      * @param inputStream Input stream
      */
     public ClassParser(final InputStream inputStream) {
-        this.dataInputStream = new DataInputStream(new BufferedInputStream(inputStream, BUFSIZE));
+        this.dataInputStream = new DataInputStream(new BufferedInputStream(
+                inputStream, BUFSIZE));
     }
-
 
     /**
      * Parse the given Java class file and return an object that represents
@@ -69,8 +66,8 @@ public final class ClassParser {
      * is performed by the java interpreter).
      *
      * @return Class object representing the parsed class file
-     * @throws  IOException If an I/O occurs reading the byte code
-     * @throws  ClassFormatException If the byte code is invalid
+     * @throws IOException          If an I/O occurs reading the byte code
+     * @throws ClassFormatException If the byte code is invalid
      */
     public JavaClass parse() throws IOException, ClassFormatException {
         /****************** Read headers ********************************/
@@ -94,16 +91,15 @@ public final class ClassParser {
         readAttributes();
 
         // Return the information we have gathered in a new object
-        return new JavaClass(class_name, superclass_name,
-                access_flags, constant_pool, interface_names,
-                runtimeVisibleAnnotations);
+        return new JavaClass(class_name, superclass_name, access_flags,
+                constant_pool, interface_names, runtimeVisibleAnnotations);
     }
-
 
     /**
      * Read information about the attributes of the class.
-     * @throws  IOException
-     * @throws  ClassFormatException
+     * 
+     * @throws IOException
+     * @throws ClassFormatException
      */
     private void readAttributes() throws IOException, ClassFormatException {
         final int attributes_count = dataInputStream.readUnsignedShort();
@@ -125,7 +121,8 @@ public final class ClassParser {
                     throw new ClassFormatException(
                             "RuntimeVisibleAnnotations attribute is not allowed more than once in a class file");
                 }
-                runtimeVisibleAnnotations = new Annotations(dataInputStream, constant_pool);
+                runtimeVisibleAnnotations = new Annotations(dataInputStream,
+                        constant_pool);
             } else {
                 // All other attributes are skipped
                 Utility.skipFully(dataInputStream, length);
@@ -133,23 +130,25 @@ public final class ClassParser {
         }
     }
 
-
     /**
      * Read information about the class and its super class.
-     * @throws  IOException
-     * @throws  ClassFormatException
+     * 
+     * @throws IOException
+     * @throws ClassFormatException
      */
     private void readClassInfo() throws IOException, ClassFormatException {
         access_flags = dataInputStream.readUnsignedShort();
-        /* Interfaces are implicitely abstract, the flag should be set
+        /*
+         * Interfaces are implicitely abstract, the flag should be set
          * according to the JVM specification.
          */
         if ((access_flags & Const.ACC_INTERFACE) != 0) {
             access_flags |= Const.ACC_ABSTRACT;
         }
-        if (((access_flags & Const.ACC_ABSTRACT) != 0)
-                && ((access_flags & Const.ACC_FINAL) != 0)) {
-            throw new ClassFormatException("Class can't be both final and abstract");
+        if (((access_flags & Const.ACC_ABSTRACT) != 0) && ((access_flags
+                & Const.ACC_FINAL) != 0)) {
+            throw new ClassFormatException(
+                    "Class can't be both final and abstract");
         }
 
         int class_name_index = dataInputStream.readUnsignedShort();
@@ -158,27 +157,28 @@ public final class ClassParser {
         int superclass_name_index = dataInputStream.readUnsignedShort();
         if (superclass_name_index > 0) {
             // May be zero -> class is java.lang.Object
-            superclass_name = Utility.getClassName(constant_pool, superclass_name_index);
+            superclass_name = Utility.getClassName(constant_pool,
+                    superclass_name_index);
         } else {
             superclass_name = "java.lang.Object";
         }
     }
 
-
     /**
      * Read constant pool entries.
-     * @throws  IOException
-     * @throws  ClassFormatException
+     * 
+     * @throws IOException
+     * @throws ClassFormatException
      */
     private void readConstantPool() throws IOException, ClassFormatException {
         constant_pool = new ConstantPool(dataInputStream);
     }
 
-
     /**
      * Read information about the fields of the class, i.e., its variables.
-     * @throws  IOException
-     * @throws  ClassFormatException
+     * 
+     * @throws IOException
+     * @throws ClassFormatException
      */
     private void readFields() throws IOException, ClassFormatException {
         final int fields_count = dataInputStream.readUnsignedShort();
@@ -187,13 +187,13 @@ public final class ClassParser {
         }
     }
 
-
     /******************** Private utility methods **********************/
     /**
      * Check whether the header of the file is ok.
      * Of course, this has to be the first action on successive file reads.
-     * @throws  IOException
-     * @throws  ClassFormatException
+     * 
+     * @throws IOException
+     * @throws ClassFormatException
      */
     private void readID() throws IOException, ClassFormatException {
         if (dataInputStream.readInt() != MAGIC) {
@@ -201,11 +201,11 @@ public final class ClassParser {
         }
     }
 
-
     /**
      * Read information about the interfaces implemented by this class.
-     * @throws  IOException
-     * @throws  ClassFormatException
+     * 
+     * @throws IOException
+     * @throws ClassFormatException
      */
     private void readInterfaces() throws IOException, ClassFormatException {
         final int interfaces_count = dataInputStream.readUnsignedShort();
@@ -220,11 +220,11 @@ public final class ClassParser {
         }
     }
 
-
     /**
      * Read information about the methods of the class.
-     * @throws  IOException
-     * @throws  ClassFormatException
+     * 
+     * @throws IOException
+     * @throws ClassFormatException
      */
     private void readMethods() throws IOException, ClassFormatException {
         final int methods_count = dataInputStream.readUnsignedShort();
@@ -233,11 +233,11 @@ public final class ClassParser {
         }
     }
 
-
     /**
      * Read major and minor version of compiler which created the file.
-     * @throws  IOException
-     * @throws  ClassFormatException
+     * 
+     * @throws IOException
+     * @throws ClassFormatException
      */
     private void readVersion() throws IOException, ClassFormatException {
         // file.readUnsignedShort(); // Unused minor

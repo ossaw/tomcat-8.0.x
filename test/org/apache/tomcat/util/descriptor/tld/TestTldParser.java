@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -49,13 +47,15 @@ public class TestTldParser {
         Assert.assertEquals(1, xml.getFunctions().size());
 
         ValidatorXml validator = xml.getValidator();
-        Assert.assertEquals("com.example.Validator", validator.getValidatorClass());
+        Assert.assertEquals("com.example.Validator", validator
+                .getValidatorClass());
         Assert.assertEquals(1, validator.getInitParams().size());
         Assert.assertEquals("value", validator.getInitParams().get("name"));
 
         Assert.assertEquals(1, xml.getTags().size());
         TagXml tag = xml.getTags().get(0);
-        Assert.assertEquals("org.apache.jasper.compiler.TestValidator$Echo", tag.getTagClass());
+        Assert.assertEquals("org.apache.jasper.compiler.TestValidator$Echo", tag
+                .getTagClass());
         Assert.assertEquals("empty", tag.getBodyContent());
         Assert.assertTrue(tag.hasDynamicAttributes());
 
@@ -80,17 +80,22 @@ public class TestTldParser {
         Assert.assertEquals("fragment", attributeInfo.getName());
         Assert.assertTrue(attributeInfo.isFragment());
         Assert.assertTrue(attributeInfo.canBeRequestTime());
-        Assert.assertEquals("javax.servlet.jsp.tagext.JspFragment", attributeInfo.getTypeName());
+        Assert.assertEquals("javax.servlet.jsp.tagext.JspFragment",
+                attributeInfo.getTypeName());
 
         attributeInfo = tag.getAttributes().get(2);
         Assert.assertEquals("deferredValue", attributeInfo.getName());
-        Assert.assertEquals("javax.el.ValueExpression", attributeInfo.getTypeName());
-        Assert.assertEquals("java.util.Date", attributeInfo.getExpectedTypeName());
+        Assert.assertEquals("javax.el.ValueExpression", attributeInfo
+                .getTypeName());
+        Assert.assertEquals("java.util.Date", attributeInfo
+                .getExpectedTypeName());
 
         attributeInfo = tag.getAttributes().get(3);
         Assert.assertEquals("deferredMethod", attributeInfo.getName());
-        Assert.assertEquals("javax.el.MethodExpression", attributeInfo.getTypeName());
-        Assert.assertEquals("java.util.Date getDate()", attributeInfo.getMethodSignature());
+        Assert.assertEquals("javax.el.MethodExpression", attributeInfo
+                .getTypeName());
+        Assert.assertEquals("java.util.Date getDate()", attributeInfo
+                .getMethodSignature());
 
         Assert.assertEquals(1, xml.getTagFiles().size());
         TagFileXml tagFile = xml.getTagFiles().get(0);
@@ -103,8 +108,10 @@ public class TestTldParser {
         Assert.assertEquals(1, xml.getFunctions().size());
         FunctionInfo fn = xml.getFunctions().get(0);
         Assert.assertEquals("trim", fn.getName());
-        Assert.assertEquals("org.apache.el.TesterFunctions", fn.getFunctionClass());
-        Assert.assertEquals("java.lang.String trim(java.lang.String)", fn.getFunctionSignature());
+        Assert.assertEquals("org.apache.el.TesterFunctions", fn
+                .getFunctionClass());
+        Assert.assertEquals("java.lang.String trim(java.lang.String)", fn
+                .getFunctionSignature());
     }
 
     @Test
@@ -151,7 +158,8 @@ public class TestTldParser {
         Assert.assertEquals(1, tags.size());
         TagXml tag = tags.get(0);
         Assert.assertEquals("Echo", tag.getName());
-        Assert.assertEquals("org.apache.jasper.compiler.TestValidator$Echo", tag.getTagClass());
+        Assert.assertEquals("org.apache.jasper.compiler.TestValidator$Echo", tag
+                .getTagClass());
         Assert.assertEquals("empty", tag.getBodyContent());
     }
 
@@ -161,7 +169,8 @@ public class TestTldParser {
         Assert.assertEquals("1.0", xml.getTlibVersion());
         List<String> listeners = xml.getListeners();
         Assert.assertEquals(1, listeners.size());
-        Assert.assertEquals("org.apache.catalina.core.TesterTldListener", listeners.get(0));
+        Assert.assertEquals("org.apache.catalina.core.TesterTldListener",
+                listeners.get(0));
     }
 
     private TaglibXml parse(String pathname) throws IOException, SAXException {

@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -57,7 +55,7 @@ public interface ServletRequest {
      * <code>com.oracle.*</code>) are reserved for use by Oracle Corporation.
      *
      * @param name
-     *            a <code>String</code> specifying the name of the attribute
+     *             a <code>String</code> specifying the name of the attribute
      * @return an <code>Object</code> containing the value of the attribute, or
      *         <code>null</code> if the attribute does not exist
      */
@@ -69,7 +67,8 @@ public interface ServletRequest {
      * <code>Enumeration</code> if the request has no attributes available to
      * it.
      *
-     * @return an <code>Enumeration</code> of strings containing the names of the
+     * @return an <code>Enumeration</code> of strings containing the names of
+     *         the
      *         request's attributes
      */
     public Enumeration<String> getAttributeNames();
@@ -94,7 +93,7 @@ public interface ServletRequest {
      *            a <code>String</code> containing the name of the character
      *            encoding.
      * @throws java.io.UnsupportedEncodingException
-     *             if this is not a valid encoding
+     *         if this is not a valid encoding
      */
     public void setCharacterEncoding(String env)
             throws java.io.UnsupportedEncodingException;
@@ -138,10 +137,11 @@ public interface ServletRequest {
      * @return a {@link ServletInputStream} object containing the body of the
      *         request
      * @exception IllegalStateException
-     *                if the {@link #getReader} method has already been called
-     *                for this request
+     *                                  if the {@link #getReader} method has
+     *                                  already been called
+     *                                  for this request
      * @exception IOException
-     *                if an input or output exception occurred
+     *                                  if an input or output exception occurred
      */
     public ServletInputStream getInputStream() throws IOException;
 
@@ -165,7 +165,7 @@ public interface ServletRequest {
      * execution of this method.
      *
      * @param name
-     *            a <code>String</code> specifying the name of the parameter
+     *             a <code>String</code> specifying the name of the parameter
      * @return a <code>String</code> representing the single value of the
      *         parameter
      * @see #getParameterValues
@@ -193,9 +193,10 @@ public interface ServletRequest {
      * If the parameter has a single value, the array has a length of 1.
      *
      * @param name
-     *            a <code>String</code> containing the name of the parameter
-     *            whose value is requested
-     * @return an array of <code>String</code> objects containing the parameter's
+     *             a <code>String</code> containing the name of the parameter
+     *             whose value is requested
+     * @return an array of <code>String</code> objects containing the
+     *         parameter's
      *         values
      * @see #getParameter
      */
@@ -260,14 +261,16 @@ public interface ServletRequest {
      * or {@link #getInputStream} may be called to read the body, not both.
      *
      * @return a <code>BufferedReader</code> containing the body of the request
-     * @exception java.io.UnsupportedEncodingException
-     *                if the character set encoding used is not supported and
-     *                the text cannot be decoded
+     * @exception                       java.io.UnsupportedEncodingException
+     *                                  if the character set encoding used is
+     *                                  not supported and
+     *                                  the text cannot be decoded
      * @exception IllegalStateException
-     *                if {@link #getInputStream} method has been called on this
-     *                request
+     *                                  if {@link #getInputStream} method has
+     *                                  been called on this
+     *                                  request
      * @exception IOException
-     *                if an input or output exception occurred
+     *                                  if an input or output exception occurred
      * @see #getInputStream
      */
     public BufferedReader getReader() throws IOException;
@@ -313,9 +316,9 @@ public interface ServletRequest {
      * servlet.
      *
      * @param name
-     *            a <code>String</code> specifying the name of the attribute
+     *             a <code>String</code> specifying the name of the attribute
      * @param o
-     *            the <code>Object</code> to be stored
+     *             the <code>Object</code> to be stored
      */
     public void setAttribute(String name, Object o);
 
@@ -331,8 +334,8 @@ public interface ServletRequest {
      * <code>com.oracle.*</code>) are reserved for use by Oracle Corporation.
      *
      * @param name
-     *            a <code>String</code> specifying the name of the attribute to
-     *            remove
+     *             a <code>String</code> specifying the name of the attribute to
+     *             remove
      */
     public void removeAttribute(String name);
 
@@ -385,10 +388,12 @@ public interface ServletRequest {
      * a relative path.
      *
      * @param path
-     *            a <code>String</code> specifying the pathname to the resource.
-     *            If it is relative, it must be relative against the current
-     *            servlet.
-     * @return a <code>RequestDispatcher</code> object that acts as a wrapper for
+     *             a <code>String</code> specifying the pathname to the
+     *             resource.
+     *             If it is relative, it must be relative against the current
+     *             servlet.
+     * @return a <code>RequestDispatcher</code> object that acts as a wrapper
+     *         for
      *         the resource at the specified path, or <code>null</code> if the
      *         servlet container cannot return a <code>RequestDispatcher</code>
      * @see RequestDispatcher
@@ -458,10 +463,10 @@ public interface ServletRequest {
     public AsyncContext startAsync() throws IllegalStateException;
 
     /**
-     * @param servletRequest    The ServletRequest with which to initialise the
-     *                          asynchronous context
-     * @param servletResponse   The ServletResponse with which to initialise the
-     *                          asynchronous context
+     * @param servletRequest  The ServletRequest with which to initialise the
+     *                        asynchronous context
+     * @param servletResponse The ServletResponse with which to initialise the
+     *                        asynchronous context
      * @return TODO
      * @throws IllegalStateException If async is not supported for this request
      * @since Servlet 3.0 TODO SERVLET3 - Add comments
@@ -487,7 +492,8 @@ public interface ServletRequest {
      * @return The current AsyncContext
      *
      * @throws IllegalStateException if the request is not in asynchronous mode
-     *         (i.e. @link #isAsyncStarted() is {@code false})
+     *                               (i.e. @link #isAsyncStarted() is
+     *                               {@code false})
      *
      * @since Servlet 3.0
      */

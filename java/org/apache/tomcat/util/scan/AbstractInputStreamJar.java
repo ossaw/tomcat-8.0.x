@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -39,12 +37,10 @@ public abstract class AbstractInputStreamJar implements Jar {
         this.jarFileURL = jarFileUrl;
     }
 
-
     @Override
     public URL getJarFileURL() {
         return jarFileURL;
     }
-
 
     @Override
     public void nextEntry() {
@@ -63,7 +59,6 @@ public abstract class AbstractInputStreamJar implements Jar {
         }
     }
 
-
     @Override
     public String getEntryName() {
         if (entry == null) {
@@ -73,19 +68,16 @@ public abstract class AbstractInputStreamJar implements Jar {
         }
     }
 
-
     @Override
     public InputStream getEntryInputStream() throws IOException {
         return jarInputStream;
     }
-
 
     @Override
     public boolean entryExists(String name) throws IOException {
         gotoEntry(name);
         return entry != null;
     }
-
 
     @Override
     public InputStream getInputStream(String name) throws IOException {
@@ -97,7 +89,6 @@ public abstract class AbstractInputStreamJar implements Jar {
         }
     }
 
-
     @Override
     public long getLastModified(String name) throws IOException {
         gotoEntry(name);
@@ -107,7 +98,6 @@ public abstract class AbstractInputStreamJar implements Jar {
             return entry.getTime();
         }
     }
-
 
     @Override
     public String getURL(String entry) {
@@ -119,13 +109,11 @@ public abstract class AbstractInputStreamJar implements Jar {
         return result.toString();
     }
 
-
     @Override
     public Manifest getManifest() throws IOException {
         reset();
         return jarInputStream.getManifest();
     }
-
 
     @Override
     public void reset() throws IOException {
@@ -133,7 +121,6 @@ public abstract class AbstractInputStreamJar implements Jar {
         entry = null;
         jarInputStream = createJarInputStream();
     }
-
 
     protected void closeStream() {
         if (jarInputStream != null) {
@@ -145,9 +132,8 @@ public abstract class AbstractInputStreamJar implements Jar {
         }
     }
 
-
-    protected abstract NonClosingJarInputStream createJarInputStream() throws IOException;
-
+    protected abstract NonClosingJarInputStream createJarInputStream()
+            throws IOException;
 
     private void gotoEntry(String name) throws IOException {
         if (entry != null && name.equals(entry.getName())) {

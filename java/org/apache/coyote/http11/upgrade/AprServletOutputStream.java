@@ -1,18 +1,16 @@
 /*
- *  Licensed to the Apache Software Foundation (ASF) under one or more
- *  contributor license agreements.  See the NOTICE file distributed with
- *  this work for additional information regarding copyright ownership.
- *  The ASF licenses this file to You under the Apache License, Version 2.0
- *  (the "License"); you may not use this file except in compliance with
- *  the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements. See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.apache.coyote.http11.upgrade;
 
@@ -50,13 +48,13 @@ public class AprServletOutputStream extends AbstractServletOutputStream<Long> {
         }
     }
 
-
     @Override
     protected int doWrite(boolean block, byte[] b, int off, int len)
             throws IOException {
 
         if (closed) {
-            throw new IOException(sm.getString("apr.closed", Long.valueOf(socket)));
+            throw new IOException(sm.getString("apr.closed", Long.valueOf(
+                    socket)));
         }
 
         Lock readLock = socketWrapper.getBlockingStatusReadLock();
@@ -98,7 +96,6 @@ public class AprServletOutputStream extends AbstractServletOutputStream<Long> {
         }
     }
 
-
     private int doWriteInternal(byte[] b, int off, int len) throws IOException {
 
         int start = off;
@@ -121,11 +118,11 @@ public class AprServletOutputStream extends AbstractServletOutputStream<Long> {
                     // APR + SSL requires that exactly the same parameters are
                     // passed when re-attempting the write
                 }
-                written = Socket.sendb(socket, sslOutputBuffer,
-                        sslOutputBuffer.position(), sslOutputBuffer.limit());
+                written = Socket.sendb(socket, sslOutputBuffer, sslOutputBuffer
+                        .position(), sslOutputBuffer.limit());
                 if (written > 0) {
-                    sslOutputBuffer.position(
-                            sslOutputBuffer.position() + written);
+                    sslOutputBuffer.position(sslOutputBuffer.position()
+                            + written);
                 }
             } else {
                 written = Socket.send(socket, b, start, left);
@@ -134,13 +131,14 @@ public class AprServletOutputStream extends AbstractServletOutputStream<Long> {
                 written = 0;
             } else if (-written == Status.APR_EOF) {
                 throw new EOFException(sm.getString("apr.clientAbort"));
-            } else if ((OS.IS_WIN32 || OS.IS_WIN64) &&
-                    (-written == Status.APR_OS_START_SYSERR + 10053)) {
+            } else if ((OS.IS_WIN32 || OS.IS_WIN64)
+                    && (-written == Status.APR_OS_START_SYSERR + 10053)) {
                 // 10053 on Windows is connection aborted
                 throw new EOFException(sm.getString("apr.clientAbort"));
             } else if (written < 0) {
-                throw new IOException(sm.getString("apr.write.error",
-                        Integer.valueOf(-written), Long.valueOf(socket), socketWrapper));
+                throw new IOException(sm.getString("apr.write.error", Integer
+                        .valueOf(-written), Long.valueOf(socket),
+                        socketWrapper));
             }
             start += written;
             left -= written;
@@ -152,12 +150,10 @@ public class AprServletOutputStream extends AbstractServletOutputStream<Long> {
         return len - left;
     }
 
-
     @Override
     protected void doFlush() throws IOException {
         // TODO Auto-generated method stub
     }
-
 
     @Override
     protected void doClose() throws IOException {

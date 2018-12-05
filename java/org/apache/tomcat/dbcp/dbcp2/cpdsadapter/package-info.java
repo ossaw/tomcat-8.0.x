@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -18,12 +16,14 @@
 /**
  * <p>
  * This package contains one public class which is a
- * <code>ConnectionPoolDataSource</code> (CPDS) implementation that can be used to
+ * <code>ConnectionPoolDataSource</code> (CPDS) implementation that can be used
+ * to
  * adapt older <code>Driver</code> based JDBC implementations. Below is an
  * example of setting up the CPDS to be available via JNDI in the
  * catalina servlet container.
  * </p>
- * <p>In server.xml, the following would be added to the &lt;Context&gt; for your
+ * <p>
+ * In server.xml, the following would be added to the &lt;Context&gt; for your
  * webapp:
  * </p>
  *
@@ -48,7 +48,7 @@
  * </pre>
  *
  * <p>
- * In web.xml.  Note that elements must be given in the order of the dtd
+ * In web.xml. Note that elements must be given in the order of the dtd
  * described in the servlet specification:
  * </p>
  *

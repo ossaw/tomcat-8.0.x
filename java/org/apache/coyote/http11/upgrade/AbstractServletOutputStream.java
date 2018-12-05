@@ -1,18 +1,16 @@
 /*
- *  Licensed to the Apache Software Foundation (ASF) under one or more
- *  contributor license agreements.  See the NOTICE file distributed with
- *  this work for additional information regarding copyright ownership.
- *  The ASF licenses this file to You under the Apache License, Version 2.0
- *  (the "License"); you may not use this file except in compliance with
- *  the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements. See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.apache.coyote.http11.upgrade;
 
@@ -28,11 +26,13 @@ import org.apache.tomcat.util.net.DispatchType;
 import org.apache.tomcat.util.net.SocketWrapper;
 import org.apache.tomcat.util.res.StringManager;
 
-public abstract class AbstractServletOutputStream<S> extends ServletOutputStream {
+public abstract class AbstractServletOutputStream<S> extends
+        ServletOutputStream {
 
-    private static final Log log = LogFactory.getLog(AbstractServletOutputStream.class);
-    protected static final StringManager sm =
-            StringManager.getManager(Constants.Package);
+    private static final Log log = LogFactory.getLog(
+            AbstractServletOutputStream.class);
+    protected static final StringManager sm = StringManager.getManager(
+            Constants.Package);
 
     protected final SocketWrapper<S> socketWrapper;
 
@@ -64,7 +64,6 @@ public abstract class AbstractServletOutputStream<S> extends ServletOutputStream
     private volatile int bufferLimit;
     private final int asyncWriteBufferSize;
 
-
     public AbstractServletOutputStream(SocketWrapper<S> socketWrapper,
             int asyncWriteBufferSize) {
         this.socketWrapper = socketWrapper;
@@ -72,12 +71,11 @@ public abstract class AbstractServletOutputStream<S> extends ServletOutputStream
         buffer = new byte[asyncWriteBufferSize];
     }
 
-
     @Override
     public final boolean isReady() {
         if (listener == null) {
-            throw new IllegalStateException(
-                    sm.getString("upgrade.sos.canWrite.ise"));
+            throw new IllegalStateException(sm.getString(
+                    "upgrade.sos.canWrite.ise"));
         }
 
         // Make sure isReady() and onWritePossible() have a consistent view of
@@ -89,16 +87,15 @@ public abstract class AbstractServletOutputStream<S> extends ServletOutputStream
         }
     }
 
-
     @Override
     public final void setWriteListener(WriteListener listener) {
         if (listener == null) {
-            throw new IllegalArgumentException(
-                    sm.getString("upgrade.sos.writeListener.null"));
+            throw new IllegalArgumentException(sm.getString(
+                    "upgrade.sos.writeListener.null"));
         }
         if (this.listener != null) {
-            throw new IllegalArgumentException(
-                    sm.getString("upgrade.sos.writeListener.set"));
+            throw new IllegalArgumentException(sm.getString(
+                    "upgrade.sos.writeListener.set"));
         }
         // Container is responsible for first call to onWritePossible() but only
         // need to do this if setting the listener for the first time.
@@ -110,11 +107,9 @@ public abstract class AbstractServletOutputStream<S> extends ServletOutputStream
         this.applicationLoader = Thread.currentThread().getContextClassLoader();
     }
 
-
     final boolean isCloseRequired() {
         return closeRequired;
     }
-
 
     @Override
     public void write(int b) throws IOException {
@@ -124,7 +119,6 @@ public abstract class AbstractServletOutputStream<S> extends ServletOutputStream
         }
     }
 
-
     @Override
     public void write(byte[] b, int off, int len) throws IOException {
         synchronized (writeLock) {
@@ -133,20 +127,18 @@ public abstract class AbstractServletOutputStream<S> extends ServletOutputStream
         }
     }
 
-
     @Override
     public void close() throws IOException {
         closeRequired = true;
         doClose();
     }
 
-
     private void preWriteChecks() {
         if (bufferLimit != 0) {
-            throw new IllegalStateException(sm.getString("upgrade.sis.write.ise"));
+            throw new IllegalStateException(sm.getString(
+                    "upgrade.sis.write.ise"));
         }
     }
-
 
     /**
      * Must hold writeLock to call this method.
@@ -173,20 +165,20 @@ public abstract class AbstractServletOutputStream<S> extends ServletOutputStream
                     int bytesLeft = len - written;
                     if (bytesLeft > buffer.length) {
                         buffer = new byte[bytesLeft];
-                    } else if (bytesLeft < asyncWriteBufferSize &&
-                            buffer.length > asyncWriteBufferSize) {
+                    } else if (bytesLeft < asyncWriteBufferSize
+                            && buffer.length > asyncWriteBufferSize) {
                         buffer = new byte[asyncWriteBufferSize];
                     }
                     bufferPos = 0;
                     bufferLimit = bytesLeft;
-                    System.arraycopy(b, off + written, buffer, bufferPos, bufferLimit);
+                    System.arraycopy(b, off + written, buffer, bufferPos,
+                            bufferLimit);
                 }
             } else {
                 bufferLimit = 0;
             }
         }
     }
-
 
     final void onWritePossible() {
         try {
@@ -227,7 +219,6 @@ public abstract class AbstractServletOutputStream<S> extends ServletOutputStream
         }
     }
 
-
     protected final void onError(Throwable t) {
         if (listener == null) {
             return;
@@ -251,7 +242,6 @@ public abstract class AbstractServletOutputStream<S> extends ServletOutputStream
             }
         }
     }
-
 
     /**
      * Abstract method to be overridden by concrete implementations. The base

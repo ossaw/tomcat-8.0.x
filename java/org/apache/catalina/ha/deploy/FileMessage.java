@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -23,6 +21,7 @@ import org.apache.catalina.tribes.Member;
 /**
  * Contains the data for a file being transferred over TCP, this is
  * essentially a fragment of a file, read and written by the FileMessageFactory
+ * 
  * @version 1.0
  */
 
@@ -37,33 +36,37 @@ public class FileMessage extends ClusterMessageBase {
     private final String fileName;
     private final String contextName;
 
-    public FileMessage(Member source,
-                       String fileName,
-                       String contextName) {
-        this.address=source;
-        this.fileName=fileName;
-        this.contextName=contextName;
+    public FileMessage(Member source, String fileName, String contextName) {
+        this.address = source;
+        this.fileName = fileName;
+        this.contextName = contextName;
     }
 
     public int getMessageNumber() {
         return messageNumber;
     }
+
     public void setMessageNumber(int messageNumber) {
         this.messageNumber = messageNumber;
     }
+
     public long getTotalNrOfMsgs() {
         return totalNrOfMsgs;
     }
+
     public void setTotalNrOfMsgs(long totalNrOfMsgs) {
         this.totalNrOfMsgs = totalNrOfMsgs;
     }
+
     public byte[] getData() {
         return data;
     }
+
     public void setData(byte[] data, int length) {
         this.data = data;
         this.dataLength = length;
     }
+
     public int getDataLength() {
         return dataLength;
     }
@@ -78,10 +81,10 @@ public class FileMessage extends ClusterMessageBase {
         return result.toString();
     }
 
-
     public String getFileName() {
         return fileName;
     }
+
     public String getContextName() {
         return contextName;
     }

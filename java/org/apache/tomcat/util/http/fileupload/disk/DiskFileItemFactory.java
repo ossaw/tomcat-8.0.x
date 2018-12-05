@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -22,21 +20,25 @@ import org.apache.tomcat.util.http.fileupload.FileItem;
 import org.apache.tomcat.util.http.fileupload.FileItemFactory;
 
 /**
- * <p>The default {@link org.apache.tomcat.util.http.fileupload.FileItemFactory}
+ * <p>
+ * The default {@link org.apache.tomcat.util.http.fileupload.FileItemFactory}
  * implementation. This implementation creates
  * {@link org.apache.tomcat.util.http.fileupload.FileItem} instances which keep
  * their
  * content either in memory, for smaller items, or in a temporary file on disk,
  * for larger items. The size threshold, above which content will be stored on
  * disk, is configurable, as is the directory in which temporary files will be
- * created.</p>
+ * created.
+ * </p>
  *
- * <p>If not otherwise configured, the default configuration values are as
- * follows:</p>
+ * <p>
+ * If not otherwise configured, the default configuration values are as
+ * follows:
+ * </p>
  * <ul>
- *   <li>Size threshold is 10KB.</li>
- *   <li>Repository is the system default temp directory, as returned by
- *       <code>System.getProperty("java.io.tmpdir")</code>.</li>
+ * <li>Size threshold is 10KB.</li>
+ * <li>Repository is the system default temp directory, as returned by
+ * <code>System.getProperty("java.io.tmpdir")</code>.</li>
  * </ul>
  * <p>
  * <b>NOTE</b>: Files are created in the system default temp directory with
@@ -51,8 +53,10 @@ import org.apache.tomcat.util.http.fileupload.FileItemFactory;
  * may be used.
  * </p>
  *
- * <p>Temporary files, which are created for file items, should be
- * deleted later on.</p>
+ * <p>
+ * Temporary files, which are created for file items, should be
+ * deleted later on.
+ * </p>
  *
  * @since FileUpload 1.1
  */
@@ -173,7 +177,7 @@ public class DiskFileItemFactory implements FileItemFactory {
     @Override
     public FileItem createItem(String fieldName, String contentType,
             boolean isFormField, String fileName) {
-        return new DiskFileItem(fieldName, contentType,
-                isFormField, fileName, sizeThreshold, repository);
+        return new DiskFileItem(fieldName, contentType, isFormField, fileName,
+                sizeThreshold, repository);
     }
 }

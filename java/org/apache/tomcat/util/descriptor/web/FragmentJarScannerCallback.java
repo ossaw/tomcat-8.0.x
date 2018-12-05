@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -31,34 +29,33 @@ import org.apache.tomcat.util.scan.JarFactory;
 import org.xml.sax.InputSource;
 
 /**
-* Callback handling a web-fragment.xml descriptor.
-*/
+ * Callback handling a web-fragment.xml descriptor.
+ */
 public class FragmentJarScannerCallback implements JarScannerCallback {
 
-    private static final String FRAGMENT_LOCATION =
-        "META-INF/web-fragment.xml";
+    private static final String FRAGMENT_LOCATION = "META-INF/web-fragment.xml";
     private final WebXmlParser webXmlParser;
     private final boolean delegate;
     private final boolean parseRequired;
-    private final Map<String,WebXml> fragments = new HashMap<>();
-    private boolean ok  = true;
+    private final Map<String, WebXml> fragments = new HashMap<>();
+    private boolean ok = true;
 
-    public FragmentJarScannerCallback(WebXmlParser webXmlParser, boolean delegate,
-            boolean parseRequired) {
+    public FragmentJarScannerCallback(WebXmlParser webXmlParser,
+            boolean delegate, boolean parseRequired) {
         this.webXmlParser = webXmlParser;
         this.delegate = delegate;
         this.parseRequired = parseRequired;
     }
 
     @Override
-    public void scan(JarURLConnection jarConn, String webappPath, boolean isWebapp)
-            throws IOException {
+    public void scan(JarURLConnection jarConn, String webappPath,
+            boolean isWebapp) throws IOException {
         scan(JarFactory.newInstance(jarConn.getURL()), webappPath, isWebapp);
     }
 
-
     @Override
-    public void scan(Jar jar, String webappPath, boolean isWebapp) throws IOException {
+    public void scan(Jar jar, String webappPath, boolean isWebapp)
+            throws IOException {
 
         InputStream is = null;
         WebXml fragment = new WebXml();
@@ -96,7 +93,6 @@ public class FragmentJarScannerCallback implements JarScannerCallback {
         }
     }
 
-
     private String extractJarFileName(URL input) {
         String url = input.toString();
         if (url.endsWith("!/")) {
@@ -108,9 +104,9 @@ public class FragmentJarScannerCallback implements JarScannerCallback {
         return url.substring(url.lastIndexOf('/') + 1);
     }
 
-
     @Override
-    public void scan(File file, String webappPath, boolean isWebapp) throws IOException {
+    public void scan(File file, String webappPath, boolean isWebapp)
+            throws IOException {
 
         WebXml fragment = new WebXml();
         fragment.setWebappJar(isWebapp);
@@ -120,8 +116,8 @@ public class FragmentJarScannerCallback implements JarScannerCallback {
         try {
             if (fragmentFile.isFile()) {
                 try (InputStream stream = new FileInputStream(fragmentFile)) {
-                    InputSource source =
-                        new InputSource(fragmentFile.toURI().toURL().toString());
+                    InputSource source = new InputSource(fragmentFile.toURI()
+                            .toURL().toString());
                     source.setByteStream(stream);
                     if (!webXmlParser.parseWebXml(source, fragment, true)) {
                         ok = false;
@@ -142,7 +138,6 @@ public class FragmentJarScannerCallback implements JarScannerCallback {
         }
     }
 
-
     @Override
     public void scanWebInfClasses() {
         // NO-OP. Fragments unpacked in WEB-INF classes are not handled,
@@ -154,7 +149,7 @@ public class FragmentJarScannerCallback implements JarScannerCallback {
         return ok;
     }
 
-    public Map<String,WebXml> getFragments() {
+    public Map<String, WebXml> getFragments() {
         return fragments;
     }
 }

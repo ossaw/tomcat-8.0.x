@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -15,6 +13,7 @@
  * limitations under the License.
  */
 package org.apache.catalina.ha.session;
+
 import org.apache.catalina.ha.ClusterMessage;
 
 /**
@@ -25,15 +24,69 @@ import org.apache.catalina.ha.ClusterMessage;
  *
  * The following events are currently available:
  * <ul>
- *   <li><pre>public static final int EVT_SESSION_CREATED</pre><li>
- *   <li><pre>public static final int EVT_SESSION_EXPIRED</pre><li>
- *   <li><pre>public static final int EVT_SESSION_ACCESSED</pre><li>
- *   <li><pre>public static final int EVT_GET_ALL_SESSIONS</pre><li>
- *   <li><pre>public static final int EVT_SESSION_DELTA</pre><li>
- *   <li><pre>public static final int EVT_ALL_SESSION_DATA</pre><li>
- *   <li><pre>public static final int EVT_ALL_SESSION_TRANSFERCOMPLETE</pre><li>
- *   <li><pre>public static final int EVT_CHANGE_SESSION_ID</pre><li>
- *   <li><pre>public static final int EVT_ALL_SESSION_NOCONTEXTMANAGER</pre><li>
+ * <li>
+ * 
+ * <pre>
+ * public static final int EVT_SESSION_CREATED
+ * </pre>
+ * 
+ * <li>
+ * <li>
+ * 
+ * <pre>
+ * public static final int EVT_SESSION_EXPIRED
+ * </pre>
+ * 
+ * <li>
+ * <li>
+ * 
+ * <pre>
+ * public static final int EVT_SESSION_ACCESSED
+ * </pre>
+ * 
+ * <li>
+ * <li>
+ * 
+ * <pre>
+ * public static final int EVT_GET_ALL_SESSIONS
+ * </pre>
+ * 
+ * <li>
+ * <li>
+ * 
+ * <pre>
+ * public static final int EVT_SESSION_DELTA
+ * </pre>
+ * 
+ * <li>
+ * <li>
+ * 
+ * <pre>
+ * public static final int EVT_ALL_SESSION_DATA
+ * </pre>
+ * 
+ * <li>
+ * <li>
+ * 
+ * <pre>
+ * public static final int EVT_ALL_SESSION_TRANSFERCOMPLETE
+ * </pre>
+ * 
+ * <li>
+ * <li>
+ * 
+ * <pre>
+ * public static final int EVT_CHANGE_SESSION_ID
+ * </pre>
+ * 
+ * <li>
+ * <li>
+ * 
+ * <pre>
+ * public static final int EVT_ALL_SESSION_NOCONTEXTMANAGER
+ * </pre>
+ * 
+ * <li>
  * </ul>
  *
  */
@@ -51,7 +104,8 @@ public interface SessionMessage extends ClusterMessage {
 
     /**
      * Event type used when a session has been accessed (ie, last access time
-     * has been updated. This is used so that the replicated sessions will not expire
+     * has been updated. This is used so that the replicated sessions will not
+     * expire
      * on the network
      */
     public static final int EVT_SESSION_ACCESSED = 3;
@@ -65,7 +119,7 @@ public interface SessionMessage extends ClusterMessage {
      * Event type used when an attribute has been added to a session,
      * the attribute will be sent to all the other nodes in the cluster
      */
-    public static final int EVT_SESSION_DELTA  = 13;
+    public static final int EVT_SESSION_DELTA = 13;
 
     /**
      * When a session state is transferred, this is the event.
@@ -94,17 +148,19 @@ public interface SessionMessage extends ClusterMessage {
 
     /**
      * returns the event type
+     * 
      * @return one of the event types EVT_XXXX
      */
     public int getEventType();
+
     /**
      * @return the serialized data for the session
      */
     public byte[] getSession();
+
     /**
      * @return the session ID for the session
      */
     public String getSessionID();
-
 
 }//SessionMessage

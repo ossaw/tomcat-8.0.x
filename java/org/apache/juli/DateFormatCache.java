@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -15,9 +13,7 @@
  * limitations under the License.
  */
 
-
 package org.apache.juli;
-
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -25,21 +21,31 @@ import java.util.Locale;
 import java.util.TimeZone;
 
 /**
- * <p>Cache structure for SimpleDateFormat formatted timestamps based on
- * seconds.</p>
+ * <p>
+ * Cache structure for SimpleDateFormat formatted timestamps based on
+ * seconds.
+ * </p>
  *
- * <p>Millisecond formatting using S is not supported. You should add the
- * millisecond information after getting back the second formatting.</p>
+ * <p>
+ * Millisecond formatting using S is not supported. You should add the
+ * millisecond information after getting back the second formatting.
+ * </p>
  *
- * <p>The cache consists of entries for a consecutive range of
+ * <p>
+ * The cache consists of entries for a consecutive range of
  * seconds. The length of the range is configurable. It is
- * implemented based on a cyclic buffer. New entries shift the range.</p>
+ * implemented based on a cyclic buffer. New entries shift the range.
+ * </p>
  *
- * <p>The cache is not threadsafe. It can be used without synchronization
- * via thread local instances, or with synchronization as a global cache.</p>
+ * <p>
+ * The cache is not threadsafe. It can be used without synchronization
+ * via thread local instances, or with synchronization as a global cache.
+ * </p>
  *
- * <p>The cache can be created with a parent cache to build a cache hierarchy.
- * Access to the parent cache is threadsafe.</p>
+ * <p>
+ * The cache can be created with a parent cache to build a cache hierarchy.
+ * Access to the parent cache is threadsafe.
+ * </p>
  */
 public class DateFormatCache {
 
@@ -84,7 +90,7 @@ public class DateFormatCache {
         this.format = tidyFormat(format);
         Cache parentCache = null;
         if (parent != null) {
-            synchronized(parent) {
+            synchronized (parent) {
                 parentCache = parent.cache;
             }
         }
@@ -130,27 +136,30 @@ public class DateFormatCache {
 
             long seconds = time / 1000;
 
-            /* First step: if we have seen this timestamp
-               during the previous call, return the previous value. */
+            /*
+             * First step: if we have seen this timestamp
+             * during the previous call, return the previous value.
+             */
             if (seconds == previousSeconds) {
                 return previousFormat;
             }
 
             /* Second step: Try to locate in cache */
             previousSeconds = seconds;
-            int index = (offset + (int)(seconds - first)) % cacheSize;
+            int index = (offset + (int) (seconds - first)) % cacheSize;
             if (index < 0) {
                 index += cacheSize;
             }
             if (seconds >= first && seconds <= last) {
                 if (cache[index] != null) {
-                    /* Found, so remember for next call and return.*/
+                    /* Found, so remember for next call and return. */
                     previousFormat = cache[index];
                     return previousFormat;
                 }
 
-            /* Third step: not found in cache, adjust cache and add item */
-            } else if (seconds >= last + cacheSize || seconds <= first - cacheSize) {
+                /* Third step: not found in cache, adjust cache and add item */
+            } else if (seconds >= last + cacheSize || seconds <= first
+                    - cacheSize) {
                 first = seconds;
                 last = first + cacheSize - 1;
                 index = 0;
@@ -174,10 +183,12 @@ public class DateFormatCache {
                 offset = index;
             }
 
-            /* Last step: format new timestamp either using
-             * parent cache or locally. */
+            /*
+             * Last step: format new timestamp either using
+             * parent cache or locally.
+             */
             if (parent != null) {
-                synchronized(parent) {
+                synchronized (parent) {
                     previousFormat = parent.getFormat(time);
                 }
             } else {

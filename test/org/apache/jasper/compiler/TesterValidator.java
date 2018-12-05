@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -24,8 +22,7 @@ import org.junit.Test;
  */
 public class TesterValidator {
 
-    private static String[] bug53867TestData = new String[] {
-            "Hello World!",
+    private static String[] bug53867TestData = new String[] { "Hello World!",
             "<meta http-equiv=\"Content-Language\">",
             "This connection has limited network connectivity.",
             "Please use this web page & to access file server resources." };
@@ -62,8 +59,8 @@ public class TesterValidator {
                 doTestBug53867OldVersion(bug53867TestData[j]);
             }
         }
-        System.out.println(
-                "Old escape:" + (System.currentTimeMillis() - start));
+        System.out.println("Old escape:" + (System.currentTimeMillis()
+                - start));
 
         start = System.currentTimeMillis();
         for (int i = 0; i < count; i++) {
@@ -71,8 +68,8 @@ public class TesterValidator {
                 Validator.xmlEscape(bug53867TestData[j]);
             }
         }
-        System.out.println(
-                "New escape:" + (System.currentTimeMillis() - start));
+        System.out.println("New escape:" + (System.currentTimeMillis()
+                - start));
     }
 
     private static String doTestBug53867OldVersion(String s) {

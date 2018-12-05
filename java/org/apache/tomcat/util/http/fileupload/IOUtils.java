@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -78,7 +76,8 @@ public class IOUtils {
     /**
      * Closes a <code>Closeable</code> unconditionally.
      * <p>
-     * Equivalent to {@link Closeable#close()}, except any exceptions will be ignored. This is typically used in
+     * Equivalent to {@link Closeable#close()}, except any exceptions will be
+     * ignored. This is typically used in
      * finally blocks.
      * <p>
      * Example code:
@@ -108,7 +107,7 @@ public class IOUtils {
      * </pre>
      *
      * @param closeable
-     *            the objects to close, may be null or already closed
+     *                  the objects to close, may be null or already closed
      * @since 2.0
      */
     public static void closeQuietly(final Closeable closeable) {
@@ -136,13 +135,14 @@ public class IOUtils {
      * use the <code>copyLarge(InputStream, OutputStream)</code> method.
      *
      * @param input  the <code>InputStream</code> to read from
-     * @param output  the <code>OutputStream</code> to write to
+     * @param output the <code>OutputStream</code> to write to
      * @return the number of bytes copied, or -1 if &gt; Integer.MAX_VALUE
      * @throws NullPointerException if the input or output is null
-     * @throws IOException if an I/O error occurs
+     * @throws IOException          if an I/O error occurs
      * @since 1.1
      */
-    public static int copy(InputStream input, OutputStream output) throws IOException {
+    public static int copy(InputStream input, OutputStream output)
+            throws IOException {
         long count = copyLarge(input, output);
         if (count > Integer.MAX_VALUE) {
             return -1;
@@ -160,10 +160,10 @@ public class IOUtils {
      * The buffer size is given by {@link #DEFAULT_BUFFER_SIZE}.
      *
      * @param input  the <code>InputStream</code> to read from
-     * @param output  the <code>OutputStream</code> to write to
+     * @param output the <code>OutputStream</code> to write to
      * @return the number of bytes copied
      * @throws NullPointerException if the input or output is null
-     * @throws IOException if an I/O error occurs
+     * @throws IOException          if an I/O error occurs
      * @since 1.3
      */
     public static long copyLarge(InputStream input, OutputStream output)
@@ -185,7 +185,7 @@ public class IOUtils {
      * as possible before giving up; this may not always be the case for
      * subclasses of {@link InputStream}.
      *
-     * @param input where to read input from
+     * @param input  where to read input from
      * @param buffer destination
      * @param offset initial offset into buffer
      * @param length length to read, must be &gt;= 0
@@ -193,9 +193,11 @@ public class IOUtils {
      * @throws IOException if a read error occurs
      * @since 2.2
      */
-    public static int read(final InputStream input, final byte[] buffer, final int offset, final int length) throws IOException {
+    public static int read(final InputStream input, final byte[] buffer,
+            final int offset, final int length) throws IOException {
         if (length < 0) {
-            throw new IllegalArgumentException("Length must not be negative: " + length);
+            throw new IllegalArgumentException("Length must not be negative: "
+                    + length);
         }
         int remaining = length;
         while (remaining > 0) {
@@ -212,41 +214,50 @@ public class IOUtils {
     /**
      * Reads the requested number of bytes or fail if there are not enough left.
      * <p>
-     * This allows for the possibility that {@link InputStream#read(byte[], int, int)} may
-     * not read as many bytes as requested (most likely because of reaching EOF).
+     * This allows for the possibility that
+     * {@link InputStream#read(byte[], int, int)} may
+     * not read as many bytes as requested (most likely because of reaching
+     * EOF).
      *
-     * @param input where to read input from
+     * @param input  where to read input from
      * @param buffer destination
      * @param offset initial offset into buffer
      * @param length length to read, must be &gt;= 0
      *
-     * @throws IOException if there is a problem reading the file
+     * @throws IOException              if there is a problem reading the file
      * @throws IllegalArgumentException if length is negative
-     * @throws EOFException if the number of bytes read was incorrect
+     * @throws EOFException             if the number of bytes read was
+     *                                  incorrect
      * @since 2.2
      */
-    public static void readFully(final InputStream input, final byte[] buffer, final int offset, final int length) throws IOException {
+    public static void readFully(final InputStream input, final byte[] buffer,
+            final int offset, final int length) throws IOException {
         final int actual = read(input, buffer, offset, length);
         if (actual != length) {
-            throw new EOFException("Length to read: " + length + " actual: " + actual);
+            throw new EOFException("Length to read: " + length + " actual: "
+                    + actual);
         }
     }
 
     /**
      * Reads the requested number of bytes or fail if there are not enough left.
      * <p>
-     * This allows for the possibility that {@link InputStream#read(byte[], int, int)} may
-     * not read as many bytes as requested (most likely because of reaching EOF).
+     * This allows for the possibility that
+     * {@link InputStream#read(byte[], int, int)} may
+     * not read as many bytes as requested (most likely because of reaching
+     * EOF).
      *
-     * @param input where to read input from
+     * @param input  where to read input from
      * @param buffer destination
      *
-     * @throws IOException if there is a problem reading the file
+     * @throws IOException              if there is a problem reading the file
      * @throws IllegalArgumentException if length is negative
-     * @throws EOFException if the number of bytes read was incorrect
+     * @throws EOFException             if the number of bytes read was
+     *                                  incorrect
      * @since 2.2
      */
-    public static void readFully(final InputStream input, final byte[] buffer) throws IOException {
+    public static void readFully(final InputStream input, final byte[] buffer)
+            throws IOException {
         readFully(input, buffer, 0, buffer.length);
     }
 }

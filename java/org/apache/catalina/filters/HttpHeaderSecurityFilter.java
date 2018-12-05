@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -36,7 +34,8 @@ import org.apache.juli.logging.LogFactory;
  */
 public class HttpHeaderSecurityFilter extends FilterBase {
 
-    private static final Log log = LogFactory.getLog(HttpHeaderSecurityFilter.class);
+    private static final Log log = LogFactory.getLog(
+            HttpHeaderSecurityFilter.class);
 
     // HSTS
     private static final String HSTS_HEADER_NAME = "Strict-Transport-Security";
@@ -75,14 +74,14 @@ public class HttpHeaderSecurityFilter extends FilterBase {
         hstsHeaderValue = hstsValue.toString();
 
         // Anti click-jacking
-        StringBuilder cjValue = new StringBuilder(antiClickJackingOption.headerValue);
+        StringBuilder cjValue = new StringBuilder(
+                antiClickJackingOption.headerValue);
         if (antiClickJackingOption == XFrameOption.ALLOW_FROM) {
             cjValue.append(' ');
             cjValue.append(antiClickJackingUri);
         }
         antiClickJackingHeaderValue = cjValue.toString();
     }
-
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response,
@@ -92,7 +91,8 @@ public class HttpHeaderSecurityFilter extends FilterBase {
             HttpServletResponse httpResponse = (HttpServletResponse) response;
 
             if (response.isCommitted()) {
-                throw new ServletException(sm.getString("httpHeaderSecurityFilter.committed"));
+                throw new ServletException(sm.getString(
+                        "httpHeaderSecurityFilter.committed"));
             }
 
             // HSTS
@@ -102,7 +102,8 @@ public class HttpHeaderSecurityFilter extends FilterBase {
 
             // anti click-jacking
             if (antiClickJackingEnabled) {
-                httpResponse.setHeader(ANTI_CLICK_JACKING_HEADER_NAME, antiClickJackingHeaderValue);
+                httpResponse.setHeader(ANTI_CLICK_JACKING_HEADER_NAME,
+                        antiClickJackingHeaderValue);
             }
 
             // Block content type sniffing
@@ -113,19 +114,18 @@ public class HttpHeaderSecurityFilter extends FilterBase {
 
             // cross-site scripting filter protection
             if (xssProtectionEnabled) {
-                httpResponse.setHeader(XSS_PROTECTION_HEADER_NAME, XSS_PROTECTION_HEADER_VALUE);
+                httpResponse.setHeader(XSS_PROTECTION_HEADER_NAME,
+                        XSS_PROTECTION_HEADER_VALUE);
             }
         }
 
         chain.doFilter(request, response);
     }
 
-
     @Override
     protected Log getLogger() {
         return log;
     }
-
 
     @Override
     protected boolean isConfigProblemFatal() {
@@ -134,21 +134,17 @@ public class HttpHeaderSecurityFilter extends FilterBase {
         return true;
     }
 
-
     public boolean isHstsEnabled() {
         return hstsEnabled;
     }
-
 
     public void setHstsEnabled(boolean hstsEnabled) {
         this.hstsEnabled = hstsEnabled;
     }
 
-
     public int getHstsMaxAgeSeconds() {
         return hstsMaxAgeSeconds;
     }
-
 
     public void setHstsMaxAgeSeconds(int hstsMaxAgeSeconds) {
         if (hstsMaxAgeSeconds < 0) {
@@ -158,63 +154,51 @@ public class HttpHeaderSecurityFilter extends FilterBase {
         }
     }
 
-
     public boolean isHstsIncludeSubDomains() {
         return hstsIncludeSubDomains;
     }
-
 
     public void setHstsIncludeSubDomains(boolean hstsIncludeSubDomains) {
         this.hstsIncludeSubDomains = hstsIncludeSubDomains;
     }
 
-
-
     public boolean isAntiClickJackingEnabled() {
         return antiClickJackingEnabled;
     }
-
-
 
     public void setAntiClickJackingEnabled(boolean antiClickJackingEnabled) {
         this.antiClickJackingEnabled = antiClickJackingEnabled;
     }
 
-
-
     public String getAntiClickJackingOption() {
         return antiClickJackingOption.toString();
     }
 
-
     public void setAntiClickJackingOption(String antiClickJackingOption) {
         for (XFrameOption option : XFrameOption.values()) {
-            if (option.getHeaderValue().equalsIgnoreCase(antiClickJackingOption)) {
+            if (option.getHeaderValue().equalsIgnoreCase(
+                    antiClickJackingOption)) {
                 this.antiClickJackingOption = option;
                 return;
             }
         }
-        throw new IllegalArgumentException(
-                sm.getString("httpHeaderSecurityFilter.clickjack.invalid", antiClickJackingOption));
+        throw new IllegalArgumentException(sm.getString(
+                "httpHeaderSecurityFilter.clickjack.invalid",
+                antiClickJackingOption));
     }
-
-
 
     public String getAntiClickJackingUri() {
         return antiClickJackingUri.toString();
     }
 
-
     public boolean isBlockContentTypeSniffingEnabled() {
         return blockContentTypeSniffingEnabled;
     }
-
 
     public void setBlockContentTypeSniffingEnabled(
             boolean blockContentTypeSniffingEnabled) {
         this.blockContentTypeSniffingEnabled = blockContentTypeSniffingEnabled;
     }
-
 
     public void setAntiClickJackingUri(String antiClickJackingUri) {
         URI uri;
@@ -235,10 +219,7 @@ public class HttpHeaderSecurityFilter extends FilterBase {
     }
 
     private static enum XFrameOption {
-        DENY("DENY"),
-        SAME_ORIGIN("SAMEORIGIN"),
-        ALLOW_FROM("ALLOW-FROM");
-
+        DENY("DENY"), SAME_ORIGIN("SAMEORIGIN"), ALLOW_FROM("ALLOW-FROM");
 
         private final String headerValue;
 

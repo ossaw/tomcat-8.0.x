@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -39,20 +37,20 @@ import org.apache.tomcat.util.res.StringManager;
 import org.xml.sax.Attributes;
 
 /**
- * <p>Concrete implementation of {@link UserDatabase} that loads all
+ * <p>
+ * Concrete implementation of {@link UserDatabase} that loads all
  * defined users, groups, and roles into an in-memory data structure,
- * and uses a specified XML file for its persistent storage.</p>
+ * and uses a specified XML file for its persistent storage.
+ * </p>
  *
  * @author Craig R. McClanahan
  * @since 4.1
  */
 public class MemoryUserDatabase implements UserDatabase {
 
-
     private static final Log log = LogFactory.getLog(MemoryUserDatabase.class);
 
     // ----------------------------------------------------------- Constructors
-
 
     /**
      * Create a new instance with default values.
@@ -60,7 +58,6 @@ public class MemoryUserDatabase implements UserDatabase {
     public MemoryUserDatabase() {
         this(null);
     }
-
 
     /**
      * Create a new instance with the specified values.
@@ -71,22 +68,18 @@ public class MemoryUserDatabase implements UserDatabase {
         this.id = id;
     }
 
-
     // ----------------------------------------------------- Instance Variables
-
 
     /**
      * The set of {@link Group}s defined in this database, keyed by
      * group name.
      */
-    protected final HashMap<String,Group> groups = new HashMap<>();
-
+    protected final HashMap<String, Group> groups = new HashMap<>();
 
     /**
      * The unique global identifier of this user database.
      */
     protected final String id;
-
 
     /**
      * The relative (to <code>catalina.base</code>) or absolute pathname to
@@ -94,20 +87,17 @@ public class MemoryUserDatabase implements UserDatabase {
      */
     protected String pathname = "conf/tomcat-users.xml";
 
-
     /**
      * The relative or absolute pathname to the file in which our old
      * information is stored while renaming is in progress.
      */
     protected String pathnameOld = pathname + ".old";
 
-
     /**
      * The relative or absolute pathname of the file in which we write
      * our new information prior to renaming.
      */
     protected String pathnameNew = pathname + ".new";
-
 
     /**
      * A flag, indicating if the user database is read only.
@@ -118,25 +108,21 @@ public class MemoryUserDatabase implements UserDatabase {
      * The set of {@link Role}s defined in this database, keyed by
      * role name.
      */
-    protected final HashMap<String,Role> roles = new HashMap<>();
-
+    protected final HashMap<String, Role> roles = new HashMap<>();
 
     /**
      * The string manager for this package.
      */
-    private static final StringManager sm =
-        StringManager.getManager(Constants.Package);
-
+    private static final StringManager sm = StringManager.getManager(
+            Constants.Package);
 
     /**
      * The set of {@link User}s defined in this database, keyed by
      * user name.
      */
-    protected final HashMap<String,User> users = new HashMap<>();
-
+    protected final HashMap<String, User> users = new HashMap<>();
 
     // ------------------------------------------------------------- Properties
-
 
     /**
      * Return the set of {@link Group}s defined in this user database.
@@ -150,7 +136,6 @@ public class MemoryUserDatabase implements UserDatabase {
 
     }
 
-
     /**
      * Return the unique global identifier of this user database.
      */
@@ -161,7 +146,6 @@ public class MemoryUserDatabase implements UserDatabase {
 
     }
 
-
     /**
      * Return the relative or absolute pathname to the persistent storage file.
      */
@@ -170,7 +154,6 @@ public class MemoryUserDatabase implements UserDatabase {
         return (this.pathname);
 
     }
-
 
     /**
      * Set the relative or absolute pathname to the persistent storage file.
@@ -185,7 +168,6 @@ public class MemoryUserDatabase implements UserDatabase {
 
     }
 
-
     /**
      * Returning the readonly status of the user database
      */
@@ -194,7 +176,6 @@ public class MemoryUserDatabase implements UserDatabase {
         return (this.readonly);
 
     }
-
 
     /**
      * Setting the readonly status of the user database
@@ -206,7 +187,6 @@ public class MemoryUserDatabase implements UserDatabase {
         this.readonly = readonly;
 
     }
-
 
     /**
      * Return the set of {@link Role}s defined in this user database.
@@ -220,7 +200,6 @@ public class MemoryUserDatabase implements UserDatabase {
 
     }
 
-
     /**
      * Return the set of {@link User}s defined in this user database.
      */
@@ -233,10 +212,7 @@ public class MemoryUserDatabase implements UserDatabase {
 
     }
 
-
-
     // --------------------------------------------------------- Public Methods
-
 
     /**
      * Finalize access to this user database.
@@ -257,11 +233,10 @@ public class MemoryUserDatabase implements UserDatabase {
 
     }
 
-
     /**
      * Create and return a new {@link Group} defined in this user database.
      *
-     * @param groupname The group name of the new group (must be unique)
+     * @param groupname   The group name of the new group (must be unique)
      * @param description The description of this group
      */
     @Override
@@ -281,11 +256,10 @@ public class MemoryUserDatabase implements UserDatabase {
 
     }
 
-
     /**
      * Create and return a new {@link Role} defined in this user database.
      *
-     * @param rolename The role name of the new group (must be unique)
+     * @param rolename    The role name of the new group (must be unique)
      * @param description The description of this group
      */
     @Override
@@ -305,7 +279,6 @@ public class MemoryUserDatabase implements UserDatabase {
 
     }
 
-
     /**
      * Create and return a new {@link User} defined in this user database.
      *
@@ -314,8 +287,7 @@ public class MemoryUserDatabase implements UserDatabase {
      * @param fullName The full name of the new user
      */
     @Override
-    public User createUser(String username, String password,
-                           String fullName) {
+    public User createUser(String username, String password, String fullName) {
 
         if (username == null || username.length() == 0) {
             String msg = sm.getString("memoryUserDatabase.nullUser");
@@ -329,7 +301,6 @@ public class MemoryUserDatabase implements UserDatabase {
         }
         return (user);
     }
-
 
     /**
      * Return the {@link Group} with the specified group name, if any;
@@ -346,7 +317,6 @@ public class MemoryUserDatabase implements UserDatabase {
 
     }
 
-
     /**
      * Return the {@link Role} with the specified role name, if any;
      * otherwise return <code>null</code>.
@@ -362,7 +332,6 @@ public class MemoryUserDatabase implements UserDatabase {
 
     }
 
-
     /**
      * Return the {@link User} with the specified user name, if any;
      * otherwise return <code>null</code>.
@@ -377,7 +346,6 @@ public class MemoryUserDatabase implements UserDatabase {
         }
 
     }
-
 
     /**
      * Initialize access to this user database.
@@ -396,14 +364,17 @@ public class MemoryUserDatabase implements UserDatabase {
                 roles.clear();
 
                 String pathName = getPathname();
-                try (InputStream is = ConfigFileLoader.getInputStream(getPathname())) {
+                try (InputStream is = ConfigFileLoader.getInputStream(
+                        getPathname())) {
                     // Construct a digester to read the XML input file
                     Digester digester = new Digester();
                     try {
                         digester.setFeature(
-                                "http://apache.org/xml/features/allow-java-encodings", true);
+                                "http://apache.org/xml/features/allow-java-encodings",
+                                true);
                     } catch (Exception e) {
-                        log.warn(sm.getString("memoryUserDatabase.xmlFeatureEncoding"), e);
+                        log.warn(sm.getString(
+                                "memoryUserDatabase.xmlFeatureEncoding"), e);
                     }
                     digester.addFactoryCreate("tomcat-users/group",
                             new MemoryGroupCreationFactory(this), true);
@@ -415,13 +386,13 @@ public class MemoryUserDatabase implements UserDatabase {
                     // Parse the XML input to load this database
                     digester.parse(is);
                 } catch (IOException ioe) {
-                    log.error(sm.getString("memoryUserDatabase.fileNotFound", pathName));
+                    log.error(sm.getString("memoryUserDatabase.fileNotFound",
+                            pathName));
                     return;
                 }
             }
         }
     }
-
 
     /**
      * Remove the specified {@link Group} from this user database.
@@ -440,7 +411,6 @@ public class MemoryUserDatabase implements UserDatabase {
             groups.remove(group.getGroupname());
         }
     }
-
 
     /**
      * Remove the specified {@link Role} from this user database.
@@ -466,7 +436,6 @@ public class MemoryUserDatabase implements UserDatabase {
 
     }
 
-
     /**
      * Remove the specified {@link User} from this user database.
      *
@@ -481,7 +450,6 @@ public class MemoryUserDatabase implements UserDatabase {
 
     }
 
-
     /**
      * Check for permissions to save this user database to persistent storage
      * location.
@@ -491,12 +459,11 @@ public class MemoryUserDatabase implements UserDatabase {
         File file = new File(pathname);
         if (!file.isAbsolute()) {
             file = new File(System.getProperty(Globals.CATALINA_BASE_PROP),
-                            pathname);
+                    pathname);
         }
         File dir = file.getParentFile();
         return dir.exists() && dir.isDirectory() && dir.canWrite();
     }
-
 
     /**
      * Save any updated information to the persistent storage location for
@@ -520,8 +487,8 @@ public class MemoryUserDatabase implements UserDatabase {
         // Write out contents to a temporary file
         File fileNew = new File(pathnameNew);
         if (!fileNew.isAbsolute()) {
-            fileNew =
-                new File(System.getProperty(Globals.CATALINA_BASE_PROP), pathnameNew);
+            fileNew = new File(System.getProperty(Globals.CATALINA_BASE_PROP),
+                    pathnameNew);
         }
         PrintWriter writer = null;
         try {
@@ -533,9 +500,12 @@ public class MemoryUserDatabase implements UserDatabase {
 
             // Print the file prolog
             writer.println("<?xml version='1.0' encoding='utf-8'?>");
-            writer.println("<tomcat-users xmlns=\"http://tomcat.apache.org/xml\"");
-            writer.println("              xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"");
-            writer.println("              xsi:schemaLocation=\"http://tomcat.apache.org/xml tomcat-users.xsd\"");
+            writer.println(
+                    "<tomcat-users xmlns=\"http://tomcat.apache.org/xml\"");
+            writer.println(
+                    "              xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"");
+            writer.println(
+                    "              xsi:schemaLocation=\"http://tomcat.apache.org/xml tomcat-users.xsd\"");
             writer.println("              version=\"1.0\">");
 
             // Print entries for each defined role, group, and user
@@ -563,9 +533,9 @@ public class MemoryUserDatabase implements UserDatabase {
             if (writer.checkError()) {
                 writer.close();
                 fileNew.delete();
-                throw new IOException
-                    (sm.getString("memoryUserDatabase.writeException",
-                                  fileNew.getAbsolutePath()));
+                throw new IOException(sm.getString(
+                        "memoryUserDatabase.writeException", fileNew
+                                .getAbsolutePath()));
             }
             writer.close();
         } catch (IOException e) {
@@ -579,35 +549,33 @@ public class MemoryUserDatabase implements UserDatabase {
         // Perform the required renames to permanently save this file
         File fileOld = new File(pathnameOld);
         if (!fileOld.isAbsolute()) {
-            fileOld =
-                new File(System.getProperty(Globals.CATALINA_BASE_PROP), pathnameOld);
+            fileOld = new File(System.getProperty(Globals.CATALINA_BASE_PROP),
+                    pathnameOld);
         }
         fileOld.delete();
         File fileOrig = new File(pathname);
         if (!fileOrig.isAbsolute()) {
-            fileOrig =
-                new File(System.getProperty(Globals.CATALINA_BASE_PROP), pathname);
+            fileOrig = new File(System.getProperty(Globals.CATALINA_BASE_PROP),
+                    pathname);
         }
         if (fileOrig.exists()) {
             fileOld.delete();
             if (!fileOrig.renameTo(fileOld)) {
-                throw new IOException
-                    (sm.getString("memoryUserDatabase.renameOld",
-                                  fileOld.getAbsolutePath()));
+                throw new IOException(sm.getString(
+                        "memoryUserDatabase.renameOld", fileOld
+                                .getAbsolutePath()));
             }
         }
         if (!fileNew.renameTo(fileOrig)) {
             if (fileOld.exists()) {
                 fileOld.renameTo(fileOrig);
             }
-            throw new IOException
-                (sm.getString("memoryUserDatabase.renameNew",
-                              fileOrig.getAbsolutePath()));
+            throw new IOException(sm.getString("memoryUserDatabase.renameNew",
+                    fileOrig.getAbsolutePath()));
         }
         fileOld.delete();
 
     }
-
 
     /**
      * Return a String representation of this UserDatabase.
@@ -629,8 +597,6 @@ public class MemoryUserDatabase implements UserDatabase {
         return (sb.toString());
     }
 }
-
-
 
 /**
  * Digester object creation factory for group instances.
@@ -676,7 +642,6 @@ class MemoryGroupCreationFactory extends AbstractObjectCreationFactory {
     private final MemoryUserDatabase database;
 }
 
-
 /**
  * Digester object creation factory for role instances.
  */
@@ -699,7 +664,6 @@ class MemoryRoleCreationFactory extends AbstractObjectCreationFactory {
 
     private final MemoryUserDatabase database;
 }
-
 
 /**
  * Digester object creation factory for user instances.

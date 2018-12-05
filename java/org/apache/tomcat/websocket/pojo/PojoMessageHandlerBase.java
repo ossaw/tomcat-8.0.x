@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -31,10 +29,10 @@ import org.apache.tomcat.websocket.WrappedMessageHandler;
 /**
  * Common implementation code for the POJO message handlers.
  *
- * @param <T>   The type of message to handle
+ * @param <T> The type of message to handle
  */
-public abstract class PojoMessageHandlerBase<T>
-        implements WrappedMessageHandler {
+public abstract class PojoMessageHandlerBase<T> implements
+        WrappedMessageHandler {
 
     protected final Object pojo;
     protected final Method method;
@@ -45,8 +43,8 @@ public abstract class PojoMessageHandlerBase<T>
     protected final int indexSession;
     protected final long maxMessageSize;
 
-    public PojoMessageHandlerBase(Object pojo, Method method,
-            Session session, Object[] params, int indexPayload, boolean convert,
+    public PojoMessageHandlerBase(Object pojo, Method method, Session session,
+            Object[] params, int indexPayload, boolean convert,
             int indexSession, long maxMessageSize) {
         this.pojo = pojo;
         this.method = method;
@@ -65,7 +63,6 @@ public abstract class PojoMessageHandlerBase<T>
         this.indexSession = indexSession;
         this.maxMessageSize = maxMessageSize;
     }
-
 
     protected final void processResult(Object result) {
         if (result == null) {
@@ -88,7 +85,6 @@ public abstract class PojoMessageHandlerBase<T>
         }
     }
 
-
     /**
      * Expose the POJO if it is a message handler so the Session is able to
      * match requests to remove handlers if the original handler has been
@@ -103,12 +99,10 @@ public abstract class PojoMessageHandlerBase<T>
         }
     }
 
-
     @Override
     public final long getMaxMessageSize() {
         return maxMessageSize;
     }
-
 
     protected final void handlePojoMethodException(Throwable t) {
         t = ExceptionUtils.unwrapInvocationTargetException(t);

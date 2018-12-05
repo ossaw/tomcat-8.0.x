@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -39,7 +37,6 @@ import org.apache.juli.logging.LogFactory;
 import org.apache.tomcat.util.modeler.Registry;
 import org.apache.tomcat.util.res.StringManager;
 
-
 /**
  * <p>
  * A farm war deployer is a class that is able to deploy/undeploy web
@@ -57,18 +54,17 @@ import org.apache.tomcat.util.res.StringManager;
  *
  * @author Peter Rossbach
  */
-public class FarmWarDeployer extends ClusterListener
-        implements ClusterDeployer, FileChangeListener {
+public class FarmWarDeployer extends ClusterListener implements ClusterDeployer,
+        FileChangeListener {
     /*--Static Variables----------------------------------------*/
     private static final Log log = LogFactory.getLog(FarmWarDeployer.class);
-    private static final StringManager sm =
-        StringManager.getManager(Constants.Package);
+    private static final StringManager sm = StringManager.getManager(
+            Constants.Package);
 
     /*--Instance Variables--------------------------------------*/
     protected boolean started = false;
 
-    protected final HashMap<String, FileMessageFactory> fileFactories =
-        new HashMap<>();
+    protected final HashMap<String, FileMessageFactory> fileFactories = new HashMap<>();
 
     /**
      * Deployment directory.
@@ -130,8 +126,7 @@ public class FarmWarDeployer extends ClusterListener
     protected int maxValidTime = 5 * 60;
 
     /*--Constructor---------------------------------------------*/
-    public FarmWarDeployer() {
-    }
+    public FarmWarDeployer() {}
 
     /*--Logic---------------------------------------------------*/
     @Override
@@ -139,18 +134,18 @@ public class FarmWarDeployer extends ClusterListener
         if (started)
             return;
         Container hcontainer = getCluster().getContainer();
-        if(!(hcontainer instanceof Host)) {
+        if (!(hcontainer instanceof Host)) {
             log.error(sm.getString("farmWarDeployer.hostOnly"));
-            return ;
+            return;
         }
         host = (Host) hcontainer;
 
         // Check to correct engine and host setup
         Container econtainer = host.getParent();
-        if(!(econtainer instanceof Engine)) {
-            log.error(sm.getString("farmWarDeployer.hostParentEngine",
-                    host.getName()));
-            return ;
+        if (!(econtainer instanceof Engine)) {
+            log.error(sm.getString("farmWarDeployer.hostParentEngine", host
+                    .getName()));
+            return;
         }
         Engine engine = (Engine) econtainer;
         String hostname = null;
@@ -159,15 +154,15 @@ public class FarmWarDeployer extends ClusterListener
             oname = new ObjectName(engine.getName() + ":type=Deployer,host="
                     + hostname);
         } catch (Exception e) {
-            log.error(sm.getString("farmWarDeployer.mbeanNameFail",
-                    engine.getName(), hostname),e);
+            log.error(sm.getString("farmWarDeployer.mbeanNameFail", engine
+                    .getName(), hostname), e);
             return;
         }
         if (watchEnabled) {
             watcher = new WarWatcher(this, getWatchDirFile());
             if (log.isInfoEnabled()) {
-                log.info(sm.getString(
-                        "farmWarDeployer.watchDir", getWatchDir()));
+                log.info(sm.getString("farmWarDeployer.watchDir",
+                        getWatchDir()));
             }
         }
 
@@ -187,7 +182,6 @@ public class FarmWarDeployer extends ClusterListener
 
     /*
      * stop cluster wide deployments
-     *
      * @see org.apache.catalina.ha.ClusterDeployer#stop()
      */
     @Override
@@ -217,8 +211,8 @@ public class FarmWarDeployer extends ClusterListener
             if (msg instanceof FileMessage) {
                 FileMessage fmsg = (FileMessage) msg;
                 if (log.isDebugEnabled())
-                    log.debug(sm.getString("farmWarDeployer.msgRxDeploy",
-                            fmsg.getContextName(), fmsg.getFileName()));
+                    log.debug(sm.getString("farmWarDeployer.msgRxDeploy", fmsg
+                            .getContextName(), fmsg.getFileName()));
                 FileMessageFactory factory = getFactory(fmsg);
                 // TODO correct second try after app is in service!
                 if (factory.writeMessage(fmsg)) {
@@ -342,31 +336,37 @@ public class FarmWarDeployer extends ClusterListener
      * listeners, with the newly created <code>Context</code> as an argument.
      *
      * @param contextName
-     *            The context name to which this application should be installed
-     *            (must be unique)
+     *                    The context name to which this application should be
+     *                    installed
+     *                    (must be unique)
      * @param webapp
-     *            A WAR file or unpacked directory structure containing the web
-     *            application to be installed
+     *                    A WAR file or unpacked directory structure containing
+     *                    the web
+     *                    application to be installed
      *
      * @exception IllegalArgumentException
-     *                if the specified context name is malformed
+     *                                     if the specified context name is
+     *                                     malformed
      * @exception IllegalStateException
-     *                if the specified context name is already deployed
+     *                                     if the specified context name is
+     *                                     already deployed
      * @exception IOException
-     *                if an input/output error was encountered during
-     *                installation
+     *                                     if an input/output error was
+     *                                     encountered during
+     *                                     installation
      */
     @Override
     public void install(String contextName, File webapp) throws IOException {
         Member[] members = getCluster().getMembers();
-        if (members.length == 0) return;
+        if (members.length == 0)
+            return;
 
         Member localMember = getCluster().getLocalMember();
-        FileMessageFactory factory =
-            FileMessageFactory.getInstance(webapp, false);
+        FileMessageFactory factory = FileMessageFactory.getInstance(webapp,
+                false);
         FileMessage msg = new FileMessage(localMember, webapp.getName(),
                 contextName);
-        if(log.isDebugEnabled())
+        if (log.isDebugEnabled())
             log.debug(sm.getString("farmWarDeployer.sendStart", contextName,
                     webapp));
         msg = factory.readMessage(msg);
@@ -379,9 +379,9 @@ public class FarmWarDeployer extends ClusterListener
             }
             msg = factory.readMessage(msg);
         }
-        if(log.isDebugEnabled())
-            log.debug(sm.getString(
-                    "farmWarDeployer.sendEnd", contextName, webapp));
+        if (log.isDebugEnabled())
+            log.debug(sm.getString("farmWarDeployer.sendEnd", contextName,
+                    webapp));
     }
 
     /**
@@ -393,30 +393,35 @@ public class FarmWarDeployer extends ClusterListener
      * the Host's appBase.
      *
      * @param contextName
-     *            The context name of the application to be removed
+     *                    The context name of the application to be removed
      * @param undeploy
-     *            boolean flag to remove web application from server
+     *                    boolean flag to remove web application from server
      *
      * @exception IllegalArgumentException
-     *                if the specified context name is malformed
+     *                                     if the specified context name is
+     *                                     malformed
      * @exception IllegalArgumentException
-     *                if the specified context name does not identify a
-     *                currently installed web application
+     *                                     if the specified context name does
+     *                                     not identify a
+     *                                     currently installed web application
      * @exception IOException
-     *                if an input/output error occurs during removal
+     *                                     if an input/output error occurs
+     *                                     during removal
      */
     @Override
     public void remove(String contextName, boolean undeploy)
             throws IOException {
         if (getCluster().getMembers().length > 0) {
             if (log.isInfoEnabled())
-                log.info(sm.getString("farmWarDeployer.removeStart", contextName));
+                log.info(sm.getString("farmWarDeployer.removeStart",
+                        contextName));
             Member localMember = getCluster().getLocalMember();
             UndeployMessage msg = new UndeployMessage(localMember, System
                     .currentTimeMillis(), "Undeploy:" + contextName + ":"
-                    + System.currentTimeMillis(), contextName);
+                            + System.currentTimeMillis(), contextName);
             if (log.isDebugEnabled())
-                log.debug(sm.getString("farmWarDeployer.removeTxMsg", contextName));
+                log.debug(sm.getString("farmWarDeployer.removeTxMsg",
+                        contextName));
             cluster.send(msg);
         }
         // remove locally
@@ -443,7 +448,6 @@ public class FarmWarDeployer extends ClusterListener
 
     /*
      * Modification from watchDir war detected!
-     *
      * @see org.apache.catalina.ha.deploy.FileChangeListener#fileModified(File)
      */
     @Override
@@ -451,14 +455,16 @@ public class FarmWarDeployer extends ClusterListener
         try {
             File deployWar = new File(getDeployDirFile(), newWar.getName());
             ContextName cn = new ContextName(deployWar.getName(), true);
-            if (deployWar.exists() && deployWar.lastModified() > newWar.lastModified()) {
+            if (deployWar.exists() && deployWar.lastModified() > newWar
+                    .lastModified()) {
                 if (log.isInfoEnabled())
-                    log.info(sm.getString("farmWarDeployer.alreadyDeployed", cn.getName()));
+                    log.info(sm.getString("farmWarDeployer.alreadyDeployed", cn
+                            .getName()));
                 return;
             }
             if (log.isInfoEnabled())
-                log.info(sm.getString("farmWarDeployer.modInstall",
-                        cn.getName(), deployWar.getAbsolutePath()));
+                log.info(sm.getString("farmWarDeployer.modInstall", cn
+                        .getName(), deployWar.getAbsolutePath()));
             // install local
             if (!isServiced(cn.getName())) {
                 addServiced(cn.getName());
@@ -469,8 +475,8 @@ public class FarmWarDeployer extends ClusterListener
                     removeServiced(cn.getName());
                 }
             } else {
-                log.error(sm.getString("farmWarDeployer.servicingDeploy",
-                        cn.getName(), deployWar.getName()));
+                log.error(sm.getString("farmWarDeployer.servicingDeploy", cn
+                        .getName(), deployWar.getName()));
             }
             install(cn.getName(), deployWar);
         } catch (Exception x) {
@@ -480,7 +486,6 @@ public class FarmWarDeployer extends ClusterListener
 
     /*
      * War remove from watchDir
-     *
      * @see org.apache.catalina.ha.deploy.FileChangeListener#fileRemoved(File)
      */
     @Override
@@ -488,8 +493,8 @@ public class FarmWarDeployer extends ClusterListener
         try {
             ContextName cn = new ContextName(removeWar.getName(), true);
             if (log.isInfoEnabled())
-                log.info(sm.getString("farmWarDeployer.removeLocal",
-                        cn.getName()));
+                log.info(sm.getString("farmWarDeployer.removeLocal", cn
+                        .getName()));
             remove(cn.getName(), true);
         } catch (Exception x) {
             log.error(sm.getString("farmWarDeployer.removeLocalFail"), x);
@@ -504,7 +509,7 @@ public class FarmWarDeployer extends ClusterListener
         // Stop the context first to be nicer
         Context context = (Context) host.findChild(contextName);
         if (context != null) {
-            if(log.isDebugEnabled())
+            if (log.isDebugEnabled())
                 log.debug(sm.getString("farmWarDeployer.undeployLocal",
                         contextName));
             context.stop();
@@ -559,7 +564,6 @@ public class FarmWarDeployer extends ClusterListener
 
     /*
      * Call watcher to check for deploy changes
-     *
      * @see org.apache.catalina.ha.ClusterDeployer#backgroundProcess()
      */
     @Override
@@ -632,7 +636,8 @@ public class FarmWarDeployer extends ClusterListener
     }
 
     public File getDeployDirFile() {
-        if (deployDirFile != null) return deployDirFile;
+        if (deployDirFile != null)
+            return deployDirFile;
 
         File dir = getAbsolutePath(getDeployDir());
         this.deployDirFile = dir;
@@ -648,7 +653,8 @@ public class FarmWarDeployer extends ClusterListener
     }
 
     public File getTempDirFile() {
-        if (tempDirFile != null) return tempDirFile;
+        if (tempDirFile != null)
+            return tempDirFile;
 
         File dir = getAbsolutePath(getTempDir());
         this.tempDirFile = dir;
@@ -664,7 +670,8 @@ public class FarmWarDeployer extends ClusterListener
     }
 
     public File getWatchDirFile() {
-        if (watchDirFile != null) return watchDirFile;
+        if (watchDirFile != null)
+            return watchDirFile;
 
         File dir = getAbsolutePath(getWatchDir());
         this.watchDirFile = dir;
@@ -700,7 +707,7 @@ public class FarmWarDeployer extends ClusterListener
      * Set the watcher checks frequency.
      *
      * @param processExpiresFrequency
-     *            the new manager checks frequency
+     *                                the new manager checks frequency
      */
     public void setProcessDeployFrequency(int processExpiresFrequency) {
 
@@ -720,6 +727,7 @@ public class FarmWarDeployer extends ClusterListener
 
     /**
      * Copy a file to the specified temp directory.
+     * 
      * @param from copy from temp
      * @param to   to host appBase directory
      * @return true, copy successful
@@ -733,13 +741,14 @@ public class FarmWarDeployer extends ClusterListener
                 }
             }
         } catch (IOException e) {
-            log.error(sm.getString("farmWarDeployer.fileCopyFail",
-                    from, to), e);
+            log.error(sm.getString("farmWarDeployer.fileCopyFail", from, to),
+                    e);
             return false;
         }
 
         try (java.io.FileInputStream is = new java.io.FileInputStream(from);
-                java.io.FileOutputStream os = new java.io.FileOutputStream(to, false);) {
+                java.io.FileOutputStream os = new java.io.FileOutputStream(to,
+                        false);) {
             byte[] buf = new byte[4096];
             while (true) {
                 int len = is.read(buf);
@@ -748,8 +757,8 @@ public class FarmWarDeployer extends ClusterListener
                 os.write(buf, 0, len);
             }
         } catch (IOException e) {
-            log.error(sm.getString("farmWarDeployer.fileCopyFail",
-                    from, to), e);
+            log.error(sm.getString("farmWarDeployer.fileCopyFail", from, to),
+                    e);
             return false;
         }
         return true;
@@ -768,8 +777,8 @@ public class FarmWarDeployer extends ClusterListener
     private File getAbsolutePath(String path) {
         File dir = new File(path);
         if (!dir.isAbsolute()) {
-            dir = new File(getCluster().getContainer().getCatalinaBase(),
-                    dir.getPath());
+            dir = new File(getCluster().getContainer().getCatalinaBase(), dir
+                    .getPath());
         }
         try {
             dir = dir.getCanonicalFile();

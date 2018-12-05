@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -43,12 +41,11 @@ public class OneLineFormatter extends Formatter {
     private static final Object threadMxBeanLock = new Object();
     private static volatile ThreadMXBean threadMxBean = null;
     private static final int THREAD_NAME_CACHE_SIZE = 10000;
-    private static ThreadLocal<LinkedHashMap<Integer,String>> threadNameCache =
-            new ThreadLocal<LinkedHashMap<Integer,String>>() {
+    private static ThreadLocal<LinkedHashMap<Integer, String>> threadNameCache = new ThreadLocal<LinkedHashMap<Integer, String>>() {
 
         @Override
-        protected LinkedHashMap<Integer,String> initialValue() {
-            return new LinkedHashMap<Integer,String>() {
+        protected LinkedHashMap<Integer, String> initialValue() {
+            return new LinkedHashMap<Integer, String>() {
 
                 private static final long serialVersionUID = 1L;
 
@@ -77,17 +74,17 @@ public class OneLineFormatter extends Formatter {
     /**
      * Global date format cache.
      */
-    private static final DateFormatCache globalDateCache =
-            new DateFormatCache(globalCacheSize, timeFormat, null);
+    private static final DateFormatCache globalDateCache = new DateFormatCache(
+            globalCacheSize, timeFormat, null);
 
     /**
      * Thread local date format cache.
      */
-    private static final ThreadLocal<DateFormatCache> localDateCache =
-            new ThreadLocal<DateFormatCache>() {
+    private static final ThreadLocal<DateFormatCache> localDateCache = new ThreadLocal<DateFormatCache>() {
         @Override
         protected DateFormatCache initialValue() {
-            return new DateFormatCache(localCacheSize, timeFormat, globalDateCache);
+            return new DateFormatCache(localCacheSize, timeFormat,
+                    globalDateCache);
         }
     };
 
@@ -155,7 +152,6 @@ public class OneLineFormatter extends Formatter {
         buf.append(frac);
     }
 
-
     /**
      * LogRecord has threadID but no thread name.
      * LogRecord uses an int for thread ID but thread IDs are longs.
@@ -166,7 +162,7 @@ public class OneLineFormatter extends Formatter {
      * int in LogRecord for a long value and the resulting mess that follows.
      */
     private static String getThreadName(int logRecordThreadId) {
-        Map<Integer,String> cache = threadNameCache.get();
+        Map<Integer, String> cache = threadNameCache.get();
         String result = null;
 
         if (logRecordThreadId > (Integer.MAX_VALUE / 2)) {
@@ -188,8 +184,8 @@ public class OneLineFormatter extends Formatter {
                     }
                 }
             }
-            ThreadInfo threadInfo =
-                    threadMxBean.getThreadInfo(logRecordThreadId);
+            ThreadInfo threadInfo = threadMxBean.getThreadInfo(
+                    logRecordThreadId);
             if (threadInfo == null) {
                 return Long.toString(logRecordThreadId);
             }

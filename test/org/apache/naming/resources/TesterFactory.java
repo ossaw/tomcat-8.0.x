@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -27,10 +25,10 @@ public class TesterFactory implements ObjectFactory {
 
     @Override
     public Object getObjectInstance(Object obj, Name name, Context nameCtx,
-            Hashtable<?,?> environment) throws Exception {
+            Hashtable<?, ?> environment) throws Exception {
 
         if (obj instanceof Reference) {
-            Reference ref = (Reference)obj;
+            Reference ref = (Reference) obj;
             String className = ref.getClassName();
 
             if (className == null) {
@@ -39,8 +37,8 @@ public class TesterFactory implements ObjectFactory {
 
             if (className.equals("org.apache.naming.resources.TesterObject")) {
                 ClassLoader cl = Thread.currentThread().getContextClassLoader();
-                Class<?> clazz =
-                    cl.loadClass("org.apache.naming.resources.TesterObject");
+                Class<?> clazz = cl.loadClass(
+                        "org.apache.naming.resources.TesterObject");
                 return clazz.newInstance();
             }
         }

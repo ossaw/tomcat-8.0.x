@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -15,9 +13,7 @@
  * limitations under the License.
  */
 
-
 package org.apache.catalina.ant;
-
 
 import java.io.BufferedOutputStream;
 import java.io.IOException;
@@ -32,29 +28,24 @@ import org.apache.tomcat.util.codec.binary.Base64;
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Project;
 
-
 /**
  * Abstract base class for Ant tasks that interact with the
  * <em>Manager</em> web application for dynamically deploying and
- * undeploying applications.  These tasks require Ant 1.4 or later.
+ * undeploying applications. These tasks require Ant 1.4 or later.
  *
  * @author Craig R. McClanahan
  * @since 4.1
  */
 public abstract class AbstractCatalinaTask extends BaseRedirectorHelperTask {
 
-
     // ----------------------------------------------------- Instance Variables
-
 
     /**
      * manager webapp's encoding.
      */
     private static final String CHARSET = "utf-8";
 
-
     // ------------------------------------------------------------- Properties
-
 
     /**
      * The charset used during URL encoding.
@@ -69,7 +60,6 @@ public abstract class AbstractCatalinaTask extends BaseRedirectorHelperTask {
         this.charset = charset;
     }
 
-
     /**
      * The login password for the <code>Manager</code> application.
      */
@@ -83,7 +73,6 @@ public abstract class AbstractCatalinaTask extends BaseRedirectorHelperTask {
         this.password = password;
     }
 
-
     /**
      * The URL of the <code>Manager</code> application to be used.
      */
@@ -96,7 +85,6 @@ public abstract class AbstractCatalinaTask extends BaseRedirectorHelperTask {
     public void setUrl(String url) {
         this.url = url;
     }
-
 
     /**
      * The login username for the <code>Manager</code> application.
@@ -133,12 +121,10 @@ public abstract class AbstractCatalinaTask extends BaseRedirectorHelperTask {
         this.ignoreResponseConstraint = ignoreResponseConstraint;
     }
 
-
     // --------------------------------------------------------- Public Methods
 
-
     /**
-     * Execute the specified command.  This logic only performs the common
+     * Execute the specified command. This logic only performs the common
      * attribute validation required by all subclasses; it does not perform
      * any functional logic directly.
      *
@@ -148,15 +134,13 @@ public abstract class AbstractCatalinaTask extends BaseRedirectorHelperTask {
     public void execute() throws BuildException {
 
         if ((username == null) || (password == null) || (url == null)) {
-            throw new BuildException
-                ("Must specify all of 'username', 'password', and 'url'");
+            throw new BuildException(
+                    "Must specify all of 'username', 'password', and 'url'");
         }
 
     }
 
-
     // ------------------------------------------------------ Protected Methods
-
 
     /**
      * Execute the specified command, based on the configured properties.
@@ -171,22 +155,20 @@ public abstract class AbstractCatalinaTask extends BaseRedirectorHelperTask {
 
     }
 
-
     /**
      * Execute the specified command, based on the configured properties.
      * The input stream will be closed upon completion of this task, whether
      * it was executed successfully or not.
      *
-     * @param command Command to be executed
-     * @param istream InputStream to include in an HTTP PUT, if any
-     * @param contentType Content type to specify for the input, if any
+     * @param command       Command to be executed
+     * @param istream       InputStream to include in an HTTP PUT, if any
+     * @param contentType   Content type to specify for the input, if any
      * @param contentLength Content length to specify for the input, if any
      *
      * @exception BuildException if an error occurs
      */
-    public void execute(String command, InputStream istream,
-                        String contentType, long contentLength)
-        throws BuildException {
+    public void execute(String command, InputStream istream, String contentType,
+            long contentLength) throws BuildException {
 
         URLConnection conn = null;
         InputStreamReader reader = null;
@@ -207,8 +189,8 @@ public abstract class AbstractCatalinaTask extends BaseRedirectorHelperTask {
                     hconn.setRequestProperty("Content-Type", contentType);
                 }
                 if (contentLength >= 0) {
-                    hconn.setRequestProperty("Content-Length",
-                                             "" + contentLength);
+                    hconn.setRequestProperty("Content-Length", ""
+                            + contentLength);
 
                     hconn.setFixedLengthStreamingMode(contentLength);
                 }
@@ -216,23 +198,21 @@ public abstract class AbstractCatalinaTask extends BaseRedirectorHelperTask {
                 hconn.setDoOutput(false);
                 hconn.setRequestMethod("GET");
             }
-            hconn.setRequestProperty("User-Agent",
-                                     "Catalina-Ant-Task/1.0");
+            hconn.setRequestProperty("User-Agent", "Catalina-Ant-Task/1.0");
 
             // Set up an authorization header with our credentials
             String input = username + ":" + password;
-            String output = Base64.encodeBase64String(
-                    input.getBytes(StandardCharsets.ISO_8859_1));
-            hconn.setRequestProperty("Authorization",
-                                     "Basic " + output);
+            String output = Base64.encodeBase64String(input.getBytes(
+                    StandardCharsets.ISO_8859_1));
+            hconn.setRequestProperty("Authorization", "Basic " + output);
 
             // Establish the connection with the server
             hconn.connect();
 
             // Send the request data (if any)
             if (istream != null) {
-                try (BufferedOutputStream ostream =
-                        new BufferedOutputStream(hconn.getOutputStream(), 1024);) {
+                try (BufferedOutputStream ostream = new BufferedOutputStream(
+                        hconn.getOutputStream(), 1024);) {
                     byte buffer[] = new byte[1024];
                     while (true) {
                         int n = istream.read(buffer);

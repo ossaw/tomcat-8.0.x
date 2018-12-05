@@ -1,18 +1,16 @@
 /*
- *  Licensed to the Apache Software Foundation (ASF) under one or more
- *  contributor license agreements.  See the NOTICE file distributed with
- *  this work for additional information regarding copyright ownership.
- *  The ASF licenses this file to You under the Apache License, Version 2.0
- *  (the "License"); you may not use this file except in compliance with
- *  the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements. See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package org.apache.catalina.filters;
@@ -80,79 +78,94 @@ public class TestExpiresFilter extends TomcatBaseTest {
         tomcat.start();
         try {
             // VERIFY EXCLUDED RESPONSE STATUS CODES
-            int[] excludedResponseStatusCodes = expiresFilter.getExcludedResponseStatusCodesAsInts();
+            int[] excludedResponseStatusCodes = expiresFilter
+                    .getExcludedResponseStatusCodesAsInts();
             Assert.assertEquals(2, excludedResponseStatusCodes.length);
             Assert.assertEquals(304, excludedResponseStatusCodes[0]);
             Assert.assertEquals(503, excludedResponseStatusCodes[1]);
 
             // VERIFY DEFAULT CONFIGURATION
-            ExpiresConfiguration expiresConfigurationDefault =
-                    expiresFilter.getDefaultExpiresConfiguration();
+            ExpiresConfiguration expiresConfigurationDefault = expiresFilter
+                    .getDefaultExpiresConfiguration();
             Assert.assertEquals(StartingPoint.ACCESS_TIME,
                     expiresConfigurationDefault.getStartingPoint());
-            Assert.assertEquals(1, expiresConfigurationDefault.getDurations().size());
-            Assert.assertEquals(DurationUnit.MONTH,
-                    expiresConfigurationDefault.getDurations().get(0).getUnit());
-            Assert.assertEquals(1, expiresConfigurationDefault.getDurations().get(0).getAmount());
+            Assert.assertEquals(1, expiresConfigurationDefault.getDurations()
+                    .size());
+            Assert.assertEquals(DurationUnit.MONTH, expiresConfigurationDefault
+                    .getDurations().get(0).getUnit());
+            Assert.assertEquals(1, expiresConfigurationDefault.getDurations()
+                    .get(0).getAmount());
 
             // VERIFY TEXT/HTML
-            ExpiresConfiguration expiresConfigurationTextHtml =
-                    expiresFilter.getExpiresConfigurationByContentType().get("text/html");
+            ExpiresConfiguration expiresConfigurationTextHtml = expiresFilter
+                    .getExpiresConfigurationByContentType().get("text/html");
             Assert.assertEquals(StartingPoint.ACCESS_TIME,
                     expiresConfigurationTextHtml.getStartingPoint());
 
-            Assert.assertEquals(3, expiresConfigurationTextHtml.getDurations().size());
+            Assert.assertEquals(3, expiresConfigurationTextHtml.getDurations()
+                    .size());
 
-            Duration oneMonth = expiresConfigurationTextHtml.getDurations().get(0);
+            Duration oneMonth = expiresConfigurationTextHtml.getDurations().get(
+                    0);
             Assert.assertEquals(DurationUnit.MONTH, oneMonth.getUnit());
             Assert.assertEquals(1, oneMonth.getAmount());
 
-            Duration fifteenDays = expiresConfigurationTextHtml.getDurations().get(1);
+            Duration fifteenDays = expiresConfigurationTextHtml.getDurations()
+                    .get(1);
             Assert.assertEquals(DurationUnit.DAY, fifteenDays.getUnit());
             Assert.assertEquals(15, fifteenDays.getAmount());
 
-            Duration twoHours = expiresConfigurationTextHtml.getDurations().get(2);
+            Duration twoHours = expiresConfigurationTextHtml.getDurations().get(
+                    2);
             Assert.assertEquals(DurationUnit.HOUR, twoHours.getUnit());
             Assert.assertEquals(2, twoHours.getAmount());
 
             // VERIFY IMAGE/GIF
-            ExpiresConfiguration expiresConfigurationImageGif =
-                    expiresFilter.getExpiresConfigurationByContentType().get("image/gif");
+            ExpiresConfiguration expiresConfigurationImageGif = expiresFilter
+                    .getExpiresConfigurationByContentType().get("image/gif");
             Assert.assertEquals(StartingPoint.LAST_MODIFICATION_TIME,
                     expiresConfigurationImageGif.getStartingPoint());
 
-            Assert.assertEquals(2, expiresConfigurationImageGif.getDurations().size());
+            Assert.assertEquals(2, expiresConfigurationImageGif.getDurations()
+                    .size());
 
-            Duration fiveHours = expiresConfigurationImageGif.getDurations().get(0);
+            Duration fiveHours = expiresConfigurationImageGif.getDurations()
+                    .get(0);
             Assert.assertEquals(DurationUnit.HOUR, fiveHours.getUnit());
             Assert.assertEquals(5, fiveHours.getAmount());
 
-            Duration threeMinutes = expiresConfigurationImageGif.getDurations().get(1);
+            Duration threeMinutes = expiresConfigurationImageGif.getDurations()
+                    .get(1);
             Assert.assertEquals(DurationUnit.MINUTE, threeMinutes.getUnit());
             Assert.assertEquals(3, threeMinutes.getAmount());
 
             // VERIFY IMAGE/JPG
-            ExpiresConfiguration expiresConfigurationImageJpg =
-                    expiresFilter.getExpiresConfigurationByContentType().get("image/jpg");
+            ExpiresConfiguration expiresConfigurationImageJpg = expiresFilter
+                    .getExpiresConfigurationByContentType().get("image/jpg");
             Assert.assertEquals(StartingPoint.ACCESS_TIME,
                     expiresConfigurationImageJpg.getStartingPoint());
 
-            Assert.assertEquals(1, expiresConfigurationImageJpg.getDurations().size());
+            Assert.assertEquals(1, expiresConfigurationImageJpg.getDurations()
+                    .size());
 
-            Duration tenThousandSeconds = expiresConfigurationImageJpg.getDurations().get(0);
-            Assert.assertEquals(DurationUnit.SECOND, tenThousandSeconds.getUnit());
+            Duration tenThousandSeconds = expiresConfigurationImageJpg
+                    .getDurations().get(0);
+            Assert.assertEquals(DurationUnit.SECOND, tenThousandSeconds
+                    .getUnit());
             Assert.assertEquals(10000, tenThousandSeconds.getAmount());
 
             // VERIFY VIDEO/MPEG
-            ExpiresConfiguration expiresConfiguration =
-                    expiresFilter.getExpiresConfigurationByContentType().get("video/mpeg");
+            ExpiresConfiguration expiresConfiguration = expiresFilter
+                    .getExpiresConfigurationByContentType().get("video/mpeg");
             Assert.assertEquals(StartingPoint.LAST_MODIFICATION_TIME,
                     expiresConfiguration.getStartingPoint());
 
             Assert.assertEquals(1, expiresConfiguration.getDurations().size());
 
-            Duration twentyThousandSeconds = expiresConfiguration.getDurations().get(0);
-            Assert.assertEquals(DurationUnit.SECOND, twentyThousandSeconds.getUnit());
+            Duration twentyThousandSeconds = expiresConfiguration.getDurations()
+                    .get(0);
+            Assert.assertEquals(DurationUnit.SECOND, twentyThousandSeconds
+                    .getUnit());
             Assert.assertEquals(20000, twentyThousandSeconds.getAmount());
         } finally {
             tomcat.stop();
@@ -182,10 +195,12 @@ public class TestExpiresFilter extends TomcatBaseTest {
     @Test
     public void testParseExpiresConfigurationCombinedDuration() {
         ExpiresFilter expiresFilter = new ExpiresFilter();
-        ExpiresConfiguration actualConfiguration = expiresFilter.parseExpiresConfiguration("access plus 1 month 15 days 2 hours");
+        ExpiresConfiguration actualConfiguration = expiresFilter
+                .parseExpiresConfiguration(
+                        "access plus 1 month 15 days 2 hours");
 
-        Assert.assertEquals(StartingPoint.ACCESS_TIME,
-                actualConfiguration.getStartingPoint());
+        Assert.assertEquals(StartingPoint.ACCESS_TIME, actualConfiguration
+                .getStartingPoint());
 
         Assert.assertEquals(3, actualConfiguration.getDurations().size());
 
@@ -194,16 +209,17 @@ public class TestExpiresFilter extends TomcatBaseTest {
     @Test
     public void testParseExpiresConfigurationMonoDuration() {
         ExpiresFilter expiresFilter = new ExpiresFilter();
-        ExpiresConfiguration actualConfiguration = expiresFilter.parseExpiresConfiguration("access plus 2 hours");
+        ExpiresConfiguration actualConfiguration = expiresFilter
+                .parseExpiresConfiguration("access plus 2 hours");
 
-        Assert.assertEquals(StartingPoint.ACCESS_TIME,
-                actualConfiguration.getStartingPoint());
+        Assert.assertEquals(StartingPoint.ACCESS_TIME, actualConfiguration
+                .getStartingPoint());
 
         Assert.assertEquals(1, actualConfiguration.getDurations().size());
-        Assert.assertEquals(2,
-                actualConfiguration.getDurations().get(0).getAmount());
-        Assert.assertEquals(DurationUnit.HOUR,
-                actualConfiguration.getDurations().get(0).getUnit());
+        Assert.assertEquals(2, actualConfiguration.getDurations().get(0)
+                .getAmount());
+        Assert.assertEquals(DurationUnit.HOUR, actualConfiguration
+                .getDurations().get(0).getUnit());
 
     }
 
@@ -365,8 +381,8 @@ public class TestExpiresFilter extends TomcatBaseTest {
         validate(servlet, Integer.valueOf(7 * 60));
     }
 
-    protected void validate(HttpServlet servlet, Integer expectedMaxAgeInSeconds)
-            throws Exception {
+    protected void validate(HttpServlet servlet,
+            Integer expectedMaxAgeInSeconds) throws Exception {
         validate(servlet, expectedMaxAgeInSeconds, HttpURLConnection.HTTP_OK);
     }
 
@@ -410,40 +426,42 @@ public class TestExpiresFilter extends TomcatBaseTest {
 
             // TEST
             HttpURLConnection httpURLConnection = (HttpURLConnection) new URL(
-                    "http://localhost:" + tomcat.getConnector().getLocalPort() +
-                            "/test").openConnection();
+                    "http://localhost:" + tomcat.getConnector().getLocalPort()
+                            + "/test").openConnection();
 
             // VALIDATE
-            Assert.assertEquals(expectedResponseStatusCode,
-                    httpURLConnection.getResponseCode());
+            Assert.assertEquals(expectedResponseStatusCode, httpURLConnection
+                    .getResponseCode());
 
             StringBuilder msg = new StringBuilder();
-            for (Entry<String, List<String>> field : httpURLConnection.getHeaderFields().entrySet()) {
+            for (Entry<String, List<String>> field : httpURLConnection
+                    .getHeaderFields().entrySet()) {
                 for (String value : field.getValue()) {
-                    msg.append((field.getKey() == null ? "" : field.getKey() +
-                            ": ") +
-                            value + "\n");
+                    msg.append((field.getKey() == null ? ""
+                            : field.getKey() + ": ") + value + "\n");
                 }
             }
             System.out.println(msg);
 
             Integer actualMaxAgeInSeconds;
 
-            String cacheControlHeader = httpURLConnection.getHeaderField("Cache-Control");
+            String cacheControlHeader = httpURLConnection.getHeaderField(
+                    "Cache-Control");
             if (cacheControlHeader == null) {
                 actualMaxAgeInSeconds = null;
             } else {
                 actualMaxAgeInSeconds = null;
                 StringTokenizer cacheControlTokenizer = new StringTokenizer(
                         cacheControlHeader, ",");
-                while (cacheControlTokenizer.hasMoreTokens() &&
-                        actualMaxAgeInSeconds == null) {
+                while (cacheControlTokenizer.hasMoreTokens()
+                        && actualMaxAgeInSeconds == null) {
                     String cacheDirective = cacheControlTokenizer.nextToken();
                     StringTokenizer cacheDirectiveTokenizer = new StringTokenizer(
                             cacheDirective, "=");
                     if (cacheDirectiveTokenizer.countTokens() == 2) {
                         String key = cacheDirectiveTokenizer.nextToken().trim();
-                        String value = cacheDirectiveTokenizer.nextToken().trim();
+                        String value = cacheDirectiveTokenizer.nextToken()
+                                .trim();
                         if (key.equalsIgnoreCase("max-age")) {
                             actualMaxAgeInSeconds = Integer.valueOf(value);
                         }
@@ -452,21 +470,21 @@ public class TestExpiresFilter extends TomcatBaseTest {
             }
 
             if (expectedMaxAgeInSeconds == null) {
-                Assert.assertNull("actualMaxAgeInSeconds '" +
-                        actualMaxAgeInSeconds + "' should be null",
+                Assert.assertNull("actualMaxAgeInSeconds '"
+                        + actualMaxAgeInSeconds + "' should be null",
                         actualMaxAgeInSeconds);
                 return;
             }
 
             Assert.assertNotNull(actualMaxAgeInSeconds);
 
-            int deltaInSeconds = Math.abs(actualMaxAgeInSeconds.intValue() -
-                    expectedMaxAgeInSeconds.intValue());
-            Assert.assertTrue("actualMaxAgeInSeconds: " +
-                    actualMaxAgeInSeconds + ", expectedMaxAgeInSeconds: " +
-                    expectedMaxAgeInSeconds + ", request time: " +
-                    timeBeforeInMillis + " for content type " +
-                    httpURLConnection.getContentType(), deltaInSeconds < 3);
+            int deltaInSeconds = Math.abs(actualMaxAgeInSeconds.intValue()
+                    - expectedMaxAgeInSeconds.intValue());
+            Assert.assertTrue("actualMaxAgeInSeconds: " + actualMaxAgeInSeconds
+                    + ", expectedMaxAgeInSeconds: " + expectedMaxAgeInSeconds
+                    + ", request time: " + timeBeforeInMillis
+                    + " for content type " + httpURLConnection.getContentType(),
+                    deltaInSeconds < 3);
 
         } finally {
             tomcat.stop();

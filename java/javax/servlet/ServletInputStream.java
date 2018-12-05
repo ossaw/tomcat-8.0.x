@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -61,7 +59,7 @@ public abstract class ServletInputStream extends InputStream {
      * @return an integer specifying the actual number of bytes read, or -1 if
      *         the end of the stream is reached
      * @exception IOException
-     *                if an input or output exception has occurred
+     *                        if an input or output exception has occurred
      */
     public int readLine(byte[] b, int off, int len) throws IOException {
 
@@ -84,7 +82,7 @@ public abstract class ServletInputStream extends InputStream {
      * Has the end of this InputStream been reached?
      *
      * @return <code>true</code> if all the data has been read from the stream,
-     * else <code>false</code>
+     *         else <code>false</code>
      *
      * @since Servlet 3.1
      */
@@ -92,11 +90,11 @@ public abstract class ServletInputStream extends InputStream {
 
     /**
      * Can data be read from this InputStream without blocking?
-     * Returns  If this method is called and returns false, the container will
+     * Returns If this method is called and returns false, the container will
      * invoke {@link ReadListener#onDataAvailable()} when data is available.
      *
      * @return <code>true</code> if data can be read without blocking, else
-     * <code>false</code>
+     *         <code>false</code>
      *
      * @since Servlet 3.1
      */
@@ -107,13 +105,13 @@ public abstract class ServletInputStream extends InputStream {
      * thereby switches to non-blocking IO. It is only valid to switch to
      * non-blocking IO within async processing or HTTP upgrade processing.
      *
-     * @param listener  The non-blocking IO read listener
+     * @param listener The non-blocking IO read listener
      *
-     * @throws IllegalStateException    If this method is called if neither
-     *                                  async nor HTTP upgrade is in progress or
-     *                                  if the {@link ReadListener} has already
-     *                                  been set
-     * @throws NullPointerException     If listener is null
+     * @throws IllegalStateException If this method is called if neither
+     *                               async nor HTTP upgrade is in progress or
+     *                               if the {@link ReadListener} has already
+     *                               been set
+     * @throws NullPointerException  If listener is null
      *
      * @since Servlet 3.1
      */

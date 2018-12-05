@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -42,19 +40,19 @@ public class FileResourceSet extends AbstractFileResourceSet {
      * Creates a new {@link org.apache.catalina.WebResourceSet} based on a
      * file.
      *
-     * @param root          The {@link WebResourceRoot} this new
-     *                          {@link org.apache.catalina.WebResourceSet} will
-     *                          be added to.
-     * @param webAppMount   The path within the web application at which this
-     *                          {@link org.apache.catalina.WebResourceSet} will
-     *                          be mounted. For example, to add a directory of
-     *                          JARs to a web application, the directory would
-     *                          be mounted at "WEB-INF/lib/"
-     * @param base          The absolute path to the file on the file system
-     *                          from which the resource will be served.
-     * @param internalPath  The path within this new {@link
-     *                          org.apache.catalina.WebResourceSet} where
-     *                          resources will be served from.
+     * @param root         The {@link WebResourceRoot} this new
+     *                     {@link org.apache.catalina.WebResourceSet} will
+     *                     be added to.
+     * @param webAppMount  The path within the web application at which this
+     *                     {@link org.apache.catalina.WebResourceSet} will
+     *                     be mounted. For example, to add a directory of
+     *                     JARs to a web application, the directory would
+     *                     be mounted at "WEB-INF/lib/"
+     * @param base         The absolute path to the file on the file system
+     *                     from which the resource will be served.
+     * @param internalPath The path within this new {@link
+     *                     org.apache.catalina.WebResourceSet} where
+     *                     resources will be served from.
      */
     public FileResourceSet(WebResourceRoot root, String webAppMount,
             String base, String internalPath) {
@@ -71,7 +69,6 @@ public class FileResourceSet extends AbstractFileResourceSet {
             }
         }
     }
-
 
     @Override
     public WebResource getResource(String path) {
@@ -113,12 +110,12 @@ public class FileResourceSet extends AbstractFileResourceSet {
         if (webAppMount.startsWith(path)) {
             webAppMount = webAppMount.substring(path.length());
             if (webAppMount.equals(getFileBase().getName())) {
-                return new String[] {getFileBase().getName()};
+                return new String[] { getFileBase().getName() };
             } else {
                 // Virtual directory
                 int i = webAppMount.indexOf('/');
                 if (i > 0) {
-                    return new String[] {webAppMount.substring(0, i)};
+                    return new String[] { webAppMount.substring(0, i) };
                 }
             }
         }
@@ -169,8 +166,9 @@ public class FileResourceSet extends AbstractFileResourceSet {
     @Override
     protected void checkType(File file) {
         if (file.isFile() == false) {
-            throw new IllegalArgumentException(sm.getString("fileResourceSet.notFile",
-                    getBase(), File.separator, getInternalPath()));
+            throw new IllegalArgumentException(sm.getString(
+                    "fileResourceSet.notFile", getBase(), File.separator,
+                    getInternalPath()));
         }
     }
 }

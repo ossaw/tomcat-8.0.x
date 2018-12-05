@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -30,7 +28,7 @@ public interface SessionCookieConfig {
      * @param name The name of the session cookie
      *
      * @throws IllegalStateException if the associated ServletContext has
-     *         already been initialised
+     *                               already been initialised
      */
     public void setName(String name);
 
@@ -42,7 +40,7 @@ public interface SessionCookieConfig {
      * @param domain The session cookie domain
      *
      * @throws IllegalStateException if the associated ServletContext has
-     *         already been initialised
+     *                               already been initialised
      */
     public void setDomain(String domain);
 
@@ -54,7 +52,7 @@ public interface SessionCookieConfig {
      * @param path The session cookie path
      *
      * @throws IllegalStateException if the associated ServletContext has
-     *         already been initialised
+     *                               already been initialised
      */
     public void setPath(String path);
 
@@ -66,7 +64,7 @@ public interface SessionCookieConfig {
      * @param comment The session cookie comment
      *
      * @throws IllegalStateException if the associated ServletContext has
-     *         already been initialised
+     *                               already been initialised
      */
     public void setComment(String comment);
 
@@ -78,7 +76,7 @@ public interface SessionCookieConfig {
      * @param httpOnly The httpOnly setting to use for session cookies
      *
      * @throws IllegalStateException if the associated ServletContext has
-     *         already been initialised
+     *                               already been initialised
      */
     public void setHttpOnly(boolean httpOnly);
 
@@ -90,7 +88,7 @@ public interface SessionCookieConfig {
      * @param secure The secure setting to use for session cookies
      *
      * @throws IllegalStateException if the associated ServletContext has
-     *         already been initialised
+     *                               already been initialised
      */
     public void setSecure(boolean secure);
 
@@ -101,7 +99,7 @@ public interface SessionCookieConfig {
      *
      * @param MaxAge the maximum age to set
      * @throws IllegalStateException if the associated ServletContext has
-     *         already been initialised
+     *                               already been initialised
      */
     public void setMaxAge(int MaxAge);
 

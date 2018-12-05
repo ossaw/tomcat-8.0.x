@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -39,8 +37,10 @@ import org.apache.jasper.Constants;
  */
 public class BodyContentImpl extends BodyContent {
 
-    private static final boolean LIMIT_BUFFER =
-        Boolean.parseBoolean(System.getProperty("org.apache.jasper.runtime.BodyContentImpl.LIMIT_BUFFER", "false"));
+    private static final boolean LIMIT_BUFFER = Boolean.parseBoolean(System
+            .getProperty(
+                    "org.apache.jasper.runtime.BodyContentImpl.LIMIT_BUFFER",
+                    "false"));
 
     private char[] cb;
     private int nextChar;
@@ -70,7 +70,7 @@ public class BodyContentImpl extends BodyContent {
         } else {
             ensureOpen();
             if (nextChar >= bufferSize) {
-                reAllocBuff (1);
+                reAllocBuff(1);
             }
             cb[nextChar++] = (char) c;
         }
@@ -79,17 +79,18 @@ public class BodyContentImpl extends BodyContent {
     /**
      * Write a portion of an array of characters.
      *
-     * <p> Ordinarily this method stores characters from the given array into
+     * <p>
+     * Ordinarily this method stores characters from the given array into
      * this stream's buffer, flushing the buffer to the underlying stream as
-     * needed.  If the requested length is at least as large as the buffer,
+     * needed. If the requested length is at least as large as the buffer,
      * however, then this method will flush the buffer and write the characters
-     * directly to the underlying stream.  Thus redundant
+     * directly to the underlying stream. Thus redundant
      * <code>DiscardableBufferedWriter</code>s will not copy data
      * unnecessarily.
      *
      * @param cbuf A character array
-     * @param off Offset from which to start reading characters
-     * @param len Number of characters to write
+     * @param off  Offset from which to start reading characters
+     * @param len  Number of characters to write
      */
     @Override
     public void write(char[] cbuf, int off, int len) throws IOException {
@@ -98,23 +99,23 @@ public class BodyContentImpl extends BodyContent {
         } else {
             ensureOpen();
 
-            if ((off < 0) || (off > cbuf.length) || (len < 0) ||
-                    ((off + len) > cbuf.length) || ((off + len) < 0)) {
+            if ((off < 0) || (off > cbuf.length) || (len < 0) || ((off
+                    + len) > cbuf.length) || ((off + len) < 0)) {
                 throw new IndexOutOfBoundsException();
             } else if (len == 0) {
                 return;
             }
 
             if (len >= bufferSize - nextChar)
-                reAllocBuff (len);
+                reAllocBuff(len);
 
             System.arraycopy(cbuf, off, cb, nextChar, len);
-            nextChar+=len;
+            nextChar += len;
         }
     }
 
     /**
-     * Write an array of characters.  This method cannot be inherited from the
+     * Write an array of characters. This method cannot be inherited from the
      * Writer class because it must suppress I/O exceptions.
      */
     @Override
@@ -129,7 +130,7 @@ public class BodyContentImpl extends BodyContent {
     /**
      * Write a portion of a String.
      *
-     * @param s String to be written
+     * @param s   String to be written
      * @param off Offset from which to start reading characters
      * @param len Number of characters to be written
      */
@@ -148,7 +149,7 @@ public class BodyContentImpl extends BodyContent {
     }
 
     /**
-     * Write a string.  This method cannot be inherited from the Writer class
+     * Write a string. This method cannot be inherited from the Writer class
      * because it must suppress I/O exceptions.
      */
     @Override
@@ -161,7 +162,7 @@ public class BodyContentImpl extends BodyContent {
     }
 
     /**
-     * Write a line separator.  The line separator string is defined by the
+     * Write a line separator. The line separator string is defined by the
      * system property <tt>line.separator</tt>, and is not necessarily a single
      * newline ('\n') character.
      *
@@ -177,7 +178,7 @@ public class BodyContentImpl extends BodyContent {
     }
 
     /**
-     * Print a boolean value.  The string produced by <code>{@link
+     * Print a boolean value. The string produced by <code>{@link
      * java.lang.String#valueOf(boolean)}</code> is translated into bytes
      * according to the platform's default character encoding, and these bytes
      * are written in exactly the manner of the <code>{@link
@@ -196,7 +197,7 @@ public class BodyContentImpl extends BodyContent {
     }
 
     /**
-     * Print a character.  The character is translated into one or more bytes
+     * Print a character. The character is translated into one or more bytes
      * according to the platform's default character encoding, and these bytes
      * are written in exactly the manner of the <code>{@link
      * #write(int)}</code> method.
@@ -214,7 +215,7 @@ public class BodyContentImpl extends BodyContent {
     }
 
     /**
-     * Print an integer.  The string produced by <code>{@link
+     * Print an integer. The string produced by <code>{@link
      * java.lang.String#valueOf(int)}</code> is translated into bytes according
      * to the platform's default character encoding, and these bytes are
      * written in exactly the manner of the <code>{@link #write(int)}</code>
@@ -233,7 +234,7 @@ public class BodyContentImpl extends BodyContent {
     }
 
     /**
-     * Print a long integer.  The string produced by <code>{@link
+     * Print a long integer. The string produced by <code>{@link
      * java.lang.String#valueOf(long)}</code> is translated into bytes
      * according to the platform's default character encoding, and these bytes
      * are written in exactly the manner of the
@@ -252,7 +253,7 @@ public class BodyContentImpl extends BodyContent {
     }
 
     /**
-     * Print a floating-point number.  The string produced by <code>{@link
+     * Print a floating-point number. The string produced by <code>{@link
      * java.lang.String#valueOf(float)}</code> is translated into bytes
      * according to the platform's default character encoding, and these bytes
      * are written in exactly the manner of the
@@ -271,7 +272,7 @@ public class BodyContentImpl extends BodyContent {
     }
 
     /**
-     * Print a double-precision floating-point number.  The string produced by
+     * Print a double-precision floating-point number. The string produced by
      * <code>{@link java.lang.String#valueOf(double)}</code> is translated into
      * bytes according to the platform's default character encoding, and these
      * bytes are written in exactly the manner of the <code>{@link
@@ -290,7 +291,7 @@ public class BodyContentImpl extends BodyContent {
     }
 
     /**
-     * Print an array of characters.  The characters are converted into bytes
+     * Print an array of characters. The characters are converted into bytes
      * according to the platform's default character encoding, and these bytes
      * are written in exactly the manner of the
      * <code>{@link #write(int)}</code> method.
@@ -310,8 +311,8 @@ public class BodyContentImpl extends BodyContent {
     }
 
     /**
-     * Print a string.  If the argument is <code>null</code> then the string
-     * <code>"null"</code> is printed.  Otherwise, the string's characters are
+     * Print a string. If the argument is <code>null</code> then the string
+     * <code>"null"</code> is printed. Otherwise, the string's characters are
      * converted into bytes according to the platform's default character
      * encoding, and these bytes are written in exactly the manner of the
      * <code>{@link #write(int)}</code> method.
@@ -321,7 +322,8 @@ public class BodyContentImpl extends BodyContent {
      */
     @Override
     public void print(String s) throws IOException {
-        if (s == null) s = "null";
+        if (s == null)
+            s = "null";
         if (writer != null) {
             writer.write(s);
         } else {
@@ -330,7 +332,7 @@ public class BodyContentImpl extends BodyContent {
     }
 
     /**
-     * Print an object.  The string produced by the <code>{@link
+     * Print an object. The string produced by the <code>{@link
      * java.lang.String#valueOf(Object)}</code> method is translated into bytes
      * according to the platform's default character encoding, and these bytes
      * are written in exactly the manner of the
@@ -349,7 +351,7 @@ public class BodyContentImpl extends BodyContent {
     }
 
     /**
-     * Terminate the current line by writing the line separator string.  The
+     * Terminate the current line by writing the line separator string. The
      * line separator string is defined by the system property
      * <code>line.separator</code>, and is not necessarily a single newline
      * character (<code>'\n'</code>).
@@ -362,7 +364,7 @@ public class BodyContentImpl extends BodyContent {
     }
 
     /**
-     * Print a boolean value and then terminate the line.  This method behaves
+     * Print a boolean value and then terminate the line. This method behaves
      * as though it invokes <code>{@link #print(boolean)}</code> and then
      * <code>{@link #println()}</code>.
      *
@@ -375,7 +377,7 @@ public class BodyContentImpl extends BodyContent {
     }
 
     /**
-     * Print a character and then terminate the line.  This method behaves as
+     * Print a character and then terminate the line. This method behaves as
      * though it invokes <code>{@link #print(char)}</code> and then
      * <code>{@link #println()}</code>.
      *
@@ -388,7 +390,7 @@ public class BodyContentImpl extends BodyContent {
     }
 
     /**
-     * Print an integer and then terminate the line.  This method behaves as
+     * Print an integer and then terminate the line. This method behaves as
      * though it invokes <code>{@link #print(int)}</code> and then
      * <code>{@link #println()}</code>.
      *
@@ -401,7 +403,7 @@ public class BodyContentImpl extends BodyContent {
     }
 
     /**
-     * Print a long integer and then terminate the line.  This method behaves
+     * Print a long integer and then terminate the line. This method behaves
      * as though it invokes <code>{@link #print(long)}</code> and then
      * <code>{@link #println()}</code>.
      *
@@ -414,7 +416,7 @@ public class BodyContentImpl extends BodyContent {
     }
 
     /**
-     * Print a floating-point number and then terminate the line.  This method
+     * Print a floating-point number and then terminate the line. This method
      * behaves as though it invokes <code>{@link #print(float)}</code> and then
      * <code>{@link #println()}</code>.
      *
@@ -428,19 +430,19 @@ public class BodyContentImpl extends BodyContent {
 
     /**
      * Print a double-precision floating-point number and then terminate the
-     * line.  This method behaves as though it invokes <code>{@link
+     * line. This method behaves as though it invokes <code>{@link
      * #print(double)}</code> and then <code>{@link #println()}</code>.
      *
      * @throws IOException
      */
     @Override
-    public void println(double x) throws IOException{
+    public void println(double x) throws IOException {
         print(x);
         println();
     }
 
     /**
-     * Print an array of characters and then terminate the line.  This method
+     * Print an array of characters and then terminate the line. This method
      * behaves as though it invokes <code>{@link #print(char[])}</code> and
      * then <code>{@link #println()}</code>.
      *
@@ -453,7 +455,7 @@ public class BodyContentImpl extends BodyContent {
     }
 
     /**
-     * Print a String and then terminate the line.  This method behaves as
+     * Print a String and then terminate the line. This method behaves as
      * though it invokes <code>{@link #print(String)}</code> and then
      * <code>{@link #println()}</code>.
      *
@@ -466,7 +468,7 @@ public class BodyContentImpl extends BodyContent {
     }
 
     /**
-     * Print an Object and then terminate the line.  This method behaves as
+     * Print an Object and then terminate the line. This method behaves as
      * though it invokes <code>{@link #print(Object)}</code> and then
      * <code>{@link #println()}</code>.
      *
@@ -492,7 +494,8 @@ public class BodyContentImpl extends BodyContent {
             throw new IOException();
         } else {
             nextChar = 0;
-            if (LIMIT_BUFFER && (cb.length > Constants.DEFAULT_TAG_BUFFER_SIZE)) {
+            if (LIMIT_BUFFER
+                    && (cb.length > Constants.DEFAULT_TAG_BUFFER_SIZE)) {
                 cb = new char[Constants.DEFAULT_TAG_BUFFER_SIZE];
                 bufferSize = cb.length;
             }
@@ -515,9 +518,9 @@ public class BodyContentImpl extends BodyContent {
     }
 
     /**
-     * Close the stream, flushing it first.  Once a stream has been closed,
+     * Close the stream, flushing it first. Once a stream has been closed,
      * further write() or flush() invocations will cause an IOException to be
-     * thrown.  Closing a previously-closed stream, however, has no effect.
+     * thrown. Closing a previously-closed stream, however, has no effect.
      *
      * @throws IOException If an I/O error occurs
      */
@@ -549,24 +552,24 @@ public class BodyContentImpl extends BodyContent {
      */
     @Override
     public int getRemaining() {
-        return (writer == null) ? bufferSize-nextChar : 0;
+        return (writer == null) ? bufferSize - nextChar : 0;
     }
 
     /**
      * Return the value of this BodyJspWriter as a Reader.
-     * Note: this is after evaluation!!  There are no scriptlets,
+     * Note: this is after evaluation!! There are no scriptlets,
      * etc in this stream.
      *
      * @return the value of this BodyJspWriter as a Reader
      */
     @Override
     public Reader getReader() {
-        return (writer == null) ? new CharArrayReader (cb, 0, nextChar) : null;
+        return (writer == null) ? new CharArrayReader(cb, 0, nextChar) : null;
     }
 
     /**
      * Return the value of the BodyJspWriter as a String.
-     * Note: this is after evaluation!!  There are no scriptlets,
+     * Note: this is after evaluation!! There are no scriptlets,
      * etc in this stream.
      *
      * @return the value of the BodyJspWriter as a String
@@ -582,7 +585,7 @@ public class BodyContentImpl extends BodyContent {
      * implementation so some things are extra efficient.
      *
      * @param out The writer into which to place the contents of this body
-     * evaluation
+     *            evaluation
      */
     @Override
     public void writeOut(Writer out) throws IOException {
@@ -609,7 +612,8 @@ public class BodyContentImpl extends BodyContent {
      * releasing all internal references, and preparing it for potential
      * reuse by a later invocation of {@link PageContextImpl#pushBody(Writer)}.
      *
-     * <p>Note, that BodyContentImpl instances are usually owned by a
+     * <p>
+     * Note, that BodyContentImpl instances are usually owned by a
      * PageContextImpl instance, and PageContextImpl instances are recycled
      * and reused.
      *
@@ -625,7 +629,8 @@ public class BodyContentImpl extends BodyContent {
     }
 
     private void ensureOpen() throws IOException {
-        if (closed) throw new IOException("Stream closed");
+        if (closed)
+            throw new IOException("Stream closed");
     }
 
     /**
@@ -647,6 +652,5 @@ public class BodyContentImpl extends BodyContent {
         cb = tmp;
         bufferSize = cb.length;
     }
-
 
 }

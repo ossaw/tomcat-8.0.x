@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -19,10 +17,11 @@ package org.apache.tomcat.util.modeler;
 
 import javax.management.MBeanAttributeInfo;
 
-
 /**
- * <p>Internal configuration information for an <code>Attribute</code>
- * descriptor.</p>
+ * <p>
+ * Internal configuration information for an <code>Attribute</code>
+ * descriptor.
+ * </p>
  *
  * @author Craig R. McClanahan
  */
@@ -56,7 +55,7 @@ public class AttributeInfo extends FeatureInfo {
      * The name of the property getter method, if non-standard.
      */
     public String getGetMethod() {
-        if(getMethod == null)
+        if (getMethod == null)
             getMethod = getMethodName(getName(), true, isIs());
         return (this.getMethod);
     }
@@ -76,7 +75,6 @@ public class AttributeInfo extends FeatureInfo {
         this.is = is;
     }
 
-
     /**
      * Is this attribute readable by management applications?
      */
@@ -88,12 +86,11 @@ public class AttributeInfo extends FeatureInfo {
         this.readable = readable;
     }
 
-
     /**
      * The name of the property setter method, if non-standard.
      */
     public String getSetMethod() {
-        if( setMethod == null )
+        if (setMethod == null)
             setMethod = getMethodName(getName(), false, false);
         return (this.setMethod);
     }
@@ -115,7 +112,6 @@ public class AttributeInfo extends FeatureInfo {
 
     // --------------------------------------------------------- Public Methods
 
-
     /**
      * Create and return a <code>ModelMBeanAttributeInfo</code> object that
      * corresponds to the attribute described by this instance.
@@ -123,22 +119,21 @@ public class AttributeInfo extends FeatureInfo {
     MBeanAttributeInfo createAttributeInfo() {
         // Return our cached information (if any)
         if (info == null) {
-            info = new MBeanAttributeInfo(getName(), getType(), getDescription(),
-                            isReadable(), isWriteable(), false);
+            info = new MBeanAttributeInfo(getName(), getType(),
+                    getDescription(), isReadable(), isWriteable(), false);
         }
-        return (MBeanAttributeInfo)info;
+        return (MBeanAttributeInfo) info;
     }
 
     // -------------------------------------------------------- Private Methods
-
 
     /**
      * Create and return the name of a default property getter or setter
      * method, according to the specified values.
      *
-     * @param name Name of the property itself
+     * @param name   Name of the property itself
      * @param getter Do we want a get method (versus a set method)?
-     * @param is If returning a getter, do we want the "is" form?
+     * @param is     If returning a getter, do we want the "is" form?
      */
     private String getMethodName(String name, boolean getter, boolean is) {
 
@@ -155,6 +150,5 @@ public class AttributeInfo extends FeatureInfo {
         return (sb.toString());
 
     }
-
 
 }

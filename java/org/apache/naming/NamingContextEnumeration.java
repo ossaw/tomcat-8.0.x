@@ -1,20 +1,17 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 
 package org.apache.naming;
 
@@ -29,64 +26,50 @@ import javax.naming.NamingException;
  *
  * @author Remy Maucherat
  */
-public class NamingContextEnumeration
-    implements NamingEnumeration<NameClassPair> {
-
+public class NamingContextEnumeration implements
+        NamingEnumeration<NameClassPair> {
 
     // ----------------------------------------------------------- Constructors
-
 
     public NamingContextEnumeration(Iterator<NamingEntry> entries) {
         iterator = entries;
     }
 
-
     // -------------------------------------------------------------- Variables
-
 
     /**
      * Underlying enumeration.
      */
     protected final Iterator<NamingEntry> iterator;
 
-
     // --------------------------------------------------------- Public Methods
-
 
     /**
      * Retrieves the next element in the enumeration.
      */
     @Override
-    public NameClassPair next()
-        throws NamingException {
+    public NameClassPair next() throws NamingException {
         return nextElement();
     }
-
 
     /**
      * Determines whether there are any more elements in the enumeration.
      */
     @Override
-    public boolean hasMore()
-        throws NamingException {
+    public boolean hasMore() throws NamingException {
         return iterator.hasNext();
     }
-
 
     /**
      * Closes this enumeration.
      */
     @Override
-    public void close()
-        throws NamingException {
-    }
-
+    public void close() throws NamingException {}
 
     @Override
     public boolean hasMoreElements() {
         return iterator.hasNext();
     }
-
 
     @Override
     public NameClassPair nextElement() {
@@ -94,6 +77,4 @@ public class NamingContextEnumeration
         return new NameClassPair(entry.name, entry.value.getClass().getName());
     }
 
-
 }
-

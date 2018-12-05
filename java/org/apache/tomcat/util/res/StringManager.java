@@ -1,18 +1,16 @@
 /*
- *  Licensed to the Apache Software Foundation (ASF) under one or more
- *  contributor license agreements.  See the NOTICE file distributed with
- *  this work for additional information regarding copyright ownership.
- *  The ASF licenses this file to You under the Apache License, Version 2.0
- *  (the "License"); you may not use this file except in compliance with
- *  the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements. See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.apache.tomcat.util.res;
 
@@ -31,17 +29,20 @@ import java.util.ResourceBundle;
  * common cases of message formating which otherwise require the
  * creation of Object arrays and such.
  *
- * <p>The StringManager operates on a package basis. One StringManager
+ * <p>
+ * The StringManager operates on a package basis. One StringManager
  * per package can be created and accessed via the getManager method
  * call.
  *
- * <p>The StringManager will look for a ResourceBundle named by
+ * <p>
+ * The StringManager will look for a ResourceBundle named by
  * the package name given plus the suffix of "LocalStrings". In
  * practice, this means that the localized information will be contained
  * in a LocalStrings.properties file located in the package
  * directory of the class path.
  *
- * <p>Please see the documentation for java.util.ResourceBundle for
+ * <p>
+ * Please see the documentation for java.util.ResourceBundle for
  * more information.
  *
  * @author James Duncan Davidson [duncan@eng.sun.com]
@@ -58,7 +59,6 @@ public class StringManager {
      */
     private final ResourceBundle bundle;
     private final Locale locale;
-
 
     /**
      * Creates a new StringManager for a given package. This is a
@@ -100,7 +100,6 @@ public class StringManager {
         }
     }
 
-
     /**
      * Get a string from the underlying resource bundle or return null if the
      * String is not found.
@@ -113,7 +112,7 @@ public class StringManager {
      * @throws IllegalArgumentException if <i>key</i> is null
      */
     public String getString(String key) {
-        if (key == null){
+        if (key == null) {
             String msg = "key may not have a null value";
             throw new IllegalArgumentException(msg);
         }
@@ -143,7 +142,6 @@ public class StringManager {
         return str;
     }
 
-
     /**
      * Get a string from the underlying resource bundle and format
      * it with the given set of arguments.
@@ -165,7 +163,6 @@ public class StringManager {
         return mf.format(args, new StringBuffer(), null).toString();
     }
 
-
     /**
      * Identify the Locale this StringManager is associated with.
      *
@@ -175,14 +172,11 @@ public class StringManager {
         return locale;
     }
 
-
     // --------------------------------------------------------------
     // STATIC SUPPORT METHODS
     // --------------------------------------------------------------
 
-    private static final Map<String, Map<Locale,StringManager>> managers =
-            new Hashtable<>();
-
+    private static final Map<String, Map<Locale, StringManager>> managers = new Hashtable<>();
 
     /**
      * Get the StringManager for a given class. The StringManager will be
@@ -198,7 +192,6 @@ public class StringManager {
         return getManager(clazz.getPackage().getName());
     }
 
-
     /**
      * Get the StringManager for a particular package. If a manager for
      * a package already exists, it will be reused, else a new
@@ -213,7 +206,6 @@ public class StringManager {
         return getManager(packageName, Locale.getDefault());
     }
 
-
     /**
      * Get the StringManager for a particular package and Locale. If a manager
      * for a package/Locale combination already exists, it will be reused, else
@@ -227,7 +219,7 @@ public class StringManager {
     public static final synchronized StringManager getManager(
             String packageName, Locale locale) {
 
-        Map<Locale,StringManager> map = managers.get(packageName);
+        Map<Locale, StringManager> map = managers.get(packageName);
         if (map == null) {
             /*
              * Don't want the HashMap to be expanded beyond LOCALE_CACHE_SIZE.
@@ -235,13 +227,14 @@ public class StringManager {
              * size at or below capacity.
              * removeEldestEntry() executes after insertion therefore the test
              * for removal needs to use one less than the maximum desired size
-             *
              */
-            map = new LinkedHashMap<Locale,StringManager>(LOCALE_CACHE_SIZE, 1, true) {
+            map = new LinkedHashMap<Locale, StringManager>(LOCALE_CACHE_SIZE, 1,
+                    true) {
                 private static final long serialVersionUID = 1L;
+
                 @Override
                 protected boolean removeEldestEntry(
-                        Map.Entry<Locale,StringManager> eldest) {
+                        Map.Entry<Locale, StringManager> eldest) {
                     if (size() > (LOCALE_CACHE_SIZE - 1)) {
                         return true;
                     }
@@ -258,7 +251,6 @@ public class StringManager {
         }
         return mgr;
     }
-
 
     /**
      * Retrieve the StringManager for a list of Locales. The first StringManager

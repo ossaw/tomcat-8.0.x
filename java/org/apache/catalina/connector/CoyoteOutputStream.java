@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -31,38 +29,30 @@ import org.apache.tomcat.util.res.StringManager;
  */
 public class CoyoteOutputStream extends ServletOutputStream {
 
-    protected static final StringManager sm =
-            StringManager.getManager(Constants.Package);
-
+    protected static final StringManager sm = StringManager.getManager(
+            Constants.Package);
 
     // ----------------------------------------------------- Instance Variables
 
     protected OutputBuffer ob;
 
-
     // ----------------------------------------------------------- Constructors
-
 
     protected CoyoteOutputStream(OutputBuffer ob) {
         this.ob = ob;
     }
 
-
     // --------------------------------------------------------- Public Methods
-
 
     /**
      * Prevent cloning the facade.
      */
     @Override
-    protected Object clone()
-        throws CloneNotSupportedException {
+    protected Object clone() throws CloneNotSupportedException {
         throw new CloneNotSupportedException();
     }
 
-
     // -------------------------------------------------------- Package Methods
-
 
     /**
      * Clear facade.
@@ -71,9 +61,7 @@ public class CoyoteOutputStream extends ServletOutputStream {
         ob = null;
     }
 
-
     // --------------------------------------------------- OutputStream Methods
-
 
     @Override
     public void write(int i) throws IOException {
@@ -84,12 +72,10 @@ public class CoyoteOutputStream extends ServletOutputStream {
         }
     }
 
-
     @Override
     public void write(byte[] b) throws IOException {
         write(b, 0, b.length);
     }
-
 
     @Override
     public void write(byte[] b, int off, int len) throws IOException {
@@ -99,7 +85,6 @@ public class CoyoteOutputStream extends ServletOutputStream {
             checkRegisterForWrite();
         }
     }
-
 
     /**
      * Will send the buffer to the client.
@@ -113,7 +98,6 @@ public class CoyoteOutputStream extends ServletOutputStream {
         }
     }
 
-
     /**
      * Checks for concurrent writes which are not permitted. This object has no
      * state information so the call chain is
@@ -125,12 +109,11 @@ public class CoyoteOutputStream extends ServletOutputStream {
     private boolean checkNonBlockingWrite() {
         boolean nonBlocking = !ob.isBlocking();
         if (nonBlocking && !ob.isReady()) {
-            throw new IllegalStateException(
-                    sm.getString("coyoteOutputStream.nbNotready"));
+            throw new IllegalStateException(sm.getString(
+                    "coyoteOutputStream.nbNotready"));
         }
         return nonBlocking;
     }
-
 
     /**
      * Checks to see if there is data left in the Coyote output buffers (NOT the
@@ -144,10 +127,8 @@ public class CoyoteOutputStream extends ServletOutputStream {
         ob.checkRegisterForWrite();
     }
 
-
     @Override
-    public void close()
-        throws IOException {
+    public void close() throws IOException {
         ob.close();
     }
 
@@ -156,10 +137,8 @@ public class CoyoteOutputStream extends ServletOutputStream {
         return ob.isReady();
     }
 
-
     @Override
     public void setWriteListener(WriteListener listener) {
         ob.setWriteListener(listener);
     }
 }
-

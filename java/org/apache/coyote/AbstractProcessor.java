@@ -1,18 +1,16 @@
 /*
- *  Licensed to the Apache Software Foundation (ASF) under one or more
- *  contributor license agreements.  See the NOTICE file distributed with
- *  this work for additional information regarding copyright ownership.
- *  The ASF licenses this file to You under the Apache License, Version 2.0
- *  (the "License"); you may not use this file except in compliance with
- *  the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements. See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.apache.coyote;
 
@@ -32,7 +30,8 @@ import org.apache.tomcat.util.res.StringManager;
  */
 public abstract class AbstractProcessor<S> implements ActionHook, Processor<S> {
 
-    protected static final StringManager sm = StringManager.getManager(Constants.Package);
+    protected static final StringManager sm = StringManager.getManager(
+            Constants.Package);
 
     protected Adapter adapter;
     protected final AsyncStateMachine asyncStateMachine;
@@ -42,12 +41,10 @@ public abstract class AbstractProcessor<S> implements ActionHook, Processor<S> {
     protected volatile SocketWrapper<S> socketWrapper = null;
     private int maxCookieCount = 200;
 
-
     /**
      * Error state for the request/response currently being processed.
      */
     private ErrorState errorState = ErrorState.NONE;
-
 
     /**
      * Intended for use by the Upgrade sub-classes that have no need to
@@ -70,15 +67,16 @@ public abstract class AbstractProcessor<S> implements ActionHook, Processor<S> {
         request.setHook(this);
     }
 
-
     /**
      * Update the current error state to the new error state if the new error
      * state is more severe than the current error state.
      */
     protected void setErrorState(ErrorState errorState, Throwable t) {
-        boolean blockIo = this.errorState.isIoAllowed() && !errorState.isIoAllowed();
+        boolean blockIo = this.errorState.isIoAllowed() && !errorState
+                .isIoAllowed();
         this.errorState = this.errorState.getMostSevere(errorState);
-        if (blockIo && !ContainerThreadMarker.isContainerThread() && isAsync()) {
+        if (blockIo && !ContainerThreadMarker.isContainerThread()
+                && isAsync()) {
             // The error occurred on a non-container thread during async
             // processing which means not all of the necessary clean-up will
             // have been completed. Dispatch to a container thread to do the
@@ -87,16 +85,16 @@ public abstract class AbstractProcessor<S> implements ActionHook, Processor<S> {
             if (response.getStatus() < 400) {
                 response.setStatus(500);
             }
-            getLog().info(sm.getString("abstractProcessor.nonContainerThreadError"), t);
-            getEndpoint().processSocket(socketWrapper, SocketStatus.CLOSE_NOW, true);
+            getLog().info(sm.getString(
+                    "abstractProcessor.nonContainerThreadError"), t);
+            getEndpoint().processSocket(socketWrapper, SocketStatus.CLOSE_NOW,
+                    true);
         }
     }
-
 
     protected void resetErrorState() {
         errorState = ErrorState.NONE;
     }
-
 
     protected ErrorState getErrorState() {
         return errorState;
@@ -109,7 +107,6 @@ public abstract class AbstractProcessor<S> implements ActionHook, Processor<S> {
         return endpoint;
     }
 
-
     /**
      * The request associated with this processor.
      */
@@ -117,7 +114,6 @@ public abstract class AbstractProcessor<S> implements ActionHook, Processor<S> {
     public Request getRequest() {
         return request;
     }
-
 
     /**
      * Set the associated adapter.
@@ -128,7 +124,6 @@ public abstract class AbstractProcessor<S> implements ActionHook, Processor<S> {
         this.adapter = adapter;
     }
 
-
     /**
      * Get the associated adapter.
      *
@@ -138,7 +133,6 @@ public abstract class AbstractProcessor<S> implements ActionHook, Processor<S> {
         return adapter;
     }
 
-
     /**
      * Set the socket wrapper being used.
      */
@@ -146,14 +140,12 @@ public abstract class AbstractProcessor<S> implements ActionHook, Processor<S> {
         this.socketWrapper = socketWrapper;
     }
 
-
     /**
      * Get the socket wrapper being used.
      */
     protected final SocketWrapper<S> getSocketWrapper() {
         return socketWrapper;
     }
-
 
     /**
      * Obtain the Executor used by the underlying endpoint.
@@ -163,12 +155,10 @@ public abstract class AbstractProcessor<S> implements ActionHook, Processor<S> {
         return endpoint.getExecutor();
     }
 
-
     @Override
     public boolean isAsync() {
         return (asyncStateMachine != null && asyncStateMachine.isAsync());
     }
-
 
     @Override
     public SocketState asyncPostProcess() {
@@ -191,7 +181,8 @@ public abstract class AbstractProcessor<S> implements ActionHook, Processor<S> {
      * with although they may change type during processing.
      */
     @Override
-    public abstract SocketState process(SocketWrapper<S> socket) throws IOException;
+    public abstract SocketState process(SocketWrapper<S> socket)
+            throws IOException;
 
     /**
      * Process in-progress Comet requests. These will start as HTTP requests.
@@ -211,21 +202,19 @@ public abstract class AbstractProcessor<S> implements ActionHook, Processor<S> {
      * upgrade.
      */
     @Override
-    public abstract SocketState upgradeDispatch(SocketStatus status) throws IOException;
+    public abstract SocketState upgradeDispatch(SocketStatus status)
+            throws IOException;
 
     public int getMaxCookieCount() {
         return maxCookieCount;
     }
 
-
     public void setMaxCookieCount(int maxCookieCount) {
         this.maxCookieCount = maxCookieCount;
     }
 
-
     @Override
     public abstract UpgradeToken getUpgradeToken();
-
 
     /**
      * Register the socket for the specified events.

@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -40,9 +38,12 @@ import org.apache.naming.ResourceRef;
 /**
  * Object factory for any Resource conforming to the JavaBean spec.
  *
- * <p>This factory can be configured in a <code>&lt;Context&gt;</code> element
+ * <p>
+ * This factory can be configured in a <code>&lt;Context&gt;</code> element
  * in your <code>conf/server.xml</code>
- * configuration file.  An example of factory configuration is:</p>
+ * configuration file. An example of factory configuration is:
+ * </p>
+ * 
  * <pre>
  * &lt;Resource name="jdbc/myDataSource" auth="SERVLET"
  *   type="oracle.jdbc.pool.OracleConnectionCacheImpl"/&gt;
@@ -88,23 +89,17 @@ import org.apache.naming.ResourceRef;
  *
  * @author Aner Perez [aner at ncstech.com]
  */
-public class BeanFactory
-    implements ObjectFactory {
+public class BeanFactory implements ObjectFactory {
 
     // ----------------------------------------------------------- Constructors
 
-
     // -------------------------------------------------------------- Constants
-
 
     // ----------------------------------------------------- Instance Variables
 
-
     // --------------------------------------------------------- Public Methods
 
-
     // -------------------------------------------------- ObjectFactory Methods
-
 
     /**
      * Create a new Bean instance.
@@ -113,8 +108,7 @@ public class BeanFactory
      */
     @Override
     public Object getObjectInstance(Object obj, Name name, Context nameCtx,
-                                    Hashtable<?,?> environment)
-        throws NamingException {
+            Hashtable<?, ?> environment) throws NamingException {
 
         if (obj instanceof ResourceRef) {
 
@@ -123,23 +117,23 @@ public class BeanFactory
                 Reference ref = (Reference) obj;
                 String beanClassName = ref.getClassName();
                 Class<?> beanClass = null;
-                ClassLoader tcl =
-                    Thread.currentThread().getContextClassLoader();
+                ClassLoader tcl = Thread.currentThread()
+                        .getContextClassLoader();
                 if (tcl != null) {
                     try {
                         beanClass = tcl.loadClass(beanClassName);
-                    } catch(ClassNotFoundException e) {
+                    } catch (ClassNotFoundException e) {
                     }
                 } else {
                     try {
                         beanClass = Class.forName(beanClassName);
-                    } catch(ClassNotFoundException e) {
+                    } catch (ClassNotFoundException e) {
                         e.printStackTrace();
                     }
                 }
                 if (beanClass == null) {
-                    throw new NamingException
-                        ("Class not found: " + beanClassName);
+                    throw new NamingException("Class not found: "
+                            + beanClassName);
                 }
 
                 BeanInfo bi = Introspector.getBeanInfo(beanClass);
@@ -153,34 +147,36 @@ public class BeanFactory
                 String value;
 
                 if (ra != null) {
-                    value = (String)ra.getContent();
+                    value = (String) ra.getContent();
                     Class<?> paramTypes[] = new Class[1];
                     paramTypes[0] = String.class;
                     String setterName;
                     int index;
 
                     /* Items are given as comma separated list */
-                    for (String param: value.split(",")) {
+                    for (String param : value.split(",")) {
                         param = param.trim();
-                        /* A single item can either be of the form name=method
+                        /*
+                         * A single item can either be of the form name=method
                          * or just a property name (and we will use a standard
-                         * setter) */
+                         * setter)
+                         */
                         index = param.indexOf('=');
                         if (index >= 0) {
                             setterName = param.substring(index + 1).trim();
                             param = param.substring(0, index).trim();
                         } else {
-                            setterName = "set" +
-                                         param.substring(0, 1).toUpperCase(Locale.ENGLISH) +
-                                         param.substring(1);
+                            setterName = "set" + param.substring(0, 1)
+                                    .toUpperCase(Locale.ENGLISH) + param
+                                            .substring(1);
                         }
                         try {
-                            forced.put(param,
-                                       beanClass.getMethod(setterName, paramTypes));
-                        } catch (NoSuchMethodException|SecurityException ex) {
-                            throw new NamingException
-                                ("Forced String setter " + setterName +
-                                 " not found for property " + param);
+                            forced.put(param, beanClass.getMethod(setterName,
+                                    paramTypes));
+                        } catch (NoSuchMethodException | SecurityException ex) {
+                            throw new NamingException("Forced String setter "
+                                    + setterName + " not found for property "
+                                    + param);
                         }
                     }
                 }
@@ -192,35 +188,38 @@ public class BeanFactory
                     ra = e.nextElement();
                     String propName = ra.getType();
 
-                    if (propName.equals(Constants.FACTORY) ||
-                        propName.equals("scope") || propName.equals("auth") ||
-                        propName.equals("forceString") ||
-                        propName.equals("singleton")) {
+                    if (propName.equals(Constants.FACTORY) || propName.equals(
+                            "scope") || propName.equals("auth") || propName
+                                    .equals("forceString") || propName.equals(
+                                            "singleton")) {
                         continue;
                     }
 
-                    value = (String)ra.getContent();
+                    value = (String) ra.getContent();
 
                     Object[] valueArray = new Object[1];
 
-                    /* Shortcut for properties with explicitly configured setter */
+                    /*
+                     * Shortcut for properties with explicitly configured setter
+                     */
                     Method method = forced.get(propName);
                     if (method != null) {
                         valueArray[0] = value;
                         try {
                             method.invoke(bean, valueArray);
-                        } catch (IllegalAccessException|
-                                 IllegalArgumentException|
-                                 InvocationTargetException ex) {
-                            throw new NamingException
-                                ("Forced String setter " + method.getName() +
-                                 " threw exception for property " + propName);
+                        } catch (IllegalAccessException
+                                | IllegalArgumentException
+                                | InvocationTargetException ex) {
+                            throw new NamingException("Forced String setter "
+                                    + method.getName()
+                                    + " threw exception for property "
+                                    + propName);
                         }
                         continue;
                     }
 
                     int i = 0;
-                    for (i = 0; i<pda.length; i++) {
+                    for (i = 0; i < pda.length; i++) {
 
                         if (pda[i].getName().equals(propName)) {
 
@@ -229,44 +228,45 @@ public class BeanFactory
                             if (propType.equals(String.class)) {
                                 valueArray[0] = value;
                             } else if (propType.equals(Character.class)
-                                       || propType.equals(char.class)) {
-                                valueArray[0] =
-                                    Character.valueOf(value.charAt(0));
-                            } else if (propType.equals(Byte.class)
-                                       || propType.equals(byte.class)) {
+                                    || propType.equals(char.class)) {
+                                valueArray[0] = Character.valueOf(value.charAt(
+                                        0));
+                            } else if (propType.equals(Byte.class) || propType
+                                    .equals(byte.class)) {
                                 valueArray[0] = Byte.valueOf(value);
-                            } else if (propType.equals(Short.class)
-                                       || propType.equals(short.class)) {
+                            } else if (propType.equals(Short.class) || propType
+                                    .equals(short.class)) {
                                 valueArray[0] = Short.valueOf(value);
                             } else if (propType.equals(Integer.class)
-                                       || propType.equals(int.class)) {
+                                    || propType.equals(int.class)) {
                                 valueArray[0] = Integer.valueOf(value);
-                            } else if (propType.equals(Long.class)
-                                       || propType.equals(long.class)) {
+                            } else if (propType.equals(Long.class) || propType
+                                    .equals(long.class)) {
                                 valueArray[0] = Long.valueOf(value);
-                            } else if (propType.equals(Float.class)
-                                       || propType.equals(float.class)) {
+                            } else if (propType.equals(Float.class) || propType
+                                    .equals(float.class)) {
                                 valueArray[0] = Float.valueOf(value);
-                            } else if (propType.equals(Double.class)
-                                       || propType.equals(double.class)) {
+                            } else if (propType.equals(Double.class) || propType
+                                    .equals(double.class)) {
                                 valueArray[0] = Double.valueOf(value);
                             } else if (propType.equals(Boolean.class)
-                                       || propType.equals(boolean.class)) {
+                                    || propType.equals(boolean.class)) {
                                 valueArray[0] = Boolean.valueOf(value);
                             } else {
-                                throw new NamingException
-                                    ("String conversion for property " + propName +
-                                     " of type '" + propType.getName() +
-                                     "' not available");
+                                throw new NamingException(
+                                        "String conversion for property "
+                                                + propName + " of type '"
+                                                + propType.getName()
+                                                + "' not available");
                             }
 
                             Method setProp = pda[i].getWriteMethod();
                             if (setProp != null) {
                                 setProp.invoke(bean, valueArray);
                             } else {
-                                throw new NamingException
-                                    ("Write not allowed for property: "
-                                     + propName);
+                                throw new NamingException(
+                                        "Write not allowed for property: "
+                                                + propName);
                             }
 
                             break;
@@ -276,8 +276,9 @@ public class BeanFactory
                     }
 
                     if (i == pda.length) {
-                        throw new NamingException
-                            ("No set method found for property: " + propName);
+                        throw new NamingException(
+                                "No set method found for property: "
+                                        + propName);
                     }
 
                 }

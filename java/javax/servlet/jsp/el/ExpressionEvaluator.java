@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -64,26 +62,33 @@ public abstract class ExpressionEvaluator {
      * it should raise an ELParseException.
      *
      * @param expression
-     *            The expression to be evaluated.
+     *                     The expression to be evaluated.
      * @param expectedType
-     *            The expected type of the result of the evaluation
+     *                     The expected type of the result of the evaluation
      * @param fMapper
-     *            A FunctionMapper to resolve functions found in the expression.
-     *            It can be null, in which case no functions are supported for
-     *            this invocation. The ExpressionEvaluator must not hold on to
-     *            the FunctionMapper reference after returning from
-     *            <code>parseExpression()</code>. The <code>Expression</code>
-     *            object returned must invoke the same functions regardless of
-     *            whether the mappings in the provided
-     *            <code>FunctionMapper</code> instance change between calling
-     *            <code>ExpressionEvaluator.parseExpression()</code> and
-     *            <code>Expression.evaluate()</code>.
+     *                     A FunctionMapper to resolve functions found in the
+     *                     expression.
+     *                     It can be null, in which case no functions are
+     *                     supported for
+     *                     this invocation. The ExpressionEvaluator must not
+     *                     hold on to
+     *                     the FunctionMapper reference after returning from
+     *                     <code>parseExpression()</code>. The
+     *                     <code>Expression</code>
+     *                     object returned must invoke the same functions
+     *                     regardless of
+     *                     whether the mappings in the provided
+     *                     <code>FunctionMapper</code> instance change between
+     *                     calling
+     *                     <code>ExpressionEvaluator.parseExpression()</code>
+     *                     and
+     *                     <code>Expression.evaluate()</code>.
      * @return The Expression object encapsulating the arguments.
      * @exception ELException
-     *                Thrown if parsing errors were found.
+     *                        Thrown if parsing errors were found.
      */
     public abstract Expression parseExpression(String expression,
-            @SuppressWarnings("rawtypes")// TCK signature fails with generics
+            @SuppressWarnings("rawtypes") // TCK signature fails with generics
             Class expectedType, FunctionMapper fMapper) throws ELException;
 
     /**
@@ -93,23 +98,25 @@ public abstract class ExpressionEvaluator {
      * ELException to be raised.
      *
      * @param expression
-     *            The expression to be evaluated.
+     *                     The expression to be evaluated.
      * @param expectedType
-     *            The expected type of the result of the evaluation
+     *                     The expected type of the result of the evaluation
      * @param vResolver
-     *            A VariableResolver instance that can be used at runtime to
-     *            resolve the name of implicit objects into Objects.
+     *                     A VariableResolver instance that can be used at
+     *                     runtime to
+     *                     resolve the name of implicit objects into Objects.
      * @param fMapper
-     *            A FunctionMapper to resolve functions found in the expression.
-     *            It can be null, in which case no functions are supported for
-     *            this invocation.
+     *                     A FunctionMapper to resolve functions found in the
+     *                     expression.
+     *                     It can be null, in which case no functions are
+     *                     supported for
+     *                     this invocation.
      * @return The result of the expression evaluation.
      * @exception ELException
-     *                Thrown if the expression evaluation failed.
+     *                        Thrown if the expression evaluation failed.
      */
-    public abstract Object evaluate(
-            String expression,
-            @SuppressWarnings("rawtypes")// TCK signature fails with generics
+    public abstract Object evaluate(String expression,
+            @SuppressWarnings("rawtypes") // TCK signature fails with generics
             Class expectedType, VariableResolver vResolver,
             FunctionMapper fMapper) throws ELException;
 }

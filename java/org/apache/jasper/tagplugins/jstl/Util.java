@@ -1,20 +1,17 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 
 package org.apache.jasper.tagplugins.jstl;
 
@@ -43,16 +40,14 @@ import org.apache.jasper.Constants;
 
 public class Util {
 
-    private static final String VALID_SCHEME_CHAR =
-        "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789+.-";
+    private static final String VALID_SCHEME_CHAR = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789+.-";
 
-    public static final String DEFAULT_ENCODING =
-        "ISO-8859-1";
+    public static final String DEFAULT_ENCODING = "ISO-8859-1";
 
     private static final int HIGHEST_SPECIAL = '>';
 
-    private static final char[][] specialCharactersRepresentation =
-            new char[HIGHEST_SPECIAL + 1][];
+    private static final char[][] specialCharactersRepresentation = new char[HIGHEST_SPECIAL
+            + 1][];
 
     static {
         specialCharactersRepresentation['&'] = "&amp;".toCharArray();
@@ -73,16 +68,16 @@ public class Util {
      *
      * @return PageContext constant corresponding to given scope description
      *
-     * taken from org.apache.taglibs.standard.tag.common.core.Util
+     *         taken from org.apache.taglibs.standard.tag.common.core.Util
      */
-    public static int getScope(String scope){
+    public static int getScope(String scope) {
         int ret = PageContext.PAGE_SCOPE;
 
-        if("request".equalsIgnoreCase(scope)){
+        if ("request".equalsIgnoreCase(scope)) {
             ret = PageContext.REQUEST_SCOPE;
-        }else if("session".equalsIgnoreCase(scope)){
+        } else if ("session".equalsIgnoreCase(scope)) {
             ret = PageContext.SESSION_SCOPE;
-        }else if("application".equalsIgnoreCase(scope)){
+        } else if ("application".equalsIgnoreCase(scope)) {
             ret = PageContext.APPLICATION_SCOPE;
         }
 
@@ -94,18 +89,18 @@ public class Util {
      * <tt>false</tt> otherwise.
      * taken from org.apache.taglibs.standard.tag.common.core.ImportSupport
      */
-    public static boolean isAbsoluteUrl(String url){
-        if(url == null){
+    public static boolean isAbsoluteUrl(String url) {
+        if (url == null) {
             return false;
         }
 
         int colonPos = url.indexOf(':');
-        if(colonPos == -1){
+        if (colonPos == -1) {
             return false;
         }
 
-        for(int i=0;i<colonPos;i++){
-            if(VALID_SCHEME_CHAR.indexOf(url.charAt(i)) == -1){
+        for (int i = 0; i < colonPos; i++) {
+            if (VALID_SCHEME_CHAR.indexOf(url.charAt(i)) == -1) {
                 return false;
             }
         }
@@ -121,11 +116,14 @@ public class Util {
     public static String getContentTypeAttribute(String input, String name) {
         int begin;
         int end;
-        int index = input.toUpperCase(Locale.ENGLISH).indexOf(name.toUpperCase(Locale.ENGLISH));
-        if (index == -1) return null;
+        int index = input.toUpperCase(Locale.ENGLISH).indexOf(name.toUpperCase(
+                Locale.ENGLISH));
+        if (index == -1)
+            return null;
         index = index + name.length(); // positioned after the attribute name
         index = input.indexOf('=', index); // positioned at the '='
-        if (index == -1) return null;
+        if (index == -1)
+            return null;
         index += 1; // positioned after the '='
         input = input.substring(index).trim();
 
@@ -133,18 +131,21 @@ public class Util {
             // attribute value is a quoted string
             begin = 1;
             end = input.indexOf('"', begin);
-            if (end == -1) return null;
+            if (end == -1)
+                return null;
         } else {
             begin = 0;
             end = input.indexOf(';');
-            if (end == -1) end = input.indexOf(' ');
-            if (end == -1) end = input.length();
+            if (end == -1)
+                end = input.indexOf(' ');
+            if (end == -1)
+                end = input.length();
         }
         return input.substring(begin, end).trim();
     }
 
     /**
-     * Strips a servlet session ID from <tt>url</tt>.  The session ID
+     * Strips a servlet session ID from <tt>url</tt>. The session ID
      * is encoded as a URL "path parameter" beginning with "jsessionid=".
      * We thus remove anything we find between ";jsessionid=" (inclusive)
      * and either EOS or a subsequent ';' (exclusive).
@@ -154,7 +155,8 @@ public class Util {
     public static String stripSession(String url) {
         StringBuilder u = new StringBuilder(url);
         int sessionStart;
-        while ((sessionStart = u.toString().indexOf(";" + Constants.SESSION_PARAMETER_NAME + "=")) != -1) {
+        while ((sessionStart = u.toString().indexOf(";"
+                + Constants.SESSION_PARAMETER_NAME + "=")) != -1) {
             int sessionEnd = u.toString().indexOf(';', sessionStart + 1);
             if (sessionEnd == -1)
                 sessionEnd = u.toString().indexOf('?', sessionStart + 1);
@@ -165,16 +167,15 @@ public class Util {
         return u.toString();
     }
 
-
     /**
      * Performs the following substring replacements
      * (to facilitate output to XML/HTML pages):
      *
-     *    &amp; -&gt; &amp;amp;
-     *    &lt; -&gt; &amp;lt;
-     *    &gt; -&gt; &amp;gt;
-     *    " -&gt; &amp;#034;
-     *    ' -&gt; &amp;#039;
+     * &amp; -&gt; &amp;amp;
+     * &lt; -&gt; &amp;lt;
+     * &gt; -&gt; &amp;gt;
+     * " -&gt; &amp;#034;
+     * ' -&gt; &amp;#039;
      *
      * See also OutSupport.writeEscapedXml().
      *
@@ -205,7 +206,7 @@ public class Util {
                     }
                     // add unescaped portion
                     if (start < i) {
-                        escapedBuffer.append(arrayBuffer,start,i-start);
+                        escapedBuffer.append(arrayBuffer, start, i - start);
                     }
                     start = i + 1;
                     // add escaped xml
@@ -219,24 +220,24 @@ public class Util {
         }
         // add rest of unescaped portion
         if (start < length) {
-            escapedBuffer.append(arrayBuffer,start,length-start);
+            escapedBuffer.append(arrayBuffer, start, length - start);
         }
         return escapedBuffer.toString();
     }
 
-    /** Utility methods
+    /**
+     * Utility methods
      * taken from org.apache.taglibs.standard.tag.common.core.UrlSupport
      */
-    public static String resolveUrl(
-            String url, String context, PageContext pageContext)
-    throws JspException {
+    public static String resolveUrl(String url, String context,
+            PageContext pageContext) throws JspException {
         // don't touch absolute URLs
         if (isAbsoluteUrl(url))
             return url;
 
         // normalize relative URLs against a context root
-        HttpServletRequest request =
-            (HttpServletRequest) pageContext.getRequest();
+        HttpServletRequest request = (HttpServletRequest) pageContext
+                .getRequest();
         if (context == null) {
             if (url.startsWith("/"))
                 return (request.getContextPath() + url);
@@ -245,7 +246,7 @@ public class Util {
         } else {
             if (!context.startsWith("/") || !url.startsWith("/")) {
                 throw new JspTagException(
-                "In URL tags, when the \"context\" attribute is specified, values of both \"context\" and \"url\" must start with \"/\".");
+                        "In URL tags, when the \"context\" attribute is specified, values of both \"context\" and \"url\" must start with \"/\".");
             }
             if (context.equals("/")) {
                 // Don't produce string starting with '//', many
@@ -258,10 +259,13 @@ public class Util {
         }
     }
 
-    /** Wraps responses to allow us to retrieve results as Strings.
-     * mainly taken from org.apache.taglibs.standard.tag.common.core.importSupport
+    /**
+     * Wraps responses to allow us to retrieve results as Strings.
+     * mainly taken from
+     * org.apache.taglibs.standard.tag.common.core.importSupport
      */
-    public static class ImportResponseWrapper extends HttpServletResponseWrapper{
+    public static class ImportResponseWrapper extends
+            HttpServletResponseWrapper {
 
         private final StringWriter sw = new StringWriter();
         private final ByteArrayOutputStream bos = new ByteArrayOutputStream();
@@ -283,8 +287,6 @@ public class Util {
                 throw new UnsupportedOperationException();
             }
 
-
-
         };
         private boolean isWriterUsed;
         private boolean isStreamUsed;
@@ -299,8 +301,9 @@ public class Util {
         @Override
         public PrintWriter getWriter() {
             if (isStreamUsed)
-                throw new IllegalStateException("Unexpected internal error during &lt;import&gt: " +
-                "Target servlet called getWriter(), then getOutputStream()");
+                throw new IllegalStateException(
+                        "Unexpected internal error during &lt;import&gt: "
+                                + "Target servlet called getWriter(), then getOutputStream()");
             isWriterUsed = true;
             return new PrintWriter(sw);
         }
@@ -308,8 +311,9 @@ public class Util {
         @Override
         public ServletOutputStream getOutputStream() {
             if (isWriterUsed)
-                throw new IllegalStateException("Unexpected internal error during &lt;import&gt: " +
-                "Target servlet called getOutputStream(), then getWriter()");
+                throw new IllegalStateException(
+                        "Unexpected internal error during &lt;import&gt: "
+                                + "Target servlet called getOutputStream(), then getWriter()");
             isStreamUsed = true;
             return sos;
         }
@@ -336,11 +340,11 @@ public class Util {
             return status;
         }
 
-        public String getCharEncoding(){
+        public String getCharEncoding() {
             return this.charEncoding;
         }
 
-        public void setCharEncoding(String ce){
+        public void setCharEncoding(String ce) {
             this.charEncoding = ce;
         }
 

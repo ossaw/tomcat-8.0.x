@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -30,8 +28,8 @@ package org.apache.tomcat.dbcp.pool2;
  *
  * @since 2.0
  */
-public abstract class BaseKeyedPooledObjectFactory<K,V> extends BaseObject
-        implements KeyedPooledObjectFactory<K,V> {
+public abstract class BaseKeyedPooledObjectFactory<K, V> extends BaseObject
+        implements KeyedPooledObjectFactory<K, V> {
 
     /**
      * Create an instance that can be served by the pool.
@@ -40,10 +38,10 @@ public abstract class BaseKeyedPooledObjectFactory<K,V> extends BaseObject
      * @return an instance that can be served by the pool
      *
      * @throws Exception if there is a problem creating a new instance,
-     *    this will be propagated to the code requesting an object.
+     *                   this will be propagated to the code requesting an
+     *                   object.
      */
-    public abstract V create(K key)
-        throws Exception;
+    public abstract V create(K key) throws Exception;
 
     /**
      * Wrap the provided instance with an implementation of
@@ -66,12 +64,12 @@ public abstract class BaseKeyedPooledObjectFactory<K,V> extends BaseObject
      * The default implementation is a no-op.
      *
      * @param key the key used when selecting the instance
-     * @param p a {@code PooledObject} wrapping the the instance to be destroyed
+     * @param p   a {@code PooledObject} wrapping the the instance to be
+     *            destroyed
      */
     @Override
     public void destroyObject(final K key, final PooledObject<V> p)
-        throws Exception {
-    }
+            throws Exception {}
 
     /**
      * Ensures that the instance is safe to be returned by the pool.
@@ -79,7 +77,8 @@ public abstract class BaseKeyedPooledObjectFactory<K,V> extends BaseObject
      * The default implementation always returns {@code true}.
      *
      * @param key the key used when selecting the object
-     * @param p a {@code PooledObject} wrapping the the instance to be validated
+     * @param p   a {@code PooledObject} wrapping the the instance to be
+     *            validated
      * @return always <code>true</code> in the default implementation
      */
     @Override
@@ -93,12 +92,12 @@ public abstract class BaseKeyedPooledObjectFactory<K,V> extends BaseObject
      * The default implementation is a no-op.
      *
      * @param key the key used when selecting the object
-     * @param p a {@code PooledObject} wrapping the the instance to be activated
+     * @param p   a {@code PooledObject} wrapping the the instance to be
+     *            activated
      */
     @Override
     public void activateObject(final K key, final PooledObject<V> p)
-        throws Exception {
-    }
+            throws Exception {}
 
     /**
      * Uninitialize an instance to be returned to the idle object pool.
@@ -106,10 +105,10 @@ public abstract class BaseKeyedPooledObjectFactory<K,V> extends BaseObject
      * The default implementation is a no-op.
      *
      * @param key the key used when selecting the object
-     * @param p a {@code PooledObject} wrapping the the instance to be passivated
+     * @param p   a {@code PooledObject} wrapping the the instance to be
+     *            passivated
      */
     @Override
     public void passivateObject(final K key, final PooledObject<V> p)
-        throws Exception {
-    }
+            throws Exception {}
 }

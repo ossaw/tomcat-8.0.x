@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -65,10 +63,10 @@ public class TestJNDIRealm {
         JNDIRealm realm = buildRealm(PASSWORD);
 
         // WHEN
-        String expectedResponse =
-                MD5Encoder.encode(md5Helper.digest((ha1() + ":" + NONCE + ":" + HA2).getBytes()));
-        Principal principal =
-                realm.authenticate(USER, expectedResponse, NONCE, null, null, null, REALM, HA2);
+        String expectedResponse = MD5Encoder.encode(md5Helper.digest((ha1()
+                + ":" + NONCE + ":" + HA2).getBytes()));
+        Principal principal = realm.authenticate(USER, expectedResponse, NONCE,
+                null, null, null, REALM, HA2);
 
         // THEN
         Assert.assertNull(principal);
@@ -81,37 +79,40 @@ public class TestJNDIRealm {
         realm.setUserPassword(USER_PASSWORD_ATTR);
 
         // WHEN
-        String expectedResponse =
-                MD5Encoder.encode(md5Helper.digest((ha1() + ":" + NONCE + ":" + HA2).getBytes()));
-        Principal principal =
-                realm.authenticate(USER, expectedResponse, NONCE, null, null, null, REALM, HA2);
+        String expectedResponse = MD5Encoder.encode(md5Helper.digest((ha1()
+                + ":" + NONCE + ":" + HA2).getBytes()));
+        Principal principal = realm.authenticate(USER, expectedResponse, NONCE,
+                null, null, null, REALM, HA2);
 
         // THEN
         Assert.assertTrue(principal instanceof GenericPrincipal);
-        Assert.assertEquals(PASSWORD, ((GenericPrincipal)principal).getPassword());
+        Assert.assertEquals(PASSWORD, ((GenericPrincipal) principal)
+                .getPassword());
     }
 
     @Test
-    public void testAuthenticateWithUserPasswordAndCredentialHandler() throws Exception {
+    public void testAuthenticateWithUserPasswordAndCredentialHandler()
+            throws Exception {
         // GIVEN
         JNDIRealm realm = buildRealm(ha1());
         realm.setCredentialHandler(buildCredentialHandler());
         realm.setUserPassword(USER_PASSWORD_ATTR);
 
         // WHEN
-        String expectedResponse =
-                MD5Encoder.encode(md5Helper.digest((ha1() + ":" + NONCE + ":" + HA2).getBytes()));
-        Principal principal =
-                realm.authenticate(USER, expectedResponse, NONCE, null, null, null, REALM, HA2);
+        String expectedResponse = MD5Encoder.encode(md5Helper.digest((ha1()
+                + ":" + NONCE + ":" + HA2).getBytes()));
+        Principal principal = realm.authenticate(USER, expectedResponse, NONCE,
+                null, null, null, REALM, HA2);
 
         // THEN
         Assert.assertTrue(principal instanceof GenericPrincipal);
-        Assert.assertEquals(ha1(), ((GenericPrincipal)principal).getPassword());
+        Assert.assertEquals(ha1(), ((GenericPrincipal) principal)
+                .getPassword());
     }
 
-
-    private JNDIRealm buildRealm(String password) throws javax.naming.NamingException,
-            NoSuchFieldException, IllegalAccessException, LifecycleException {
+    private JNDIRealm buildRealm(String password)
+            throws javax.naming.NamingException, NoSuchFieldException,
+            IllegalAccessException, LifecycleException {
         Context context = new TesterContext();
         JNDIRealm realm = new JNDIRealm();
         realm.setContainer(context);
@@ -136,32 +137,29 @@ public class TestJNDIRealm {
     private NamingEnumeration<SearchResult> mockSearchResults(String password)
             throws NamingException {
         @SuppressWarnings("unchecked")
-        NamingEnumeration<SearchResult> searchResults =
-        EasyMock.createNiceMock(NamingEnumeration.class);
-        EasyMock.expect(Boolean.valueOf(searchResults.hasMore()))
-                .andReturn(Boolean.TRUE)
-                .andReturn(Boolean.FALSE)
-                .andReturn(Boolean.TRUE)
+        NamingEnumeration<SearchResult> searchResults = EasyMock.createNiceMock(
+                NamingEnumeration.class);
+        EasyMock.expect(Boolean.valueOf(searchResults.hasMore())).andReturn(
+                Boolean.TRUE).andReturn(Boolean.FALSE).andReturn(Boolean.TRUE)
                 .andReturn(Boolean.FALSE);
-        EasyMock.expect(searchResults.next())
-                .andReturn(new SearchResult("ANY RESULT", "",
-                        new BasicAttributes(USER_PASSWORD_ATTR, password)))
-                .times(2);
+        EasyMock.expect(searchResults.next()).andReturn(new SearchResult(
+                "ANY RESULT", "", new BasicAttributes(USER_PASSWORD_ATTR,
+                        password))).times(2);
         EasyMock.replay(searchResults);
         return searchResults;
     }
 
-    private DirContext mockDirContext(NamingEnumeration<SearchResult> namingEnumeration)
+    private DirContext mockDirContext(
+            NamingEnumeration<SearchResult> namingEnumeration)
             throws NamingException {
-        DirContext dirContext = EasyMock.createNiceMock(InitialDirContext.class);
-        EasyMock.expect(dirContext.search(EasyMock.anyString(), EasyMock.anyString(),
-                        EasyMock.anyObject(SearchControls.class)))
-                .andReturn(namingEnumeration)
-                .times(2);
-        EasyMock.expect(dirContext.getNameParser(""))
-                .andReturn(new NameParserImpl()).times(2);
-        EasyMock.expect(dirContext.getNameInNamespace())
-                .andReturn("ANY NAME")
+        DirContext dirContext = EasyMock.createNiceMock(
+                InitialDirContext.class);
+        EasyMock.expect(dirContext.search(EasyMock.anyString(), EasyMock
+                .anyString(), EasyMock.anyObject(SearchControls.class)))
+                .andReturn(namingEnumeration).times(2);
+        EasyMock.expect(dirContext.getNameParser("")).andReturn(
+                new NameParserImpl()).times(2);
+        EasyMock.expect(dirContext.getNameInNamespace()).andReturn("ANY NAME")
                 .times(2);
         EasyMock.replay(dirContext);
         return dirContext;

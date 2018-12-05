@@ -1,18 +1,16 @@
 /*
- *  Licensed to the Apache Software Foundation (ASF) under one or more
- *  contributor license agreements.  See the NOTICE file distributed with
- *  this work for additional information regarding copyright ownership.
- *  The ASF licenses this file to You under the Apache License, Version 2.0
- *  (the "License"); you may not use this file except in compliance with
- *  the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements. See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.apache.coyote.http11;
 
@@ -41,7 +39,6 @@ import org.apache.tomcat.util.net.SSLSupport;
 import org.apache.tomcat.util.net.SocketStatus;
 import org.apache.tomcat.util.net.SocketWrapper;
 
-
 /**
  * Processes HTTP requests.
  *
@@ -49,8 +46,8 @@ import org.apache.tomcat.util.net.SocketWrapper;
  */
 public class Http11AprProcessor extends AbstractHttp11Processor<Long> {
 
-
     private static final Log log = LogFactory.getLog(Http11AprProcessor.class);
+
     @Override
     protected Log getLog() {
         return log;
@@ -58,9 +55,9 @@ public class Http11AprProcessor extends AbstractHttp11Processor<Long> {
 
     // ----------------------------------------------------------- Constructors
 
-
-    public Http11AprProcessor(int headerBufferSize, AprEndpoint endpoint, int maxTrailerSize,
-            Set<String> allowedTrailerHeaders, int maxExtensionSize, int maxSwallowSize) {
+    public Http11AprProcessor(int headerBufferSize, AprEndpoint endpoint,
+            int maxTrailerSize, Set<String> allowedTrailerHeaders,
+            int maxExtensionSize, int maxSwallowSize) {
 
         super(endpoint);
 
@@ -70,9 +67,9 @@ public class Http11AprProcessor extends AbstractHttp11Processor<Long> {
         outputBuffer = new InternalAprOutputBuffer(response, headerBufferSize);
         response.setOutputBuffer(outputBuffer);
 
-        initializeFilters(maxTrailerSize, allowedTrailerHeaders, maxExtensionSize, maxSwallowSize);
+        initializeFilters(maxTrailerSize, allowedTrailerHeaders,
+                maxExtensionSize, maxSwallowSize);
     }
-
 
     // ----------------------------------------------------- Instance Variables
 
@@ -80,7 +77,6 @@ public class Http11AprProcessor extends AbstractHttp11Processor<Long> {
      * Sendfile data.
      */
     protected AprEndpoint.SendfileData sendfileData = null;
-
 
     /**
      * When client certificate information is presented in a form other than
@@ -92,12 +88,16 @@ public class Http11AprProcessor extends AbstractHttp11Processor<Long> {
      * default provider will be used.
      */
     protected String clientCertProvider = null;
-    public String getClientCertProvider() { return clientCertProvider; }
-    public void setClientCertProvider(String s) { this.clientCertProvider = s; }
 
+    public String getClientCertProvider() {
+        return clientCertProvider;
+    }
+
+    public void setClientCertProvider(String s) {
+        this.clientCertProvider = s;
+    }
 
     // --------------------------------------------------------- Public Methods
-
 
     /**
      * Process pipelined HTTP requests using the specified input and output
@@ -106,8 +106,7 @@ public class Http11AprProcessor extends AbstractHttp11Processor<Long> {
      * @throws IOException error during an I/O operation
      */
     @Override
-    public SocketState event(SocketStatus status)
-        throws IOException {
+    public SocketState event(SocketStatus status) throws IOException {
 
         RequestInfo rp = request.getRequestProcessor();
 
@@ -129,7 +128,7 @@ public class Http11AprProcessor extends AbstractHttp11Processor<Long> {
 
         rp.setStage(org.apache.coyote.Constants.STAGE_ENDED);
 
-        if (getErrorState().isError() || status==SocketStatus.STOP) {
+        if (getErrorState().isError() || status == SocketStatus.STOP) {
             return SocketState.CLOSED;
         } else if (!comet) {
             inputBuffer.nextRequest();
@@ -144,7 +143,6 @@ public class Http11AprProcessor extends AbstractHttp11Processor<Long> {
     protected boolean disableKeepAlive() {
         return false;
     }
-
 
     @Override
     protected void setRequestLineReadTimeout() throws IOException {
@@ -169,7 +167,6 @@ public class Http11AprProcessor extends AbstractHttp11Processor<Long> {
         // NO-OP
     }
 
-
     @Override
     protected boolean handleIncompleteRequestLineRead() {
         // This means that no data is available right now
@@ -179,18 +176,16 @@ public class Http11AprProcessor extends AbstractHttp11Processor<Long> {
         return true;
     }
 
-
     @Override
     protected void setSocketTimeout(int timeout) {
-        Socket.timeoutSet(socketWrapper.getSocket().longValue(), timeout * 1000);
+        Socket.timeoutSet(socketWrapper.getSocket().longValue(), timeout
+                * 1000);
     }
-
 
     @Override
     protected void setCometTimeouts(SocketWrapper<Long> socketWrapper) {
         // NO-OP for APR/native
     }
-
 
     @Override
     protected boolean breakKeepAliveLoop(SocketWrapper<Long> socketWrapper) {
@@ -199,7 +194,7 @@ public class Http11AprProcessor extends AbstractHttp11Processor<Long> {
         if (sendfileData != null && !getErrorState().isError()) {
             sendfileData.socket = socketWrapper.getSocket().longValue();
             sendfileData.keepAlive = keepAlive;
-            if (!((AprEndpoint)endpoint).getSendfile().add(sendfileData)) {
+            if (!((AprEndpoint) endpoint).getSendfile().add(sendfileData)) {
                 // Didn't send all of the data to sendfile.
                 if (sendfileData.socket == 0) {
                     // The socket is no longer set. Something went wrong.
@@ -220,25 +215,21 @@ public class Http11AprProcessor extends AbstractHttp11Processor<Long> {
         return false;
     }
 
-
     @Override
     protected void registerForEvent(boolean read, boolean write) {
         socketWrapper.registerforEvent(-1, read, write);
     }
-
 
     @Override
     protected void resetTimeouts() {
         // NO-OP for APR
     }
 
-
     @Override
     public void recycleInternal() {
         socketWrapper = null;
         sendfileData = null;
     }
-
 
     @Override
     public void setSslSupport(SSLSupport sslSupport) {
@@ -247,12 +238,11 @@ public class Http11AprProcessor extends AbstractHttp11Processor<Long> {
 
     // ----------------------------------------------------- ActionHook Methods
 
-
     /**
      * Send an action to the connector.
      *
      * @param actionCode Type of the action
-     * @param param Action parameter
+     * @param param      Action parameter
      */
     @Override
     @SuppressWarnings("incomplete-switch") // Other cases are handled by action()
@@ -261,228 +251,263 @@ public class Http11AprProcessor extends AbstractHttp11Processor<Long> {
         long socketRef = socketWrapper.getSocket().longValue();
 
         switch (actionCode) {
-        case REQ_HOST_ADDR_ATTRIBUTE: {
-            if (socketRef == 0) {
-                request.remoteAddr().recycle();
-            } else {
-                if (socketWrapper.getRemoteAddr() == null) {
-                    try {
-                        long sa = Address.get(Socket.APR_REMOTE, socketRef);
-                        socketWrapper.setRemoteAddr(Address.getip(sa));
-                    } catch (Exception e) {
-                        log.warn(sm.getString("http11processor.socket.info"), e);
-                    }
-                }
-                request.remoteAddr().setString(socketWrapper.getRemoteAddr());
-            }
-            break;
-        }
-        case REQ_LOCAL_NAME_ATTRIBUTE: {
-            if (socketRef == 0) {
-                request.localName().recycle();
-            } else {
-                if (socketWrapper.getLocalName() == null) {
-                    try {
-                        long sa = Address.get(Socket.APR_LOCAL, socketRef);
-                        socketWrapper.setLocalName(Address.getnameinfo(sa, 0));
-                    } catch (Exception e) {
-                        log.warn(sm.getString("http11processor.socket.info"), e);
-                    }
-                }
-                request.localName().setString(socketWrapper.getLocalName());
-            }
-            break;
-        }
-        case REQ_HOST_ATTRIBUTE: {
-            if (socketRef == 0) {
-                request.remoteHost().recycle();
-            } else {
-                if (socketWrapper.getRemoteHost() == null) {
-                    try {
-                        long sa = Address.get(Socket.APR_REMOTE, socketRef);
-                        socketWrapper.setRemoteHost(Address.getnameinfo(sa, 0));
-                        if (socketWrapper.getRemoteHost() == null) {
-                            if (socketWrapper.getRemoteAddr() == null) {
-                                socketWrapper.setRemoteAddr(Address.getip(sa));
-                            }
-                            if (socketWrapper.getRemoteAddr() != null) {
-                                socketWrapper.setRemoteHost(socketWrapper.getRemoteAddr());
-                            }
-                        }
-                    } catch (Exception e) {
-                        log.warn(sm.getString("http11processor.socket.info"), e);
-                    }
+            case REQ_HOST_ADDR_ATTRIBUTE: {
+                if (socketRef == 0) {
+                    request.remoteAddr().recycle();
                 } else {
-                    request.remoteHost().setString(socketWrapper.getRemoteHost());
-                }
-            }
-            break;
-        }
-        case REQ_LOCAL_ADDR_ATTRIBUTE: {
-            if (socketRef == 0) {
-                request.localAddr().recycle();
-            } else {
-                if (socketWrapper.getLocalAddr() == null) {
-                    try {
-                        long sa = Address.get(Socket.APR_LOCAL, socketRef);
-                        socketWrapper.setLocalAddr(Address.getip(sa));
-                    } catch (Exception e) {
-                        log.warn(sm.getString("http11processor.socket.info"), e);
-                    }
-                }
-                request.localAddr().setString(socketWrapper.getLocalAddr());
-            }
-            break;
-        }
-        case REQ_REMOTEPORT_ATTRIBUTE: {
-            if (socketRef == 0) {
-                request.setRemotePort(0);
-            } else {
-                if (socketWrapper.getRemotePort() == -1) {
-                    try {
-                        long sa = Address.get(Socket.APR_REMOTE, socketRef);
-                        Sockaddr addr = Address.getInfo(sa);
-                        socketWrapper.setRemotePort(addr.port);
-                    } catch (Exception e) {
-                        log.warn(sm.getString("http11processor.socket.info"), e);
-                    }
-                }
-                request.setRemotePort(socketWrapper.getRemotePort());
-            }
-            break;
-        }
-        case REQ_LOCALPORT_ATTRIBUTE: {
-            if (socketRef == 0) {
-                request.setLocalPort(0);
-            } else {
-                if (socketWrapper.getLocalPort() == -1) {
-                    try {
-                        long sa = Address.get(Socket.APR_LOCAL, socketRef);
-                        Sockaddr addr = Address.getInfo(sa);
-                        socketWrapper.setLocalPort(addr.port);
-                    } catch (Exception e) {
-                        log.warn(sm.getString("http11processor.socket.info"), e);
-                    }
-                }
-                request.setLocalPort(socketWrapper.getLocalPort());
-            }
-            break;
-        }
-        case REQ_SSL_ATTRIBUTE: {
-            if (endpoint.isSSLEnabled() && (socketRef != 0)) {
-                try {
-                    // Cipher suite
-                    Object sslO = SSLSocket.getInfoS(socketRef, SSL.SSL_INFO_CIPHER);
-                    if (sslO != null) {
-                        request.setAttribute(SSLSupport.CIPHER_SUITE_KEY, sslO);
-                    }
-                    // Get client certificate and the certificate chain if present
-                    // certLength == -1 indicates an error
-                    int certLength = SSLSocket.getInfoI(socketRef, SSL.SSL_INFO_CLIENT_CERT_CHAIN);
-                    byte[] clientCert = SSLSocket.getInfoB(socketRef, SSL.SSL_INFO_CLIENT_CERT);
-                    X509Certificate[] certs = null;
-                    if (clientCert != null  && certLength > -1) {
-                        certs = new X509Certificate[certLength + 1];
-                        CertificateFactory cf;
-                        if (clientCertProvider == null) {
-                            cf = CertificateFactory.getInstance("X.509");
-                        } else {
-                            cf = CertificateFactory.getInstance("X.509",
-                                    clientCertProvider);
-                        }
-                        certs[0] = (X509Certificate) cf.generateCertificate(new ByteArrayInputStream(clientCert));
-                        for (int i = 0; i < certLength; i++) {
-                            byte[] data = SSLSocket.getInfoB(socketRef, SSL.SSL_INFO_CLIENT_CERT_CHAIN + i);
-                            certs[i+1] = (X509Certificate) cf.generateCertificate(new ByteArrayInputStream(data));
+                    if (socketWrapper.getRemoteAddr() == null) {
+                        try {
+                            long sa = Address.get(Socket.APR_REMOTE, socketRef);
+                            socketWrapper.setRemoteAddr(Address.getip(sa));
+                        } catch (Exception e) {
+                            log.warn(sm.getString(
+                                    "http11processor.socket.info"), e);
                         }
                     }
-                    if (certs != null) {
-                        request.setAttribute(SSLSupport.CERTIFICATE_KEY, certs);
-                    }
-                    // User key size
-                    sslO = Integer.valueOf(SSLSocket.getInfoI(socketRef,
-                            SSL.SSL_INFO_CIPHER_USEKEYSIZE));
-                    request.setAttribute(SSLSupport.KEY_SIZE_KEY, sslO);
-
-                    // SSL session ID
-                    sslO = SSLSocket.getInfoS(socketRef, SSL.SSL_INFO_SESSION_ID);
-                    if (sslO != null) {
-                        request.setAttribute(SSLSupport.SESSION_ID_KEY, sslO);
-                    }
-                    sslO = SSLSocket.getInfoS(socketRef, SSL.SSL_INFO_PROTOCOL);
-                    if (sslO != null) {
-                        request.setAttribute
-                        (SSLSupport.PROTOCOL_VERSION_KEY, sslO);
-                    }
-                    //TODO provide a hook to enable the SSL session to be
-                    // invalidated. Set AprEndpoint.SESSION_MGR req attr
-                } catch (Exception e) {
-                    log.warn(sm.getString("http11processor.socket.ssl"), e);
+                    request.remoteAddr().setString(socketWrapper
+                            .getRemoteAddr());
                 }
+                break;
             }
-            break;
-        }
-        case REQ_SSL_CERTIFICATE: {
-            if (endpoint.isSSLEnabled() && (socketRef != 0)) {
-                // Consume and buffer the request body, so that it does not
-                // interfere with the client's handshake messages
-                InputFilter[] inputFilters = inputBuffer.getFilters();
-                ((BufferedInputFilter) inputFilters[Constants.BUFFERED_FILTER]).setLimit(maxSavePostSize);
-                inputBuffer.addActiveFilter(inputFilters[Constants.BUFFERED_FILTER]);
-                try {
-                    // Configure connection to require a certificate
-                    SSLSocket.setVerify(socketRef, SSL.SSL_CVERIFY_REQUIRE,
-                            ((AprEndpoint)endpoint).getSSLVerifyDepth());
-                    // Renegotiate certificates
-                    if (SSLSocket.renegotiate(socketRef) == 0) {
-                        // Don't look for certs unless we know renegotiation worked.
+            case REQ_LOCAL_NAME_ATTRIBUTE: {
+                if (socketRef == 0) {
+                    request.localName().recycle();
+                } else {
+                    if (socketWrapper.getLocalName() == null) {
+                        try {
+                            long sa = Address.get(Socket.APR_LOCAL, socketRef);
+                            socketWrapper.setLocalName(Address.getnameinfo(sa,
+                                    0));
+                        } catch (Exception e) {
+                            log.warn(sm.getString(
+                                    "http11processor.socket.info"), e);
+                        }
+                    }
+                    request.localName().setString(socketWrapper.getLocalName());
+                }
+                break;
+            }
+            case REQ_HOST_ATTRIBUTE: {
+                if (socketRef == 0) {
+                    request.remoteHost().recycle();
+                } else {
+                    if (socketWrapper.getRemoteHost() == null) {
+                        try {
+                            long sa = Address.get(Socket.APR_REMOTE, socketRef);
+                            socketWrapper.setRemoteHost(Address.getnameinfo(sa,
+                                    0));
+                            if (socketWrapper.getRemoteHost() == null) {
+                                if (socketWrapper.getRemoteAddr() == null) {
+                                    socketWrapper.setRemoteAddr(Address.getip(
+                                            sa));
+                                }
+                                if (socketWrapper.getRemoteAddr() != null) {
+                                    socketWrapper.setRemoteHost(socketWrapper
+                                            .getRemoteAddr());
+                                }
+                            }
+                        } catch (Exception e) {
+                            log.warn(sm.getString(
+                                    "http11processor.socket.info"), e);
+                        }
+                    } else {
+                        request.remoteHost().setString(socketWrapper
+                                .getRemoteHost());
+                    }
+                }
+                break;
+            }
+            case REQ_LOCAL_ADDR_ATTRIBUTE: {
+                if (socketRef == 0) {
+                    request.localAddr().recycle();
+                } else {
+                    if (socketWrapper.getLocalAddr() == null) {
+                        try {
+                            long sa = Address.get(Socket.APR_LOCAL, socketRef);
+                            socketWrapper.setLocalAddr(Address.getip(sa));
+                        } catch (Exception e) {
+                            log.warn(sm.getString(
+                                    "http11processor.socket.info"), e);
+                        }
+                    }
+                    request.localAddr().setString(socketWrapper.getLocalAddr());
+                }
+                break;
+            }
+            case REQ_REMOTEPORT_ATTRIBUTE: {
+                if (socketRef == 0) {
+                    request.setRemotePort(0);
+                } else {
+                    if (socketWrapper.getRemotePort() == -1) {
+                        try {
+                            long sa = Address.get(Socket.APR_REMOTE, socketRef);
+                            Sockaddr addr = Address.getInfo(sa);
+                            socketWrapper.setRemotePort(addr.port);
+                        } catch (Exception e) {
+                            log.warn(sm.getString(
+                                    "http11processor.socket.info"), e);
+                        }
+                    }
+                    request.setRemotePort(socketWrapper.getRemotePort());
+                }
+                break;
+            }
+            case REQ_LOCALPORT_ATTRIBUTE: {
+                if (socketRef == 0) {
+                    request.setLocalPort(0);
+                } else {
+                    if (socketWrapper.getLocalPort() == -1) {
+                        try {
+                            long sa = Address.get(Socket.APR_LOCAL, socketRef);
+                            Sockaddr addr = Address.getInfo(sa);
+                            socketWrapper.setLocalPort(addr.port);
+                        } catch (Exception e) {
+                            log.warn(sm.getString(
+                                    "http11processor.socket.info"), e);
+                        }
+                    }
+                    request.setLocalPort(socketWrapper.getLocalPort());
+                }
+                break;
+            }
+            case REQ_SSL_ATTRIBUTE: {
+                if (endpoint.isSSLEnabled() && (socketRef != 0)) {
+                    try {
+                        // Cipher suite
+                        Object sslO = SSLSocket.getInfoS(socketRef,
+                                SSL.SSL_INFO_CIPHER);
+                        if (sslO != null) {
+                            request.setAttribute(SSLSupport.CIPHER_SUITE_KEY,
+                                    sslO);
+                        }
                         // Get client certificate and the certificate chain if present
                         // certLength == -1 indicates an error
-                        int certLength = SSLSocket.getInfoI(socketRef,SSL.SSL_INFO_CLIENT_CERT_CHAIN);
-                        byte[] clientCert = SSLSocket.getInfoB(socketRef, SSL.SSL_INFO_CLIENT_CERT);
+                        int certLength = SSLSocket.getInfoI(socketRef,
+                                SSL.SSL_INFO_CLIENT_CERT_CHAIN);
+                        byte[] clientCert = SSLSocket.getInfoB(socketRef,
+                                SSL.SSL_INFO_CLIENT_CERT);
                         X509Certificate[] certs = null;
                         if (clientCert != null && certLength > -1) {
                             certs = new X509Certificate[certLength + 1];
-                            CertificateFactory cf = CertificateFactory.getInstance("X.509");
-                            certs[0] = (X509Certificate) cf.generateCertificate(new ByteArrayInputStream(clientCert));
+                            CertificateFactory cf;
+                            if (clientCertProvider == null) {
+                                cf = CertificateFactory.getInstance("X.509");
+                            } else {
+                                cf = CertificateFactory.getInstance("X.509",
+                                        clientCertProvider);
+                            }
+                            certs[0] = (X509Certificate) cf.generateCertificate(
+                                    new ByteArrayInputStream(clientCert));
                             for (int i = 0; i < certLength; i++) {
-                                byte[] data = SSLSocket.getInfoB(socketRef, SSL.SSL_INFO_CLIENT_CERT_CHAIN + i);
-                                certs[i+1] = (X509Certificate) cf.generateCertificate(new ByteArrayInputStream(data));
+                                byte[] data = SSLSocket.getInfoB(socketRef,
+                                        SSL.SSL_INFO_CLIENT_CERT_CHAIN + i);
+                                certs[i + 1] = (X509Certificate) cf
+                                        .generateCertificate(
+                                                new ByteArrayInputStream(data));
                             }
                         }
                         if (certs != null) {
-                            request.setAttribute(SSLSupport.CERTIFICATE_KEY, certs);
+                            request.setAttribute(SSLSupport.CERTIFICATE_KEY,
+                                    certs);
                         }
+                        // User key size
+                        sslO = Integer.valueOf(SSLSocket.getInfoI(socketRef,
+                                SSL.SSL_INFO_CIPHER_USEKEYSIZE));
+                        request.setAttribute(SSLSupport.KEY_SIZE_KEY, sslO);
+
+                        // SSL session ID
+                        sslO = SSLSocket.getInfoS(socketRef,
+                                SSL.SSL_INFO_SESSION_ID);
+                        if (sslO != null) {
+                            request.setAttribute(SSLSupport.SESSION_ID_KEY,
+                                    sslO);
+                        }
+                        sslO = SSLSocket.getInfoS(socketRef,
+                                SSL.SSL_INFO_PROTOCOL);
+                        if (sslO != null) {
+                            request.setAttribute(
+                                    SSLSupport.PROTOCOL_VERSION_KEY, sslO);
+                        }
+                        //TODO provide a hook to enable the SSL session to be
+                        // invalidated. Set AprEndpoint.SESSION_MGR req attr
+                    } catch (Exception e) {
+                        log.warn(sm.getString("http11processor.socket.ssl"), e);
                     }
-                } catch (Exception e) {
-                    log.warn(sm.getString("http11processor.socket.ssl"), e);
                 }
+                break;
             }
-            break;
-        }
-        case COMET_BEGIN: {
-            comet = true;
-            break;
-        }
-        case COMET_END: {
-            comet = false;
-            break;
-        }
-        case COMET_CLOSE: {
-            ((AprEndpoint)endpoint).processSocket(this.socketWrapper,
-                    SocketStatus.OPEN_READ, true);
-            break;
-        }
-        case COMET_SETTIMEOUT: {
-            //no op
-            break;
-        }
+            case REQ_SSL_CERTIFICATE: {
+                if (endpoint.isSSLEnabled() && (socketRef != 0)) {
+                    // Consume and buffer the request body, so that it does not
+                    // interfere with the client's handshake messages
+                    InputFilter[] inputFilters = inputBuffer.getFilters();
+                    ((BufferedInputFilter) inputFilters[Constants.BUFFERED_FILTER])
+                            .setLimit(maxSavePostSize);
+                    inputBuffer.addActiveFilter(
+                            inputFilters[Constants.BUFFERED_FILTER]);
+                    try {
+                        // Configure connection to require a certificate
+                        SSLSocket.setVerify(socketRef, SSL.SSL_CVERIFY_REQUIRE,
+                                ((AprEndpoint) endpoint).getSSLVerifyDepth());
+                        // Renegotiate certificates
+                        if (SSLSocket.renegotiate(socketRef) == 0) {
+                            // Don't look for certs unless we know renegotiation worked.
+                            // Get client certificate and the certificate chain if present
+                            // certLength == -1 indicates an error
+                            int certLength = SSLSocket.getInfoI(socketRef,
+                                    SSL.SSL_INFO_CLIENT_CERT_CHAIN);
+                            byte[] clientCert = SSLSocket.getInfoB(socketRef,
+                                    SSL.SSL_INFO_CLIENT_CERT);
+                            X509Certificate[] certs = null;
+                            if (clientCert != null && certLength > -1) {
+                                certs = new X509Certificate[certLength + 1];
+                                CertificateFactory cf = CertificateFactory
+                                        .getInstance("X.509");
+                                certs[0] = (X509Certificate) cf
+                                        .generateCertificate(
+                                                new ByteArrayInputStream(
+                                                        clientCert));
+                                for (int i = 0; i < certLength; i++) {
+                                    byte[] data = SSLSocket.getInfoB(socketRef,
+                                            SSL.SSL_INFO_CLIENT_CERT_CHAIN + i);
+                                    certs[i + 1] = (X509Certificate) cf
+                                            .generateCertificate(
+                                                    new ByteArrayInputStream(
+                                                            data));
+                                }
+                            }
+                            if (certs != null) {
+                                request.setAttribute(SSLSupport.CERTIFICATE_KEY,
+                                        certs);
+                            }
+                        }
+                    } catch (Exception e) {
+                        log.warn(sm.getString("http11processor.socket.ssl"), e);
+                    }
+                }
+                break;
+            }
+            case COMET_BEGIN: {
+                comet = true;
+                break;
+            }
+            case COMET_END: {
+                comet = false;
+                break;
+            }
+            case COMET_CLOSE: {
+                ((AprEndpoint) endpoint).processSocket(this.socketWrapper,
+                        SocketStatus.OPEN_READ, true);
+                break;
+            }
+            case COMET_SETTIMEOUT: {
+                //no op
+                break;
+            }
         }
     }
 
-
     // ------------------------------------------------------ Protected Methods
-
 
     @Override
     protected void prepareRequestInternal() {
@@ -500,9 +525,11 @@ public class Http11AprProcessor extends AbstractHttp11Processor<Long> {
             sendfileData = new AprEndpoint.SendfileData();
             sendfileData.fileName = fileName;
             sendfileData.start = ((Long) request.getAttribute(
-                    org.apache.coyote.Constants.SENDFILE_FILE_START_ATTR)).longValue();
+                    org.apache.coyote.Constants.SENDFILE_FILE_START_ATTR))
+                            .longValue();
             sendfileData.end = ((Long) request.getAttribute(
-                    org.apache.coyote.Constants.SENDFILE_FILE_END_ATTR)).longValue();
+                    org.apache.coyote.Constants.SENDFILE_FILE_END_ATTR))
+                            .longValue();
             return true;
         }
         return false;

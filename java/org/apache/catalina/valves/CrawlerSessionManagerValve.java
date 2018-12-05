@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -40,22 +38,18 @@ import org.apache.juli.logging.LogFactory;
  * users - regardless of whether or not they provide a session token with their
  * requests.
  */
-public class CrawlerSessionManagerValve extends ValveBase
-        implements HttpSessionBindingListener {
+public class CrawlerSessionManagerValve extends ValveBase implements
+        HttpSessionBindingListener {
 
-    private static final Log log =
-        LogFactory.getLog(CrawlerSessionManagerValve.class);
+    private static final Log log = LogFactory.getLog(
+            CrawlerSessionManagerValve.class);
 
-    private final Map<String,String> clientIpSessionId =
-            new ConcurrentHashMap<>();
-    private final Map<String,String> sessionIdClientIp =
-            new ConcurrentHashMap<>();
+    private final Map<String, String> clientIpSessionId = new ConcurrentHashMap<>();
+    private final Map<String, String> sessionIdClientIp = new ConcurrentHashMap<>();
 
-    private String crawlerUserAgents =
-        ".*[bB]ot.*|.*Yahoo! Slurp.*|.*Feedfetcher-Google.*";
+    private String crawlerUserAgents = ".*[bB]ot.*|.*Yahoo! Slurp.*|.*Feedfetcher-Google.*";
     private Pattern uaPattern = null;
     private int sessionInactiveInterval = 60;
-
 
     /**
      * Specifies a default constructor so async support can be configured.
@@ -63,7 +57,6 @@ public class CrawlerSessionManagerValve extends ValveBase
     public CrawlerSessionManagerValve() {
         super(true);
     }
-
 
     /**
      * Specify the regular expression (using {@link Pattern}) that will be used
@@ -83,18 +76,17 @@ public class CrawlerSessionManagerValve extends ValveBase
 
     /**
      * @see #setCrawlerUserAgents(String)
-     * @return  The current regular expression being used to match user agents.
+     * @return The current regular expression being used to match user agents.
      */
     public String getCrawlerUserAgents() {
         return crawlerUserAgents;
     }
 
-
     /**
      * Specify the session timeout (in seconds) for a crawler's session. This is
      * typically lower than that for a user session. The default is 60 seconds.
      *
-     * @param sessionInactiveInterval   The new timeout for crawler sessions
+     * @param sessionInactiveInterval The new timeout for crawler sessions
      */
     public void setSessionInactiveInterval(int sessionInactiveInterval) {
         this.sessionInactiveInterval = sessionInactiveInterval;
@@ -102,17 +94,15 @@ public class CrawlerSessionManagerValve extends ValveBase
 
     /**
      * @see #setSessionInactiveInterval(int)
-     * @return  The current timeout in seconds
+     * @return The current timeout in seconds
      */
     public int getSessionInactiveInterval() {
         return sessionInactiveInterval;
     }
 
-
-    public Map<String,String> getClientIpSessionId() {
+    public Map<String, String> getClientIpSessionId() {
         return clientIpSessionId;
     }
-
 
     @Override
     protected void initInternal() throws LifecycleException {
@@ -120,7 +110,6 @@ public class CrawlerSessionManagerValve extends ValveBase
 
         uaPattern = Pattern.compile(crawlerUserAgents);
     }
-
 
     @Override
     public void invoke(Request request, Response response) throws IOException,
@@ -131,9 +120,9 @@ public class CrawlerSessionManagerValve extends ValveBase
         String clientIp = null;
 
         if (log.isDebugEnabled()) {
-            log.debug(request.hashCode() + ": ClientIp=" +
-                    request.getRemoteAddr() + ", RequestedSessionId=" +
-                    request.getRequestedSessionId());
+            log.debug(request.hashCode() + ": ClientIp=" + request
+                    .getRemoteAddr() + ", RequestedSessionId=" + request
+                            .getRequestedSessionId());
         }
 
         // If the incoming request has a valid session ID, no action is required
@@ -157,8 +146,8 @@ public class CrawlerSessionManagerValve extends ValveBase
                     isBot = true;
 
                     if (log.isDebugEnabled()) {
-                        log.debug(request.hashCode() +
-                                ": Bot found. UserAgent=" + uaHeader);
+                        log.debug(request.hashCode() + ": Bot found. UserAgent="
+                                + uaHeader);
                     }
                 }
             }
@@ -170,8 +159,8 @@ public class CrawlerSessionManagerValve extends ValveBase
                 if (sessionId != null) {
                     request.setRequestedSessionId(sessionId);
                     if (log.isDebugEnabled()) {
-                        log.debug(request.hashCode() + ": SessionID=" +
-                                sessionId);
+                        log.debug(request.hashCode() + ": SessionID="
+                                + sessionId);
                     }
                 }
             }
@@ -191,25 +180,23 @@ public class CrawlerSessionManagerValve extends ValveBase
                     s.setMaxInactiveInterval(sessionInactiveInterval);
 
                     if (log.isDebugEnabled()) {
-                        log.debug(request.hashCode() +
-                                ": New bot session. SessionID=" + s.getId());
+                        log.debug(request.hashCode()
+                                + ": New bot session. SessionID=" + s.getId());
                     }
                 }
             } else {
                 if (log.isDebugEnabled()) {
-                    log.debug(request.hashCode() +
-                            ": Bot session accessed. SessionID=" + sessionId);
+                    log.debug(request.hashCode()
+                            + ": Bot session accessed. SessionID=" + sessionId);
                 }
             }
         }
     }
 
-
     @Override
     public void valueBound(HttpSessionBindingEvent event) {
         // NOOP
     }
-
 
     @Override
     public void valueUnbound(HttpSessionBindingEvent event) {

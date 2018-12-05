@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -40,7 +38,7 @@ public class SSLAuthenticator extends AuthenticatorBase {
      * chain, validating it against the trust manager for the connector and then
      * validating the user's identity against the configured Realm.
      *
-     * @param request Request we are processing
+     * @param request  Request we are processing
      * @param response Response we are creating
      *
      * @exception IOException if an input/output error occurs
@@ -70,10 +68,11 @@ public class SSLAuthenticator extends AuthenticatorBase {
 
         if ((certs == null) || (certs.length < 1)) {
             if (containerLog.isDebugEnabled()) {
-                containerLog.debug("  No certificates included with this request");
+                containerLog.debug(
+                        "  No certificates included with this request");
             }
-            response.sendError(HttpServletResponse.SC_UNAUTHORIZED,
-                    sm.getString("authenticator.certificates"));
+            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, sm
+                    .getString("authenticator.certificates"));
             return false;
         }
 
@@ -83,8 +82,8 @@ public class SSLAuthenticator extends AuthenticatorBase {
             if (containerLog.isDebugEnabled()) {
                 containerLog.debug("  Realm.authenticate() returned false");
             }
-            response.sendError(HttpServletResponse.SC_UNAUTHORIZED,
-                               sm.getString("authenticator.unauthorized"));
+            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, sm
+                    .getString("authenticator.unauthorized"));
             return (false);
         }
 
@@ -94,7 +93,6 @@ public class SSLAuthenticator extends AuthenticatorBase {
         return (true);
 
     }
-
 
     @Override
     protected String getAuthMethod() {

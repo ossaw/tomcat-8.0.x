@@ -1,18 +1,16 @@
 /*
- *  Licensed to the Apache Software Foundation (ASF) under one or more
- *  contributor license agreements.  See the NOTICE file distributed with
- *  this work for additional information regarding copyright ownership.
- *  The ASF licenses this file to You under the Apache License, Version 2.0
- *  (the "License"); you may not use this file except in compliance with
- *  the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements. See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.apache.tomcat.websocket;
 
@@ -36,18 +34,16 @@ import org.apache.tomcat.util.threads.ThreadPoolExecutor;
  */
 public class AsyncChannelGroupUtil {
 
-    private static final StringManager sm =
-            StringManager.getManager(Constants.PACKAGE_NAME);
+    private static final StringManager sm = StringManager.getManager(
+            Constants.PACKAGE_NAME);
 
     private static AsynchronousChannelGroup group = null;
     private static int usageCount = 0;
     private static final Object lock = new Object();
 
-
     private AsyncChannelGroupUtil() {
         // Hide the default constructor
     }
-
 
     public static AsynchronousChannelGroup register() {
         synchronized (lock) {
@@ -59,7 +55,6 @@ public class AsyncChannelGroupUtil {
         }
     }
 
-
     public static void unregister() {
         synchronized (lock) {
             usageCount--;
@@ -69,7 +64,6 @@ public class AsyncChannelGroupUtil {
             }
         }
     }
-
 
     private static AsynchronousChannelGroup createAsynchronousChannelGroup() {
         // Need to do this with the right thread context class loader else the
@@ -83,10 +77,8 @@ public class AsyncChannelGroupUtil {
             // These are the same settings as the default
             // AsynchronousChannelGroup
             int initialSize = Runtime.getRuntime().availableProcessors();
-            ExecutorService executorService = new ThreadPoolExecutor(
-                    0,
-                    Integer.MAX_VALUE,
-                    Long.MAX_VALUE, TimeUnit.MILLISECONDS,
+            ExecutorService executorService = new ThreadPoolExecutor(0,
+                    Integer.MAX_VALUE, Long.MAX_VALUE, TimeUnit.MILLISECONDS,
                     new SynchronousQueue<Runnable>(),
                     new AsyncIOThreadFactory());
 
@@ -95,13 +87,13 @@ public class AsyncChannelGroupUtil {
                         executorService, initialSize);
             } catch (IOException e) {
                 // No good reason for this to happen.
-                throw new IllegalStateException(sm.getString("asyncChannelGroup.createFail"));
+                throw new IllegalStateException(sm.getString(
+                        "asyncChannelGroup.createFail"));
             }
         } finally {
             Thread.currentThread().setContextClassLoader(original);
         }
     }
-
 
     private static class AsyncIOThreadFactory implements ThreadFactory {
 
@@ -112,19 +104,20 @@ public class AsyncChannelGroupUtil {
             NewThreadPrivilegedAction.load();
         }
 
-
         @Override
         public Thread newThread(final Runnable r) {
             // Create the new Thread within a doPrivileged block to ensure that
             // the thread inherits the current ProtectionDomain which is
             // essential to be able to use this with a Java Applet. See
             // https://bz.apache.org/bugzilla/show_bug.cgi?id=57091
-            return AccessController.doPrivileged(new NewThreadPrivilegedAction(r));
+            return AccessController.doPrivileged(new NewThreadPrivilegedAction(
+                    r));
         }
 
         // Non-anonymous class so that AsyncIOThreadFactory can load it
         // explicitly
-        private static class NewThreadPrivilegedAction implements PrivilegedAction<Thread> {
+        private static class NewThreadPrivilegedAction implements
+                PrivilegedAction<Thread> {
 
             private static AtomicInteger count = new AtomicInteger(0);
 

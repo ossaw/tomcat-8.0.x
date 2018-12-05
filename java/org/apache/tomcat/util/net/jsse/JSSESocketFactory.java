@@ -1,18 +1,16 @@
 /*
- *  Licensed to the Apache Software Foundation (ASF) under one or more
- *  contributor license agreements.  See the NOTICE file distributed with
- *  this work for additional information regarding copyright ownership.
- *  The ASF licenses this file to You under the Apache License, Version 2.0
- *  (the "License"); you may not use this file except in compliance with
- *  the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements. See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package org.apache.tomcat.util.net.jsse;
@@ -83,16 +81,16 @@ import org.apache.tomcat.util.res.StringManager;
  */
 public class JSSESocketFactory implements ServerSocketFactory, SSLUtil {
 
-    private static final org.apache.juli.logging.Log log =
-        org.apache.juli.logging.LogFactory.getLog(JSSESocketFactory.class);
-    private static final StringManager sm =
-        StringManager.getManager("org.apache.tomcat.util.net.jsse.res");
+    private static final org.apache.juli.logging.Log log = org.apache.juli.logging.LogFactory
+            .getLog(JSSESocketFactory.class);
+    private static final StringManager sm = StringManager.getManager(
+            "org.apache.tomcat.util.net.jsse.res");
 
     // Defaults - made public where re-used
     private static final String defaultProtocol = Constants.SSL_PROTO_TLS;
     private static final String defaultKeystoreType = "JKS";
-    private static final String defaultKeystoreFile
-        = System.getProperty("user.home") + "/.keystore";
+    private static final String defaultKeystoreFile = System.getProperty(
+            "user.home") + "/.keystore";
     private static final int defaultSessionCacheSize = 0;
     private static final int defaultSessionTimeout = 86400;
     private static final String ALLOW_ALL_SUPPORTED_CIPHERS = "ALL";
@@ -117,10 +115,9 @@ public class JSSESocketFactory implements ServerSocketFactory, SSLUtil {
     /**
      * Flag to state that we would like client authentication.
      */
-    protected boolean wantClientAuth    = false;
+    protected boolean wantClientAuth = false;
 
-
-    public JSSESocketFactory (AbstractEndpoint<?> endpoint) {
+    public JSSESocketFactory(AbstractEndpoint<?> endpoint) {
         this.endpoint = endpoint;
 
         String sslProtocol = endpoint.getSslProtocol();
@@ -130,8 +127,8 @@ public class JSSESocketFactory implements ServerSocketFactory, SSLUtil {
 
         SSLContext context;
         try {
-             context = SSLContext.getInstance(sslProtocol);
-             context.init(null,  null,  null);
+            context = SSLContext.getInstance(sslProtocol);
+            context.init(null, null, null);
         } catch (NoSuchAlgorithmException | KeyManagementException e) {
             // This is fatal for the connector so throw an exception to prevent
             // it from starting
@@ -163,15 +160,16 @@ public class JSSESocketFactory implements ServerSocketFactory, SSLUtil {
             defaultServerCipherSuites = new String[0];
             defaultServerProtocols = new String[0];
             log.warn(sm.getString("jsse.noDefaultCiphers", endpoint.getName()));
-            log.warn(sm.getString("jsse.noDefaultProtocols", endpoint.getName()));
+            log.warn(sm.getString("jsse.noDefaultProtocols", endpoint
+                    .getName()));
             return;
         }
 
         try {
             defaultServerCipherSuites = socket.getEnabledCipherSuites();
             if (defaultServerCipherSuites.length == 0) {
-                log.warn(sm.getString("jsse.noDefaultCiphers",
-                        endpoint.getName()));
+                log.warn(sm.getString("jsse.noDefaultCiphers", endpoint
+                        .getName()));
             }
 
             // Filter out all the SSL protocols (SSLv2 and SSLv3) from the
@@ -186,11 +184,11 @@ public class JSSESocketFactory implements ServerSocketFactory, SSLUtil {
                 }
                 filteredProtocols.add(protocol);
             }
-            defaultServerProtocols = filteredProtocols
-                    .toArray(new String[filteredProtocols.size()]);
+            defaultServerProtocols = filteredProtocols.toArray(
+                    new String[filteredProtocols.size()]);
             if (defaultServerProtocols.length == 0) {
-                log.warn(sm.getString("jsse.noDefaultProtocols",
-                        endpoint.getName()));
+                log.warn(sm.getString("jsse.noDefaultProtocols", endpoint
+                        .getName()));
             }
         } finally {
             try {
@@ -201,11 +199,8 @@ public class JSSESocketFactory implements ServerSocketFactory, SSLUtil {
         }
     }
 
-
     @Override
-    public ServerSocket createSocket (int port)
-        throws IOException
-    {
+    public ServerSocket createSocket(int port) throws IOException {
         init();
         ServerSocket socket = sslProxy.createServerSocket(port);
         initServerSocket(socket);
@@ -213,9 +208,7 @@ public class JSSESocketFactory implements ServerSocketFactory, SSLUtil {
     }
 
     @Override
-    public ServerSocket createSocket (int port, int backlog)
-        throws IOException
-    {
+    public ServerSocket createSocket(int port, int backlog) throws IOException {
         init();
         ServerSocket socket = sslProxy.createServerSocket(port, backlog);
         initServerSocket(socket);
@@ -223,26 +216,22 @@ public class JSSESocketFactory implements ServerSocketFactory, SSLUtil {
     }
 
     @Override
-    public ServerSocket createSocket (int port, int backlog,
-                                      InetAddress ifAddress)
-        throws IOException
-    {
+    public ServerSocket createSocket(int port, int backlog,
+            InetAddress ifAddress) throws IOException {
         init();
         ServerSocket socket = sslProxy.createServerSocket(port, backlog,
-                                                          ifAddress);
+                ifAddress);
         initServerSocket(socket);
         return socket;
     }
 
     @Override
-    public Socket acceptSocket(ServerSocket socket)
-        throws IOException
-    {
+    public Socket acceptSocket(ServerSocket socket) throws IOException {
         SSLSocket asock = null;
         try {
-             asock = (SSLSocket)socket.accept();
-        } catch (SSLException e){
-          throw new SocketException("SSL handshake error" + e.toString());
+            asock = (SSLSocket) socket.accept();
+        } catch (SSLException e) {
+            throw new SocketException("SSL handshake error" + e.toString());
         }
         return asock;
     }
@@ -250,9 +239,10 @@ public class JSSESocketFactory implements ServerSocketFactory, SSLUtil {
     @Override
     public void handshake(Socket sock) throws IOException {
         // We do getSession instead of startHandshake() so we can call this multiple times
-        SSLSession session = ((SSLSocket)sock).getSession();
+        SSLSession session = ((SSLSocket) sock).getSession();
         if (session.getCipherSuite().equals("SSL_NULL_WITH_NULL_NULL"))
-            throw new IOException("SSL handshake failed. Ciper suite in SSL Session is SSL_NULL_WITH_NULL_NULL");
+            throw new IOException(
+                    "SSL handshake failed. Ciper suite in SSL Session is SSL_NULL_WITH_NULL_NULL");
 
         if (!allowUnsafeLegacyRenegotiation && !rfc5746Supported) {
             // Prevent further handshakes by removing all cipher suites
@@ -267,14 +257,15 @@ public class JSSESocketFactory implements ServerSocketFactory, SSLUtil {
         if (ALLOW_ALL_SUPPORTED_CIPHERS.equals(requestedCiphersStr)) {
             return context.getSupportedSSLParameters().getCipherSuites();
         }
-        if ((requestedCiphersStr == null)
-                || (requestedCiphersStr.trim().length() == 0)) {
+        if ((requestedCiphersStr == null) || (requestedCiphersStr.trim()
+                .length() == 0)) {
             return defaultServerCipherSuites;
         }
 
         List<String> requestedCiphers = new ArrayList<>();
         if (requestedCiphersStr.indexOf(':') != -1) {
-            requestedCiphers = OpenSSLCipherConfigurationParser.parseExpression(requestedCiphersStr);
+            requestedCiphers = OpenSSLCipherConfigurationParser.parseExpression(
+                    requestedCiphersStr);
         } else {
             for (String rc : requestedCiphersStr.split(",")) {
                 final String cipher = rc.trim();
@@ -287,14 +278,16 @@ public class JSSESocketFactory implements ServerSocketFactory, SSLUtil {
             return defaultServerCipherSuites;
         }
         List<String> ciphers = new ArrayList<>(requestedCiphers);
-        String[] supportedCipherSuiteArray = context.getSupportedSSLParameters().getCipherSuites();
+        String[] supportedCipherSuiteArray = context.getSupportedSSLParameters()
+                .getCipherSuites();
         // The IBM JRE will accept cipher suites names SSL_xxx or TLS_xxx but
         // only returns the SSL_xxx form for supported cipher suites. Therefore
         // need to filter the requested cipher suites using both forms with an
         // IBM JRE.
         List<String> supportedCipherSuiteList;
         if (JreVendor.IS_IBM_JVM) {
-            supportedCipherSuiteList = new ArrayList<>(supportedCipherSuiteArray.length * 2);
+            supportedCipherSuiteList = new ArrayList<>(
+                    supportedCipherSuiteArray.length * 2);
             for (String name : supportedCipherSuiteArray) {
                 supportedCipherSuiteList.add(name);
                 if (name.startsWith("SSL")) {
@@ -361,46 +354,46 @@ public class JSSESocketFactory implements ServerSocketFactory, SSLUtil {
         KeyStore trustStore = null;
 
         String truststoreFile = endpoint.getTruststoreFile();
-        if(truststoreFile == null) {
+        if (truststoreFile == null) {
             truststoreFile = System.getProperty("javax.net.ssl.trustStore");
         }
-        if(log.isDebugEnabled()) {
+        if (log.isDebugEnabled()) {
             log.debug("Truststore = " + truststoreFile);
         }
 
         String truststorePassword = endpoint.getTruststorePass();
-        if( truststorePassword == null) {
-            truststorePassword =
-                System.getProperty("javax.net.ssl.trustStorePassword");
+        if (truststorePassword == null) {
+            truststorePassword = System.getProperty(
+                    "javax.net.ssl.trustStorePassword");
         }
-        if(log.isDebugEnabled()) {
+        if (log.isDebugEnabled()) {
             log.debug("TrustPass = " + truststorePassword);
         }
 
         String truststoreType = endpoint.getTruststoreType();
-        if( truststoreType == null) {
+        if (truststoreType == null) {
             truststoreType = System.getProperty("javax.net.ssl.trustStoreType");
         }
-        if(truststoreType == null) {
+        if (truststoreType == null) {
             truststoreType = keystoreType;
         }
-        if(log.isDebugEnabled()) {
+        if (log.isDebugEnabled()) {
             log.debug("trustType = " + truststoreType);
         }
 
         String truststoreProvider = endpoint.getTruststoreProvider();
-        if( truststoreProvider == null) {
-            truststoreProvider =
-                System.getProperty("javax.net.ssl.trustStoreProvider");
+        if (truststoreProvider == null) {
+            truststoreProvider = System.getProperty(
+                    "javax.net.ssl.trustStoreProvider");
         }
         if (truststoreProvider == null) {
             truststoreProvider = keystoreProvider;
         }
-        if(log.isDebugEnabled()) {
+        if (log.isDebugEnabled()) {
             log.debug("trustProvider = " + truststoreProvider);
         }
 
-        if (truststoreFile != null){
+        if (truststoreFile != null) {
             try {
                 trustStore = getStore(truststoreType, truststoreProvider,
                         truststoreFile, truststorePassword);
@@ -437,8 +430,8 @@ public class JSSESocketFactory implements ServerSocketFactory, SSLUtil {
             } else {
                 ks = KeyStore.getInstance(type, provider);
             }
-            if(!("PKCS11".equalsIgnoreCase(type) ||
-                    "".equalsIgnoreCase(path))) {
+            if (!("PKCS11".equalsIgnoreCase(type) || "".equalsIgnoreCase(
+                    path))) {
                 istream = ConfigFileLoader.getInputStream(path);
             }
 
@@ -448,14 +441,14 @@ public class JSSESocketFactory implements ServerSocketFactory, SSLUtil {
             }
             ks.load(istream, storePass);
         } catch (FileNotFoundException fnfe) {
-            log.error(sm.getString("jsse.keystore_load_failed", type, path,
-                    fnfe.getMessage()), fnfe);
+            log.error(sm.getString("jsse.keystore_load_failed", type, path, fnfe
+                    .getMessage()), fnfe);
             throw fnfe;
         } catch (IOException ioe) {
             // May be expected when working with a trust store
             // Re-throw. Caller will catch and log as required
             throw ioe;
-        } catch(Exception ex) {
+        } catch (Exception ex) {
             String msg = sm.getString("jsse.keystore_load_failed", type, path,
                     ex.getMessage());
             log.error(msg, ex);
@@ -480,10 +473,10 @@ public class JSSESocketFactory implements ServerSocketFactory, SSLUtil {
         try {
 
             String clientAuthStr = endpoint.getClientAuth();
-            if("true".equalsIgnoreCase(clientAuthStr) ||
-               "yes".equalsIgnoreCase(clientAuthStr)) {
+            if ("true".equalsIgnoreCase(clientAuthStr) || "yes"
+                    .equalsIgnoreCase(clientAuthStr)) {
                 requireClientAuth = true;
-            } else if("want".equalsIgnoreCase(clientAuthStr)) {
+            } else if ("want".equalsIgnoreCase(clientAuthStr)) {
                 wantClientAuth = true;
             }
 
@@ -491,8 +484,8 @@ public class JSSESocketFactory implements ServerSocketFactory, SSLUtil {
             context.init(getKeyManagers(), getTrustManagers(), null);
 
             // Configure SSL session cache
-            SSLSessionContext sessionContext =
-                context.getServerSessionContext();
+            SSLSessionContext sessionContext = context
+                    .getServerSessionContext();
             if (sessionContext != null) {
                 configureSessionContext(sessionContext);
             }
@@ -504,15 +497,15 @@ public class JSSESocketFactory implements ServerSocketFactory, SSLUtil {
             enabledCiphers = getEnableableCiphers(context);
             enabledProtocols = getEnableableProtocols(context);
 
-            allowUnsafeLegacyRenegotiation = "true".equals(
-                    endpoint.getAllowUnsafeLegacyRenegotiation());
+            allowUnsafeLegacyRenegotiation = "true".equals(endpoint
+                    .getAllowUnsafeLegacyRenegotiation());
 
             // Check the SSL config is OK
             checkConfig();
 
-        } catch(Exception e) {
-            if( e instanceof IOException )
-                throw (IOException)e;
+        } catch (Exception e) {
+            if (e instanceof IOException)
+                throw (IOException) e;
             throw new IOException(e.getMessage(), e);
         }
     }
@@ -573,8 +566,7 @@ public class JSSESocketFactory implements ServerSocketFactory, SSLUtil {
     public void configureSessionContext(SSLSessionContext sslSessionContext) {
         int sessionCacheSize;
         if (endpoint.getSessionCacheSize() != null) {
-            sessionCacheSize = Integer.parseInt(
-                    endpoint.getSessionCacheSize());
+            sessionCacheSize = Integer.parseInt(endpoint.getSessionCacheSize());
         } else {
             sessionCacheSize = defaultSessionCacheSize;
         }
@@ -594,10 +586,8 @@ public class JSSESocketFactory implements ServerSocketFactory, SSLUtil {
      * Gets the initialized key managers.
      */
     protected KeyManager[] getKeyManagers(String keystoreType,
-                                          String keystoreProvider,
-                                          String algorithm,
-                                          String keyAlias)
-                throws Exception {
+            String keystoreProvider, String algorithm, String keyAlias)
+            throws Exception {
 
         KeyManager[] kms = null;
 
@@ -605,8 +595,8 @@ public class JSSESocketFactory implements ServerSocketFactory, SSLUtil {
 
         KeyStore ks = getKeystore(keystoreType, keystoreProvider, keystorePass);
         if (keyAlias != null && !ks.isKeyEntry(keyAlias)) {
-            throw new IOException(
-                    sm.getString("jsse.alias_no_key_entry", keyAlias));
+            throw new IOException(sm.getString("jsse.alias_no_key_entry",
+                    keyAlias));
         }
 
         KeyManagerFactory kmf = KeyManagerFactory.getInstance(algorithm);
@@ -622,8 +612,8 @@ public class JSSESocketFactory implements ServerSocketFactory, SSLUtil {
             if ("JKS".equals(keystoreType)) {
                 alias = alias.toLowerCase(Locale.ENGLISH);
             }
-            for(int i=0; i<kms.length; i++) {
-                kms[i] = new JSSEKeyManager((X509KeyManager)kms[i], alias);
+            for (int i = 0; i < kms.length; i++) {
+                kms[i] = new JSSEKeyManager((X509KeyManager) kms[i], alias);
             }
         }
 
@@ -634,21 +624,20 @@ public class JSSESocketFactory implements ServerSocketFactory, SSLUtil {
      * Gets the initialized trust managers.
      */
     protected TrustManager[] getTrustManagers(String keystoreType,
-            String keystoreProvider, String algorithm)
-        throws Exception {
+            String keystoreProvider, String algorithm) throws Exception {
         String crlf = endpoint.getCrlFile();
 
         String className = endpoint.getTrustManagerClassName();
-        if(className != null && className.length() > 0) {
-             ClassLoader classLoader = getClass().getClassLoader();
-             Class<?> clazz = classLoader.loadClass(className);
-             if(!(TrustManager.class.isAssignableFrom(clazz))){
+        if (className != null && className.length() > 0) {
+            ClassLoader classLoader = getClass().getClassLoader();
+            Class<?> clazz = classLoader.loadClass(className);
+            if (!(TrustManager.class.isAssignableFrom(clazz))) {
                 throw new InstantiationException(sm.getString(
                         "jsse.invalidTrustManagerClassName", className));
-             }
-             Object trustManagerObject = clazz.newInstance();
-             TrustManager trustManager = (TrustManager) trustManagerObject;
-             return new TrustManager[]{ trustManager };
+            }
+            Object trustManagerObject = clazz.newInstance();
+            TrustManager trustManager = (TrustManager) trustManagerObject;
+            return new TrustManager[] { trustManager };
         }
 
         TrustManager[] tms = null;
@@ -656,17 +645,17 @@ public class JSSESocketFactory implements ServerSocketFactory, SSLUtil {
         KeyStore trustStore = getTrustStore(keystoreType, keystoreProvider);
         if (trustStore != null || endpoint.getTrustManagerClassName() != null) {
             if (crlf == null) {
-                TrustManagerFactory tmf =
-                    TrustManagerFactory.getInstance(algorithm);
+                TrustManagerFactory tmf = TrustManagerFactory.getInstance(
+                        algorithm);
                 tmf.init(trustStore);
                 tms = tmf.getTrustManagers();
             } else {
-                TrustManagerFactory tmf =
-                    TrustManagerFactory.getInstance(algorithm);
-                CertPathParameters params =
-                    getParameters(algorithm, crlf, trustStore);
-                ManagerFactoryParameters mfp =
-                    new CertPathTrustManagerParameters(params);
+                TrustManagerFactory tmf = TrustManagerFactory.getInstance(
+                        algorithm);
+                CertPathParameters params = getParameters(algorithm, crlf,
+                        trustStore);
+                ManagerFactoryParameters mfp = new CertPathTrustManagerParameters(
+                        params);
                 tmf.init(mfp);
                 tms = tmf.getTrustManagers();
             }
@@ -679,47 +668,44 @@ public class JSSESocketFactory implements ServerSocketFactory, SSLUtil {
      * Return the initialization parameters for the TrustManager.
      * Currently, only the default <code>PKIX</code> is supported.
      *
-     * @param algorithm The algorithm to get parameters for.
-     * @param crlf The path to the CRL file.
+     * @param algorithm  The algorithm to get parameters for.
+     * @param crlf       The path to the CRL file.
      * @param trustStore The configured TrustStore.
      * @return The parameters including the CRLs and TrustStore.
      */
-    protected CertPathParameters getParameters(String algorithm,
-                                                String crlf,
-                                                KeyStore trustStore)
-        throws Exception {
+    protected CertPathParameters getParameters(String algorithm, String crlf,
+            KeyStore trustStore) throws Exception {
         CertPathParameters params = null;
-        if("PKIX".equalsIgnoreCase(algorithm)) {
-            PKIXBuilderParameters xparams =
-                new PKIXBuilderParameters(trustStore, new X509CertSelector());
+        if ("PKIX".equalsIgnoreCase(algorithm)) {
+            PKIXBuilderParameters xparams = new PKIXBuilderParameters(
+                    trustStore, new X509CertSelector());
             Collection<? extends CRL> crls = getCRLs(crlf);
             CertStoreParameters csp = new CollectionCertStoreParameters(crls);
             CertStore store = CertStore.getInstance("Collection", csp);
             xparams.addCertStore(store);
             xparams.setRevocationEnabled(true);
             String trustLength = endpoint.getTrustMaxCertLength();
-            if(trustLength != null) {
+            if (trustLength != null) {
                 try {
                     xparams.setMaxPathLength(Integer.parseInt(trustLength));
-                } catch(Exception ex) {
-                    log.warn("Bad maxCertLength: "+trustLength);
+                } catch (Exception ex) {
+                    log.warn("Bad maxCertLength: " + trustLength);
                 }
             }
 
             params = xparams;
         } else {
-            throw new CRLException("CRLs not supported for type: "+algorithm);
+            throw new CRLException("CRLs not supported for type: " + algorithm);
         }
         return params;
     }
-
 
     /**
      * Load the collection of CRLs.
      *
      */
-    protected Collection<? extends CRL> getCRLs(String crlf)
-        throws IOException, CRLException, CertificateException {
+    protected Collection<? extends CRL> getCRLs(String crlf) throws IOException,
+            CRLException, CertificateException {
 
         Collection<? extends CRL> crls = null;
         try {
@@ -727,11 +713,11 @@ public class JSSESocketFactory implements ServerSocketFactory, SSLUtil {
             try (InputStream is = ConfigFileLoader.getInputStream(crlf)) {
                 crls = cf.generateCRLs(is);
             }
-        } catch(IOException iex) {
+        } catch (IOException iex) {
             throw iex;
-        } catch(CRLException crle) {
+        } catch (CRLException crle) {
             throw crle;
-        } catch(CertificateException ce) {
+        } catch (CertificateException ce) {
             throw ce;
         }
         return crls;
@@ -744,8 +730,8 @@ public class JSSESocketFactory implements ServerSocketFactory, SSLUtil {
             return defaultServerProtocols;
         }
 
-        List<String> protocols = new ArrayList<>(
-                Arrays.asList(requestedProtocols));
+        List<String> protocols = new ArrayList<>(Arrays.asList(
+                requestedProtocols));
         protocols.retainAll(Arrays.asList(context.getSupportedSSLParameters()
                 .getProtocols()));
 
@@ -756,8 +742,8 @@ public class JSSESocketFactory implements ServerSocketFactory, SSLUtil {
         if (log.isDebugEnabled()) {
             log.debug(sm.getString("jsse.enableable_protocols", protocols));
             if (protocols.size() != requestedProtocols.length) {
-                List<String> skipped = new ArrayList<>(
-                        Arrays.asList(requestedProtocols));
+                List<String> skipped = new ArrayList<>(Arrays.asList(
+                        requestedProtocols));
                 skipped.removeAll(protocols);
                 log.debug(sm.getString("jsse.unsupported_protocols", skipped));
             }
@@ -766,13 +752,14 @@ public class JSSESocketFactory implements ServerSocketFactory, SSLUtil {
     }
 
     /**
-     * Configure Client authentication for this version of JSSE.  The
-     * JSSE included in Java 1.4 supports the 'want' value.  Prior
+     * Configure Client authentication for this version of JSSE. The
+     * JSSE included in Java 1.4 supports the 'want' value. Prior
      * versions of JSSE will treat 'want' as 'false'.
+     * 
      * @param socket the SSLServerSocket
      */
-    protected void configureClientAuth(SSLServerSocket socket){
-        if (wantClientAuth){
+    protected void configureClientAuth(SSLServerSocket socket) {
+        if (wantClientAuth) {
             socket.setWantClientAuth(wantClientAuth);
         } else {
             socket.setNeedClientAuth(requireClientAuth);
@@ -788,11 +775,12 @@ public class JSSESocketFactory implements ServerSocketFactory, SSLUtil {
                 .getUseServerCipherSuitesOrder().trim();
 
         // Only use this feature if the user explicitly requested its use.
-        if(!"".equals(useServerCipherSuitesOrderStr)) {
-            boolean useServerCipherSuitesOrder =
-                    ("true".equalsIgnoreCase(useServerCipherSuitesOrderStr)
-                            || "yes".equalsIgnoreCase(useServerCipherSuitesOrderStr));
-            JreCompat.getInstance().setUseServerCipherSuitesOrder(socket, useServerCipherSuitesOrder);
+        if (!"".equals(useServerCipherSuitesOrderStr)) {
+            boolean useServerCipherSuitesOrder = ("true".equalsIgnoreCase(
+                    useServerCipherSuitesOrderStr) || "yes".equalsIgnoreCase(
+                            useServerCipherSuitesOrderStr));
+            JreCompat.getInstance().setUseServerCipherSuitesOrder(socket,
+                    useServerCipherSuitesOrder);
         }
     }
 
@@ -842,10 +830,10 @@ public class JSSESocketFactory implements ServerSocketFactory, SSLUtil {
              * socket.accept() throws a SecurityException
              * socket.setSoTimeout() throws a SocketException
              * socket.accept() throws some other exception (after a JDK change)
-             *      In these cases the test won't work so carry on - essentially
-             *      the behaviour before this patch
+             * In these cases the test won't work so carry on - essentially
+             * the behaviour before this patch
              * socket.accept() throws a SocketTimeoutException
-             *      In this case all is well so carry on
+             * In this case all is well so carry on
              */
         } finally {
             // Should be open here but just in case

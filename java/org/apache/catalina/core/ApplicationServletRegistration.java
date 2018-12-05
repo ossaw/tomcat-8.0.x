@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -34,20 +32,19 @@ import org.apache.catalina.util.ParameterMap;
 import org.apache.tomcat.util.buf.UDecoder;
 import org.apache.tomcat.util.res.StringManager;
 
-public class ApplicationServletRegistration
-        implements ServletRegistration.Dynamic {
+public class ApplicationServletRegistration implements
+        ServletRegistration.Dynamic {
 
     /**
      * The string manager for this package.
      */
-    private static final StringManager sm =
-      StringManager.getManager(Constants.Package);
+    private static final StringManager sm = StringManager.getManager(
+            Constants.Package);
 
     private final Wrapper wrapper;
     private final Context context;
 
-    public ApplicationServletRegistration(Wrapper wrapper,
-            Context context) {
+    public ApplicationServletRegistration(Wrapper wrapper, Context context) {
         this.wrapper = wrapper;
         this.context = context;
 
@@ -65,7 +62,7 @@ public class ApplicationServletRegistration
 
     @Override
     public Map<String, String> getInitParameters() {
-        ParameterMap<String,String> result = new ParameterMap<>();
+        ParameterMap<String, String> result = new ParameterMap<>();
 
         String[] parameterNames = wrapper.findInitParameters();
 
@@ -85,9 +82,9 @@ public class ApplicationServletRegistration
     @Override
     public boolean setInitParameter(String name, String value) {
         if (name == null || value == null) {
-            throw new IllegalArgumentException(
-                    sm.getString("applicationFilterRegistration.nullInitParam",
-                            name, value));
+            throw new IllegalArgumentException(sm.getString(
+                    "applicationFilterRegistration.nullInitParam", name,
+                    value));
         }
         if (getInitParameter(name) != null) {
             return false;
@@ -106,8 +103,8 @@ public class ApplicationServletRegistration
         for (Map.Entry<String, String> entry : initParameters.entrySet()) {
             if (entry.getKey() == null || entry.getValue() == null) {
                 throw new IllegalArgumentException(sm.getString(
-                        "applicationFilterRegistration.nullInitParams",
-                                entry.getKey(), entry.getValue()));
+                        "applicationFilterRegistration.nullInitParams", entry
+                                .getKey(), entry.getValue()));
             }
             if (getInitParameter(entry.getKey()) != null) {
                 conflicts.add(entry.getKey());
@@ -162,7 +159,6 @@ public class ApplicationServletRegistration
         return context.addServletSecurity(this, constraint);
     }
 
-
     @Override
     public Set<String> addMapping(String... urlPatterns) {
         if (urlPatterns == null) {
@@ -190,8 +186,8 @@ public class ApplicationServletRegistration
         }
 
         for (String urlPattern : urlPatterns) {
-            context.addServletMappingDecoded(
-                    UDecoder.URLDecode(urlPattern, "UTF-8"), wrapper.getName());
+            context.addServletMappingDecoded(UDecoder.URLDecode(urlPattern,
+                    "UTF-8"), wrapper.getName());
         }
         return Collections.emptySet();
     }

@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -43,17 +41,17 @@ public class HttpParser {
         for (int i = 0; i < 128; i++) {
             if (i <= 32) { // includes '\t' and ' '
                 isToken[i] = false;
-            } else if (i == '(' || i == ')' || i == '<' || i == '>'  || i == '@'  ||
-                       i == ',' || i == ';' || i == ':' || i == '\\' || i == '\"' ||
-                       i == '/' || i == '[' || i == ']' || i == '?'  || i == '='  ||
-                       i == '{' || i == '}') {
+            } else if (i == '(' || i == ')' || i == '<' || i == '>' || i == '@'
+                    || i == ',' || i == ';' || i == ':' || i == '\\'
+                    || i == '\"' || i == '/' || i == '[' || i == ']' || i == '?'
+                    || i == '=' || i == '{' || i == '}') {
                 isToken[i] = false;
             } else {
                 isToken[i] = true;
             }
 
-            if (i >= '0' && i <= '9' || i >= 'A' && i <= 'F' ||
-                    i >= 'a' && i <= 'f') {
+            if (i >= '0' && i <= '9' || i >= 'A' && i <= 'F' || i >= 'a'
+                    && i <= 'f') {
                 isHex[i] = true;
             } else {
                 isHex[i] = false;
@@ -79,7 +77,7 @@ public class HttpParser {
         }
 
         StringBuilder result = new StringBuilder();
-        for (int i = start ; i < end; i++) {
+        for (int i = start; i < end; i++) {
             char c = input.charAt(i);
             if (input.charAt(i) == '\\') {
                 i++;
@@ -110,7 +108,8 @@ public class HttpParser {
     }
 
     // Skip any LWS and return the next char
-    static int skipLws(StringReader input, boolean withReset) throws IOException {
+    static int skipLws(StringReader input, boolean withReset)
+            throws IOException {
 
         if (withReset) {
             input.mark(1);
@@ -130,7 +129,8 @@ public class HttpParser {
         return c;
     }
 
-    static SkipResult skipConstant(StringReader input, String constant) throws IOException {
+    static SkipResult skipConstant(StringReader input, String constant)
+            throws IOException {
         int len = constant.length();
 
         int c = skipLws(input, false);
@@ -151,9 +151,9 @@ public class HttpParser {
     }
 
     /**
-     * @return  the token if one was found, the empty string if no data was
-     *          available to read or <code>null</code> if data other than a
-     *          token was found
+     * @return the token if one was found, the empty string if no data was
+     *         available to read or <code>null</code> if data other than a
+     *         token was found
      */
     static String readToken(StringReader input) throws IOException {
         StringBuilder result = new StringBuilder();
@@ -179,7 +179,8 @@ public class HttpParser {
      *         quoted string was found or null if the end of data was reached
      *         before the quoted string was terminated
      */
-    static String readQuotedString(StringReader input, boolean returnQuoted) throws IOException {
+    static String readQuotedString(StringReader input, boolean returnQuoted)
+            throws IOException {
 
         int c = skipLws(input, false);
 
@@ -214,8 +215,8 @@ public class HttpParser {
         return result.toString();
     }
 
-    static String readTokenOrQuotedString(StringReader input, boolean returnQuoted)
-            throws IOException {
+    static String readTokenOrQuotedString(StringReader input,
+            boolean returnQuoted) throws IOException {
 
         // Go back so first non-LWS character is available to be read again
         int c = skipLws(input, true);
@@ -287,8 +288,8 @@ public class HttpParser {
      * allows for upper-case digits as well, converting the returned value to
      * lower-case.
      *
-     * @return  the sequence of LHEX (minus any surrounding quotes) if any was
-     *          found, or <code>null</code> if data other LHEX was found
+     * @return the sequence of LHEX (minus any surrounding quotes) if any was
+     *         found, or <code>null</code> if data other LHEX was found
      */
     static String readLhex(StringReader input) throws IOException {
 
@@ -333,7 +334,8 @@ public class HttpParser {
         }
     }
 
-    static double readWeight(StringReader input, char delimiter) throws IOException {
+    static double readWeight(StringReader input, char delimiter)
+            throws IOException {
         int c = skipLws(input, false);
         if (c == -1 || c == delimiter) {
             // No q value just whitespace
@@ -395,12 +397,12 @@ public class HttpParser {
         return result;
     }
 
-
     /**
      * Skips all characters until EOF or the specified target is found. Normally
      * used to skip invalid input until the next separator.
      */
-    static SkipResult skipUntil(StringReader input, int c, char target) throws IOException {
+    static SkipResult skipUntil(StringReader input, int c, char target)
+            throws IOException {
         while (c != -1 && c != target) {
             c = input.read();
         }

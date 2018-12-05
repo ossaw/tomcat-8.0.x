@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -49,22 +47,23 @@ public class JasperInitializer implements ServletContainerInitializer {
      */
     static {
         JspFactoryImpl factory = new JspFactoryImpl();
-        SecurityClassLoad.securityClassLoad(factory.getClass().getClassLoader());
-        if( System.getSecurityManager() != null ) {
+        SecurityClassLoad.securityClassLoad(factory.getClass()
+                .getClassLoader());
+        if (System.getSecurityManager() != null) {
             String basePackage = "org.apache.jasper.";
             try {
-                factory.getClass().getClassLoader().loadClass( basePackage +
-                        "runtime.JspFactoryImpl$PrivilegedGetPageContext");
-                factory.getClass().getClassLoader().loadClass( basePackage +
-                        "runtime.JspFactoryImpl$PrivilegedReleasePageContext");
-                factory.getClass().getClassLoader().loadClass( basePackage +
-                        "runtime.JspRuntimeLibrary");
-                factory.getClass().getClassLoader().loadClass( basePackage +
-                        "runtime.JspRuntimeLibrary$PrivilegedIntrospectHelper");
-                factory.getClass().getClassLoader().loadClass( basePackage +
-                        "runtime.ServletResponseWrapperInclude");
-                factory.getClass().getClassLoader().loadClass( basePackage +
-                        "servlet.JspServletWrapper");
+                factory.getClass().getClassLoader().loadClass(basePackage
+                        + "runtime.JspFactoryImpl$PrivilegedGetPageContext");
+                factory.getClass().getClassLoader().loadClass(basePackage
+                        + "runtime.JspFactoryImpl$PrivilegedReleasePageContext");
+                factory.getClass().getClassLoader().loadClass(basePackage
+                        + "runtime.JspRuntimeLibrary");
+                factory.getClass().getClassLoader().loadClass(basePackage
+                        + "runtime.JspRuntimeLibrary$PrivilegedIntrospectHelper");
+                factory.getClass().getClassLoader().loadClass(basePackage
+                        + "runtime.ServletResponseWrapperInclude");
+                factory.getClass().getClassLoader().loadClass(basePackage
+                        + "servlet.JspServletWrapper");
             } catch (ClassNotFoundException ex) {
                 throw new IllegalStateException(ex);
             }
@@ -76,18 +75,21 @@ public class JasperInitializer implements ServletContainerInitializer {
     }
 
     @Override
-    public void onStartup(Set<Class<?>> types, ServletContext context) throws ServletException {
+    public void onStartup(Set<Class<?>> types, ServletContext context)
+            throws ServletException {
         if (log.isDebugEnabled()) {
-            log.debug(Localizer.getMessage(MSG + ".onStartup", context.getServletContextName()));
+            log.debug(Localizer.getMessage(MSG + ".onStartup", context
+                    .getServletContextName()));
         }
 
         // Setup a simple default Instance Manager
-        if (context.getAttribute(InstanceManager.class.getName())==null) {
-            context.setAttribute(InstanceManager.class.getName(), new SimpleInstanceManager());
+        if (context.getAttribute(InstanceManager.class.getName()) == null) {
+            context.setAttribute(InstanceManager.class.getName(),
+                    new SimpleInstanceManager());
         }
 
-        boolean validate = Boolean.parseBoolean(
-                context.getInitParameter(Constants.XML_VALIDATION_TLD_INIT_PARAM));
+        boolean validate = Boolean.parseBoolean(context.getInitParameter(
+                Constants.XML_VALIDATION_TLD_INIT_PARAM));
         String blockExternalString = context.getInitParameter(
                 Constants.XML_BLOCK_EXTERNAL_INIT_PARAM);
         boolean blockExternal;
@@ -98,7 +100,8 @@ public class JasperInitializer implements ServletContainerInitializer {
         }
 
         // scan the application for TLDs
-        TldScanner scanner = newTldScanner(context, true, validate, blockExternal);
+        TldScanner scanner = newTldScanner(context, true, validate,
+                blockExternal);
         try {
             scanner.scan();
         } catch (IOException | SAXException e) {
@@ -115,8 +118,8 @@ public class JasperInitializer implements ServletContainerInitializer {
                         scanner.getTldResourcePathTaglibXmlMap()));
     }
 
-    protected TldScanner newTldScanner(ServletContext context, boolean namespaceAware,
-            boolean validate, boolean blockExternal) {
+    protected TldScanner newTldScanner(ServletContext context,
+            boolean namespaceAware, boolean validate, boolean blockExternal) {
         return new TldScanner(context, namespaceAware, validate, blockExternal);
     }
 }

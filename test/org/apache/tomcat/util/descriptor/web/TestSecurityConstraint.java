@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -105,9 +103,8 @@ public class TestSecurityConstraint {
         // @ServletSecurity(
         //     @HttpConstraint(
         //         transportGuarantee = TransportGuarantee.CONFIDENTIAL))
-        element = new ServletSecurityElement(
-                new HttpConstraintElement(
-                        ServletSecurity.TransportGuarantee.CONFIDENTIAL));
+        element = new ServletSecurityElement(new HttpConstraintElement(
+                ServletSecurity.TransportGuarantee.CONFIDENTIAL));
         result = SecurityConstraint.createConstraints(element, URL_PATTERN);
 
         assertEquals(1, result.length);
@@ -119,16 +116,16 @@ public class TestSecurityConstraint {
 
         // Example 13-3
         // @ServletSecurity(@HttpConstraint(EmptyRoleSemantic.DENY))
-        element = new ServletSecurityElement(
-                new HttpConstraintElement(EmptyRoleSemantic.DENY));
+        element = new ServletSecurityElement(new HttpConstraintElement(
+                EmptyRoleSemantic.DENY));
         result = SecurityConstraint.createConstraints(element, URL_PATTERN);
 
         assertEquals(1, result.length);
         assertTrue(result[0].getAuthConstraint());
         assertTrue(result[0].findCollections()[0].findPattern(URL_PATTERN));
         assertEquals(0, result[0].findCollections()[0].findMethods().length);
-        assertEquals(ServletSecurity.TransportGuarantee.NONE.name(),
-                result[0].getUserConstraint());
+        assertEquals(ServletSecurity.TransportGuarantee.NONE.name(), result[0]
+                .getUserConstraint());
 
         // Example 13-4
         // @ServletSecurity(@HttpConstraint(rolesAllowed = "R1"))
@@ -142,8 +139,8 @@ public class TestSecurityConstraint {
         assertTrue(result[0].findAuthRole(ROLE1));
         assertTrue(result[0].findCollections()[0].findPattern(URL_PATTERN));
         assertEquals(0, result[0].findCollections()[0].findMethods().length);
-        assertEquals(ServletSecurity.TransportGuarantee.NONE.name(),
-                result[0].getUserConstraint());
+        assertEquals(ServletSecurity.TransportGuarantee.NONE.name(), result[0]
+                .getUserConstraint());
 
         // Example 13-5
         // @ServletSecurity((httpMethodConstraints = {
@@ -168,14 +165,15 @@ public class TestSecurityConstraint {
             assertEquals(1, result[i].findAuthRoles().length);
             assertTrue(result[i].findAuthRole(ROLE1));
             assertTrue(result[i].findCollections()[0].findPattern(URL_PATTERN));
-            assertEquals(1, result[i].findCollections()[0].findMethods().length);
+            assertEquals(1, result[i].findCollections()[0]
+                    .findMethods().length);
             String method = result[i].findCollections()[0].findMethods()[0];
             if ("GET".equals(method)) {
                 assertEquals(ServletSecurity.TransportGuarantee.NONE.name(),
                         result[i].getUserConstraint());
             } else if ("POST".equals(method)) {
-                assertEquals(ServletSecurity.TransportGuarantee.CONFIDENTIAL.name(),
-                        result[i].getUserConstraint());
+                assertEquals(ServletSecurity.TransportGuarantee.CONFIDENTIAL
+                        .name(), result[i].getUserConstraint());
             } else {
                 fail("Unexpected method :[" + method + "]");
             }
@@ -186,23 +184,21 @@ public class TestSecurityConstraint {
         //     httpMethodConstraints = @HttpMethodConstraint("GET"))
         hmces.clear();
         hmces.add(new HttpMethodConstraintElement("GET"));
-        element = new ServletSecurityElement(
-                new HttpConstraintElement(
-                        ServletSecurity.TransportGuarantee.NONE,
-                        ROLE1),
-                hmces);
+        element = new ServletSecurityElement(new HttpConstraintElement(
+                ServletSecurity.TransportGuarantee.NONE, ROLE1), hmces);
         result = SecurityConstraint.createConstraints(element, URL_PATTERN);
 
         assertEquals(2, result.length);
         for (int i = 0; i < 2; i++) {
             assertTrue(result[i].findCollections()[0].findPattern(URL_PATTERN));
             if (result[i].findCollections()[0].findMethods().length == 1) {
-                assertEquals("GET",
-                        result[i].findCollections()[0].findMethods()[0]);
+                assertEquals("GET", result[i].findCollections()[0]
+                        .findMethods()[0]);
                 assertFalse(result[i].getAuthConstraint());
-            } else if (result[i].findCollections()[0].findOmittedMethods().length == 1) {
-                assertEquals("GET",
-                        result[i].findCollections()[0].findOmittedMethods()[0]);
+            } else if (result[i].findCollections()[0]
+                    .findOmittedMethods().length == 1) {
+                assertEquals("GET", result[i].findCollections()[0]
+                        .findOmittedMethods()[0]);
                 assertTrue(result[i].getAuthConstraint());
                 assertEquals(1, result[i].findAuthRoles().length);
                 assertEquals(ROLE1, result[i].findAuthRoles()[0]);
@@ -220,24 +216,22 @@ public class TestSecurityConstraint {
         hmces.clear();
         hmces.add(new HttpMethodConstraintElement("TRACE",
                 new HttpConstraintElement(EmptyRoleSemantic.DENY)));
-        element = new ServletSecurityElement(
-                new HttpConstraintElement(
-                        ServletSecurity.TransportGuarantee.NONE,
-                        ROLE1),
-                hmces);
+        element = new ServletSecurityElement(new HttpConstraintElement(
+                ServletSecurity.TransportGuarantee.NONE, ROLE1), hmces);
         result = SecurityConstraint.createConstraints(element, URL_PATTERN);
 
         assertEquals(2, result.length);
         for (int i = 0; i < 2; i++) {
             assertTrue(result[i].findCollections()[0].findPattern(URL_PATTERN));
             if (result[i].findCollections()[0].findMethods().length == 1) {
-                assertEquals("TRACE",
-                        result[i].findCollections()[0].findMethods()[0]);
+                assertEquals("TRACE", result[i].findCollections()[0]
+                        .findMethods()[0]);
                 assertTrue(result[i].getAuthConstraint());
                 assertEquals(0, result[i].findAuthRoles().length);
-            } else if (result[i].findCollections()[0].findOmittedMethods().length == 1) {
-                assertEquals("TRACE",
-                        result[i].findCollections()[0].findOmittedMethods()[0]);
+            } else if (result[i].findCollections()[0]
+                    .findOmittedMethods().length == 1) {
+                assertEquals("TRACE", result[i].findCollections()[0]
+                        .findOmittedMethods()[0]);
                 assertTrue(result[i].getAuthConstraint());
                 assertEquals(1, result[i].findAuthRoles().length);
                 assertEquals(ROLE1, result[i].findAuthRoles()[0]);
@@ -252,52 +246,47 @@ public class TestSecurityConstraint {
         // Example 13-9 is the same as 13-7
     }
 
-
     @Test
     public void testFindUncoveredHttpMethods01() {
         // No new constraints if denyUncoveredHttpMethods is false
-        SecurityConstraint[] result =
-                SecurityConstraint.findUncoveredHttpMethods(
-                        new SecurityConstraint[] {GET_ONLY}, false, DUMMY_LOG);
+        SecurityConstraint[] result = SecurityConstraint
+                .findUncoveredHttpMethods(new SecurityConstraint[] { GET_ONLY },
+                        false, DUMMY_LOG);
         Assert.assertEquals(0, result.length);
     }
-
 
     @Test
     public void testFindUncoveredHttpMethods02() {
         // No new constraints if denyUncoveredHttpMethods is false
-        SecurityConstraint[] result =
-                SecurityConstraint.findUncoveredHttpMethods(
-                        new SecurityConstraint[] {GET_OMIT}, false, DUMMY_LOG);
+        SecurityConstraint[] result = SecurityConstraint
+                .findUncoveredHttpMethods(new SecurityConstraint[] { GET_OMIT },
+                        false, DUMMY_LOG);
         Assert.assertEquals(0, result.length);
     }
-
 
     @Test
     public void testFindUncoveredHttpMethods03() {
         // No new constraints if denyUncoveredHttpMethods is false
-        SecurityConstraint[] result =
-                SecurityConstraint.findUncoveredHttpMethods(
-                        new SecurityConstraint[] {POST_ONLY}, false, DUMMY_LOG);
+        SecurityConstraint[] result = SecurityConstraint
+                .findUncoveredHttpMethods(new SecurityConstraint[] {
+                        POST_ONLY }, false, DUMMY_LOG);
         Assert.assertEquals(0, result.length);
     }
-
 
     @Test
     public void testFindUncoveredHttpMethods04() {
         // No new constraints if denyUncoveredHttpMethods is false
-        SecurityConstraint[] result =
-                SecurityConstraint.findUncoveredHttpMethods(
-                        new SecurityConstraint[] {POST_OMIT}, false, DUMMY_LOG);
+        SecurityConstraint[] result = SecurityConstraint
+                .findUncoveredHttpMethods(new SecurityConstraint[] {
+                        POST_OMIT }, false, DUMMY_LOG);
         Assert.assertEquals(0, result.length);
     }
 
-
     @Test
     public void testFindUncoveredHttpMethods05() {
-        SecurityConstraint[] result =
-                SecurityConstraint.findUncoveredHttpMethods(
-                        new SecurityConstraint[] {GET_ONLY}, true, DUMMY_LOG);
+        SecurityConstraint[] result = SecurityConstraint
+                .findUncoveredHttpMethods(new SecurityConstraint[] { GET_ONLY },
+                        true, DUMMY_LOG);
         Assert.assertEquals(1, result.length);
         // Should be a deny constraint
         Assert.assertTrue(result[0].getAuthConstraint());
@@ -310,12 +299,11 @@ public class TestSecurityConstraint {
         Assert.assertEquals("GET", sc.findOmittedMethods()[0]);
     }
 
-
     @Test
     public void testFindUncoveredHttpMethods06() {
-        SecurityConstraint[] result =
-                SecurityConstraint.findUncoveredHttpMethods(
-                        new SecurityConstraint[] {POST_ONLY}, true, DUMMY_LOG);
+        SecurityConstraint[] result = SecurityConstraint
+                .findUncoveredHttpMethods(new SecurityConstraint[] {
+                        POST_ONLY }, true, DUMMY_LOG);
         Assert.assertEquals(1, result.length);
         // Should be a deny constraint
         Assert.assertTrue(result[0].getAuthConstraint());
@@ -328,12 +316,11 @@ public class TestSecurityConstraint {
         Assert.assertEquals("POST", sc.findOmittedMethods()[0]);
     }
 
-
     @Test
     public void testFindUncoveredHttpMethods07() {
-        SecurityConstraint[] result =
-                SecurityConstraint.findUncoveredHttpMethods(
-                        new SecurityConstraint[] {GET_OMIT}, true, DUMMY_LOG);
+        SecurityConstraint[] result = SecurityConstraint
+                .findUncoveredHttpMethods(new SecurityConstraint[] { GET_OMIT },
+                        true, DUMMY_LOG);
         Assert.assertEquals(1, result.length);
         // Should be a deny constraint
         Assert.assertTrue(result[0].getAuthConstraint());
@@ -346,12 +333,11 @@ public class TestSecurityConstraint {
         Assert.assertEquals("GET", sc.findMethods()[0]);
     }
 
-
     @Test
     public void testFindUncoveredHttpMethods08() {
-        SecurityConstraint[] result =
-                SecurityConstraint.findUncoveredHttpMethods(
-                        new SecurityConstraint[] {POST_OMIT}, true, DUMMY_LOG);
+        SecurityConstraint[] result = SecurityConstraint
+                .findUncoveredHttpMethods(new SecurityConstraint[] {
+                        POST_OMIT }, true, DUMMY_LOG);
         Assert.assertEquals(1, result.length);
         // Should be a deny constraint
         Assert.assertTrue(result[0].getAuthConstraint());
@@ -364,33 +350,27 @@ public class TestSecurityConstraint {
         Assert.assertEquals("POST", sc.findMethods()[0]);
     }
 
-
     @Test
     public void testFindUncoveredHttpMethods09() {
-        SecurityConstraint[] result =
-                SecurityConstraint.findUncoveredHttpMethods(
-                        new SecurityConstraint[] {GET_ONLY, GET_OMIT}, true,
-                        DUMMY_LOG);
+        SecurityConstraint[] result = SecurityConstraint
+                .findUncoveredHttpMethods(new SecurityConstraint[] { GET_ONLY,
+                        GET_OMIT }, true, DUMMY_LOG);
         Assert.assertEquals(0, result.length);
     }
-
 
     @Test
     public void testFindUncoveredHttpMethods10() {
-        SecurityConstraint[] result =
-                SecurityConstraint.findUncoveredHttpMethods(
-                        new SecurityConstraint[] {POST_ONLY, POST_OMIT}, true,
-                        DUMMY_LOG);
+        SecurityConstraint[] result = SecurityConstraint
+                .findUncoveredHttpMethods(new SecurityConstraint[] { POST_ONLY,
+                        POST_OMIT }, true, DUMMY_LOG);
         Assert.assertEquals(0, result.length);
     }
 
-
     @Test
     public void testFindUncoveredHttpMethods11() {
-        SecurityConstraint[] result =
-                SecurityConstraint.findUncoveredHttpMethods(
-                        new SecurityConstraint[] {GET_ONLY, POST_ONLY}, true,
-                        DUMMY_LOG);
+        SecurityConstraint[] result = SecurityConstraint
+                .findUncoveredHttpMethods(new SecurityConstraint[] { GET_ONLY,
+                        POST_ONLY }, true, DUMMY_LOG);
         Assert.assertEquals(1, result.length);
         // Should be a deny constraint
         Assert.assertTrue(result[0].getAuthConstraint());
@@ -408,23 +388,19 @@ public class TestSecurityConstraint {
         Assert.assertTrue(omittedMethods.remove("POST"));
     }
 
-
     @Test
     public void testFindUncoveredHttpMethods12() {
-        SecurityConstraint[] result =
-                SecurityConstraint.findUncoveredHttpMethods(
-                        new SecurityConstraint[] {GET_OMIT, POST_OMIT}, true,
-                        DUMMY_LOG);
+        SecurityConstraint[] result = SecurityConstraint
+                .findUncoveredHttpMethods(new SecurityConstraint[] { GET_OMIT,
+                        POST_OMIT }, true, DUMMY_LOG);
         Assert.assertEquals(0, result.length);
     }
 
-
     @Test
     public void testFindUncoveredHttpMethods13() {
-        SecurityConstraint[] result =
-                SecurityConstraint.findUncoveredHttpMethods(
-                        new SecurityConstraint[] {GET_ONLY, POST_OMIT}, true,
-                        DUMMY_LOG);
+        SecurityConstraint[] result = SecurityConstraint
+                .findUncoveredHttpMethods(new SecurityConstraint[] { GET_ONLY,
+                        POST_OMIT }, true, DUMMY_LOG);
         Assert.assertEquals(1, result.length);
         // Should be a deny constraint
         Assert.assertTrue(result[0].getAuthConstraint());
@@ -437,13 +413,11 @@ public class TestSecurityConstraint {
         Assert.assertEquals("POST", sc.findMethods()[0]);
     }
 
-
     @Test
     public void testFindUncoveredHttpMethods14() {
-        SecurityConstraint[] result =
-                SecurityConstraint.findUncoveredHttpMethods(
-                        new SecurityConstraint[] {GET_OMIT, POST_ONLY}, true,
-                        DUMMY_LOG);
+        SecurityConstraint[] result = SecurityConstraint
+                .findUncoveredHttpMethods(new SecurityConstraint[] { GET_OMIT,
+                        POST_ONLY }, true, DUMMY_LOG);
         Assert.assertEquals(1, result.length);
         // Should be a deny constraint
         Assert.assertTrue(result[0].getAuthConstraint());

@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -38,8 +36,8 @@ public class TestCookieFilter {
     @Test
     public void test03() {
         // Cookies with leading and trailing whitespace
-        Assert.assertEquals(" a=b  ;   c=d    ",
-                CookieFilter.filter(" a=b  ;   c=d    ", null));
+        Assert.assertEquals(" a=b  ;   c=d    ", CookieFilter.filter(
+                " a=b  ;   c=d    ", null));
     }
 
     @Test
@@ -57,17 +55,17 @@ public class TestCookieFilter {
     @Test
     public void test06() {
         // Simple case
-        Assert.assertEquals("JSESSIONID=[obfuscated]",
-                CookieFilter.filter("JSESSIONID=0123456789", null));
+        Assert.assertEquals("JSESSIONID=[obfuscated]", CookieFilter.filter(
+                "JSESSIONID=0123456789", null));
     }
 
     @Test
     public void test07() {
         // Simple SSO case
         Assert.assertEquals(Constants.SINGLE_SIGN_ON_COOKIE + "=[obfuscated]",
-                CookieFilter.filter(Constants.SINGLE_SIGN_ON_COOKIE + "=0123456789", null));
+                CookieFilter.filter(Constants.SINGLE_SIGN_ON_COOKIE
+                        + "=0123456789", null));
     }
-
 
     @Test
     public void test08() {
@@ -88,6 +86,7 @@ public class TestCookieFilter {
     @Test
     public void test10() {
         // Single cookie
-        Assert.assertEquals("a=\"xx;x\"", CookieFilter.filter("a=\"xx;x\"", null));
+        Assert.assertEquals("a=\"xx;x\"", CookieFilter.filter("a=\"xx;x\"",
+                null));
     }
 }

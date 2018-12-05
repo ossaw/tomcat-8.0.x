@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -15,7 +13,6 @@
  * limitations under the License.
  */
 package org.apache.catalina.valves;
-
 
 import java.io.IOException;
 import java.util.regex.Pattern;
@@ -41,16 +38,16 @@ import org.apache.juli.logging.Log;
  * be compared. Evaluation proceeds as follows:
  * <ul>
  * <li>The subclass extracts the request property to be filtered, and
- *     calls the common <code>process()</code> method.
+ * calls the common <code>process()</code> method.
  * <li>If there is a deny expression configured, the property will be compared
- *     to the expression. If a match is found, this request will be rejected
- *     with a "Forbidden" HTTP response.</li>
+ * to the expression. If a match is found, this request will be rejected
+ * with a "Forbidden" HTTP response.</li>
  * <li>If there is a allow expression configured, the property will be compared
- *     to each such expression.  If a match is found, this request will be
- *     allowed to pass through to the next Valve in the current pipeline.</li>
+ * to each such expression. If a match is found, this request will be
+ * allowed to pass through to the next Valve in the current pipeline.</li>
  * <li>If a deny expression was specified but no allow expression, allow this
- *     request to pass through (because none of the deny expressions matched
- *     it).
+ * request to pass through (because none of the deny expressions matched
+ * it).
  * <li>The request will be rejected with a "Forbidden" HTTP response.</li>
  * </ul>
  * <p>
@@ -71,7 +68,6 @@ public abstract class RequestFilterValve extends ValveBase {
         super(true);
     }
 
-
     // ----------------------------------------------------- Instance Variables
 
     /**
@@ -79,13 +75,11 @@ public abstract class RequestFilterValve extends ValveBase {
      */
     protected volatile Pattern allow = null;
 
-
     /**
      * The current allow configuration value that may or may not compile into a
      * valid {@link Pattern}.
      */
     protected volatile String allowValue = null;
-
 
     /**
      * Helper variable to catch configuration errors.
@@ -95,19 +89,16 @@ public abstract class RequestFilterValve extends ValveBase {
      */
     protected volatile boolean allowValid = true;
 
-
     /**
      * The regular expression used to test for denied requests.
      */
     protected volatile Pattern deny = null;
-
 
     /**
      * The current deny configuration value that may or may not compile into a
      * valid {@link Pattern}.
      */
     protected volatile String denyValue = null;
-
 
     /**
      * Helper variable to catch configuration errors.
@@ -117,7 +108,6 @@ public abstract class RequestFilterValve extends ValveBase {
      */
     protected volatile boolean denyValid = true;
 
-
     /**
      * The HTTP response status code that is used when rejecting denied
      * request. It is 403 by default, but may be changed to be 404.
@@ -125,7 +115,8 @@ public abstract class RequestFilterValve extends ValveBase {
     protected int denyStatus = HttpServletResponse.SC_FORBIDDEN;
 
     /**
-     * <p>If <code>invalidAuthenticationWhenDeny</code> is true
+     * <p>
+     * If <code>invalidAuthenticationWhenDeny</code> is true
      * and the context has <code>preemptiveAuthentication</code>
      * set, set an invalid authorization header to trigger basic auth
      * instead of denying the request..
@@ -134,7 +125,6 @@ public abstract class RequestFilterValve extends ValveBase {
 
     // ------------------------------------------------------------- Properties
 
-
     /**
      * Return the regular expression used to test for allowed requests for this
      * Valve, if any; otherwise, return <code>null</code>.
@@ -142,7 +132,6 @@ public abstract class RequestFilterValve extends ValveBase {
     public String getAllow() {
         return allowValue;
     }
-
 
     /**
      * Set the regular expression used to test for allowed requests for this
@@ -167,7 +156,6 @@ public abstract class RequestFilterValve extends ValveBase {
         }
     }
 
-
     /**
      * Return the regular expression used to test for denied requests for this
      * Valve, if any; otherwise, return <code>null</code>.
@@ -175,7 +163,6 @@ public abstract class RequestFilterValve extends ValveBase {
     public String getDeny() {
         return denyValue;
     }
-
 
     /**
      * Set the regular expression used to test for denied requests for this
@@ -200,7 +187,6 @@ public abstract class RequestFilterValve extends ValveBase {
         }
     }
 
-
     /**
      * Returns {@code false} if the last change to the {@code allow} pattern did
      * not apply successfully. E.g. if the pattern is syntactically
@@ -209,7 +195,6 @@ public abstract class RequestFilterValve extends ValveBase {
     public final boolean isAllowValid() {
         return allowValid;
     }
-
 
     /**
      * Returns {@code false} if the last change to the {@code deny} pattern did
@@ -220,14 +205,12 @@ public abstract class RequestFilterValve extends ValveBase {
         return denyValid;
     }
 
-
     /**
      * Return response status code that is used to reject denied request.
      */
     public int getDenyStatus() {
         return denyStatus;
     }
-
 
     /**
      * Set response status code that is used to reject denied request.
@@ -236,7 +219,6 @@ public abstract class RequestFilterValve extends ValveBase {
         this.denyStatus = denyStatus;
     }
 
-
     /**
      * Return true if a deny is handled by setting an invalid auth header.
      */
@@ -244,14 +226,12 @@ public abstract class RequestFilterValve extends ValveBase {
         return invalidAuthenticationWhenDeny;
     }
 
-
     /**
      * Set invalidAuthenticationWhenDeny property.
      */
     public void setInvalidAuthenticationWhenDeny(boolean value) {
         invalidAuthenticationWhenDeny = value;
     }
-
 
     // --------------------------------------------------------- Public Methods
 
@@ -261,49 +241,45 @@ public abstract class RequestFilterValve extends ValveBase {
      * <code>process()</code> method to perform the actual filtering.
      * This method must be implemented by a concrete subclass.
      *
-     * @param request The servlet request to be processed
+     * @param request  The servlet request to be processed
      * @param response The servlet response to be created
      *
-     * @exception IOException if an input/output error occurs
+     * @exception IOException      if an input/output error occurs
      * @exception ServletException if a servlet error occurs
      */
     @Override
     public abstract void invoke(Request request, Response response)
-        throws IOException, ServletException;
-
+            throws IOException, ServletException;
 
     // ------------------------------------------------------ Protected Methods
-
 
     @Override
     protected void initInternal() throws LifecycleException {
         super.initInternal();
         if (!allowValid || !denyValid) {
-            throw new LifecycleException(
-                    sm.getString("requestFilterValve.configInvalid"));
+            throw new LifecycleException(sm.getString(
+                    "requestFilterValve.configInvalid"));
         }
     }
-
 
     @Override
     protected synchronized void startInternal() throws LifecycleException {
         if (!allowValid || !denyValid) {
-            throw new LifecycleException(
-                    sm.getString("requestFilterValve.configInvalid"));
+            throw new LifecycleException(sm.getString(
+                    "requestFilterValve.configInvalid"));
         }
         super.startInternal();
     }
-
 
     /**
      * Perform the filtering that has been configured for this Valve, matching
      * against the specified request property.
      *
      * @param property The request property on which to filter
-     * @param request The servlet request to be processed
+     * @param request  The servlet request to be processed
      * @param response The servlet response to be processed
      *
-     * @exception IOException if an input/output error occurs
+     * @exception IOException      if an input/output error occurs
      * @exception ServletException if a servlet error occurs
      */
     protected void process(String property, Request request, Response response)
@@ -315,27 +291,26 @@ public abstract class RequestFilterValve extends ValveBase {
         }
 
         if (getLog().isDebugEnabled()) {
-            getLog().debug(sm.getString("requestFilterValve.deny",
-                    request.getRequestURI(), property));
+            getLog().debug(sm.getString("requestFilterValve.deny", request
+                    .getRequestURI(), property));
         }
 
         // Deny this request
         denyRequest(request, response);
     }
 
-
     protected abstract Log getLog();
-
 
     /**
      * Reject the request that was denied by this valve.
-     * <p>If <code>invalidAuthenticationWhenDeny</code> is true
+     * <p>
+     * If <code>invalidAuthenticationWhenDeny</code> is true
      * and the context has <code>preemptiveAuthentication</code>
      * set, set an invalid authorization header to trigger basic auth.
      *
-     * @param request The servlet request to be processed
+     * @param request  The servlet request to be processed
      * @param response The servlet response to be processed
-     * @exception IOException if an input/output error occurs
+     * @exception IOException      if an input/output error occurs
      * @exception ServletException if a servlet error occurs
      */
     protected void denyRequest(Request request, Response response)
@@ -343,8 +318,10 @@ public abstract class RequestFilterValve extends ValveBase {
         if (invalidAuthenticationWhenDeny) {
             Context context = request.getContext();
             if (context != null && context.getPreemptiveAuthentication()) {
-                if (request.getCoyoteRequest().getMimeHeaders().getValue("authorization") == null) {
-                    request.getCoyoteRequest().getMimeHeaders().addValue("authorization").setString("invalid");
+                if (request.getCoyoteRequest().getMimeHeaders().getValue(
+                        "authorization") == null) {
+                    request.getCoyoteRequest().getMimeHeaders().addValue(
+                            "authorization").setString("invalid");
                 }
                 getNext().invoke(request, response);
                 return;
@@ -353,7 +330,6 @@ public abstract class RequestFilterValve extends ValveBase {
         response.sendError(denyStatus);
     }
 
-
     /**
      * Perform the test implemented by this Valve, matching against the
      * specified request property value. This method is public so that it can be
@@ -361,7 +337,7 @@ public abstract class RequestFilterValve extends ValveBase {
      * denied by the valve configuration.
      *
      * @param property
-     *            The request property value on which to filter
+     *                 The request property value on which to filter
      */
     public boolean isAllowed(String property) {
         // Use local copies for thread safety

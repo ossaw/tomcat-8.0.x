@@ -1,13 +1,11 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
+ * contributor license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
+ * the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -30,14 +28,11 @@ public interface ClientEndpointConfig extends EndpointConfig {
 
     public final class Builder {
 
-        private static final Configurator DEFAULT_CONFIGURATOR =
-                new Configurator() {};
-
+        private static final Configurator DEFAULT_CONFIGURATOR = new Configurator() {};
 
         public static Builder create() {
             return new Builder();
         }
-
 
         private Builder() {
             // Hide default constructor
@@ -46,17 +41,15 @@ public interface ClientEndpointConfig extends EndpointConfig {
         private Configurator configurator = DEFAULT_CONFIGURATOR;
         private List<String> preferredSubprotocols = Collections.emptyList();
         private List<Extension> extensions = Collections.emptyList();
-        private List<Class<? extends Encoder>> encoders =
-                Collections.emptyList();
-        private List<Class<? extends Decoder>> decoders =
-                Collections.emptyList();
-
+        private List<Class<? extends Encoder>> encoders = Collections
+                .emptyList();
+        private List<Class<? extends Decoder>> decoders = Collections
+                .emptyList();
 
         public ClientEndpointConfig build() {
             return new DefaultClientEndpointConfig(preferredSubprotocols,
                     extensions, encoders, decoders, configurator);
         }
-
 
         public Builder configurator(Configurator configurator) {
             if (configurator == null) {
@@ -67,22 +60,19 @@ public interface ClientEndpointConfig extends EndpointConfig {
             return this;
         }
 
-
         public Builder preferredSubprotocols(
                 List<String> preferredSubprotocols) {
-            if (preferredSubprotocols == null ||
-                    preferredSubprotocols.size() == 0) {
+            if (preferredSubprotocols == null || preferredSubprotocols
+                    .size() == 0) {
                 this.preferredSubprotocols = Collections.emptyList();
             } else {
-                this.preferredSubprotocols =
-                        Collections.unmodifiableList(preferredSubprotocols);
+                this.preferredSubprotocols = Collections.unmodifiableList(
+                        preferredSubprotocols);
             }
             return this;
         }
 
-
-        public Builder extensions(
-                List<Extension> extensions) {
+        public Builder extensions(List<Extension> extensions) {
             if (extensions == null || extensions.size() == 0) {
                 this.extensions = Collections.emptyList();
             } else {
@@ -90,7 +80,6 @@ public interface ClientEndpointConfig extends EndpointConfig {
             }
             return this;
         }
-
 
         public Builder encoders(List<Class<? extends Encoder>> encoders) {
             if (encoders == null || encoders.size() == 0) {
@@ -100,7 +89,6 @@ public interface ClientEndpointConfig extends EndpointConfig {
             }
             return this;
         }
-
 
         public Builder decoders(List<Class<? extends Decoder>> decoders) {
             if (decoders == null || decoders.size() == 0) {
@@ -112,21 +100,22 @@ public interface ClientEndpointConfig extends EndpointConfig {
         }
     }
 
-
     public class Configurator {
 
         /**
-         * Provides the client with a mechanism to inspect and/or modify the headers
+         * Provides the client with a mechanism to inspect and/or modify the
+         * headers
          * that are sent to the server to start the WebSocket handshake.
          *
-         * @param headers   The HTTP headers
+         * @param headers The HTTP headers
          */
         public void beforeRequest(Map<String, List<String>> headers) {
             // NO-OP
         }
 
         /**
-         * Provides the client with a mechanism to inspect the handshake response
+         * Provides the client with a mechanism to inspect the handshake
+         * response
          * that is returned from the server.
          *
          * @param handshakeResponse The response
